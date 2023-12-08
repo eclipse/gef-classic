@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -38,7 +38,7 @@ import org.eclipse.gef.internal.InternalGEFPlugin;
  * preference store. Sub-classes can add newer preferences to the store by using
  * {@link #getPreferenceStore()}.
  * </p>
- * 
+ *
  * @author Pratik Shah
  */
 public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences {
@@ -64,7 +64,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param store The IPreferenceStore where the settings are to be saved.
 	 */
 	public DefaultPaletteViewerPreferences(final IPreferenceStore store) {
@@ -97,7 +97,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * NOTE: The <code>oldValue</code> field of the <code>PropertyChangeEvent</code>
 	 * used to notify listeners will always be <code>null</code>.
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#addPropertyChangeListener(PropertyChangeListener)
 	 */
 	@Override
@@ -108,7 +108,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * This is a convenience method that converts the given layout mode to the
 	 * matching preference name.
-	 * 
+	 *
 	 * <UL>
 	 * <LI>int <-> String</LI>
 	 * <LI>LAYOUT_LIST <-> PREFERENCE_LIST_ICON_SIZE</LI>
@@ -116,7 +116,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	 * <LI>LAYOUT_ICONS <-> PREFERENCE_ICONS_ICON_SIZE</LI>
 	 * <LI>LAYOUT_DETAILS <-> PREFERENCE_DETAILS_ICON_SIZE</LI>
 	 * </UL>
-	 * 
+	 *
 	 * @param layout LAYOUT_LIST, LAYOUT_DETAILS, LAYOUT_COLUMNS, or LAYOUT_ICONS
 	 * @return The corresponding preference String
 	 */
@@ -142,7 +142,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * This convenience method converts the given preference to the matching layout
 	 * mode.
-	 * 
+	 *
 	 * <UL>
 	 * <LI>int <-> String</LI>
 	 * <LI>LAYOUT_LIST <-> PREFERENCE_LIST_ICON_SIZE</LI>
@@ -150,7 +150,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	 * <LI>LAYOUT_ICONS <-> PREFERENCE_ICONS_ICON_SIZE</LI>
 	 * <LI>LAYOUT_DETAILS <-> PREFERENCE_DETAILS_ICON_SIZE</LI>
 	 * </UL>
-	 * 
+	 *
 	 * @param preference PREFERENCE_DETAILS_ICON_SIZE, PREFERENCE_COLUMNS_ICON_SIZE,
 	 *                   PREFERENCE_ICONS_ICON_SIZE or PREFERENCE_LIST_ICON_SIZE
 	 * @return The corresponding layout code
@@ -172,7 +172,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * The oldValue of the PropertyChangeEvent that is fired will always be
 	 * <code>null</code>.
-	 * 
+	 *
 	 * @param property The programmatic name of the property that was changed
 	 * @param newVal   The new value of the property
 	 * @see java.beans.PropertyChangeSupport#firePropertyChange(java.lang.String,
@@ -224,7 +224,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 
 	/**
 	 * This method is invoked when the preference store fires a property change.
-	 * 
+	 *
 	 * @param property The property String used for the change fired by the
 	 *                 preference store
 	 */
@@ -311,7 +311,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	 * responsibility of all clients manipulating the layout settings to check to
 	 * see if a particular layout mode is supported before manipulating it, or
 	 * allowing the end user to manipulate it.
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setSupportedLayoutModes(int[])
 	 */
 	@Override

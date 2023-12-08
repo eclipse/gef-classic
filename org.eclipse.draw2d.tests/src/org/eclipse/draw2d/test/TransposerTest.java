@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2011, 2023 Google, Inc.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,6 +26,7 @@ import org.junit.Test;
  */
 public class TransposerTest extends BaseTestCase {
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testState() throws Exception {
 		Transposer transposer = new Transposer();

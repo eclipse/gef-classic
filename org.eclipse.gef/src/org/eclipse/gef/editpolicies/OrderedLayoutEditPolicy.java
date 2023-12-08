@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -11,8 +11,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
-
-import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.OrderedLayout;
@@ -32,7 +30,7 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  * this EditPolicy must perform the inverse mapping. Given a mouse location from
  * the User, the policy must determine the index at which the child[ren] should
  * be added/created.
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -42,7 +40,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * Returns the <code>Command</code> to add the specified child after a reference
 	 * <code>EditPart</code>. If the reference is <code>null</code>, the child
 	 * should be added as the first child.
-	 * 
+	 *
 	 * @param child the child being added
 	 * @param after <code>null</code> or a reference EditPart
 	 * @return a Command to add the child
@@ -53,7 +51,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * Since Ordered layouts generally don't use constraints, a
 	 * {@link NonResizableEditPolicy} is used by default for children. Subclasses
 	 * may override this method to supply a different EditPolicy.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
 	 */
 	@Override
@@ -68,7 +66,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * <P>
 	 * A move is a change in the order of the children, which indirectly causes a
 	 * change in location on the screen.
-	 * 
+	 *
 	 * @param child the child being moved
 	 * @param after <code>null</code> or the EditPart that should be after (or to
 	 *              the right of) the child being moved
@@ -85,18 +83,14 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * <P>
 	 * Subclasses must override {@link #createAddCommand(EditPart, EditPart)}, and
 	 * should not override this method.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request)
 	 */
 	@Override
 	protected Command getAddCommand(Request req) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) req;
-		List editParts = request.getEditParts();
 		CompoundCommand command = new CompoundCommand();
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart child = (EditPart) editParts.get(i);
-			command.add(createAddCommand(child, getInsertionReference(request)));
-		}
+		request.getEditParts().forEach(child -> command.add(createAddCommand(child, getInsertionReference(request))));
 		return command.unwrap();
 	}
 
@@ -106,7 +100,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * <em>after</em> that EditPart. <code>null</code> is used to indicate the index
 	 * that comes after <em>no</em> EditPart, that is, it indicates the very last
 	 * index.
-	 * 
+	 *
 	 * @param request the Request
 	 * @return <code>null</code> or a reference EditPart
 	 */
@@ -117,26 +111,22 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * obtains the proper index, and then calls
 	 * {@link #createMoveChildCommand(EditPart, EditPart)}, which subclasses must
 	 * implement. Subclasses should not override this method.
-	 * 
+	 *
 	 * @see LayoutEditPolicy#getMoveChildrenCommand(Request)
 	 */
 	@Override
 	protected Command getMoveChildrenCommand(Request request) {
 		CompoundCommand command = new CompoundCommand();
-		List editParts = ((ChangeBoundsRequest) request).getEditParts();
-
 		EditPart insertionReference = getInsertionReference(request);
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart child = (EditPart) editParts.get(i);
-			command.add(createMoveChildCommand(child, insertionReference));
-		}
+		((ChangeBoundsRequest) request).getEditParts()
+				.forEach(child -> command.add(createMoveChildCommand(child, insertionReference)));
 		return command.unwrap();
 	}
 
 	/**
 	 * Returns whether the layout container's layout manager has a horizontal
 	 * orientation or not.
-	 * 
+	 *
 	 * @return <code>true</code> if the layout container's layout manager has a
 	 *         horizontal orientation, <code>false</code> otherwise
 	 * @since 3.7

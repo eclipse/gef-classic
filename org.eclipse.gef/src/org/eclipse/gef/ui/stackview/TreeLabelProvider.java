@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ import org.eclipse.gef.commands.CommandStack;
 
 /**
  * Internal class used for a debug view.
- * 
+ *
  * @deprecated this class will be deleted
  */
 public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvider {
@@ -41,7 +41,7 @@ public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvid
 
 	/**
 	 * Creates a new TreeLabelProvider with the given CommandStack
-	 * 
+	 *
 	 * @param stack the CommandStack
 	 */
 	public TreeLabelProvider(CommandStack stack) {
@@ -82,7 +82,7 @@ public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvid
 
 	/**
 	 * Returns the label style of this TreeLabelProvider.
-	 * 
+	 *
 	 * @return the label style
 	 */
 	public byte getLabelStyle() {
@@ -131,7 +131,7 @@ public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvid
 
 	/**
 	 * Sets the labelStyle to the passed value
-	 * 
+	 *
 	 * @param labelStyle the label style
 	 */
 	public void setLabelStyle(byte labelStyle) {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -57,7 +57,7 @@ import org.eclipse.gef.SelectionManager;
 
 /**
  * The base implementation for EditPartViewer.
- * 
+ *
  * @author hudsonr
  */
 public abstract class AbstractEditPartViewer implements EditPartViewer {
@@ -78,9 +78,10 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * The list of selection listeners.
-	 * 
+	 *
 	 * @deprecated
 	 */
+	@Deprecated
 	protected List selectionListeners = new ArrayList(1);
 
 	/**
@@ -88,14 +89,15 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * <code>null</code>, the focus editpart is still implied to be the part with
 	 * primary selection. Subclasses should call the accessor:
 	 * {@link #getFocusEditPart()} whenever possible.
-	 * 
+	 *
 	 * @deprecated
 	 */
+	@Deprecated
 	protected EditPart focusPart;
 
 	private EditPartFactory factory;
-	private Map mapIDToEditPart = new HashMap();
-	private Map mapVisualToEditPart = new HashMap();
+	private final Map mapIDToEditPart = new HashMap();
+	private final Map mapVisualToEditPart = new HashMap();
 	private Map properties;
 	private Control control;
 	private ResourceManager resources;
@@ -104,10 +106,10 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	private MenuManager contextMenu;
 
 	private DragSource dragSource;
-	private org.eclipse.gef.dnd.DelegatingDragAdapter dragAdapter = new org.eclipse.gef.dnd.DelegatingDragAdapter();
+	private final org.eclipse.gef.dnd.DelegatingDragAdapter dragAdapter = new org.eclipse.gef.dnd.DelegatingDragAdapter();
 
 	private DropTarget dropTarget;
-	private org.eclipse.gef.dnd.DelegatingDropAdapter dropAdapter = new org.eclipse.gef.dnd.DelegatingDropAdapter();
+	private final org.eclipse.gef.dnd.DelegatingDropAdapter dropAdapter = new org.eclipse.gef.dnd.DelegatingDropAdapter();
 
 	private KeyHandler keyHandler;
 	private PropertyChangeSupport changeSupport;
@@ -126,17 +128,14 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	@Override
 	public void setSelectionManager(SelectionManager model) {
 		Assert.isNotNull(model);
-		if (selectionModel != null)
+		if (selectionModel != null) {
 			selectionModel.internalUninstall();
+		}
 		selectionModel = model;
-		model.internalInitialize(this, selection, new Runnable() {
-			@Override
-			public void run() {
-				fireSelectionChanged();
-			}
-		});
-		if (getControl() != null)
+		model.internalInitialize(this, selection, this::fireSelectionChanged);
+		if (getControl() != null) {
 			model.internalHookControl(getControl());
+		}
 	}
 
 	/**
@@ -178,8 +177,9 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 */
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		if (changeSupport == null)
+		if (changeSupport == null) {
 			changeSupport = new PropertyChangeSupport(this);
+		}
 		changeSupport.addPropertyChangeListener(listener);
 	}
 
@@ -224,12 +224,13 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * Called if and when the <code>Control</code> is disposed. Subclasses may
 	 * extend this method to perform additional cleanup.
-	 * 
+	 *
 	 * @param e the disposeevent
 	 */
 	protected void handleDispose(DisposeEvent e) {
-		if (resources != null)
+		if (resources != null) {
 			resources.dispose();
+		}
 		setControl(null);
 	}
 
@@ -255,8 +256,9 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	protected void fireSelectionChanged() {
 		Object listeners[] = selectionListeners.toArray();
 		SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
-		for (int i = 0; i < listeners.length; i++)
-			((ISelectionChangedListener) listeners[i]).selectionChanged(event);
+		for (Object listener : listeners) {
+			((ISelectionChangedListener) listener).selectionChanged(event);
+		}
 	}
 
 	/**
@@ -294,7 +296,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Returns <code>null</code> or the DelegatingDragAdapater. The adapter is
 	 * created automatically when
 	 * {@link #addDragSourceListener(TransferDragSourceListener)} is called.
-	 * 
+	 *
 	 * @return <code>null</code> or the adapter
 	 */
 	protected org.eclipse.gef.dnd.DelegatingDragAdapter getDelegatingDragAdapter() {
@@ -305,7 +307,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Returns <code>null</code> or the DelegatingDropAdapater. The adapter is
 	 * created automatically when
 	 * {@link #addDropTargetListener(TransferDropTargetListener)} is called.
-	 * 
+	 *
 	 * @return <code>null</code> or the adapter
 	 */
 	protected org.eclipse.gef.dnd.DelegatingDropAdapter getDelegatingDropAdapter() {
@@ -316,7 +318,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Returns <code>null</code> or the DragSource. The drag source is created
 	 * automatically when {@link #addDragSourceListener(TransferDragSourceListener)}
 	 * is called.
-	 * 
+	 *
 	 * @return <code>null</code> or the drag source
 	 */
 	protected DragSource getDragSource() {
@@ -327,7 +329,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Returns <code>null</code> or the DropTarget. The drop target is created
 	 * automatically when {@link #addDropTargetListener(TransferDropTargetListener)}
 	 * is called.
-	 * 
+	 *
 	 * @return <code>null</code> or the drop target
 	 */
 	protected DropTarget getDropTarget() {
@@ -363,16 +365,17 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 */
 	@Override
 	public EditPart getFocusEditPart() {
-		if (focusPart != null)
+		if (focusPart != null) {
 			return focusPart;
-		if (getSelectedEditParts().isEmpty()) {
-			if (getContents() != null)
-				return getContents();
-			else
-				return getRootEditPart();
 		}
-		List selection = getSelectedEditParts();
-		return (EditPart) selection.get(selection.size() - 1);
+		if (getSelectedEditParts().isEmpty()) {
+			if (getContents() != null) {
+				return getContents();
+			}
+			return getRootEditPart();
+		}
+		List<? extends EditPart> selection = getSelectedEditParts();
+		return selection.get(selection.size() - 1);
 	}
 
 	/**
@@ -388,8 +391,9 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 */
 	@Override
 	public Object getProperty(String key) {
-		if (properties != null)
+		if (properties != null) {
 			return properties.get(key);
+		}
 		return null;
 	}
 
@@ -398,8 +402,9 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 */
 	@Override
 	public ResourceManager getResourceManager() {
-		if (resources != null)
+		if (resources != null) {
 			return resources;
+		}
 		Assert.isNotNull(getControl());
 		resources = new LocalResourceManager(JFaceResources.getResources());
 		return resources;
@@ -417,7 +422,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#getSelectedEditParts()
 	 */
 	@Override
-	public List getSelectedEditParts() {
+	public List<? extends EditPart> getSelectedEditParts() {
 		return constantSelection;
 	}
 
@@ -425,7 +430,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Returns an ISelection containing a list of one or more EditPart. Whenever
 	 * {@link #getSelectedEditParts()} returns an empty list, the <i>contents</i>
 	 * editpart ({@link #getContents()}) is returned as the current selection.
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
 	@Override
@@ -451,25 +456,22 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * Called once the control has been set.
-	 * 
+	 *
 	 * @see #unhookControl()
 	 */
 	protected void hookControl() {
 		Control control = getControl();
 		Assert.isTrue(control != null);
 		getSelectionManager().internalHookControl(control);
-		control.addDisposeListener(disposeListener = new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				handleDispose(e);
-			}
-		});
-		if (getRootEditPart() != null)
+		control.addDisposeListener(disposeListener = this::handleDispose);
+		if (getRootEditPart() != null) {
 			getRootEditPart().activate();
+		}
 		refreshDragSourceAdapter();
 		refreshDropTargetAdapter();
-		if (contextMenu != null)
+		if (contextMenu != null) {
 			control.setMenu(contextMenu.createContextMenu(getControl()));
+		}
 	}
 
 	/**
@@ -497,8 +499,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	private void primDeselectAll() {
 		EditPart part;
 		List list = primGetSelectedEditParts();
-		for (int i = 0; i < list.size(); i++) {
-			part = (EditPart) list.get(i);
+		for (Object element : list) {
+			part = (EditPart) element;
 			part.setSelected(EditPart.SELECTED_NONE);
 		}
 		list.clear();
@@ -506,7 +508,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * Returns the modifiable List of selected EditParts.
-	 * 
+	 *
 	 * @return the internal list of selected editparts
 	 */
 	protected List primGetSelectedEditParts() {
@@ -518,13 +520,15 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * types. Clients should not need to call or override this method.
 	 */
 	protected void refreshDragSourceAdapter() {
-		if (getControl() == null)
+		if (getControl() == null) {
 			return;
-		if (getDelegatingDragAdapter().isEmpty())
+		}
+		if (getDelegatingDragAdapter().isEmpty()) {
 			setDragSource(null);
-		else {
-			if (getDragSource() == null)
+		} else {
+			if (getDragSource() == null) {
 				setDragSource(new DragSource(getControl(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
+			}
 			getDragSource().setTransfer(getDelegatingDragAdapter().getTransfers());
 		}
 	}
@@ -534,13 +538,15 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * types. Clients should not need to call or override this method.
 	 */
 	protected void refreshDropTargetAdapter() {
-		if (getControl() == null)
+		if (getControl() == null) {
 			return;
-		if (getDelegatingDropAdapter().isEmpty())
+		}
+		if (getDelegatingDropAdapter().isEmpty()) {
 			setDropTarget(null);
-		else {
-			if (getDropTarget() == null)
+		} else {
+			if (getDropTarget() == null) {
 				setDropTarget(new DropTarget(getControl(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
+			}
 			getDropTarget().setTransfer(getDelegatingDropAdapter().getTransfers());
 		}
 	}
@@ -556,6 +562,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#removeDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener)
 	 * @deprecated
 	 */
+	@Deprecated
 	@Override
 	public void removeDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener) {
 		removeDragSourceListener((TransferDragSourceListener) listener);
@@ -567,14 +574,16 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	@Override
 	public void removeDragSourceListener(TransferDragSourceListener listener) {
 		getDelegatingDragAdapter().removeDragSourceListener(listener);
-		if (getDelegatingDragAdapter().isEmpty())
+		if (getDelegatingDragAdapter().isEmpty()) {
 			refreshDragSourceAdapter();
+		}
 	}
 
 	/**
 	 * @see EditPartViewer#removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener)
 	 * @deprecated
 	 */
+	@Deprecated
 	@Override
 	public void removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener) {
 		removeDropTargetListener((TransferDropTargetListener) listener);
@@ -586,8 +595,9 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	@Override
 	public void removeDropTargetListener(TransferDropTargetListener listener) {
 		getDelegatingDropAdapter().removeDropTargetListener(listener);
-		if (getDelegatingDropAdapter().isEmpty())
+		if (getDelegatingDropAdapter().isEmpty()) {
 			refreshDropTargetAdapter();
+		}
 	}
 
 	/**
@@ -597,8 +607,9 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		if (changeSupport != null) {
 			changeSupport.removePropertyChangeListener(listener);
-			if (changeSupport.getPropertyChangeListeners().length == 0)
+			if (changeSupport.getPropertyChangeListeners().length == 0) {
 				changeSupport = null;
+			}
 		}
 	}
 
@@ -623,8 +634,9 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	@Override
 	public void select(EditPart editpart) {
 		// If selection isn't changing, do nothing.
-		if ((getSelectedEditParts().size() == 1) && (getSelectedEditParts().get(0) == editpart))
+		if ((getSelectedEditParts().size() == 1) && (getSelectedEditParts().get(0) == editpart)) {
 			return;
+		}
 		primDeselectAll();
 		appendSelection(editpart); // fireSelectionChanged() is called here
 	}
@@ -634,11 +646,13 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 */
 	@Override
 	public void setContextMenu(MenuManager manager) {
-		if (contextMenu != null)
+		if (contextMenu != null) {
 			contextMenu.dispose();
+		}
 		contextMenu = manager;
-		if (getControl() != null && !getControl().isDisposed())
+		if (getControl() != null && !getControl().isDisposed()) {
 			getControl().setMenu(contextMenu.createContextMenu(getControl()));
+		}
 	}
 
 	/**
@@ -663,11 +677,13 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 */
 	@Override
 	public void setControl(Control control) {
-		if (this.control != null)
+		if (this.control != null) {
 			unhookControl();
+		}
 		this.control = control;
-		if (control != null)
+		if (control != null) {
 			hookControl();
+		}
 	}
 
 	/**
@@ -675,35 +691,40 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 */
 	@Override
 	public void setCursor(Cursor cursor) {
-		if (getControl() == null || getControl().isDisposed())
+		if (getControl() == null || getControl().isDisposed()) {
 			return;
+		}
 		getControl().setCursor(cursor);
 	}
 
 	/**
 	 * Sets the drag source. Called from {@link #refreshDragSourceAdapter()}.
-	 * 
+	 *
 	 * @param source <code>null</code> or a drag source
 	 */
 	protected void setDragSource(DragSource source) {
-		if (dragSource != null)
+		if (dragSource != null) {
 			dragSource.dispose();
+		}
 		dragSource = source;
-		if (dragSource != null)
+		if (dragSource != null) {
 			hookDragSource();
+		}
 	}
 
 	/**
 	 * Sets the drop target. Called from {@link #refreshDropTargetAdapter()}.
-	 * 
+	 *
 	 * @param target dropTarget <code>null</code> or a drop target
 	 */
 	protected void setDropTarget(DropTarget target) {
-		if (dropTarget != null)
+		if (dropTarget != null) {
 			dropTarget.dispose();
+		}
 		dropTarget = target;
-		if (dropTarget != null)
+		if (dropTarget != null) {
 			hookDropTarget();
+		}
 	}
 
 	/**
@@ -744,16 +765,19 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 */
 	@Override
 	public void setProperty(String key, Object value) {
-		if (properties == null)
+		if (properties == null) {
 			properties = new HashMap();
+		}
 		Object old;
-		if (value == null)
+		if (value == null) {
 			old = properties.remove(key);
-		else
+		} else {
 			old = properties.put(key, value);
+		}
 
-		if (changeSupport != null)
+		if (changeSupport != null) {
 			changeSupport.firePropertyChange(key, old, value);
+		}
 	}
 
 	/**
@@ -762,14 +786,16 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	@Override
 	public void setRootEditPart(RootEditPart editpart) {
 		if (rootEditPart != null) {
-			if (rootEditPart.isActive())
+			if (rootEditPart.isActive()) {
 				rootEditPart.deactivate();
+			}
 			rootEditPart.setViewer(null);
 		}
 		rootEditPart = editpart;
 		rootEditPart.setViewer(this);
-		if (getControl() != null)
+		if (getControl() != null) {
 			rootEditPart.activate();
+		}
 	}
 
 	/**
@@ -782,7 +808,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * Sets the selection to the given selection and fires selection changed. The
 	 * ISelection should be an {@link IStructuredSelection} or it will be ignored.
-	 * 
+	 *
 	 * @see ISelectionProvider#setSelection(ISelection)
 	 */
 	@Override
@@ -801,16 +827,18 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 			getControl().removeDisposeListener(disposeListener);
 			disposeListener = null;
 		}
-		if (getContextMenu() != null)
+		if (getContextMenu() != null) {
 			getContextMenu().dispose();
-		if (getRootEditPart() != null)
+		}
+		if (getRootEditPart() != null) {
 			getRootEditPart().deactivate();
+		}
 	}
 
 	/**
 	 * Does nothing by default. Subclasses needing to add accessibility support
 	 * should override this method.
-	 * 
+	 *
 	 * @see EditPartViewer#unregisterAccessibleEditPart(AccessibleEditPart)
 	 */
 	@Override

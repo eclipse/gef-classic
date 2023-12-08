@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -12,9 +12,7 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.parts;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -32,7 +30,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.jface.viewers.StructuredSelection;
 
@@ -46,7 +43,7 @@ import org.eclipse.gef.editparts.RootTreeEditPart;
 /**
  * An EditPartViewer implementation based on a
  * {@link org.eclipse.swt.widgets.Tree}.
- * 
+ *
  * @author hudsonr
  */
 public class TreeViewer extends AbstractEditPartViewer {
@@ -93,10 +90,11 @@ public class TreeViewer extends AbstractEditPartViewer {
 
 		@Override
 		public void mouseMove(MouseEvent me) {
-			if ((me.stateMask & ANY_BUTTON) != 0)
+			if ((me.stateMask & ANY_BUTTON) != 0) {
 				getEditDomain().mouseDrag(me, TreeViewer.this);
-			else
+			} else {
 				getEditDomain().mouseMove(me, TreeViewer.this);
+			}
 		}
 
 		@Override
@@ -115,7 +113,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 		}
 	}
 
-	private EventDispatcher dispatcher;
+	private final EventDispatcher dispatcher;
 
 	/**
 	 * Constructs a TreeViewer with the default root editpart.
@@ -131,7 +129,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 	/**
 	 * Creates the default tree and sets it as the control. The default styles will
 	 * show scrollbars as needed, and allows for multiple selection.
-	 * 
+	 *
 	 * @param parent The parent for the Tree
 	 * @return the control
 	 */
@@ -148,13 +146,15 @@ public class TreeViewer extends AbstractEditPartViewer {
 	 */
 	@Override
 	public EditPart findObjectAtExcluding(Point pt, Collection exclude, Conditional condition) {
-		if (getControl() == null)
+		if (getControl() == null) {
 			return null;
+		}
 
-		Tree tree = (Tree) getControl();
+		Tree tree = getControl();
 		Rectangle area = tree.getClientArea();
-		if (pt.x < area.x || pt.y < area.y || pt.x >= area.x + area.width || pt.y >= area.y + area.height)
+		if (pt.x < area.x || pt.y < area.y || pt.x >= area.x + area.width || pt.y >= area.y + area.height) {
 			return null;
+		}
 
 		EditPart result = null;
 		TreeItem tie = tree.getItem(new org.eclipse.swt.graphics.Point(pt.x, pt.y));
@@ -165,8 +165,9 @@ public class TreeViewer extends AbstractEditPartViewer {
 			result = (EditPart) tree.getData();
 		}
 		while (result != null) {
-			if ((condition == null || condition.evaluate(result)) && !exclude.contains(result))
+			if ((condition == null || condition.evaluate(result)) && !exclude.contains(result)) {
 				return result;
+			}
 			result = result.getParent();
 		}
 		return null;
@@ -182,15 +183,24 @@ public class TreeViewer extends AbstractEditPartViewer {
 	}
 
 	/**
+	 * @since 3.16
+	 */
+	@Override
+	public Tree getControl() {
+		return (Tree) super.getControl();
+	}
+
+	/**
 	 * "Hooks up" a Control, i.e. sets it as the control for the RootTreeEditPart,
 	 * adds necessary listener for proper operation, etc.
 	 */
 	@Override
 	protected void hookControl() {
-		if (getControl() == null)
+		if (getControl() == null) {
 			return;
+		}
 
-		final Tree tree = (Tree) getControl();
+		final Tree tree = getControl();
 		tree.addFocusListener(dispatcher);
 		tree.addMouseListener(dispatcher);
 		tree.addMouseMoveListener(dispatcher);
@@ -200,9 +210,10 @@ public class TreeViewer extends AbstractEditPartViewer {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				TreeItem[] ties = tree.getSelection();
-				Object newSelection[] = new Object[ties.length];
-				for (int i = 0; i < ties.length; i++)
+				Object[] newSelection = new Object[ties.length];
+				for (int i = 0; i < ties.length; i++) {
 					newSelection[i] = ties[i].getData();
+				}
 				ignore = true;
 				setSelection(new StructuredSelection(newSelection));
 				ignore = false;
@@ -223,31 +234,25 @@ public class TreeViewer extends AbstractEditPartViewer {
 	 */
 	@Override
 	public void reveal(EditPart part) {
-		if (!(part instanceof TreeEditPart treePart))
+		if (!(part instanceof TreeEditPart treePart)) {
 			return;
-		Tree tree = (Tree) getControl();
-		Widget widget = treePart.getWidget();
-		if (widget instanceof TreeItem)
-			tree.showItem((TreeItem) widget);
+		}
+		if (treePart.getWidget() instanceof TreeItem treeItem) {
+			getControl().showItem(treeItem);
+		}
 	}
 
 	private void showSelectionInTree() {
-		if (ignore || getControl() == null || getControl().isDisposed())
+		if (ignore || getControl() == null || getControl().isDisposed()) {
 			return;
-		List selection = getSelectedEditParts();
-		Tree tree = (Tree) getControl();
-		List treeParts = new ArrayList();
-		for (int i = 0; i < selection.size(); i++) {
-			TreeEditPart part = (TreeEditPart) selection.get(i);
-			if (part.getWidget() instanceof TreeItem)
-				treeParts.add(part);
 		}
-		TreeItem[] treeItems = new TreeItem[treeParts.size()];
-		for (int i = 0; i < treeParts.size(); i++) {
-			TreeEditPart part = (TreeEditPart) treeParts.get(i);
-			treeItems[i] = (TreeItem) part.getWidget();
-		}
-		tree.setSelection(treeItems);
+		TreeItem[] treeItems = getSelectedEditParts().stream() // comments below are for keeping the formating
+				.map(TreeEditPart.class::cast) //
+				.map(TreeEditPart::getWidget) //
+				.filter(TreeItem.class::isInstance) //
+				.map(TreeItem.class::cast) //
+				.toArray(TreeItem[]::new); //
+		getControl().setSelection(treeItems);
 	}
 
 	/**
@@ -258,8 +263,9 @@ public class TreeViewer extends AbstractEditPartViewer {
 	 */
 	@Override
 	protected void unhookControl() {
-		if (getControl() == null)
+		if (getControl() == null) {
 			return;
+		}
 		super.unhookControl();
 		// Ideally, you would want to remove the listeners here
 		TreeEditPart tep = (TreeEditPart) getRootEditPart();

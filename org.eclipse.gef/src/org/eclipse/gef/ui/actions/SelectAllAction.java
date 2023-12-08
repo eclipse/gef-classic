@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -33,7 +33,7 @@ public class SelectAllAction extends Action {
 	/**
 	 * Constructs a <code>SelectAllAction</code> and associates it with the given
 	 * part.
-	 * 
+	 *
 	 * @param part The workbench part associated with this SelectAllAction
 	 */
 	public SelectAllAction(IWorkbenchPart part) {
@@ -56,7 +56,7 @@ public class SelectAllAction extends Action {
 
 	/**
 	 * Retrieves edit parts which can be selected
-	 * 
+	 *
 	 * @param viewer from which the edit parts are to be retrieved
 	 * @return list of selectable EditParts
 	 * @since 3.5

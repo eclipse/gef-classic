@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * This is a layer where the guide lines are displayed. The figures in this
  * layer should have a Boolean constraint indicating whether or not they are
  * horizontal guide lines.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -136,7 +136,7 @@ public class GuideLayer extends FreeformLayer {
 	/**
 	 * The constraint is expected to be a Boolean indicating whether the given guide
 	 * line figure is horizontal or not.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.IFigure#setConstraint(org.eclipse.draw2d.IFigure,
 	 *      java.lang.Object)
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -35,7 +35,7 @@ import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
 /**
  * Create new new .shape-file. Those files can be used with the ShapesEditor
  * (see plugin.xml).
- * 
+ *
  * @author Elias Volanakis
  */
 public class ShapesCreationWizard extends Wizard implements INewWizard {
@@ -45,7 +45,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.wizard.IWizard#addPages()
 	 */
 	@Override
@@ -56,7 +56,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
 	 * org.eclipse.jface.viewers.IStructuredSelection)
 	 */
@@ -68,7 +68,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
 	 */
 	@Override
@@ -85,7 +85,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 
 		/**
 		 * Create a new wizard page instance.
-		 * 
+		 *
 		 * @param workbench the current workbench
 		 * @param selection the current object selection
 		 * @see ShapesCreationWizard#init(IWorkbench, IStructuredSelection)
@@ -99,7 +99,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.ui.dialogs.WizardNewFileCreationPage#createControl(org
 		 * .eclipse.swt.widgets.Composite)
 		 */
@@ -117,7 +117,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 
 		/**
 		 * This method will be invoked, when the "Finish" button is pressed.
-		 * 
+		 *
 		 * @see ShapesCreationWizard#performFinish()
 		 */
 		boolean finish() {
@@ -140,7 +140,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.ui.dialogs.WizardNewFileCreationPage#getInitialContents()
 		 */
 		@Override
@@ -173,7 +173,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.ui.dialogs.WizardNewFileCreationPage#validatePage()
 		 */
 		@Override

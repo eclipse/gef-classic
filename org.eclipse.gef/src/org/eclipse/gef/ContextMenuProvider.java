@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ import org.eclipse.jface.action.MenuManager;
  * Extends MenuManager to allow populating the menu directly from the manager
  * itself. Using this class is no different than using a standalone
  * <code>MenuManager</code>, and adding a menuAboutToShow listener.
- * 
+ *
  * @author hudsonr
  */
 public abstract class ContextMenuProvider extends MenuManager implements IMenuListener {
@@ -29,7 +29,7 @@ public abstract class ContextMenuProvider extends MenuManager implements IMenuLi
 
 	/**
 	 * Constructs a context menu for the specified EditPartViewer.
-	 * 
+	 *
 	 * @param viewer the editpart viewer
 	 */
 	public ContextMenuProvider(EditPartViewer viewer) {
@@ -41,14 +41,14 @@ public abstract class ContextMenuProvider extends MenuManager implements IMenuLi
 	/**
 	 * Called when the menu is about to show. Subclasses must implement this method
 	 * to populate the menu each time it is shown.
-	 * 
+	 *
 	 * @param menu this parameter is actually <code>this</code> object
 	 */
 	public abstract void buildContextMenu(IMenuManager menu);
 
 	/**
 	 * Returns the EditPartViewer
-	 * 
+	 *
 	 * @return the viewer
 	 */
 	protected EditPartViewer getViewer() {
@@ -65,7 +65,7 @@ public abstract class ContextMenuProvider extends MenuManager implements IMenuLi
 
 	/**
 	 * Sets the editpart viewer. Called during construction.
-	 * 
+	 *
 	 * @param viewer the viewer
 	 */
 	protected void setViewer(EditPartViewer viewer) {

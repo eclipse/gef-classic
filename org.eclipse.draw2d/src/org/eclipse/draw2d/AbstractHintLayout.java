@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.draw2d.geometry.Dimension;
  * {@link #isSensitiveHorizontally(IFigure)} and
  * {@link #isSensitiveVertically(IFigure)}. At least one of these method should
  * return <code>true</code>.
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -43,11 +43,11 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	 * By default, this method just calls
 	 * {@link #getPreferredSize(IFigure, int, int)}, meaning minimum and preferres
 	 * sizes will be the same unless this method is overridden.
-	 * 
+	 *
 	 * @param container the Figure on which this layout is installed
 	 * @param wHint     the width hint
 	 * @param hHint     the height hint
-	 * 
+	 *
 	 * @return the layout's minimum size
 	 */
 	protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
@@ -88,7 +88,7 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 
 	/**
 	 * Extends the superclass implementation to flush the cached minimum size.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.LayoutManager#invalidate()
 	 */
 	@Override
@@ -100,7 +100,7 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	/**
 	 * Returns whether this layout manager is sensitive to changes in the horizontal
 	 * hint. By default, this method returns <code>true</code>.
-	 * 
+	 *
 	 * @param container the layout's container
 	 * @return <code>true</code> if this layout is sensite to horizontal hint
 	 *         changes
@@ -112,7 +112,7 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	/**
 	 * Returns whether this layout manager is sensitive to changes in the vertical
 	 * hint. By default, this method returns <code>true</code>.
-	 * 
+	 *
 	 * @param container the layout's container
 	 * @return <code>true</code> if this layout is sensite to vertical hint changes
 	 */

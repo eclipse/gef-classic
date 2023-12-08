@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,14 +23,14 @@ import org.eclipse.gef.ui.actions.UndoRetargetAction;
 /**
  * Contributes actions to a toolbar. This class is tied to the editor in the
  * definition of editor-extension (see plugin.xml).
- * 
+ *
  * @author Elias Volanakis
  */
 public class ShapesEditorActionBarContributor extends ActionBarContributor {
 
 	/**
 	 * Create actions managed by this contributor.
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.actions.ActionBarContributor#buildActions()
 	 */
 	@Override
@@ -42,7 +42,7 @@ public class ShapesEditorActionBarContributor extends ActionBarContributor {
 
 	/**
 	 * Add actions to the given toolbar.
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToToolBar(org.eclipse.jface.action.IToolBarManager)
 	 */
 	@Override
@@ -53,7 +53,7 @@ public class ShapesEditorActionBarContributor extends ActionBarContributor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.gef.ui.actions.ActionBarContributor#declareGlobalActionKeys()
 	 */

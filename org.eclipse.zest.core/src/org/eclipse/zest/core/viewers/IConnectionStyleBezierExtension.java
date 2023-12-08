@@ -2,12 +2,12 @@
  * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.viewers;
@@ -15,7 +15,7 @@ package org.eclipse.zest.core.viewers;
 /**
  * An extension to the IConnectinStyleProvider that allows styling specific to
  * bezier curves.
- * 
+ *
  * Bezier curves are defined by a set of four points: two point in the layout
  * (start and end), and two related control points (also start and end). The
  * control points are defined relative to their corresponding layout point. This
@@ -25,7 +25,7 @@ package org.eclipse.zest.core.viewers;
  * the distance between the two layout points. Using this definition allows
  * bezier curves to have a consistant look regardless of the actual positions of
  * the nodes in the layouts.
- * 
+ *
  * @author Del Myers
  *
  */
@@ -37,7 +37,7 @@ public interface IConnectionStyleBezierExtension {
 	 * end, which will define the position of the start control point. If the start
 	 * angle, and the end angle are the same sign, the two control points are
 	 * guaranteed to be on the same side of the line.
-	 * 
+	 *
 	 * @param rel the relationship to base on.
 	 * @return the start angle or <code>Double.NaN</code> for defaults.
 	 */
@@ -48,7 +48,7 @@ public interface IConnectionStyleBezierExtension {
 	 * which will define the position of the end control point. If the start angle,
 	 * and the end angle are the same sign, the two control points are guaranteed to
 	 * be on the same side of the line.
-	 * 
+	 *
 	 * @param rel the relationship to base on.
 	 * @return the end angle or <code>Double.NaN</code> for defaults.
 	 */
@@ -57,7 +57,7 @@ public interface IConnectionStyleBezierExtension {
 	/**
 	 * Gets the distance between the start point and the start control point, as a
 	 * fraction of the distance between the start point and end point.
-	 * 
+	 *
 	 * @param rel the relationship to base on.
 	 * @return the start distance or <code>Double.NaN</code> for defaults.
 	 */
@@ -66,7 +66,7 @@ public interface IConnectionStyleBezierExtension {
 	/**
 	 * Gets the distance between the end point and the end control point, as a
 	 * fraction of the distance between the start point and end point.
-	 * 
+	 *
 	 * @param rel the relationship to base on.
 	 * @return the end distance or <code>Double.NaN</code> for defaults.
 	 */

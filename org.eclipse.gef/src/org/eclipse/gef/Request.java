@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -34,7 +34,7 @@ public class Request {
 
 	/**
 	 * Constructs a Request with the specified <i>type</i>
-	 * 
+	 *
 	 * @param type the Request type
 	 * @see #getType()
 	 */
@@ -44,7 +44,7 @@ public class Request {
 
 	/**
 	 * Returns a Map that can be used to save useful information in this request.
-	 * 
+	 *
 	 * @return a map to store useful information
 	 */
 	public Map getExtendedData() {
@@ -58,7 +58,7 @@ public class Request {
 	 * Returns the type of the request. The type is often used as a quick way to
 	 * filter recognized Requests. Once the type is identified, the Request is
 	 * usually cast to a more specific subclass containing additional data.
-	 * 
+	 *
 	 * @return the Request <i>type</i>
 	 */
 	public Object getType() {
@@ -68,7 +68,7 @@ public class Request {
 	/**
 	 * Sets the given map to be the new extended data (by reference) for this
 	 * request.
-	 * 
+	 *
 	 * @param map The new map
 	 */
 	public void setExtendedData(Map map) {
@@ -77,7 +77,7 @@ public class Request {
 
 	/**
 	 * Sets the type of the Request.
-	 * 
+	 *
 	 * @param type the Request type
 	 */
 	public void setType(Object type) {

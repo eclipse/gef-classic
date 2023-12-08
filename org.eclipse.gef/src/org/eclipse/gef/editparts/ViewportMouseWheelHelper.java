@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.gef.MouseWheelHelper;
 /**
  * ViewportMouseWheelHelper is the default MouseWheelHelper that should be used
  * to scroll edit parts.
- * 
+ *
  * @author Pratik Shah
  * @since 3.1
  */
@@ -37,7 +37,7 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements MouseWhe
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param part the EditPArt that has to be scrolled
 	 */
 	public ViewportMouseWheelHelper(GraphicalEditPart part) {
@@ -45,9 +45,9 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements MouseWhe
 	}
 
 	/**
-	 * 
+	 *
 	 * Constructor
-	 * 
+	 *
 	 * @param part       the EditPart that has to be scrolled
 	 * @param lineHeight the new line height
 	 * @param pageHeight the new page height
@@ -64,7 +64,7 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements MouseWhe
 	 * Finds the viewport of the given EditPart and scrolls it as requested. If it
 	 * can't be scrolled then leaves doit to be true so that the given EditPart's
 	 * ancestors might have a chance to scroll.
-	 * 
+	 *
 	 * @see org.eclipse.gef.MouseWheelHelper#handleMouseWheelScrolled(org.eclipse.swt.widgets.Event)
 	 */
 	@Override
@@ -90,7 +90,7 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements MouseWhe
 	 * Sets the height (in pixels) that will be scrolled when {@link SWT#SCROLL_LINE
 	 * line scrolling} is requested. If the line height is set to 0 or less, or not
 	 * set at all, a default height will be used.
-	 * 
+	 *
 	 * @param height the new line height
 	 */
 	public void setLineHeight(int height) {
@@ -107,7 +107,7 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements MouseWhe
 	 * all, the default height will be used. The default height is calculated based
 	 * on the given EditPart's figure's viewport's size. It will not be less than
 	 * the line height.
-	 * 
+	 *
 	 * @param height the new page height
 	 */
 	public void setPageHeight(int height) {

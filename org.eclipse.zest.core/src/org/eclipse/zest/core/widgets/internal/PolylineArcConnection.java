@@ -2,12 +2,12 @@
  * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
@@ -23,7 +23,7 @@ import org.eclipse.draw2d.geometry.PointList;
  * chord (ax, ay) - (bx, by) (where a and b are the anchors) and a depth d
  * defined as the maximum distance from any point on the chord (i.e. a vector
  * normal to the chord with magnitude d).
- * 
+ *
  * @author Del Myers
  */
 // @tag zest(bug(154391-ArcEnds(fix))) : force the endpoints to match by using a
@@ -43,7 +43,7 @@ public class PolylineArcConnection extends PolylineConnection {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.draw2d.Polyline#setPoints(org.eclipse.draw2d.geometry.PointList )
 	 */

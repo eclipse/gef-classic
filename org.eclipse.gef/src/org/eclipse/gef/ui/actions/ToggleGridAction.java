@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ import org.eclipse.gef.internal.GEFMessages;
  * {@link org.eclipse.gef.SnapToGrid#PROPERTY_GRID_ENABLED enabled} properties
  * in sync, i.e., it toggles both at the same time. This action can handle the
  * case where these properties are not set on the given viewer initially.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -34,7 +34,7 @@ public class ToggleGridAction extends Action {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param diagramViewer the GraphicalViewer whose grid enablement and visibility
 	 *                      properties are to be toggled
 	 */

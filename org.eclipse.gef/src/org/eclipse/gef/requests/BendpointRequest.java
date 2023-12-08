@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ public class BendpointRequest extends org.eclipse.gef.requests.LocationRequest {
 
 	/**
 	 * Returns the index of the bendpoint to be changed.
-	 * 
+	 *
 	 * @return the bendpoint index
 	 */
 	public int getIndex() {
@@ -33,7 +33,7 @@ public class BendpointRequest extends org.eclipse.gef.requests.LocationRequest {
 
 	/**
 	 * Returns the ConnectionEditPart that the bendpoint belongs to.
-	 * 
+	 *
 	 * @return the bendpoint's ConnectionEditPart
 	 */
 	public ConnectionEditPart getSource() {
@@ -42,7 +42,7 @@ public class BendpointRequest extends org.eclipse.gef.requests.LocationRequest {
 
 	/**
 	 * Sets the index of the bendpoint to be changed.
-	 * 
+	 *
 	 * @param i the bendpoint's index
 	 */
 	public void setIndex(int i) {
@@ -51,7 +51,7 @@ public class BendpointRequest extends org.eclipse.gef.requests.LocationRequest {
 
 	/**
 	 * Sets the ConnectionEditPart the bendpoint belongs to.
-	 * 
+	 *
 	 * @param s the bendpoint's ConnectionEditPart
 	 */
 	public void setSource(ConnectionEditPart s) {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -41,7 +41,7 @@ import org.eclipse.gef.SharedMessages;
  * Width} and {@link #FIT_HEIGHT Height} to work properly, the given
  * <code>Viewport</code> should have its scrollbars always visible or never
  * visible. Otherwise, these settings may cause undesired effects.
- * 
+ *
  * @author Dan Lee
  * @author Eric Bordeau
  */
@@ -68,7 +68,7 @@ public class ZoomManager extends AbstractZoomManager {
 
 	/**
 	 * Creates a new ZoomManager.
-	 * 
+	 *
 	 * @param pane     The ScalableFigure associated with this ZoomManager
 	 * @param viewport The Viewport associated with this ZoomManager
 	 */
@@ -89,11 +89,11 @@ public class ZoomManager extends AbstractZoomManager {
 
 	/**
 	 * Creates a new ZoomManager.
-	 * 
+	 *
 	 * @param pane         The ScalableFigure associated with this ZoomManager
 	 * @param viewport     The Viewport associated with this ZoomManager
 	 * @param scrollPolicy The zoom scroll policy to be used with this ZoomManager
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	public ZoomManager(ScalableFigure pane, Viewport viewport, IZoomScrollPolicy scrollPolicy) {
@@ -111,9 +111,9 @@ public class ZoomManager extends AbstractZoomManager {
 
 	/**
 	 * Adds the given ZoomListener to this ZoomManager's list of listeners.
-	 * 
+	 *
 	 * @param listener the ZoomListener to be added
-	 * 
+	 *
 	 * @deprecated Use
 	 *             {@link #org.eclipse.draw2d.zoom.ZoomManager.addZoomListener(ZoomListener listener)}
 	 *             instead.
@@ -125,9 +125,9 @@ public class ZoomManager extends AbstractZoomManager {
 
 	/**
 	 * Removes the given ZoomListener from this ZoomManager's list of listeners.
-	 * 
+	 *
 	 * @param listener the ZoomListener to be removed
-	 * 
+	 *
 	 * @deprecated Use
 	 *             {@link #org.eclipse.draw2d.zoom.ZoomManager.removeZoomListener(ZoomListener listener)}
 	 *             instead.

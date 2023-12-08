@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -28,14 +28,14 @@ class DropShadowButtonBorder extends AbstractBorder {
 
 	protected Insets insets = new Insets(1, 1, 3, 3);
 
-	private static final Color highlight = ColorConstants.menuBackgroundSelected,
-			dropshadow2 = new Color(null, ViewForm.borderMiddleRGB),
-			dropshadow3 = new Color(null, ViewForm.borderOutsideRGB);
+	private static final Color highlight = ColorConstants.menuBackgroundSelected;
+	private static final Color dropshadow2 = new Color(null, ViewForm.borderMiddleRGB);
+	private static final Color dropshadow3 = new Color(null, ViewForm.borderOutsideRGB);
 
 	/**
 	 * Returns the space used by the border for the figure provided as input. In
 	 * this border all sides always have equal width.
-	 * 
+	 *
 	 * @param figure Figure for which this is the border.
 	 * @return Insets for this border.
 	 */

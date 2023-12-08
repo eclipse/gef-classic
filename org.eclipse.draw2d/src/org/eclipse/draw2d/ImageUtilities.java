@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2011 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -35,7 +35,7 @@ public class ImageUtilities {
 	 * String will be rendered using the provided colors and fonts. The client is
 	 * responsible for disposing the returned Image. Strings cannot contain newline
 	 * or tab characters.
-	 * 
+	 *
 	 * @param string     the String to be rendered
 	 * @param font       the font
 	 * @param foreground the text's color
@@ -64,7 +64,7 @@ public class ImageUtilities {
 	/**
 	 * Returns a new Image that is the given Image rotated left by 90 degrees. The
 	 * client is responsible for disposing the returned Image.
-	 * 
+	 *
 	 * @param srcImage the Image that is to be rotated left
 	 * @return the rotated Image (the client is responsible for disposing it)
 	 */
@@ -84,7 +84,7 @@ public class ImageUtilities {
 	/**
 	 * Creates an ImageData representing the given <code>Image</code> shaded with
 	 * the given <code>Color</code>.
-	 * 
+	 *
 	 * @param fromImage Image that has to be shaded
 	 * @param shade     The Color to be used for shading
 	 * @return A new ImageData that can be used to create an Image.

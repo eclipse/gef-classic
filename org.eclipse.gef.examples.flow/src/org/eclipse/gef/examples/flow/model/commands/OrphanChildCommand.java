@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ import org.eclipse.gef.examples.flow.model.StructuredActivity;
 
 /**
  * OrphanChildCommand
- * 
+ *
  * @author Daniel Lee
  */
 public class OrphanChildCommand extends Command {
@@ -41,7 +41,7 @@ public class OrphanChildCommand extends Command {
 
 	/**
 	 * Sets the child to the passed Activity
-	 * 
+	 *
 	 * @param child the child
 	 */
 	public void setChild(Activity child) {
@@ -50,7 +50,7 @@ public class OrphanChildCommand extends Command {
 
 	/**
 	 * Sets the parent to the passed StructuredActivity
-	 * 
+	 *
 	 * @param parent the parent
 	 */
 	public void setParent(StructuredActivity parent) {

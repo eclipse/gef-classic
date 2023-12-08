@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -50,7 +50,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	/**
 	 * Constructs a PolygonDecoration. Defaults the PolygonDecoration to fill its
 	 * region with black.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public PolygonDecoration() {
@@ -70,7 +70,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 
 	/**
 	 * Returns the points in the PolygonDecoration as a PointList.
-	 * 
+	 *
 	 * @return the points in this PolygonDecoration
 	 * @since 2.0
 	 */
@@ -86,7 +86,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 
 	/**
 	 * Sets the location of this PolygonDecoration.
-	 * 
+	 *
 	 * @param p the new location
 	 */
 	@Override
@@ -101,7 +101,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	 * Sets the PolygonDecorations point template to the passed PointList. This
 	 * template is an outline of the PolygonDecoration's region. (The default value
 	 * is TRIANGLE_TIP which is a triangle whose tip is pointing to the right).
-	 * 
+	 *
 	 * @param pl the PointList outline to use as the PolygonDecoration's region
 	 * @since 2.0
 	 */
@@ -116,7 +116,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	/**
 	 * Sets the amount of scaling to be done along X and Y axes on the
 	 * PolygonDecoration's template.
-	 * 
+	 *
 	 * @param x X scaling
 	 * @param y Y scaling
 	 * @since 2.0
@@ -130,7 +130,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	/**
 	 * Sets the rotation of this decoration so that the decoration points toward the
 	 * given reference point.
-	 * 
+	 *
 	 * @param ref the reference point
 	 */
 	@Override
@@ -143,7 +143,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 
 	/**
 	 * Sets the angle by which rotation is to be done on the PolygonDecoration.
-	 * 
+	 *
 	 * @param angle Angle of rotation
 	 * @since 2.0
 	 */

@@ -2,12 +2,12 @@
  * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.viewers.internal;
@@ -22,7 +22,7 @@ import org.eclipse.zest.core.widgets.GraphNode;
 
 /**
  * A factory for the IGraphEntityRelationshipContentProvider.
- * 
+ *
  * @author Del Myers
  */
 // @tag bug.154580-Content.fix
@@ -39,7 +39,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
 	 * #createGraphModel()
 	 */
@@ -51,7 +51,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
 	 * #doBuildGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
@@ -67,7 +67,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	/**
 	 * Creates all the model relationships. Assumes that all of the model nodes have
 	 * been created in the graph model already. Runtime O(n^2) + O(r).
-	 * 
+	 *
 	 * @param model the model to create the relationship on.
 	 */
 	private void createModelRelationships(Graph model) {
@@ -102,7 +102,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 
 	/**
 	 * Creates the model nodes for the given external nodes.
-	 * 
+	 *
 	 * @param model the graph model.
 	 * @param nodes the external nodes.
 	 */
@@ -114,7 +114,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh
 	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
@@ -126,7 +126,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh
 	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object,

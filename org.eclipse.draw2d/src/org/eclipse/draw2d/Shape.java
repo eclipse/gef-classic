@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * The width of this shape's outline.
-	 * 
+	 *
 	 * @deprecated Use {@link #setLineWidth(int)} or
 	 *             {@link #setLineWidthFloat(float)} instead.
 	 */
@@ -34,7 +34,7 @@ public abstract class Shape extends Figure {
 	 * Private copy of lineWidth field to track changes. We cannot compare to the
 	 * float line width because rounding may make them seem equal when they have
 	 * actually changed.
-	 * 
+	 *
 	 * e.g. someone sets int line width to 5, when float line width was already 5.4,
 	 * float line width should change to 5.0, but comparing them as ints would
 	 * suggest there's no change to synchronize.
@@ -43,7 +43,7 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * The line style to be used for this shape's outline.
-	 * 
+	 *
 	 * @deprecated Use {@link #setLineStyle(int)} instead.
 	 */
 	protected int lineStyle;
@@ -64,7 +64,7 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Default constructor.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public Shape() {
@@ -85,14 +85,14 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Fills the interior of the shape with the background color.
-	 * 
+	 *
 	 * @param graphics the graphics object
 	 */
 	protected abstract void fillShape(Graphics graphics);
 
 	/**
 	 * Outlines this shape using the foreground color.
-	 * 
+	 *
 	 * @param graphics the graphics object
 	 */
 	protected abstract void outlineShape(Graphics graphics);
@@ -100,7 +100,7 @@ public abstract class Shape extends Figure {
 	/**
 	 * Paints the shape. Each shape has an outline to draw, and a region to fill
 	 * within that outline. Disabled shapes must visually depict the disabled state.
-	 * 
+	 *
 	 * @see Figure#paintFigure(Graphics)
 	 */
 	@Override
@@ -159,7 +159,7 @@ public abstract class Shape extends Figure {
 		if (xorOutline) {
 			/*
 			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on windows)
-			 * 
+			 *
 			 * Also, XORMode is deprecated in SWT, so this should really be removed
 			 * completely at some point. XORMode isn't supported on Mac OSX at all.
 			 */
@@ -177,7 +177,7 @@ public abstract class Shape extends Figure {
 		if (xorFill) {
 			/*
 			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on windows)
-			 * 
+			 *
 			 * Also, XORMode is deprecated in SWT, so this should really be removed
 			 * completely at some point. XORMode isn't supported on Mac OSX at all.
 			 */
@@ -194,7 +194,7 @@ public abstract class Shape extends Figure {
 	/**
 	 * Sets whether this shape should fill its region or not. It repaints this
 	 * figure.
-	 * 
+	 *
 	 * @param b fill state
 	 * @since 2.0
 	 */
@@ -208,7 +208,7 @@ public abstract class Shape extends Figure {
 	/**
 	 * Sets whether XOR based fill should be used by the shape. It repaints this
 	 * figure.
-	 * 
+	 *
 	 * @param b XOR fill state
 	 * @since 2.0
 	 */
@@ -221,7 +221,7 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets whether the outline should be drawn for this shape.
-	 * 
+	 *
 	 * @param b <code>true</code> if the shape should be outlined
 	 * @since 2.0
 	 */
@@ -234,7 +234,7 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets whether XOR based outline should be used for this shape.
-	 * 
+	 *
 	 * @param b <code>true</code> if the outline should be XOR'ed
 	 * @since 2.0
 	 */
@@ -248,7 +248,7 @@ public abstract class Shape extends Figure {
 	/**
 	 * Sets whether XOR based fill and XOR based outline should be used for this
 	 * shape.
-	 * 
+	 *
 	 * @param b <code>true</code> if the outline and fill should be XOR'ed
 	 * @since 2.0
 	 */
@@ -273,11 +273,11 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns line attributes used when drawing this shape.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes
-	 * 
+	 *
 	 *      Performance note: creates and returns a clone.
-	 * 
+	 *
 	 * @return current line attributes
 	 * @since 3.5
 	 */
@@ -287,7 +287,7 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line width of this shape's outline.
-	 * 
+	 *
 	 * @return the line width
 	 */
 	public int getLineWidth() {
@@ -303,9 +303,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line width of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#width
-	 * 
+	 *
 	 * @since 3.5
 	 */
 	public float getLineWidthFloat() {
@@ -321,9 +321,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line join style of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#join
-	 * 
+	 *
 	 * @since 3.5
 	 */
 	public int getLineJoin() {
@@ -332,9 +332,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line cap style of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#cap
-	 * 
+	 *
 	 * @since 3.5
 	 */
 	public int getLineCap() {
@@ -343,9 +343,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line style of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#style
-	 * 
+	 *
 	 * @return the line style
 	 */
 	public int getLineStyle() {
@@ -361,9 +361,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line dash style of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#dash
-	 * 
+	 *
 	 * @since 3.5
 	 */
 	public float[] getLineDash() {
@@ -376,9 +376,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line dash offset of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#dashOffset
-	 * 
+	 *
 	 * @since 3.5
 	 */
 	public float getLineDashOffset() {
@@ -387,9 +387,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line dash miter limit of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#miterLimit
-	 * 
+	 *
 	 * @since 3.5
 	 */
 	public float getLineMiterLimit() {
@@ -460,9 +460,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets all line attributes at once.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes
-	 * 
+	 *
 	 * @param la
 	 * @since 3.5
 	 */
@@ -475,7 +475,7 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line width to be used to outline the shape.
-	 * 
+	 *
 	 * @param w the new width
 	 * @since 2.0
 	 */
@@ -496,9 +496,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line width of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#width
-	 * 
+	 *
 	 * @param value
 	 * @since 3.5
 	 */
@@ -517,9 +517,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line join style of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#join
-	 * 
+	 *
 	 * @param join
 	 * @since 3.5
 	 */
@@ -532,9 +532,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line cap style of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#cap
-	 * 
+	 *
 	 * @param cap
 	 * @since 3.5
 	 */
@@ -547,9 +547,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line style of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#style
-	 * 
+	 *
 	 * @param style the new line style
 	 * @since 2.0
 	 */
@@ -568,9 +568,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line dash style of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#dash
-	 * 
+	 *
 	 * @param dash
 	 * @since 3.5
 	 */
@@ -586,9 +586,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line dash offset of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#dashOffset
-	 * 
+	 *
 	 * @param dashOffset
 	 * @since 3.5
 	 */
@@ -601,9 +601,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line dash miter limit of this shape's outline.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#miterLimit
-	 * 
+	 *
 	 * @param miterLimit
 	 * @since 3.5
 	 */

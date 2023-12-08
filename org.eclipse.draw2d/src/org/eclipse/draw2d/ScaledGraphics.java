@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -94,7 +94,7 @@ public class ScaledGraphics extends Graphics {
 		/**
 		 * Constructs a new State object and initializes the properties based on the
 		 * given values.
-		 * 
+		 *
 		 * @param zoom      the zoom factor
 		 * @param x         the x offset
 		 * @param y         the y offset
@@ -108,13 +108,13 @@ public class ScaledGraphics extends Graphics {
 		/**
 		 * Constructs a new State object and initializes the properties based on the
 		 * given values.
-		 * 
+		 *
 		 * @param zoom      the zoom factor
 		 * @param x         the x offset
 		 * @param y         the y offset
 		 * @param font      the font
 		 * @param lineWidth the line width
-		 * 
+		 *
 		 * @since 3.5
 		 */
 		protected State(double zoom, double x, double y, Font font, float lineWidth) {
@@ -127,7 +127,7 @@ public class ScaledGraphics extends Graphics {
 
 		/**
 		 * Sets all the properties of the state object.
-		 * 
+		 *
 		 * @param zoom      the zoom factor
 		 * @param x         the x offset
 		 * @param y         the y offset
@@ -140,13 +140,13 @@ public class ScaledGraphics extends Graphics {
 
 		/**
 		 * Sets all the properties of the state object.
-		 * 
+		 *
 		 * @param zoom      the zoom factor
 		 * @param x         the x offset
 		 * @param y         the y offset
 		 * @param font      the font
 		 * @param lineWidth the line width
-		 * 
+		 *
 		 * @since 3.5
 		 */
 		protected void setValues(double zoom, double x, double y, Font font, float lineWidth) {
@@ -186,7 +186,7 @@ public class ScaledGraphics extends Graphics {
 
 	/**
 	 * Constructs a new ScaledGraphics based on the given Graphics object.
-	 * 
+	 *
 	 * @param g the base graphics object
 	 */
 	public ScaledGraphics(Graphics g) {
@@ -207,7 +207,7 @@ public class ScaledGraphics extends Graphics {
 
 	/**
 	 * Scales given path by zoom factor
-	 * 
+	 *
 	 * @param path Path to be scaled
 	 * @return Scaled path
 	 */

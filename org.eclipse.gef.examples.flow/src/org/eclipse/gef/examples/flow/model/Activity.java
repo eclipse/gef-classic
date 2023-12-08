@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -65,7 +65,7 @@ public class Activity extends FlowElement {
 	/**
 	 * Returns useful property descriptors for the use in property sheets. this
 	 * supports location and size.
-	 * 
+	 *
 	 * @return Array of property descriptors.
 	 */
 	@Override
@@ -76,7 +76,7 @@ public class Activity extends FlowElement {
 	/**
 	 * Returns an Object which represents the appropriate value for the property
 	 * name supplied.
-	 * 
+	 *
 	 * @param propName Name of the property for which the the values are needed.
 	 * @return Object which is the value of the property.
 	 */
@@ -108,7 +108,7 @@ public class Activity extends FlowElement {
 
 	/**
 	 * Sets the value of a given property with the value supplied.
-	 * 
+	 *
 	 * @param id    Name of the parameter to be changed.
 	 * @param value Value to be set to the given parameter.
 	 */

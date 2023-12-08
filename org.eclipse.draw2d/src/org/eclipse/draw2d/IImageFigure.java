@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,11 +17,11 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * Interface for image figures
- * 
+ *
  * <P>
  * WARNING: This interface is not intended to be implemented by clients. Extend
  * {@link AbstractImageFigure} instead.
- * 
+ *
  * @noimplement
  * @since 3.6
  */
@@ -29,7 +29,7 @@ public interface IImageFigure extends IFigure {
 
 	/**
 	 * Returns the SWT Image contained by the figure
-	 * 
+	 *
 	 * @return the Image contained by the figure
 	 * @since 3.6
 	 */
@@ -37,7 +37,7 @@ public interface IImageFigure extends IFigure {
 
 	/**
 	 * Attaches <code>ImageChangedListener</code> to the figure
-	 * 
+	 *
 	 * @param listener
 	 * @since 3.6
 	 */
@@ -45,7 +45,7 @@ public interface IImageFigure extends IFigure {
 
 	/**
 	 * Detaches <code>ImageChangedListener</code> from the figure
-	 * 
+	 *
 	 * @param listener
 	 * @since 3.6
 	 */
@@ -53,7 +53,7 @@ public interface IImageFigure extends IFigure {
 
 	/**
 	 * Listener to the image figure to track changes to the containede SWT Image
-	 * 
+	 *
 	 * @since 3.6
 	 */
 	public interface ImageChangedListener {
@@ -61,7 +61,7 @@ public interface IImageFigure extends IFigure {
 		/**
 		 * Notifies about a change to SWT Image contained by the
 		 * <code>IIMageFigure</code>
-		 * 
+		 *
 		 * @since 3.6
 		 */
 		public void imageChanged();

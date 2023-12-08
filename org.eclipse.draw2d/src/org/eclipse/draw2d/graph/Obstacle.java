@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,9 +19,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * An obstacle representation for the ShortestPathRouting. This is a subclass of
  * Rectangle.
- * 
+ *
  * This class is for internal use only.
- * 
+ *
  * @author Whitney Sorenson
  * @since 3.0
  */
@@ -33,7 +33,7 @@ class Obstacle extends Rectangle {
 
 	/**
 	 * Creates a new obstacle from the given rectangle bounds.
-	 * 
+	 *
 	 * @param rect the bounds
 	 */
 	Obstacle(Rectangle rect, ShortestPathRouter router) {
@@ -44,7 +44,7 @@ class Obstacle extends Rectangle {
 	/**
 	 * Returns <code>true</code> if the given point is contained but not on the
 	 * boundary of this obstacle.
-	 * 
+	 *
 	 * @param p a point
 	 * @return <code>true</code> if properly contained
 	 */
@@ -73,7 +73,7 @@ class Obstacle extends Rectangle {
 
 	/**
 	 * Initializes this obstacle to the values of the given rectangle
-	 * 
+	 *
 	 * @param rect bounds of this obstacle
 	 */
 	void init(Rectangle rect) {

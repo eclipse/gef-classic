@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -28,7 +28,7 @@ import org.eclipse.gef.internal.GEFMessages;
 
 /**
  * The GEF palette view
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -60,7 +60,7 @@ public class PaletteView extends PageBookView {
 
 	/**
 	 * Creates a default page saying that a palette is not available.
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.PageBookView#createDefaultPage(org.eclipse.ui.part.PageBook)
 	 */
 	@Override
@@ -75,7 +75,7 @@ public class PaletteView extends PageBookView {
 	/**
 	 * Add a perspective listener so the palette view can be updated when the
 	 * perspective is switched.
-	 * 
+	 *
 	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
@@ -86,7 +86,7 @@ public class PaletteView extends PageBookView {
 
 	/**
 	 * Remove the perspective listener.
-	 * 
+	 *
 	 * @see org.eclipse.ui.IWorkbenchPart#dispose()
 	 */
 	@Override
@@ -123,7 +123,7 @@ public class PaletteView extends PageBookView {
 
 	/**
 	 * The view shows the palette associated with the active editor.
-	 * 
+	 *
 	 * @see PageBookView#getBootstrapPart()
 	 */
 	@Override
@@ -136,7 +136,7 @@ public class PaletteView extends PageBookView {
 
 	/**
 	 * Only editors in the same perspective as the view are important.
-	 * 
+	 *
 	 * @see PageBookView#isImportant(org.eclipse.ui.IWorkbenchPart)
 	 */
 	@Override

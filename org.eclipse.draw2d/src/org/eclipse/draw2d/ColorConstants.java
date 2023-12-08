@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,32 +18,39 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * A collection of color-related constants.
- * 
+ *
  * @since 3.13
  */
 public interface ColorConstants {
 
+	/**
+	 * This utility class is used to create a system {@link Color} using any of the
+	 * supported {@link SWT} constants. The {@link Color} is created using the
+	 * {@link Display} bound to the current thread.
+	 *
+	 * @since 3.13
+	 */
 	class SystemColorFactory {
 		/**
+		 * Returns the matching standard {@link Color} for the given constant, which
+		 * should be one of the color constants specified in class {@link SWT}. Any
+		 * value other than one of the {@link SWT} color constants which is passed in
+		 * will result in the {@link Color} black. This {@link Color} should not be
+		 * free'd because it was allocated by the system, not the application. Note:
+		 * This method should be invoked from within the UI thread if possible, as it
+		 * will attempt to create a new Display instance, if not!
+		 *
 		 * @since 3.13
+		 * @param which the {@link SWT} {@link Color} constant
+		 * @return the corresponding {@link Color} or the {@link Color} {@code black}
 		 */
 		public static Color getColor(final int which) {
 			Display display = Display.getCurrent();
-			if (display != null)
+			if (display != null) {
 				return display.getSystemColor(which);
-			display = Display.getDefault();
-			final Color result[] = new Color[1];
-			display.syncExec(new Runnable() {
-				@Override
-				public void run() {
-					synchronized (result) {
-						result[0] = Display.getCurrent().getSystemColor(which);
-					}
-				}
-			});
-			synchronized (result) {
-				return result[0];
 			}
+			display = Display.getDefault();
+			return display.syncCall(() -> Display.getCurrent().getSystemColor(which));
 		}
 	}
 

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ public abstract class AbstractLocator implements Locator {
 	 * Returns the number of pixels to leave between the figure being located and
 	 * the reference point. Only used if {@link #getRelativePosition()} returns
 	 * something other than {@link PositionConstants#CENTER}.
-	 * 
+	 *
 	 * @return The gap
 	 * @since 2.0
 	 */
@@ -47,7 +47,7 @@ public abstract class AbstractLocator implements Locator {
 	/**
 	 * Returns the reference point in absolute coordinates used to calculate the
 	 * location.
-	 * 
+	 *
 	 * @return The reference point in absolute coordinates
 	 * @since 2.0
 	 */
@@ -56,7 +56,7 @@ public abstract class AbstractLocator implements Locator {
 	/**
 	 * Recalculate the location of the figure according to its desired position
 	 * relative to the center point.
-	 * 
+	 *
 	 * @param size   The size of the figure
 	 * @param center The center point
 	 * @return The new bounds
@@ -91,7 +91,7 @@ public abstract class AbstractLocator implements Locator {
 	 * Returns the position of the figure with respect to the center point. Possible
 	 * values can be found in {@link PositionConstants} and include CENTER, NORTH,
 	 * SOUTH, EAST, WEST, NORTH_EAST, NORTH_WEST, SOUTH_EAST, or SOUTH_WEST.
-	 * 
+	 *
 	 * @return An int constant representing the relative position
 	 * @since 2.0
 	 */
@@ -101,7 +101,7 @@ public abstract class AbstractLocator implements Locator {
 
 	/**
 	 * Recalculates the position of the figure and returns the updated bounds.
-	 * 
+	 *
 	 * @param target The figure to relocate
 	 */
 	@Override
@@ -116,7 +116,7 @@ public abstract class AbstractLocator implements Locator {
 	 * Sets the gap between the reference point and the figure being placed. Only
 	 * used if getRelativePosition() returns something other than
 	 * {@link PositionConstants#CENTER}.
-	 * 
+	 *
 	 * @param i The gap
 	 * @since 2.0
 	 */
@@ -128,7 +128,7 @@ public abstract class AbstractLocator implements Locator {
 	 * Sets the position of the figure with respect to the center point. Possible
 	 * values can be found in {@link PositionConstants} and include CENTER, NORTH,
 	 * SOUTH, EAST, WEST, NORTH_EAST, NORTH_WEST, SOUTH_EAST, or SOUTH_WEST.
-	 * 
+	 *
 	 * @param pos The relative position
 	 * @since 2.0
 	 */

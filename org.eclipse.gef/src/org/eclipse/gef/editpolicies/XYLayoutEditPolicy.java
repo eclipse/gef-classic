@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,13 +26,13 @@ import org.eclipse.gef.requests.CreateRequest;
 /**
  * An EditPolicy for use with <code>Figures</code> in {@link XYLayout}. The
  * constraint for XYLayout is a {@link org.eclipse.draw2d.geometry.Rectangle}.
- * 
+ *
  * Created on :Nov 12, 2002
- * 
+ *
  * @author hudsonr
  * @author msorens
  * @author anyssen
- * 
+ *
  * @since 2.0
  */
 public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
@@ -44,16 +44,15 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	/**
 	 * Overridden to preserve existing width and height (as well as preferred sizes)
 	 * during MOVE requests.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#getConstraintFor(org.eclipse.gef.Request,
 	 *      org.eclipse.gef.GraphicalEditPart,
 	 *      org.eclipse.draw2d.geometry.Rectangle)
 	 */
 	@Override
 	protected Object getConstraintFor(Request request, GraphicalEditPart child, Rectangle rect) {
-		if (request instanceof ChangeBoundsRequest) {
-			if (((ChangeBoundsRequest) request).getSizeDelta().width == 0
-					&& ((ChangeBoundsRequest) request).getSizeDelta().height == 0) {
+		if (request instanceof ChangeBoundsRequest cbRequest) {
+			if (cbRequest.getSizeDelta().width == 0 && cbRequest.getSizeDelta().height == 0) {
 				if (getCurrentConstraintFor(child) != null) {
 					// Bug 86473 allows for unintended use of this method
 					rect.setSize(getCurrentConstraintFor(child).getSize());
@@ -70,7 +69,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 * Returns a Rectangle at the given Point with width and height of -1.
 	 * <code>XYLayout</code> uses width or height equal to '-1' to mean use the
 	 * figure's preferred size.
-	 * 
+	 *
 	 * @param p the input Point
 	 * @return a Rectangle
 	 */
@@ -81,7 +80,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 
 	/**
 	 * Returns a new Rectangle equivalent to the passed Rectangle.
-	 * 
+	 *
 	 * @param r the input Rectangle
 	 * @return a copy of the input Rectangle
 	 */
@@ -92,7 +91,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 
 	/**
 	 * Retrieves the child's current constraint from the <code>LayoutManager</code>.
-	 * 
+	 *
 	 * @param child the child
 	 * @return the current constraint
 	 */
@@ -103,7 +102,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 
 	/**
 	 * Returns {@link XYLayout#getOrigin(IFigure)}.
-	 * 
+	 *
 	 * @see ConstrainedLayoutEditPolicy#getLayoutOrigin()
 	 */
 	@Override
@@ -149,14 +148,15 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 * to. Called from
 	 * {@link #getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}. By
 	 * default, a small <code>Dimension</code> is returned.
-	 * 
+	 *
 	 * @param child the child
 	 * @return the minimum size
-	 * 
+	 *
 	 * @deprecated Clients should no longer extend this method. Instead, the resize
 	 *             tracker, constructed by the 'satellite' primary drag edit policy
 	 *             should be parameterized with max and min size constraints.
 	 */
+	@Deprecated
 	protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
 		return new Dimension(8, 8);
 	}

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 
 	/**
 	 * Constructs a new AlignmentRequest with the new type.
-	 * 
+	 *
 	 * @param type the type
 	 */
 	public AlignmentRequest(Object type) {
@@ -90,7 +90,7 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 	 * Returns the alignment. Possible values are {@link PositionConstants#LEFT} ,
 	 * {@link PositionConstants#RIGHT}, {@link PositionConstants#TOP} and
 	 * {@link PositionConstants#BOTTOM}.
-	 * 
+	 *
 	 * @return the alignment
 	 */
 	public int getAlignment() {
@@ -99,7 +99,7 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 
 	/**
 	 * Returns the rectangle used to align the edit part with.
-	 * 
+	 *
 	 * @return the alignment rectangle
 	 */
 	public Rectangle getAlignmentRectangle() {
@@ -126,7 +126,7 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 
 	/**
 	 * Sets the alignment.
-	 * 
+	 *
 	 * @param align the alignment
 	 * @see #getAlignment()
 	 */
@@ -136,7 +136,7 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 
 	/**
 	 * Sets the alignment rectangle.
-	 * 
+	 *
 	 * @param rect the alignment rectangle
 	 * @see #getAlignmentRectangle()
 	 */

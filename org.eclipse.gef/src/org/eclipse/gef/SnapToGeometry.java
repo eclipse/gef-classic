@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -42,7 +42,7 @@ import org.eclipse.gef.requests.GroupRequest;
  * This helper does not keep up with changes made to the container editpart.
  * Clients should instantiate a new helper each time one is requested and not
  * hold on to instances of the helper.
- * 
+ *
  * @since 3.0
  * @author Randy Hudson
  * @author Pratik Shah
@@ -53,7 +53,7 @@ public class SnapToGeometry extends SnapToHelper {
 	 * A property indicating whether this helper should be used. The value should be
 	 * an instance of Boolean. Currently, this class does not check to see if the
 	 * viewer property is set to <code>true</code>.
-	 * 
+	 *
 	 * @see EditPartViewer#setProperty(String, Object)
 	 */
 	public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry.isEnabled"; //$NON-NLS-1$
@@ -95,20 +95,21 @@ public class SnapToGeometry extends SnapToHelper {
 
 		/**
 		 * Constructs a new entry of the given type and location.
-		 * 
+		 *
 		 * @param type     an integer between -1 and 1 inclusively
 		 * @param location the location
 		 */
 		protected Entry(int type, int location) {
-			if (type < -1 || type > 1)
+			if (type < -1 || type > 1) {
 				throw new IllegalArgumentException("Unrecognized snap type"); //$NON-NLS-1$
+			}
 			this.type = type;
 			this.location = location;
 		}
 
 		/**
 		 * Returns the location of the snap entry.
-		 * 
+		 *
 		 * @return the location
 		 * @since 3.2
 		 */
@@ -123,7 +124,7 @@ public class SnapToGeometry extends SnapToHelper {
 		 * <LI>0 indicates middle/center
 		 * <LI>1 indicates right/bottom
 		 * </UL>
-		 * 
+		 *
 		 * @return the snap type
 		 * @since 3.2
 		 */
@@ -162,7 +163,7 @@ public class SnapToGeometry extends SnapToHelper {
 	 * Constructs a helper that will use the given part as its basis for snapping.
 	 * The part's contents pane will provide the coordinate system and its children
 	 * determine the existing elements.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param container the container editpart
 	 */
@@ -173,7 +174,7 @@ public class SnapToGeometry extends SnapToHelper {
 	/**
 	 * Get the sensitivity of the snapping. Corrections greater than this value will
 	 * not occur.
-	 * 
+	 *
 	 * @return the snapping threshold
 	 * @since 3.4
 	 */
@@ -183,7 +184,7 @@ public class SnapToGeometry extends SnapToHelper {
 
 	/**
 	 * Set the sensitivity of the snapping.
-	 * 
+	 *
 	 * @see #getThreshold()
 	 * @param newThreshold the new snapping threshold
 	 * @since 3.4
@@ -196,12 +197,12 @@ public class SnapToGeometry extends SnapToHelper {
 	 * Generates a list of parts which should be snapped to. The list is the
 	 * original children, minus the given exclusions, minus and children whose
 	 * figures are not visible.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param exclusions the children to exclude
 	 * @return a list of parts which should be snapped to
 	 */
-	protected List generateSnapPartsList(List exclusions) {
+	protected List<? extends GraphicalEditPart> generateSnapPartsList(List<? extends EditPart> exclusions) {
 		// Don't snap to any figure that is being dragged
 		List<? extends GraphicalEditPart> children = new ArrayList<>(container.getChildren());
 		children.removeAll(exclusions);
@@ -213,7 +214,7 @@ public class SnapToGeometry extends SnapToHelper {
 	/**
 	 * Returns the correction value for the given entries and sides. During a move,
 	 * the left, right, or center is free to snap to a location.
-	 * 
+	 *
 	 * @param entries      the entries
 	 * @param extendedData the requests extended data
 	 * @param vert         <code>true</code> if the correction is vertical
@@ -229,20 +230,23 @@ public class SnapToGeometry extends SnapToHelper {
 		// far) there is no middle pixel so favor the left-most/top-most pixel
 		// (which is what
 		// populateRowsAndCols() does by using int precision).
-		if ((int) (near - far) % 2 != 0)
+		if ((int) (near - far) % 2 != 0) {
 			total -= 1.0;
+		}
 		double result = getCorrectionFor(entries, extendedData, vert, total / 2, 0);
-		if (result == getThreshold())
+		if (result == getThreshold()) {
 			result = getCorrectionFor(entries, extendedData, vert, near, -1);
-		if (result == getThreshold())
+		}
+		if (result == getThreshold()) {
 			result = getCorrectionFor(entries, extendedData, vert, far, 1);
+		}
 		return result;
 	}
 
 	/**
 	 * Returns the correction value between +/- {@link #getThreshold()}, or the
 	 * #getThreshold () if no corrections were found.
-	 * 
+	 *
 	 * @param entries      the entries
 	 * @param extendedData the map for setting values
 	 * @param vert         <code>true</code> if vertical
@@ -255,13 +259,13 @@ public class SnapToGeometry extends SnapToHelper {
 		double result = getThreshold();
 
 		String property;
-		if (side == -1)
+		if (side == -1) {
 			property = vert ? KEY_WEST_ANCHOR : KEY_NORTH_ANCHOR;
-		else
+		} else {
 			property = vert ? KEY_EAST_ANCHOR : KEY_SOUTH_ANCHOR;
+		}
 
-		for (int i = 0; i < entries.length; i++) {
-			Entry entry = entries[i];
+		for (Entry entry : entries) {
 			double magnitude;
 
 			if (entry.type == -1 && side != 0) {
@@ -293,7 +297,7 @@ public class SnapToGeometry extends SnapToHelper {
 	/**
 	 * Returns the rectangular contribution for the given editpart. This is the
 	 * rectangle with which snapping is performed.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param part the child
 	 * @return the rectangular guide for that part
@@ -305,15 +309,15 @@ public class SnapToGeometry extends SnapToHelper {
 
 	/**
 	 * Updates the cached row and column Entries using the provided parts.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param parts a List of EditParts
 	 */
-	protected void populateRowsAndCols(List parts) {
+	protected void populateRowsAndCols(List<? extends GraphicalEditPart> parts) {
 		rows = new Entry[parts.size() * 3];
 		cols = new Entry[parts.size() * 3];
 		for (int i = 0; i < parts.size(); i++) {
-			GraphicalEditPart child = (GraphicalEditPart) parts.get(i);
+			GraphicalEditPart child = parts.get(i);
 			Rectangle bounds = getFigureBounds(child);
 			cols[i * 3] = new Entry(-1, bounds.x);
 			rows[i * 3] = new Entry(-1, bounds.y);
@@ -341,15 +345,15 @@ public class SnapToGeometry extends SnapToHelper {
 		boolean isClone = request.getType().equals(RequestConstants.REQ_CLONE);
 		if (rows == null || cols == null || isClone != cachedCloneBool) {
 			cachedCloneBool = isClone;
-			List exclusionSet = Collections.EMPTY_LIST;
-			if (!isClone && request instanceof GroupRequest)
-				exclusionSet = ((GroupRequest) request).getEditParts();
+			List<? extends EditPart> exclusionSet = Collections.emptyList();
+			if (!isClone && request instanceof GroupRequest groupRequest) {
+				exclusionSet = groupRequest.getEditParts();
+			}
 			populateRowsAndCols(generateSnapPartsList(exclusionSet));
 		}
 
 		if ((snapOrientation & HORIZONTAL) != 0) {
-			double xcorrect = getThreshold();
-			xcorrect = getCorrectionFor(cols, request.getExtendedData(), true, baseRect.preciseX(),
+			double xcorrect = getCorrectionFor(cols, request.getExtendedData(), true, baseRect.preciseX(),
 					baseRect.preciseRight());
 			if (xcorrect != getThreshold()) {
 				snapOrientation &= ~HORIZONTAL;
@@ -358,8 +362,7 @@ public class SnapToGeometry extends SnapToHelper {
 		}
 
 		if ((snapOrientation & VERTICAL) != 0) {
-			double ycorrect = getThreshold();
-			ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, baseRect.preciseY(),
+			double ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, baseRect.preciseY(),
 					baseRect.preciseBottom());
 			if (ycorrect != getThreshold()) {
 				snapOrientation &= ~VERTICAL;

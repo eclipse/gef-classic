@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2022 Johannes Kepler University Linz
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,10 +20,10 @@ import org.eclipse.draw2d.geometry.Point;
 /**
  * A scroll policy which ensures that the center of the canvas is maintained
  * during zooming.
- * 
+ *
  * This behavior was the default behavior of GEF Classic and Zest pre version
  * 3.15.
- * 
+ *
  * @since 3.13
  */
 public class DefaultScrollPolicy implements IZoomScrollPolicy {

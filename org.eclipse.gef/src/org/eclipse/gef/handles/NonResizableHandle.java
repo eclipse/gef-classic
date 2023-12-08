@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ import org.eclipse.gef.tools.DragEditPartsTracker;
 
 /**
  * A MoveHandle for a non-resizable EditPart.
- * 
+ *
  * @deprecated this handle type is no longer used
  */
 public class NonResizableHandle extends MoveHandle {
@@ -34,7 +34,7 @@ public class NonResizableHandle extends MoveHandle {
 	/**
 	 * Creates a NonResizableHandle for the given <code>GraphicalEditPart</code>
 	 * using a default {@link Locator}.
-	 * 
+	 *
 	 * @param owner The GraphicalEditPart to be moved by this handle.
 	 */
 	public NonResizableHandle(GraphicalEditPart owner) {
@@ -44,7 +44,7 @@ public class NonResizableHandle extends MoveHandle {
 	/**
 	 * Creates a NonResizableHandle for the given <code>GraphicalEditPart</code>
 	 * using the given <code>Locator</code>.
-	 * 
+	 *
 	 * @param owner The GraphicalEditPart to be moved by this handle.
 	 * @param loc   The Locator used to place the handle.
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ public interface NodeListener {
 	 * Called prior to removing the connection from its source node. The source is
 	 * not passed, but can still be obtained at this point by calling
 	 * {@link ConnectionEditPart#getSource connection.getSource()}
-	 * 
+	 *
 	 * @param connection the connection
 	 * @param index      the index
 	 */
@@ -32,7 +32,7 @@ public interface NodeListener {
 	 * Called prior to removing the connection from its target node. The target is
 	 * not passed, but can still be obtained at this point by calling
 	 * {@link ConnectionEditPart#getTarget connection.getTarget()}
-	 * 
+	 *
 	 * @param connection the connection
 	 * @param index      the index
 	 */
@@ -40,7 +40,7 @@ public interface NodeListener {
 
 	/**
 	 * Called after the connection has been added to its source node.
-	 * 
+	 *
 	 * @param connection the connection
 	 * @param index      the index
 	 */
@@ -48,7 +48,7 @@ public interface NodeListener {
 
 	/**
 	 * Called after the connection has been added to its target node.
-	 * 
+	 *
 	 * @param connection the connection
 	 * @param index      the index
 	 */

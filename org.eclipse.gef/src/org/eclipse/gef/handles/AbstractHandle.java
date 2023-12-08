@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -46,7 +46,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	/**
 	 * Creates a handle for the given <code>GraphicalEditPart</code> using the given
 	 * <code>Locator</code>.
-	 * 
+	 *
 	 * @param owner The editpart which provided this handle
 	 * @param loc   The locator to position the handle
 	 */
@@ -58,7 +58,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	/**
 	 * Creates a handle for the given <code>GraphicalEditPart</code> using the given
 	 * <code>Locator</code> and <code>Cursor</code>.
-	 * 
+	 *
 	 * @param owner The editpart which provided this handle
 	 * @param loc   The locator to position the handle
 	 * @param c     The cursor to display when the mouse is over the handle
@@ -103,14 +103,14 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 
 	/**
 	 * Creates a new drag tracker to be returned by getDragTracker().
-	 * 
+	 *
 	 * @return a new drag tracker
 	 */
 	protected abstract DragTracker createDragTracker();
 
 	/**
 	 * By default, the center of the handle is returned.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Handle#getAccessibleLocation()
 	 */
 	@Override
@@ -123,7 +123,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	/**
 	 * Returns the cursor. The cursor is displayed whenever the mouse is over the
 	 * handle.
-	 * 
+	 *
 	 * @deprecated use getCursor()
 	 * @return the cursor
 	 */
@@ -135,7 +135,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	 * Returns the drag tracker to use when the user clicks on this handle. If the
 	 * drag tracker has not been set, it will be lazily created by calling
 	 * {@link #createDragTracker()}.
-	 * 
+	 *
 	 * @return the drag tracker
 	 */
 	@Override
@@ -147,7 +147,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 
 	/**
 	 * Returns the <code>Locator</code> used to position this handle.
-	 * 
+	 *
 	 * @return the locator
 	 */
 	public Locator getLocator() {
@@ -156,7 +156,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 
 	/**
 	 * Returns the <code>GraphicalEditPart</code> associated with this handle.
-	 * 
+	 *
 	 * @return the owner editpart
 	 */
 	protected GraphicalEditPart getOwner() {
@@ -165,7 +165,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 
 	/**
 	 * Convenience method to return the owner's figure.
-	 * 
+	 *
 	 * @return the owner editpart's figure
 	 */
 	protected IFigure getOwnerFigure() {
@@ -183,7 +183,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 
 	/**
 	 * Sets the Cursor for the handle.
-	 * 
+	 *
 	 * @param c the cursor
 	 * @throws Exception a bogus excpetion declaration
 	 * @deprecated use setCursor()
@@ -194,7 +194,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 
 	/**
 	 * Sets the drag tracker for this handle.
-	 * 
+	 *
 	 * @param t the drag tracker
 	 */
 	public void setDragTracker(DragTracker t) {
@@ -203,7 +203,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 
 	/**
 	 * Sets the locator which position this handle.
-	 * 
+	 *
 	 * @param locator the new locator
 	 */
 	protected void setLocator(Locator locator) {
@@ -212,7 +212,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 
 	/**
 	 * Sets the owner editpart associated with this handle.
-	 * 
+	 *
 	 * @param editpart the owner
 	 */
 	protected void setOwner(GraphicalEditPart editpart) {
@@ -221,7 +221,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 
 	/**
 	 * Extends validate() to place the handle using its locator.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.IFigure#validate()
 	 */
 	@Override

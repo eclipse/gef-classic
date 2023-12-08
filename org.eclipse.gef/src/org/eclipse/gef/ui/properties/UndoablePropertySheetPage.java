@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2011 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.gef.commands.CommandStackEventListener;
 /**
  * PropertySheetPage extension that allows to perform undo/redo of property
  * value changes also in case the editor is not active.
- * 
+ *
  * @author anyssen
  * @since 3.7
  */
@@ -38,7 +38,7 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 
 	/**
 	 * Constructs a new {@link UndoablePropertySheetPage}.
-	 * 
+	 *
 	 * @param commandStack The {@link CommandStack} shared with the editor.
 	 * @param undoAction   The global action handler to be registered for undo
 	 *                     operations.
@@ -67,7 +67,7 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 
 	/**
 	 * Overwritten to unregister command stack listener.
-	 * 
+	 *
 	 * @see org.eclipse.ui.views.properties.PropertySheetPage#dispose()
 	 */
 	@Override
@@ -79,7 +79,7 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 
 	/**
 	 * Overwritten to register global action handlers for undo and redo.
-	 * 
+	 *
 	 * @see org.eclipse.ui.views.properties.PropertySheetPage#setActionBars(org.eclipse.ui.IActionBars)
 	 */
 	@Override

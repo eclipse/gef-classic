@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,10 +18,10 @@ import org.eclipse.draw2d.geometry.Dimension;
 
 /**
  * A LayoutManager for use with FlowFigure.
- * 
+ *
  * <P>
  * WARNING: This class is not intended to be subclassed by clients.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -39,7 +39,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 
 	/**
 	 * Constructs a new FlowFigureLayout with the given FlowFigure.
-	 * 
+	 *
 	 * @param flowfigure the FlowFigure
 	 */
 	protected FlowFigureLayout(FlowFigure flowfigure) {
@@ -48,7 +48,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 
 	/**
 	 * Not applicable.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure)
 	 */
 	@Override
@@ -58,7 +58,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 
 	/**
 	 * Returns this layout's context or <code>null</code>.
-	 * 
+	 *
 	 * @return <code>null</code> or a context
 	 * @since 3.1
 	 */
@@ -75,7 +75,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 
 	/**
 	 * Not applicable.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(org.eclipse.draw2d.IFigure,
 	 *      int, int)
 	 */
@@ -86,7 +86,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 
 	/**
 	 * Not applicable.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.LayoutManager#getPreferredSize(org.eclipse.draw2d.IFigure,
 	 *      int, int)
 	 */
@@ -97,7 +97,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 
 	/**
 	 * Not applicable.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.LayoutManager#invalidate()
 	 */
 	@Override
@@ -119,7 +119,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 
 	/**
 	 * Not applicable.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.LayoutManager#remove(org.eclipse.draw2d.IFigure)
 	 */
 	@Override
@@ -128,7 +128,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 
 	/**
 	 * Not applicable.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.LayoutManager#setConstraint(org.eclipse.draw2d.IFigure,
 	 *      java.lang.Object)
 	 */
@@ -138,7 +138,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 
 	/**
 	 * Sets the context for this layout manager.
-	 * 
+	 *
 	 * @param flowContext the context of this layout
 	 */
 	public void setFlowContext(FlowContext flowContext) {

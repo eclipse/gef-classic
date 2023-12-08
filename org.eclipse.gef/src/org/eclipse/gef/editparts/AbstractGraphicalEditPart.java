@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -68,7 +68,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * A default implementation of {@link AccessibleEditPart}. Subclasses can extend
 	 * this implementation to get base accessibility for free.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected abstract class AccessibleGraphicalEditPart extends AccessibleEditPart {
@@ -135,7 +135,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * The default implementation of {@link AccessibleAnchorProvider} returned in
 	 * {@link #getAdapter(Class)}. This implementation creates an accessible
 	 * location located along the right edge of the EditPart's Figure.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected class DefaultAccessibleAnchorProvider implements AccessibleAnchorProvider {
@@ -188,7 +188,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * Extends {@link AbstractEditPart#activate()} to also activate all
 	 * <i>source</i> ConnectionEditParts.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#activate()
 	 */
 	@Override
@@ -201,7 +201,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 
 	/**
 	 * Adds the child's Figure to the {@link #getContentPane() contentPane}.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int)
 	 */
 	@Override
@@ -247,7 +247,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * If active, this EditPart will activate the ConnectionEditPart.
 	 * <P>
 	 * Finally, all {@link NodeListener}s are notified of the new connection.
-	 * 
+	 *
 	 * @param connection Connection being added
 	 * @param index      Index where it is being added
 	 */
@@ -276,7 +276,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * <code>this</code>.
 	 * <P>
 	 * Finally, all {@link NodeListener}s are notified of the new connection.
-	 * 
+	 *
 	 * @param connection Connection being added
 	 * @param index      Index where it is being added
 	 */
@@ -300,7 +300,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * The default implementation goes to the EditPartViewer's
 	 * {@link EditPartFactory} to create the connection. This method should not be
 	 * overridden unless factories are not being used.
-	 * 
+	 *
 	 * @param model the connection model object
 	 * @return the new ConnectionEditPart
 	 */
@@ -311,7 +311,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * Creates the <code>Figure</code> to be used as this part's <i>visuals</i>.
 	 * This is called from {@link #getFigure()} if the figure has not been created.
-	 * 
+	 *
 	 * @return a Figure
 	 */
 	protected abstract IFigure createFigure();
@@ -322,7 +322,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * if one is found. Otherwise, {@link #createConnection(Object)} is called to
 	 * create a new ConnectionEditPart. Override this method only if you need to
 	 * find an existing connection some other way.
-	 * 
+	 *
 	 * @param model the Connection's model
 	 * @return the ConnectionEditPart
 	 */
@@ -337,7 +337,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * Extends {@link AbstractEditPart#deactivate()} to also deactivate the source
 	 * ConnectionEditParts. Subclasses should <em>extend</em> this method to remove
 	 * any listeners added in {@link #activate}.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#deactivate()
 	 */
 	@Override
@@ -353,7 +353,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * Notifies listeners that a source connection has been removed. Called from
 	 * {@link #removeSourceConnection(ConnectionEditPart)}. There is no reason for
 	 * subclasses to call or override this method.
-	 * 
+	 *
 	 * @param connection <code>ConnectionEditPart</code> being added as child.
 	 * @param index      Position child is being added into.
 	 */
@@ -368,7 +368,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * Notifies listeners that a target connection has been removed. Called from
 	 * {@link #removeTargetConnection(ConnectionEditPart)}. There is no reason for
 	 * subclasses to call or override this method.
-	 * 
+	 *
 	 * @param connection <code>ConnectionEditPart</code> being added as child.
 	 * @param index      Position child is being added into.
 	 */
@@ -383,7 +383,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * Notifies listeners that a source connection has been added. Called from
 	 * {@link #addSourceConnection(ConnectionEditPart, int)}. There is no reason for
 	 * subclasses to call or override this method.
-	 * 
+	 *
 	 * @param connection <code>ConnectionEditPart</code> being added as child.
 	 * @param index      Position child is being added into.
 	 */
@@ -398,7 +398,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * Notifies listeners that a target connection has been added. Called from
 	 * {@link #addTargetConnection(ConnectionEditPart, int)}. There is no reason for
 	 * subclasses to call or override this method.
-	 * 
+	 *
 	 * @param connection <code>ConnectionEditPart</code> being added as child.
 	 * @param index      Position child is being added into.
 	 */
@@ -415,7 +415,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * {@link AccessibleHandleProvider} and {@link AccessibleAnchorProvider}.
 	 * Subclasses should <em>extend</em> this method to support additional adapter
 	 * types, or to replace the default provided adapters.
-	 * 
+	 *
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
 	 */
 	@Override
@@ -440,7 +440,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * overwrite in case the {@link IFigure} returned by {@link #getFigure()} is a
 	 * composite figure and child figures should be added to one of its children
 	 * instead of the figure itself.
-	 * 
+	 *
 	 * @see GraphicalEditPart#getContentPane()
 	 */
 	@Override
@@ -451,7 +451,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * Overridden to return a default <code>DragTracker</code> for
 	 * GraphicalEditParts.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getDragTracker(Request)
 	 */
 	@Override
@@ -462,7 +462,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * The default implementation calls {@link #createFigure()} if the figure is
 	 * currently <code>null</code>.
-	 * 
+	 *
 	 * @see org.eclipse.gef.GraphicalEditPart#getFigure()
 	 */
 	@Override
@@ -475,7 +475,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * A convenience method for obtaining the specified layer from the
 	 * <code>LayerManager</code>.
-	 * 
+	 *
 	 * @param layer ID of the Layer
 	 * @return The requested layer or <code>null</code> if it doesn't exist
 	 */
@@ -492,7 +492,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * corresponding {@link ConnectionEditPart}.
 	 * <P>
 	 * Callers must not modify the returned List.
-	 * 
+	 *
 	 * @return the List of model source connections
 	 */
 	protected List getModelSourceConnections() {
@@ -507,7 +507,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * corresponding {@link ConnectionEditPart}.
 	 * <P>
 	 * Callers must not modify the returned List.
-	 * 
+	 *
 	 * @return the List of model target connections
 	 */
 	protected List getModelTargetConnections() {
@@ -537,7 +537,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * A GraphicalEditPart is considered selectable, if it is active and its figure
 	 * is showing.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#isSelectable()
 	 */
 	@Override
@@ -550,7 +550,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * method is used to update the {@link #sourceConnections} List. This method is
 	 * called from {@link #addSourceConnection(ConnectionEditPart, int)}. Subclasses
 	 * should not call or override this method.
-	 * 
+	 *
 	 * @param connection the ConnectionEditPart
 	 * @param index      the index of the add
 	 */
@@ -565,7 +565,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * method is used to update the {@link #targetConnections} List. This method is
 	 * called from {@link #addTargetConnection(ConnectionEditPart, int)}. Subclasses
 	 * should not call or override this method.
-	 * 
+	 *
 	 * @param connection the ConnectionEditPart
 	 * @param index      the index of the add
 	 */
@@ -580,7 +580,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * {@link #sourceConnections} List. This method is called from
 	 * {@link #removeSourceConnection(ConnectionEditPart)}. Subclasses should not
 	 * call or override this method.
-	 * 
+	 *
 	 * @param connection Connection to remove.
 	 */
 	protected void primRemoveSourceConnection(ConnectionEditPart connection) {
@@ -592,7 +592,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * {@link #targetConnections} List. This method is called from
 	 * {@link #removeTargetConnection(ConnectionEditPart)}. Subclasses should not
 	 * call or override this method.
-	 * 
+	 *
 	 * @param connection Connection to remove.
 	 */
 	protected void primRemoveTargetConnection(ConnectionEditPart connection) {
@@ -604,7 +604,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * structural features: <i>source</i> and <i>target</i> connections. Subclasses
 	 * should probably override {@link AbstractEditPart#refreshVisuals()} instead of
 	 * this method.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#refresh()
 	 */
 	@Override
@@ -739,7 +739,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * Registers the EditPart's Figure in the Viewer. This is what makes it possible
 	 * for the Viewer to map a mouse location to an EditPart.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#registerVisuals()
 	 */
 	@Override
@@ -749,7 +749,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 
 	/**
 	 * Remove the child's Figure from the {@link #getContentPane() contentPane}.
-	 * 
+	 *
 	 * @see AbstractEditPart#removeChildVisual(EditPart)
 	 */
 	@Override
@@ -769,7 +769,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * Extends {@link AbstractEditPart#removeNotify()} to cleanup
 	 * <code>ConnectionEditParts</code>.
-	 * 
+	 *
 	 * @see EditPart#removeNotify()
 	 */
 	@Override
@@ -796,7 +796,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * <BR>
 	 * Fires notification. <BR>
 	 * Inverse of {@link #addSourceConnection(ConnectionEditPart, int)}
-	 * 
+	 *
 	 * @param connection Connection being removed
 	 */
 	protected void removeSourceConnection(ConnectionEditPart connection) {
@@ -813,7 +813,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * <BR>
 	 * Fires notification. <BR>
 	 * Inverse of {@link #addTargetConnection(ConnectionEditPart, int)}
-	 * 
+	 *
 	 * @param connection Connection being removed
 	 */
 	protected void removeTargetConnection(ConnectionEditPart connection) {
@@ -825,7 +825,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 
 	/**
 	 * This method is extended to preserve a LayoutManager constraint if one exists.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#reorderChild(EditPart, int)
 	 */
 	@Override
@@ -846,7 +846,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * Moves a source <code>ConnectionEditPart</code> into a lower index than it
 	 * currently occupies. This method is called from
 	 * {@link #refreshSourceConnections()}.
-	 * 
+	 *
 	 * @param connection the ConnectionEditPart
 	 * @param index      the new index
 	 */
@@ -859,7 +859,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * Moves a target <code>ConnectionEditPart</code> into a lower index than it
 	 * currently occupies. This method is called from
 	 * {@link #refreshTargetConnections()}.
-	 * 
+	 *
 	 * @param connection the ConnectionEditPart
 	 * @param index      the new index
 	 */
@@ -870,7 +870,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 
 	/**
 	 * Sets the Figure
-	 * 
+	 *
 	 * @param figure the Figure
 	 */
 	protected void setFigure(IFigure figure) {
@@ -887,7 +887,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 
 	/**
 	 * Implemented to remove the Figure from the Viewer's registry.
-	 * 
+	 *
 	 * @see AbstractEditPart#unregisterVisuals()
 	 */
 	@Override

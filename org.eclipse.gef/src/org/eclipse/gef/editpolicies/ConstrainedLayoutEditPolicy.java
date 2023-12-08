@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -11,8 +11,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
-
-import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -36,7 +34,7 @@ import org.eclipse.gef.requests.CreateRequest;
  * ConstrainedLayoutEditPolicy understands
  * {@link RequestConstants#REQ_ALIGN_CHILDREN} in addition to the Requests
  * handled in the superclass.
- * 
+ *
  * @author hudsonr
  * @author anyssen
  * @since 2.0
@@ -46,7 +44,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	/**
 	 * Constant being used to indicate that upon creation (or during move) a size
 	 * was not specified.
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	protected static final Dimension UNSPECIFIED_SIZE = new Dimension();
@@ -56,13 +54,13 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * and constraint. The constraint has been converted from a draw2d constraint to
 	 * an object suitable for the model by calling
 	 * {@link #translateToModelConstraint(Object)}.
-	 * 
+	 *
 	 * @param request    the ChangeBoundsRequest
 	 * @param child      the EditPart of the child being added
 	 * @param constraint the model constraint, after being
 	 *                   {@link #translateToModelConstraint(Object) translated}
 	 * @return the Command to add the child
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	protected Command createAddCommand(ChangeBoundsRequest request, EditPart child, Object constraint) {
@@ -74,7 +72,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * and constraint. The constraint has been converted from a draw2d constraint to
 	 * an object suitable for the model by calling
 	 * {@link #translateToModelConstraint(Object)}.
-	 * 
+	 *
 	 * @param child      the EditPart of the child being added
 	 * @param constraint the model constraint, after being
 	 *                   {@link #translateToModelConstraint(Object) translated}
@@ -89,6 +87,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 *              {@link #createAddCommand(ChangeBoundsRequest, EditPart, Object)}
 	 *              instead.
 	 */
+	@Deprecated
 	protected Command createAddCommand(EditPart child, Object constraint) {
 		return null;
 	}
@@ -98,7 +97,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * command. By default, this method invokes the old
 	 * {@link ConstrainedLayoutEditPolicy#createChangeConstraintCommand(EditPart, Object)
 	 * method}.
-	 * 
+	 *
 	 * @param request    the ChangeBoundsRequest
 	 * @param child      the EditPart of the child being changed
 	 * @param constraint the new constraint, after being
@@ -119,7 +118,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * suitable for the model. Clients should overwrite
 	 * {@link #createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)}
 	 * instead.
-	 * 
+	 *
 	 * @param child      the EditPart of the child being changed
 	 * @param constraint the new constraint, after being
 	 *                   {@link #translateToModelConstraint(Object) translated}
@@ -135,6 +134,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 *              {@link #createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)}
 	 *              instead.
 	 */
+	@Deprecated
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
 		return null;
 	}
@@ -142,7 +142,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	/**
 	 * A {@link ResizableEditPolicy} is used by default for children. Subclasses may
 	 * override this method to supply a different EditPolicy.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
 	 */
 	@Override
@@ -155,19 +155,17 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * each child being added. Once the constraint is calculated,
 	 * {@link #createAddCommand(EditPart,Object)} is called. Subclasses must
 	 * implement this method.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request)
 	 */
 	@Override
 	protected Command getAddCommand(Request generic) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) generic;
-		List editParts = request.getEditParts();
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Add in ConstrainedLayoutEditPolicy");//$NON-NLS-1$
-		GraphicalEditPart child;
 
-		for (int i = 0; i < editParts.size(); i++) {
-			child = (GraphicalEditPart) editParts.get(i);
+		for (EditPart ep : request.getEditParts()) {
+			GraphicalEditPart child = (GraphicalEditPart) ep;
 			command.add(createAddCommand(request, child, translateToModelConstraint(getConstraintFor(request, child))));
 		}
 		return command.unwrap();
@@ -177,7 +175,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * Returns the command to align a group of children. By default, this is treated
 	 * the same as a resize, and
 	 * {@link #getResizeChildrenCommand(ChangeBoundsRequest)} is returned.
-	 * 
+	 *
 	 * @param request the AligmentRequest
 	 * @return the command to perform alignment
 	 */
@@ -187,15 +185,17 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 
 	/**
 	 * Factors out RESIZE and ALIGN requests, otherwise calls <code>super</code> .
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
 	@Override
 	public Command getCommand(Request request) {
-		if (REQ_RESIZE_CHILDREN.equals(request.getType()))
+		if (REQ_RESIZE_CHILDREN.equals(request.getType())) {
 			return getResizeChildrenCommand((ChangeBoundsRequest) request);
-		if (REQ_ALIGN_CHILDREN.equals(request.getType()))
+		}
+		if (REQ_ALIGN_CHILDREN.equals(request.getType())) {
 			return getAlignChildrenCommand((AlignmentRequest) request);
+		}
 
 		return super.getCommand(request);
 	}
@@ -204,14 +204,14 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * Generates a draw2d constraint object for the given
 	 * <code>ChangeBoundsRequest</code> and child EditPart by delegating to
 	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
-	 * 
+	 *
 	 * The rectangle being passed over to
 	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)} is
 	 * calculated based on the child figure's current bounds and the
 	 * ChangeBoundsRequest's move and resize deltas. It is made layout-relative by
 	 * using {@link #translateFromAbsoluteToLayoutRelative(Translatable)} before
 	 * calling {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
-	 * 
+	 *
 	 * @param request the ChangeBoundsRequest
 	 * @param child   the child EditPart for which the constraint should be
 	 *                generated
@@ -229,15 +229,15 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * Responsible of generating a draw2d constraint for the given Rectangle, which
 	 * represents the already transformed (layout-relative) position and size of the
 	 * given Request.
-	 * 
+	 *
 	 * By default, this method delegates to {@link #getConstraintFor(Point)} or
 	 * {@link #getConstraintFor(Rectangle)}, dependent on whether the size of the
 	 * rectangle is an {@link #UNSPECIFIED_SIZE} or not.
-	 * 
+	 *
 	 * Subclasses may overwrite this method in case they need the request or the
 	 * edit part (which will of course not be set during creation) to calculate a
 	 * layout constraint for the request.
-	 * 
+	 *
 	 * @param rectangle the Rectangle relative to the {@link #getLayoutOrigin()
 	 *                  layout origin}
 	 * @return the constraint
@@ -254,7 +254,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * Generates a draw2d constraint given a <code>Point</code>. This method is
 	 * called during creation, when only a mouse location is available, as well as
 	 * during move, in case no resizing is involved.
-	 * 
+	 *
 	 * @param point the Point relative to the {@link #getLayoutOrigin() layout
 	 *              origin}
 	 * @return the constraint
@@ -264,7 +264,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	/**
 	 * Generates a draw2d constraint given a <code>Rectangle</code>. This method is
 	 * called during most operations.
-	 * 
+	 *
 	 * @param rect the Rectangle relative to the {@link #getLayoutOrigin() layout
 	 *             origin}
 	 * @return the constraint
@@ -275,7 +275,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * Generates a draw2d constraint for the given <code>CreateRequest</code> by
 	 * delegating to
 	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
-	 * 
+	 *
 	 * If the CreateRequest has a size, is used during size-on-drop creation, a
 	 * Rectangle of the request's location and size is passed with the delegation.
 	 * Otherwise, a rectangle with the request's location and an empty size (0,0) is
@@ -285,7 +285,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * layout-relative by using
 	 * {@link #translateFromAbsoluteToLayoutRelative(Translatable)} before calling
 	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
-	 * 
+	 *
 	 * @param request the CreateRequest
 	 * @return a draw2d constraint
 	 */
@@ -302,7 +302,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 
 	/**
 	 * Returns the correct rectangle bounds for the new clone's location.
-	 * 
+	 *
 	 * @param part    the graphical edit part representing the object to be cloned.
 	 * @param request the ChangeBoundsRequest that knows where to place the new
 	 *                object.
@@ -314,6 +314,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 *             clients.
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
+	@Deprecated
 	protected Object getConstraintForClone(GraphicalEditPart part, ChangeBoundsRequest request) {
 		// anyssen: The code executed herein was functionally the same
 		// as that in getConstraintFor(ChangeBoundsRequest, GraphicalEditPart),
@@ -327,7 +328,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	/**
 	 * Converts a constraint from the format used by LayoutManagers, to the form
 	 * stored in the model.
-	 * 
+	 *
 	 * @param figureConstraint the draw2d constraint
 	 * @return the model constraint
 	 */
@@ -337,7 +338,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 
 	/**
 	 * Returns the <code>Command</code> to resize a group of children.
-	 * 
+	 *
 	 * @param request the ChangeBoundsRequest
 	 * @return the Command
 	 */
@@ -347,23 +348,19 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 
 	/**
 	 * Returns the <code>Command</code> for changing bounds for a group of children.
-	 * 
+	 *
 	 * @param request the ChangeBoundsRequest
 	 * @return the Command
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	protected Command getChangeConstraintCommand(ChangeBoundsRequest request) {
 		CompoundCommand resize = new CompoundCommand();
-		Command c;
-		GraphicalEditPart child;
-		List children = request.getEditParts();
 
-		for (int i = 0; i < children.size(); i++) {
-			child = (GraphicalEditPart) children.get(i);
-			c = createChangeConstraintCommand(request, child,
-					translateToModelConstraint(getConstraintFor(request, child)));
-			resize.add(c);
+		for (EditPart ep : request.getEditParts()) {
+			GraphicalEditPart child = (GraphicalEditPart) ep;
+			resize.add(createChangeConstraintCommand(request, child,
+					translateToModelConstraint(getConstraintFor(request, child))));
 		}
 		return resize.unwrap();
 	}
@@ -371,7 +368,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	/**
 	 * Returns the <code>Command</code> to move a group of children. By default,
 	 * move is treated the same as a resize.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getMoveChildrenCommand(Request)
 	 */
 	@Override

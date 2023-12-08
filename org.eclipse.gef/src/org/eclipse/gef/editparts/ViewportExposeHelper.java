@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ import org.eclipse.gef.GraphicalEditPart;
 /**
  * An implementation of <code>ExposeHelper</code> for use with editparts using a
  * <code>Viewport</code>.
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -40,7 +40,7 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 	 * Constructs a new ViewportExposeHelper on the specified GraphicalEditPart. The
 	 * GraphicalEditPart must have a <code>Viewport</code> somewhere between its
 	 * <i>contentsPane</i> and its <i>figure</i> inclusively.
-	 * 
+	 *
 	 * @param owner the GraphicalEditPart that owns the Viewport
 	 */
 	public ViewportExposeHelper(GraphicalEditPart owner) {
@@ -51,7 +51,7 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 	 * Exposes the descendant EditPart by smoothly scrolling the
 	 * <code>Viewport</code>. The smoothness is determined by the minimum and
 	 * maximum frame count, and the overall amount being scrolled.
-	 * 
+	 *
 	 * @see org.eclipse.gef.ExposeHelper#exposeDescendant(EditPart)
 	 */
 	@Override
@@ -114,7 +114,7 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 
 	/**
 	 * Returns the maximumFrameCount.
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getMaximumFrameCount() {
@@ -123,7 +123,7 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 
 	/**
 	 * Returns the minimumFrameCount.
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getMinimumFrameCount() {
@@ -133,7 +133,7 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 	/**
 	 * Sets the amount of margin to be left around the descendant being exposed.
 	 * There is no margin by default.
-	 * 
+	 *
 	 * @param margin the margin in pixels
 	 */
 	public void setMargin(Insets margin) {
@@ -142,7 +142,7 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 
 	/**
 	 * Sets the maximumFrameCount.
-	 * 
+	 *
 	 * @param maximumFrameCount The maximumFrameCount to set
 	 */
 	public void setMaximumFrameCount(int maximumFrameCount) {
@@ -151,7 +151,7 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 
 	/**
 	 * Sets the minimumFrameCount.
-	 * 
+	 *
 	 * @param minimumFrameCount The minimumFrameCount to set
 	 */
 	public void setMinimumFrameCount(int minimumFrameCount) {

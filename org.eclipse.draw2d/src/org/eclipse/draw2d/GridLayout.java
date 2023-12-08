@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * spacing can be configured, as well as specific layout requirements for the
  * each individual member of the GridLayout. This layout is a Draw2D port of the
  * swt GridLayout.
- * 
+ *
  * <code>GridLayout</code> has a number of configuration fields, and the Figures
  * it lays out can have an associated layout data object, called
  * <code>GridData</code> (similar to the SWT GridData object). The power of
@@ -38,42 +38,42 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * the last of which has been given further layout instructions. Note that it is
  * the <code>GridLayout</code> method <code>setConstraint</code> that binds the
  * child <code>Figure</code> to its layout <code>GridData</code> object.
- * 
+ *
  * <pre>
  * Figure container = new Figure();
  * GridLayout gridLayout = new GridLayout();
  * gridLayout.numColumns = 2;
  * container.setLayout(gridLayout);
- * 
+ *
  * Shape rect;
  * rect = new RectangleFigure();
  * container.add(rect);
- * 
+ *
  * rect = new RectangleFigure();
  * container.add(rect);
- * 
+ *
  * rect = new RectangleFigure();
  * GridData gridData = new GridData();
  * gridData.widthHint = 150;
  * layout.setConstraint(rect, gridData);
- * 
+ *
  * container.add(rect);
  * </pre>
- * 
+ *
  * <p>
  * The <code>numColumns</code> field is the most important field in a
  * <code>GridLayout</code>. Widgets are laid out in columns from left to right,
  * and a new row is created when <code>numColumns</code>+ 1 figures are added to
  * the <code>Figure<code> parent container.
- * 
+ *
  * @see GridData
- * 
+ *
  */
 public class GridLayout extends AbstractHintLayout {
 
 	/**
 	 * numColumns specifies the number of cell columns in the layout.
-	 * 
+	 *
 	 * The default value is 1.
 	 */
 	public int numColumns = 1;
@@ -81,7 +81,7 @@ public class GridLayout extends AbstractHintLayout {
 	/**
 	 * makeColumnsEqualWidth specifies whether all columns in the layout will be
 	 * forced to have the same width.
-	 * 
+	 *
 	 * The default value is false.
 	 */
 	public boolean makeColumnsEqualWidth = false;
@@ -89,7 +89,7 @@ public class GridLayout extends AbstractHintLayout {
 	/**
 	 * marginWidth specifies the number of pixels of horizontal margin that will be
 	 * placed along the left and right edges of the layout.
-	 * 
+	 *
 	 * The default value is 5.
 	 */
 	public int marginWidth = 5;
@@ -97,7 +97,7 @@ public class GridLayout extends AbstractHintLayout {
 	/**
 	 * marginHeight specifies the number of pixels of vertical margin that will be
 	 * placed along the top and bottom edges of the layout.
-	 * 
+	 *
 	 * The default value is 5.
 	 */
 	public int marginHeight = 5;
@@ -105,7 +105,7 @@ public class GridLayout extends AbstractHintLayout {
 	/**
 	 * horizontalSpacing specifies the number of pixels between the right edge of
 	 * one cell and the left edge of its neighbouring cell to the right.
-	 * 
+	 *
 	 * The default value is 5.
 	 */
 	public int horizontalSpacing = 5;
@@ -113,7 +113,7 @@ public class GridLayout extends AbstractHintLayout {
 	/**
 	 * verticalSpacing specifies the number of pixels between the bottom edge of one
 	 * cell and the top edge of its neighbouring cell underneath.
-	 * 
+	 *
 	 * The default value is 5.
 	 */
 	public int verticalSpacing = 5;
@@ -131,10 +131,10 @@ public class GridLayout extends AbstractHintLayout {
 	/**
 	 * Constructs a new instance of this class given the number of columns, and
 	 * whether or not the columns should be forced to have the same width.
-	 * 
+	 *
 	 * @param numColumns            the number of columns in the grid
 	 * @param makeColumnsEqualWidth whether or not the columns will have equal width
-	 * 
+	 *
 	 */
 	public GridLayout(int numColumns, boolean makeColumnsEqualWidth) {
 		this.numColumns = numColumns;
@@ -178,7 +178,7 @@ public class GridLayout extends AbstractHintLayout {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.
 	 * draw2d.IFigure, int, int)
 	 */
@@ -213,7 +213,7 @@ public class GridLayout extends AbstractHintLayout {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.LayoutManager#layout(org.eclipse.draw2d.IFigure)
 	 */
 	@Override
@@ -473,7 +473,7 @@ public class GridLayout extends AbstractHintLayout {
 								/*
 								 * // *Note*: Left this in place from SWT // GridLayout. Not sure if Draw2D
 								 * Borders or // Scrollbars 'trim' will need to be takeninto account.
-								 * 
+								 *
 								 * if (child instanceof Group) { Group g =(Group)child; trim = g.getSize ().x -
 								 * g.getClientArea ().width; } else if (child instanceof Scrollable) { Rectangle
 								 * rect = ((Scrollable) child).computeTrim (0, 0, 0,0); trim = rect.width; }
@@ -731,7 +731,7 @@ public class GridLayout extends AbstractHintLayout {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure )
 	 */
@@ -743,7 +743,7 @@ public class GridLayout extends AbstractHintLayout {
 	/**
 	 * Sets the layout constraint of the given figure. The constraints can only be
 	 * of type {@link GridData}.
-	 * 
+	 *
 	 * @see LayoutManager#setConstraint(IFigure, Object)
 	 */
 	@Override

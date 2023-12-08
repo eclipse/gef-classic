@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Constructs an empty PointList.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public PointList() {
@@ -37,7 +37,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Constructs a PointList with the given points.
-	 * 
+	 *
 	 * @param points int array where two consecutive ints form the coordinates of a
 	 *               point
 	 * @since 3.1
@@ -49,7 +49,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Constructs a PointList with initial capacity <i>size</i>, but no points.
-	 * 
+	 *
 	 * @param size Number of points to hold.
 	 * @since 2.0
 	 */
@@ -59,7 +59,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Appends all of the given points to this PointList.
-	 * 
+	 *
 	 * @param source the source pointlist
 	 */
 	public void addAll(PointList source) {
@@ -70,7 +70,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Adds Point <i>p</i> to this PointList.
-	 * 
+	 *
 	 * @param p the point to be added
 	 * @see #removePoint(int)
 	 * @since 2.0
@@ -81,7 +81,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Adds the input point values to this PointList.
-	 * 
+	 *
 	 * @param x X value of a point to add
 	 * @param y Y value of a point to add
 	 * @since 2.0
@@ -106,7 +106,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Returns the smallest Rectangle which contains all Points.
-	 * 
+	 *
 	 * @return The smallest Rectangle which contains all Points.
 	 * @since 2.0
 	 */
@@ -124,7 +124,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Creates a copy
-	 * 
+	 *
 	 * @return PointList A copy of this PointList
 	 */
 	public PointList getCopy() {
@@ -137,7 +137,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Returns the first Point in the list.
-	 * 
+	 *
 	 * @return The first point in the list.
 	 * @throws IndexOutOfBoundsException if the list is empty
 	 * @since 2.0
@@ -148,7 +148,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Returns the last point in the list.
-	 * 
+	 *
 	 * @throws IndexOutOfBoundsException if the list is empty
 	 * @return The last Point in the list
 	 * @since 2.0
@@ -161,7 +161,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	 * Returns the midpoint of the list of Points. The midpoint is the median of the
 	 * List, unless there are 2 medians (size is even), then the middle of the
 	 * medians is returned.
-	 * 
+	 *
 	 * @return The midpoint
 	 * @throws IndexOutOfBoundsException if the list is empty
 	 */
@@ -173,7 +173,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Returns the Point in the list at the specified index.
-	 * 
+	 *
 	 * @param index Index of the desired Point
 	 * @return The requested Point
 	 * @throws IndexOutOfBoundsException If the specified index is out of range
@@ -190,7 +190,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	/**
 	 * Copies the x and y values at given index into a specified Point. This method
 	 * exists to avoid the creation of a new <code>Point</code>.
-	 * 
+	 *
 	 * @see #getPoint(int)
 	 * @param p     The Point which will be set with the &lt;x, y&gt; values
 	 * @param index The index being requested
@@ -209,7 +209,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Inserts a given point at a specified index.
-	 * 
+	 *
 	 * @param p     Point to be inserted.
 	 * @param index Position where the point is to be inserted.
 	 * @exception IndexOutOfBoundsException if the index is invalid
@@ -239,7 +239,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	 * Determines whether any of the line segments represented by this PointList
 	 * intersect the given Rectangle. If a segment touches the given rectangle,
 	 * that's considered intersection.
-	 * 
+	 *
 	 * @param r the rectangle
 	 * @return <code>true</code> if the given rectangle intersects any of the line
 	 *         segments represented by this PointList
@@ -290,7 +290,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	/**
 	 * Removes all the points stored by this list. Resets all the properties based
 	 * on the point information.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public void removeAllPoints() {
@@ -300,7 +300,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Removes the point at the specified index from the PointList, and returns it.
-	 * 
+	 *
 	 * @since 2.0
 	 * @see #addPoint(Point)
 	 * @param index Index of the point to be removed.
@@ -324,7 +324,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Reverses the order of the points in the list.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	public void reverse() {
@@ -341,7 +341,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Overwrites a point at a given index in the list with the specified Point.
-	 * 
+	 *
 	 * @param pt    Point which is to be stored at the index.
 	 * @param index Index where the given point is to be stored.
 	 * @since 2.0
@@ -357,7 +357,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Sets the size of this PointList.
-	 * 
+	 *
 	 * @param newSize the new size
 	 */
 	public void setSize(int newSize) {
@@ -373,7 +373,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Returns the number of points in this PointList.
-	 * 
+	 *
 	 * @return The number of points
 	 * @since 2.0
 	 */
@@ -385,7 +385,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	 * Returns the contents of this PointList as an integer array. The returned
 	 * array is by reference. Any changes made to the array will also be changing
 	 * the original PointList.
-	 * 
+	 *
 	 * @return the integer array of points by reference
 	 * @since 2.0
 	 */
@@ -402,7 +402,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	 * Moves the origin (0,0) of the coordinate system of all the points to the
 	 * Point <i>pt</i>. This updates the position of all the points in this
 	 * PointList.
-	 * 
+	 *
 	 * @param pt Position by which all the points will be shifted.
 	 * @see #translate(int,int)
 	 * @since 2.0
@@ -414,7 +414,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	/**
 	 * Moves the origin (0,0) of the coordinate system of all the points to the
 	 * Point (x,y). This updates the position of all the points in this PointList.
-	 * 
+	 *
 	 * @param x Amount by which all the points will be shifted on the X axis.
 	 * @param y Amount by which all the points will be shifted on the Y axis.
 	 * @see #translate(Point)
@@ -433,7 +433,7 @@ public class PointList implements java.io.Serializable, Translatable {
 
 	/**
 	 * Transposes all x and y values. Useful for orientation changes.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	public void transpose() {
@@ -450,7 +450,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	/**
 	 * @param x - X coordinate of the point
 	 * @param y - Y coordinate of the point
-	 * 
+	 *
 	 * @return true if specified point belongs to the polygon drawn using this
 	 *         PointList
 	 * @see Geometry#polygonContainsPoint(PointList, int, int)
@@ -464,7 +464,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	 * @param x         - X coordinate of the point
 	 * @param y         - Y coordinate of the point
 	 * @param tolerance - allowed distance between point and polyline segment
-	 * 
+	 *
 	 * @return true if the least distance between specified point and polyline drawn
 	 *         using this PointList is less then specified tolerance
 	 * @see Geometry#polylineContainsPoint(PointList, int, int, int)

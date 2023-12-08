@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -91,7 +91,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 
 	/**
 	 * Returns a Figure to represent this.
-	 * 
+	 *
 	 * @return Figure.
 	 */
 	@Override
@@ -139,7 +139,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 
 	/**
 	 * Returns <code>NULL</code> as it does not hold any connections.
-	 * 
+	 *
 	 * @return ConnectionAnchor
 	 */
 	@Override
@@ -149,7 +149,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 
 	/**
 	 * Returns <code>NULL</code> as it does not hold any connections.
-	 * 
+	 *
 	 * @return ConnectionAnchor
 	 */
 	public ConnectionAnchor getSourceConnectionAnchor(int x, int y) {
@@ -158,7 +158,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 
 	/**
 	 * Returns <code>NULL</code> as it does not hold any connections.
-	 * 
+	 *
 	 * @return ConnectionAnchor
 	 */
 	@Override
@@ -168,7 +168,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 
 	/**
 	 * Returns <code>NULL</code> as it does not hold any connections.
-	 * 
+	 *
 	 * @return ConnectionAnchor
 	 */
 	public ConnectionAnchor getTargetConnectionAnchor(int x, int y) {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ import org.eclipse.gef.commands.UnexecutableCommand;
 
 /**
  * Default implementation of RootEditPart for GraphicalViewers.
- * 
+ *
  * @author Pratik Shah
  * @since 3.2
  */
@@ -37,7 +37,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 
 	/**
 	 * No editpolicies are installed on a RootEditPart by default.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
 	@Override
@@ -46,7 +46,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 
 	/**
 	 * The default root figure is a figure with a stack layout.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
 	@Override
@@ -59,7 +59,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	/**
 	 * The RootEditPart should never be asked for a command. This implementation
 	 * returns an unexecutable command.
-	 * 
+	 *
 	 * @see EditPart#getCommand(Request)
 	 */
 	@Override
@@ -93,7 +93,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 
 	/**
 	 * Overridden to do nothing, child is set using setContents(EditPart)
-	 * 
+	 *
 	 * @see AbstractEditPart#refreshChildren()
 	 */
 	@Override

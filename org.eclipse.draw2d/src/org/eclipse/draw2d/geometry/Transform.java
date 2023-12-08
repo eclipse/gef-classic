@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ public class Transform {
 
 	/**
 	 * Sets the value for the amount of scaling to be done along both axes.
-	 * 
+	 *
 	 * @param scale Scale factor
 	 * @since 2.0
 	 */
@@ -32,7 +32,7 @@ public class Transform {
 	/**
 	 * Sets the value for the amount of scaling to be done along X and Y axes
 	 * individually.
-	 * 
+	 *
 	 * @param x Amount of scaling on X axis
 	 * @param y Amount of scaling on Y axis
 	 * @since 2.0
@@ -44,7 +44,7 @@ public class Transform {
 
 	/**
 	 * Sets the rotation angle.
-	 * 
+	 *
 	 * @param angle Angle of rotation
 	 * @since 2.0
 	 */
@@ -55,7 +55,7 @@ public class Transform {
 
 	/**
 	 * Sets the translation amounts for both axes.
-	 * 
+	 *
 	 * @param x Amount of shift on X axis
 	 * @param y Amount of shift on Y axis
 	 * @since 2.0
@@ -68,7 +68,7 @@ public class Transform {
 	/**
 	 * Returns a new transformed Point of the input Point based on the
 	 * transformation values set.
-	 * 
+	 *
 	 * @param p Point being transformed
 	 * @return The transformed Point
 	 * @since 2.0

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -45,7 +45,7 @@ public class DeleteAction extends SelectionAction {
 
 	/**
 	 * Creates a <code>DeleteAction</code> with the given label.
-	 * 
+	 *
 	 * @deprecated use DeleteAction(IWorkbenchPart)
 	 * @param editor The editor this action will be associated with.
 	 * @param label  The label to be displayed for this action.
@@ -57,7 +57,7 @@ public class DeleteAction extends SelectionAction {
 
 	/**
 	 * Constructs a <code>DeleteAction</code> using the specified part.
-	 * 
+	 *
 	 * @param part The part for this action
 	 */
 	public DeleteAction(IWorkbenchPart part) {
@@ -69,7 +69,7 @@ public class DeleteAction extends SelectionAction {
 	 * Returns <code>true</code> if the selected objects can be deleted. Returns
 	 * <code>false</code> if there are no objects selected or the selected objects
 	 * are not {@link EditPart}s.
-	 * 
+	 *
 	 * @return <code>true</code> if the command should be enabled
 	 */
 	@Override
@@ -82,7 +82,7 @@ public class DeleteAction extends SelectionAction {
 
 	/**
 	 * Create a command to remove the selected objects.
-	 * 
+	 *
 	 * @param objects The objects to be deleted.
 	 * @return The command to remove the selected objects.
 	 */

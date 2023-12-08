@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  * should be added. For this to happen, a separator must be uniquely identified.
  * Unless a separator is not a marker, it is recommended that it be given a
  * unique ID.
- * 
+ *
  * @author Pratik Shah
  */
 public class PaletteSeparator extends PaletteEntry {
@@ -39,7 +39,7 @@ public class PaletteSeparator extends PaletteEntry {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param id This Separator's unique ID
 	 */
 	public PaletteSeparator(String id) {

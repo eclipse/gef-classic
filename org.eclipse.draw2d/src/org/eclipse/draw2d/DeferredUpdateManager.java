@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -14,7 +14,6 @@ package org.eclipse.draw2d;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +35,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	protected class UpdateRequest implements Runnable {
 
 		public UpdateRequest() {
-			super();
+			// this constructor is here for the visibility of the constructor of this class
 		}
 
 		/**
@@ -52,7 +51,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	private Map<IFigure, Rectangle> dirtyRegions = new HashMap<>();
 
 	private GraphicsSource graphicsSource;
-	private List invalidFigures = new ArrayList();
+	private final List<IFigure> invalidFigures = new ArrayList<>();
 	private IFigure root;
 	private boolean updateQueued;
 
@@ -70,8 +69,9 @@ public class DeferredUpdateManager extends UpdateManager {
 		}
 
 		void run() {
-			if (next != null)
+			if (next != null) {
 				next.run();
+			}
 			run.run();
 		}
 	}
@@ -84,7 +84,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Constructs a new DererredUpdateManager with the given GraphicsSource.
-	 * 
+	 *
 	 * @param gs the graphics source
 	 */
 	public DeferredUpdateManager(GraphicsSource gs) {
@@ -95,7 +95,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * Adds a dirty region (defined by the rectangle <i>x, y, w, h</i>) to the
 	 * update queue. If the figure isn't visible or either the width or height are
 	 * 0, the method returns without queueing the dirty region.
-	 * 
+	 *
 	 * @param figure the figure that contains the dirty region
 	 * @param x      the x coordinate of the dirty region
 	 * @param y      the y coordinate of the dirty region
@@ -104,15 +104,17 @@ public class DeferredUpdateManager extends UpdateManager {
 	 */
 	@Override
 	public synchronized void addDirtyRegion(IFigure figure, int x, int y, int w, int h) {
-		if (w == 0 || h == 0 || !figure.isShowing())
+		if (w == 0 || h == 0 || !figure.isShowing()) {
 			return;
+		}
 
 		Rectangle rect = dirtyRegions.get(figure);
 		if (rect == null) {
 			rect = new Rectangle(x, y, w, h);
 			dirtyRegions.put(figure, rect);
-		} else
+		} else {
 			rect.union(x, y, w, h);
+		}
 
 		queueWork();
 	}
@@ -120,26 +122,28 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Adds the given figure to the update queue. Invalid figures will be validated
 	 * before the damaged regions are repainted.
-	 * 
+	 *
 	 * @param f the invalid figure
 	 */
 	@Override
 	public synchronized void addInvalidFigure(IFigure f) {
-		if (invalidFigures.contains(f))
+		if (invalidFigures.contains(f)) {
 			return;
+		}
 		queueWork();
 		invalidFigures.add(f);
 	}
 
 	/**
 	 * Returns a Graphics object for the given region.
-	 * 
+	 *
 	 * @param region the region to be repainted
 	 * @return the Graphics object
 	 */
 	protected Graphics getGraphics(Rectangle region) {
-		if (graphicsSource == null)
+		if (graphicsSource == null) {
 			return null;
+		}
 		return graphicsSource.getGraphics(region);
 	}
 
@@ -156,7 +160,7 @@ public class DeferredUpdateManager extends UpdateManager {
 				 * is being painted. Otherwise, notification already occurs in repairDamage().
 				 */
 				Rectangle rect = graphics.getClip(new Rectangle());
-				HashMap map = new HashMap();
+				HashMap<IFigure, Rectangle> map = new HashMap<>();
 				map.put(root, rect);
 				firePainting(rect, map);
 			}
@@ -176,14 +180,15 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Performs the update. Validates the invalid figures and then repaints the
 	 * dirty regions.
-	 * 
+	 *
 	 * @see #validateFigures()
 	 * @see #repairDamage()
 	 */
 	@Override
 	public synchronized void performUpdate() {
-		if (isDisposed() || updating)
+		if (isDisposed() || updating) {
 			return;
+		}
 		updating = true;
 		try {
 			performValidation();
@@ -193,8 +198,9 @@ public class DeferredUpdateManager extends UpdateManager {
 				RunnableChain chain = afterUpdate;
 				afterUpdate = null;
 				chain.run(); // chain may queue additional Runnable.
-				if (afterUpdate != null)
+				if (afterUpdate != null) {
 					queueWork();
+				}
 			}
 		} finally {
 			updating = false;
@@ -206,14 +212,15 @@ public class DeferredUpdateManager extends UpdateManager {
 	 */
 	@Override
 	public synchronized void performValidation() {
-		if (invalidFigures.isEmpty() || validating)
+		if (invalidFigures.isEmpty() || validating) {
 			return;
+		}
 		try {
 			IFigure fig;
 			validating = true;
 			fireValidating();
 			for (int i = 0; i < invalidFigures.size(); i++) {
-				fig = (IFigure) invalidFigures.get(i);
+				fig = invalidFigures.get(i);
 				invalidFigures.set(i, null);
 				fig.validate();
 			}
@@ -226,7 +233,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Adds the given exposed region to the update queue and then performs the
 	 * update.
-	 * 
+	 *
 	 * @param exposed the exposed region
 	 */
 	@Override
@@ -248,7 +255,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Fires the <code>UpdateRequest</code> to the current display asynchronously.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	protected void sendUpdateRequest() {
@@ -261,7 +268,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Releases the graphics object, which causes the GraphicsSource to flush.
-	 * 
+	 *
 	 * @param graphics the graphics object
 	 */
 	protected void releaseGraphics(Graphics graphics) {
@@ -284,10 +291,11 @@ public class DeferredUpdateManager extends UpdateManager {
 				contribution.intersect(walker.getBounds());
 				walker = walker.getParent();
 			}
-			if (damage == null)
+			if (damage == null) {
 				damage = new Rectangle(contribution);
-			else
+			} else {
 				damage.union(contribution);
+			}
 		});
 
 		if (!dirtyRegions.isEmpty()) {
@@ -297,7 +305,6 @@ public class DeferredUpdateManager extends UpdateManager {
 		}
 
 		if (damage != null && !damage.isEmpty()) {
-			// ystem.out.println(damage);
 			Graphics graphics = getGraphics(damage);
 			if (graphics != null) {
 				root.paint(graphics);
@@ -310,19 +317,20 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Adds the given runnable and queues an update if an update is not under
 	 * progress.
-	 * 
+	 *
 	 * @param runnable the runnable
 	 */
 	@Override
 	public synchronized void runWithUpdate(Runnable runnable) {
 		afterUpdate = new RunnableChain(runnable, afterUpdate);
-		if (!updating)
+		if (!updating) {
 			queueWork();
+		}
 	}
 
 	/**
 	 * Sets the graphics source.
-	 * 
+	 *
 	 * @param gs the graphics source
 	 */
 	@Override
@@ -332,7 +340,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Sets the root figure.
-	 * 
+	 *
 	 * @param figure the root figure
 	 */
 	@Override

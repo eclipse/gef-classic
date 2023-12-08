@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,14 +26,14 @@ import org.eclipse.gef.internal.ui.palette.editparts.DrawerFigure;
 /**
  * A ToolbarLayout-like layout for the palette. This layout only works when
  * vertically oriented.
- * 
+ *
  * @author Pratik Shah
  */
 public class PaletteToolbarLayout extends ToolbarLayout {
 
 	/**
 	 * A figure is growing if it's an expanded drawer.
-	 * 
+	 *
 	 * @param child The figure that is to be marked as growing or non-growing
 	 * @return <code>true</code> if the given child is considered growing
 	 */

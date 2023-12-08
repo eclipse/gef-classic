@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2011 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -38,7 +38,7 @@ public class ToolTipHelper extends PopUpHelper {
 
 	/**
 	 * Constructs a ToolTipHelper to be associated with Control <i>c</i>.
-	 * 
+	 *
 	 * @param c the control
 	 * @since 2.0
 	 */
@@ -72,7 +72,7 @@ public class ToolTipHelper extends PopUpHelper {
 	/**
 	 * Sets the tooltip hide delay, which is the amount in ms, after which the
 	 * tooltip will disappear again.
-	 * 
+	 *
 	 * @param hideDelay The delay after which the tooltip is hidden again, in ms.
 	 * @since 3.10
 	 */
@@ -88,7 +88,7 @@ public class ToolTipHelper extends PopUpHelper {
 	 * <p>
 	 * The tooltip will be painted directly below the cursor if possible, otherwise
 	 * it will be painted directly above cursor.
-	 * 
+	 *
 	 * @param hoverSource the figure over which the hover event was fired
 	 * @param tip         the tooltip to be displayed
 	 * @param eventX      the x coordinate of the hover event
@@ -121,7 +121,7 @@ public class ToolTipHelper extends PopUpHelper {
 
 	/**
 	 * Disposes of the tooltip's shell and kills the timer.
-	 * 
+	 *
 	 * @see PopUpHelper#dispose()
 	 */
 	@Override
@@ -158,7 +158,7 @@ public class ToolTipHelper extends PopUpHelper {
 	/**
 	 * Displays the hover source's tooltip if a tooltip of another source is
 	 * currently being displayed.
-	 * 
+	 *
 	 * @param figureUnderMouse the figure over which the cursor was when called
 	 * @param tip              the tooltip to be displayed
 	 * @param eventX           the x coordinate of the cursor

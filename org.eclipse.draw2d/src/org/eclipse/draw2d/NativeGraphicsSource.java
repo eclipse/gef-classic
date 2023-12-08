@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * constructing GC on it directly. This allows the OS's native painting
  * mechanism to be used directly, including any double-buffering that the OS may
  * provide for free.
- * 
+ *
  * @since 3.2
  */
 public final class NativeGraphicsSource implements GraphicsSource {
@@ -31,7 +31,7 @@ public final class NativeGraphicsSource implements GraphicsSource {
 
 	/**
 	 * Constructs a new graphics source on the given control.
-	 * 
+	 *
 	 * @param canvas the control
 	 * @since 3.2
 	 */
@@ -41,7 +41,7 @@ public final class NativeGraphicsSource implements GraphicsSource {
 
 	/**
 	 * Always returns <code>null</code>, because
-	 * 
+	 *
 	 * @see GraphicsSource#getGraphics(Rectangle)
 	 */
 	@Override
@@ -61,7 +61,7 @@ public final class NativeGraphicsSource implements GraphicsSource {
 
 	/**
 	 * Does nothing.
-	 * 
+	 *
 	 * @see GraphicsSource#flushGraphics(Rectangle)
 	 */
 	@Override

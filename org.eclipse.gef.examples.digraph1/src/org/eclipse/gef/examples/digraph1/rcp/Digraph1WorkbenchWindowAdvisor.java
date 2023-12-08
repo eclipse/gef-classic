@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,14 +25,14 @@ import org.eclipse.ui.part.FileInPlaceEditorInput;
 /**
  * A Workbench Window Advisor for the Directed Graph Example Editor as an RCP
  * application.
- * 
+ *
  * @author Anthony Hunter
  */
 public class Digraph1WorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 	/**
 	 * Constructor for Digraph1WorkbenchWindowAdvisor.
-	 * 
+	 *
 	 * @param configurer the workbench window configurer.
 	 */
 	public Digraph1WorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {

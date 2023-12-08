@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -37,7 +37,7 @@ import org.eclipse.gef.examples.shapes.model.Shape;
  * connection <i>target</i> by calling the <tt>setNewTarget(Shape)</tt> method
  * and return the command instance.</li>
  * </ol>
- * 
+ *
  * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies()
  *      for an example of the above procedure.
  * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy
@@ -61,7 +61,7 @@ public class ConnectionReconnectCommand extends Command {
 	/**
 	 * Instantiate a command that can reconnect a Connection instance to a different
 	 * source or target endpoint.
-	 * 
+	 *
 	 * @param conn the connection instance to reconnect (non-null)
 	 * @throws IllegalArgumentException if conn is null
 	 */
@@ -76,7 +76,7 @@ public class ConnectionReconnectCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
 	@Override
@@ -141,7 +141,7 @@ public class ConnectionReconnectCommand extends Command {
 	 * endpoint. A single instance of this command can only reconnect either the
 	 * source or the target endpoint.
 	 * </p>
-	 * 
+	 *
 	 * @param connectionSource a non-null Shape instance, to be used as a new source
 	 *                         endpoint
 	 * @throws IllegalArgumentException if connectionSource is null
@@ -164,7 +164,7 @@ public class ConnectionReconnectCommand extends Command {
 	 * endpoint. A single instance of this command can only reconnect either the
 	 * source or the target endpoint.
 	 * </p>
-	 * 
+	 *
 	 * @param connectionTarget a non-null Shape instance, to be used as a new target
 	 *                         endpoint
 	 * @throws IllegalArgumentException if connectionTarget is null

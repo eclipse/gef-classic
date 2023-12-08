@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -35,7 +35,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
  * the editor can save and restore a binary representation. You might not need
  * this, if you store the model a non-binary form like XML).</li>
  * </ul>
- * 
+ *
  * @author Elias Volanakis
  */
 public abstract class ModelElement implements IPropertySource, Serializable {
@@ -48,7 +48,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 
 	/**
 	 * Attach a non-null PropertyChangeListener to this object.
-	 * 
+	 *
 	 * @param l a non-null PropertyChangeListener instance
 	 * @throws IllegalArgumentException if the parameter is null
 	 */
@@ -61,7 +61,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 
 	/**
 	 * Report a property change to registered listeners (for example edit parts).
-	 * 
+	 *
 	 * @param property the programmatic name of the property that changed
 	 * @param oldValue the old value of this property
 	 * @param newValue the new value of this property
@@ -86,7 +86,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	 * <p>
 	 * Override only if necessary.
 	 * </p>
-	 * 
+	 *
 	 * @return this instance
 	 */
 	@Override
@@ -121,7 +121,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 
 	/**
 	 * Deserialization constructor. Initializes transient fields.
-	 * 
+	 *
 	 * @see java.io.Serializable
 	 */
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -131,7 +131,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 
 	/**
 	 * Remove a PropertyChangeListener from this component.
-	 * 
+	 *
 	 * @param l a PropertyChangeListener instance
 	 */
 	public synchronized void removePropertyChangeListener(PropertyChangeListener l) {

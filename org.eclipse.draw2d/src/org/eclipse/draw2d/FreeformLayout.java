@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ public class FreeformLayout extends XYLayout {
 
 	/**
 	 * Returns the point (0,0) as the origin.
-	 * 
+	 *
 	 * @see XYLayout#getOrigin(IFigure)
 	 */
 	@Override
@@ -63,7 +63,7 @@ public class FreeformLayout extends XYLayout {
 	/**
 	 * Checks whether the positive coordinates flag is on, e.g positive coordinates
 	 * for children are inforced by the layout
-	 * 
+	 *
 	 * @return <code>boolean</code>
 	 * @since 3.6
 	 */
@@ -75,7 +75,7 @@ public class FreeformLayout extends XYLayout {
 	 * Sets/unsets the positive coordinates flag for true/false parameters
 	 * respectively. If option is set to on then layout calculates positive
 	 * coordinates for children figures by adjusting the layout origin accordingly.
-	 * 
+	 *
 	 * @param positiveCoordinates
 	 * @since 3.6
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -35,14 +35,14 @@ import org.eclipse.gef.requests.DropRequest;
  * <P>
  * This EditPolicy factors the {@link #getCommand(Request)} into three different
  * abstract methods which subclasses must implement.
- * 
+ *
  * @since 2.0
  */
 public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Returns a Command for adding the children to the container.
-	 * 
+	 *
 	 * @param request the Request to add.
 	 * @return Command <code>null</code> or a Command to perform the add
 	 */
@@ -50,7 +50,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Returns a Command for creating the object inside the container.
-	 * 
+	 *
 	 * @param request the CreateRequest
 	 * @return Command <code>null</code> or a Command to perform the create
 	 */
@@ -58,7 +58,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Returns a Command for moving the children within the container.
-	 * 
+	 *
 	 * @param request the Request to move
 	 * @return Command <code>null</code> or a Command to perform the move
 	 */
@@ -79,7 +79,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Calculates the index of the TreeItem at given point.
-	 * 
+	 *
 	 * @param pt the Point in the Viewer
 	 * @return the index of the TreeItem
 	 */
@@ -97,7 +97,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Calculates the <code>TreeItem</code> at a specified
 	 * {@link org.eclipse.draw2d.geometry.Point}.
-	 * 
+	 *
 	 * @param pt the draw2d Point
 	 * @return <code>null</code> or the TreeItem
 	 */
@@ -123,7 +123,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Returns the host EditPart when appropriate. Targeting is done by checking if
 	 * the mouse is clearly over the host's TreeItem.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
 	@Override

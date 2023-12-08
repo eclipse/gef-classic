@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
-import org.eclipse.draw2d.ImageUtilities;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+
+import org.eclipse.draw2d.ImageUtilities;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,6 +26,7 @@ import org.junit.Test;
  */
 public class ImageUtilitiesTest extends Assert {
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testImageRotation() {
 		Image result1 = null, result2 = null, result3 = null;
@@ -41,12 +44,15 @@ public class ImageUtilitiesTest extends Assert {
 			img1.dispose();
 			img2.dispose();
 			img3.dispose();
-			if (result1 != null && !result1.isDisposed())
+			if (result1 != null && !result1.isDisposed()) {
 				result1.dispose();
-			if (result2 != null && !result2.isDisposed())
+			}
+			if (result2 != null && !result2.isDisposed()) {
 				result2.dispose();
-			if (result3 != null && !result3.isDisposed())
+			}
+			if (result3 != null && !result3.isDisposed()) {
 				result3.dispose();
+			}
 		}
 	}
 
@@ -70,14 +76,18 @@ public class ImageUtilitiesTest extends Assert {
 			img2.dispose();
 			img3.dispose();
 			img4.dispose();
-			if (result1 != null && !result1.isDisposed())
+			if (result1 != null && !result1.isDisposed()) {
 				result1.dispose();
-			if (result2 != null && !result2.isDisposed())
+			}
+			if (result2 != null && !result2.isDisposed()) {
 				result2.dispose();
-			if (result3 != null && !result3.isDisposed())
+			}
+			if (result3 != null && !result3.isDisposed()) {
 				result3.dispose();
-			if (result4 != null && !result4.isDisposed())
+			}
+			if (result4 != null && !result4.isDisposed()) {
 				result4.dispose();
+			}
 		}
 	}
 

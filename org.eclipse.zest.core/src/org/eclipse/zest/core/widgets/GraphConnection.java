@@ -104,7 +104,7 @@ public class GraphConnection extends GraphItem {
 	}
 
 	/**
-	 * @since 1.9
+	 * @since 1.10
 	 */
 	public void registerConnection(GraphNode source, GraphNode destination) {
 		if (source.getSourceConnections().contains(this)) {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,15 +19,17 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.examples.text.edit.TextEditPart;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
+import org.eclipse.gef.EditPart;
+
+import org.eclipse.gef.examples.text.edit.TextEditPart;
+
 /**
  * SelectionModel is immutable.
- * 
+ *
  * @author Pratik Shah
  * @since 3.2
  */
@@ -53,7 +55,7 @@ public class SelectionModel {
 		if (!constantSelection.isEmpty()) {
 			Iterator<EditPart> itr = constantSelection.iterator();
 			while (true) {
-				EditPart part = (EditPart) itr.next();
+				EditPart part = itr.next();
 				if (!itr.hasNext()) {
 					part.setSelected(EditPart.SELECTED_PRIMARY);
 					break;
@@ -67,14 +69,14 @@ public class SelectionModel {
 		SelectionRange range = getSelectionRange();
 		if (range != null) {
 			List<EditPart> currentSelection = range.getSelectedParts();
-			for (int i = 0; i < currentSelection.size(); i++) {
-				TextEditPart textpart = (TextEditPart) currentSelection.get(i);
+			for (EditPart element : currentSelection) {
+				TextEditPart textpart = (TextEditPart) element;
 				textpart.setSelection(0, textpart.getLength());
 			}
 
-			if (range.begin.part == range.end.part)
+			if (range.begin.part == range.end.part) {
 				range.begin.part.setSelection(range.begin.offset, range.end.offset);
-			else {
+			} else {
 				range.begin.part.setSelection(range.begin.offset, range.begin.part.getLength());
 				range.end.part.setSelection(0, range.end.offset);
 			}
@@ -125,8 +127,9 @@ public class SelectionModel {
 	}
 
 	public EditPart getFocusPart() {
-		if (constantSelection.isEmpty())
+		if (constantSelection.isEmpty()) {
 			return null;
+		}
 		return constantSelection.get(constantSelection.size() - 1);
 	}
 

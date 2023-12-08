@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -30,7 +30,7 @@ import org.eclipse.gef.requests.CreationFactory;
 /**
  * If the current object on the clipboard is a valid template, this action will
  * paste the template to the viewer.
- * 
+ *
  * @author Eric Bordeau, Pratik Shah
  * @see org.eclipse.gef.ui.actions.CopyTemplateAction
  * @since 3.8
@@ -39,7 +39,7 @@ public class PasteTemplateAction extends SelectionAction {
 
 	/**
 	 * Constructor for PasteTemplateAction.
-	 * 
+	 *
 	 * @param editor
 	 */
 	public PasteTemplateAction(IWorkbenchPart editor) {
@@ -61,7 +61,7 @@ public class PasteTemplateAction extends SelectionAction {
 	/**
 	 * Creates and returns a command (which may be <code>null</code>) to create a
 	 * new EditPart based on the template on the clipboard.
-	 * 
+	 *
 	 * @return the paste command
 	 */
 	protected Command createPasteCommand() {
@@ -89,7 +89,7 @@ public class PasteTemplateAction extends SelectionAction {
 	 * Returns the template on the clipboard, if there is one. Note that the
 	 * template on the clipboard might be from a palette from another type of
 	 * editor.
-	 * 
+	 *
 	 * @return the clipboard's contents
 	 */
 	protected Object getClipboardContents() {
@@ -102,7 +102,7 @@ public class PasteTemplateAction extends SelectionAction {
 	 * EditPart. Note that the given template might be from a palette for a
 	 * different GEF-based editor. In that case, this method can return
 	 * <code>null</code>.
-	 * 
+	 *
 	 * @param template the template Object; it will never be <code>null</code>
 	 * @return a Factory
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ import org.eclipse.gef.ui.palette.customize.PaletteStackFactory;
  * <code>PaletteCustomizer</code> is the <code>PaletteCustomizerDialog</code>'s
  * interface to the model. This class is responsible for propogating to the
  * model changes made in the dialog.
- * 
+ *
  * @author Pratik Shah
  */
 public abstract class PaletteCustomizer {
@@ -39,7 +39,7 @@ public abstract class PaletteCustomizer {
 	 * default, this method checks to see first if the container has full
 	 * permissions, then checks to see if this container can accept the type of the
 	 * entry.
-	 * 
+	 *
 	 * @param container the container that will be the parent of this entry
 	 * @param entry     the entry to add to the container
 	 * @return true if this container can hold this entry
@@ -57,10 +57,10 @@ public abstract class PaletteCustomizer {
 	 * This method will be invoked by <code>PaletteCustomizerDialog</code> to
 	 * determine whether or not to enable the "Delete" action.
 	 * </p>
-	 * 
+	 *
 	 * @param entry The selected palette entry. It'll never be <code>null</code>.
 	 * @return <code>true</code> if the given entry can be deleted
-	 * 
+	 *
 	 * @see #performDelete(PaletteEntry)
 	 */
 	public boolean canDelete(PaletteEntry entry) {
@@ -76,10 +76,10 @@ public abstract class PaletteCustomizer {
 	 * Will be called by PaletteCustomizerDialog to determine whether or not to
 	 * enable the "Move Down" action.
 	 * </p>
-	 * 
+	 *
 	 * @param entry The selected palette entry (it'll never be <code>null</code>)
 	 * @return <code>true</code> if the given entry can be moved down
-	 * 
+	 *
 	 * @see #performMoveDown(PaletteEntry)
 	 */
 	public boolean canMoveDown(PaletteEntry entry) {
@@ -126,10 +126,10 @@ public abstract class PaletteCustomizer {
 	 * Will be called by PaletteCustomizerDialog to determine whether or not to
 	 * enable the "Move Up" action.
 	 * </p>
-	 * 
+	 *
 	 * @param entry The selected palette entry (it'll never be <code>null</code>)
 	 * @return <code>true</code> if the given entry can be moved up
-	 * 
+	 *
 	 * @see #performMoveUp(PaletteEntry)
 	 */
 	public boolean canMoveUp(PaletteEntry entry) {
@@ -173,7 +173,7 @@ public abstract class PaletteCustomizer {
 	 * PaletteEntryFactory will be used to populate the "New" drop-down.
 	 * getImageDescriptor() will be used to set the icons on the drop down. This
 	 * method can return null if there are no PaletteEntryFactories available.
-	 * 
+	 *
 	 * @return The List of PaletteEntryFactories
 	 */
 	public List getNewEntryFactories() {
@@ -187,7 +187,7 @@ public abstract class PaletteCustomizer {
 	/**
 	 * Returns an EntryPage that will display the custom properties of the given
 	 * entry. Can return null if there are no custom properties.
-	 * 
+	 *
 	 * @param entry The PaletteEntry whose properties page needs to be displayed
 	 *              (it'll never be <code>null</code>)
 	 * @return The EntryPage to represent the given entry
@@ -202,9 +202,9 @@ public abstract class PaletteCustomizer {
 	/**
 	 * Updates the model by deleting the given entry from it. <br>
 	 * Called when the "Delete" action in the PaletteCustomizerDialog is executed.
-	 * 
+	 *
 	 * @param entry The selected palette entry (it'll never be <code>null</code>)
-	 * 
+	 *
 	 * @see #canDelete(PaletteEntry)
 	 */
 	public void performDelete(PaletteEntry entry) {
@@ -214,9 +214,9 @@ public abstract class PaletteCustomizer {
 	/**
 	 * Updates the model by moving the entry down. <br>
 	 * Called when the "Move Down" action in the PaletteCustomizerDialog is invoked.
-	 * 
+	 *
 	 * @param entry The selected palette entry (it'll never be <code>null</code>)
-	 * 
+	 *
 	 * @see #canMoveDown(PaletteEntry)
 	 */
 	public void performMoveDown(PaletteEntry entry) {
@@ -253,9 +253,9 @@ public abstract class PaletteCustomizer {
 	/**
 	 * Updates the model by moving the entry up. <br>
 	 * Called when the "Move Up" action in the PaletteCustomizerDialog is invoked.
-	 * 
+	 *
 	 * @param entry The selected palette entry (it'll never be <code>null</code>)
-	 * 
+	 *
 	 * @see #canMoveUp(PaletteEntry)
 	 */
 	public void performMoveUp(PaletteEntry entry) {

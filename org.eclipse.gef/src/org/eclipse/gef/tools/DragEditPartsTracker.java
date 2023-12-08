@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -79,7 +79,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Constructs a new DragEditPartsTracker with the given source edit part.
-	 * 
+	 *
 	 * @param sourceEditPart the source edit part
 	 */
 	public DragEditPartsTracker(EditPart sourceEditPart) {
@@ -92,7 +92,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * Returns true if the control key was the key in the key event and the tool is
 	 * in an acceptable state for this event.
-	 * 
+	 *
 	 * @param e the key event
 	 * @return true if the key was control and can be accepted.
 	 */
@@ -110,7 +110,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Returns the cursor used under normal conditions.
-	 * 
+	 *
 	 * @see #setDefaultCursor(Cursor)
 	 * @return the default cursor
 	 */
@@ -127,9 +127,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * {@link HandleBounds} the {@link HandleBounds#getHandleBounds() handle bounds}
 	 * are returned in absolute coordinates, other wise the
 	 * {@link IFigure#getBounds() figure bounds}.
-	 * 
+	 *
 	 * @return The bounds of the source figure in absolute coordinates.
-	 * 
+	 *
 	 * @since 3.11
 	 */
 	protected PrecisionRectangle getSourceBounds() {
@@ -142,7 +142,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * {@link HandleBounds} their {@link HandleBounds#getHandleBounds() handle
 	 * bounds} will be used, otherwise their {@link IFigure#getBounds() figure
 	 * bounds}.
-	 * 
+	 *
 	 * @return The unioned bounds of the operation set figures in absolute
 	 *         coordinates.
 	 * @since 3.11
@@ -153,7 +153,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Returns the {@link SnapToHelper} used by this {@link DragEditPartsTracker}.
-	 * 
+	 *
 	 * @return The {@link SnapToHelper} used by this {@link DragEditPartsTracker}.
 	 * @since 3.11
 	 */
@@ -163,7 +163,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Erases feedback and calls {@link #performDrag()}. Sets the state to terminal.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#commitDrag()
 	 */
 	@Override
@@ -213,7 +213,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * {@link ToolUtilities#getSelectionWithoutDependants(EditPartViewer)} that
 	 * understand the current target request (by calling
 	 * {@link ToolUtilities#filterEditPartsUnderstanding(List, Request)}.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
 	 */
 	@Override
@@ -233,7 +233,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * contribute to the overall command, the request type will be either
 	 * {@link RequestConstants#REQ_MOVE} or {@link RequestConstants#REQ_ORPHAN},
 	 * depending on the result of {@link #isMove()}.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
 	 */
 	@Override
@@ -246,7 +246,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Erases source feedback and sets the autoexpose helper to <code>null</code>.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#deactivate()
 	 */
 	@Override
@@ -281,7 +281,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * request type to either {@link RequestConstants#REQ_MOVE} or
 	 * {@link RequestConstants#REQ_ORPHAN}, depending on the result of
 	 * {@link #isMove()}.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommand()
 	 */
 	@Override
@@ -345,7 +345,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * Returns a list of all the edit parts in the
 	 * {@link AbstractTool#getOperationSet() operation set}, plus the
 	 * {@link org.eclipse.draw2d.ConnectionLayer}.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.TargetingTool#getExclusionSet()
 	 */
 	@Override
@@ -379,7 +379,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Erases feedback and calls {@link #performDrag()}.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
 	@Override
@@ -396,7 +396,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * Updates the target request and mouse target, asks to show feedback, and sets
 	 * the current command.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
 	 */
 	@Override
@@ -415,7 +415,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * Calls {@link TargetingTool#updateAutoexposeHelper()} if a drag is in
 	 * progress.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.TargetingTool#handleHover()
 	 */
 	@Override
@@ -427,7 +427,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Erases source feedback.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.TargetingTool#handleInvalidInput()
 	 */
 	@Override
@@ -439,7 +439,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Processes arrow keys used to move edit parts.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
 	 */
 	@Override
@@ -485,7 +485,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * Interprets and processes clone deactivation, constrained move deactivation,
 	 * and accessibility navigation reset.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyUp(org.eclipse.swt.events.KeyEvent)
 	 */
 	@Override
@@ -506,7 +506,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Returns true if the current drag is a clone operation.
-	 * 
+	 *
 	 * @return true if cloning is enabled and is currently active.
 	 */
 	protected boolean isCloneActive() {
@@ -517,7 +517,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * Returns <code>true</code> if the source edit part is being moved within its
 	 * parent. If the source edit part is being moved to another parent, this
 	 * returns <code>false</code>.
-	 * 
+	 *
 	 * @return <code>true</code> if the source edit part is not being reparented
 	 */
 	protected boolean isMove() {
@@ -572,7 +572,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Enables cloning if the value is true.
-	 * 
+	 *
 	 * @param cloneActive <code>true</code> if cloning should be active
 	 */
 	protected void setCloneActive(boolean cloneActive) {
@@ -585,7 +585,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Extended to update the current snap-to strategy.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.TargetingTool#setTargetEditPart(org.eclipse.gef.EditPart)
 	 */
 	@Override
@@ -614,7 +614,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * Extended to activate cloning and to update the captured source dimensions
 	 * when applicable.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#setState(int)
 	 */
 	@Override
@@ -637,7 +637,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * Calls {@link #repairStartLocation()} in case auto scroll is being performed.
 	 * Updates the request with the current {@link AbstractTool#getOperationSet()
 	 * operation set}, move delta, location and type.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
 	@Override
@@ -689,7 +689,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * This method can be overridden by clients to customize the snapping behavior.
-	 * 
+	 *
 	 * @param request the <code>ChangeBoundsRequest</code> from which the move delta
 	 *                can be extracted and updated
 	 * @since 3.4

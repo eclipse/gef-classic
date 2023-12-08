@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.PositionConstants;
 
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.ResizableHandleKit;
@@ -35,7 +34,7 @@ import org.eclipse.gef.tools.ResizeTracker;
  * <p>
  * During feedback, a rectangle filled using XOR and outlined with dashes is
  * drawn. Subclasses may tailor the feedback.
- * 
+ *
  * @author hudsonr
  * @author msorens
  * @author anyssen
@@ -46,7 +45,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 
 	/**
 	 * Constructs a new {@link ResizableEditPolicy}.
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public ResizableEditPolicy() {
@@ -81,7 +80,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * resizing is allowed in the respective direction, otherwise returns a drag
 	 * handle by delegating to
 	 * {@link NonResizableEditPolicy#createDragHandle(List, int)}.
-	 * 
+	 *
 	 * @param handles   The list of handles to add the resize handle to
 	 * @param direction A position constant indicating the direction to create the
 	 *                  handle for
@@ -89,7 +88,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 */
 	protected void createResizeHandle(List handles, int direction) {
 		if ((resizeDirections & direction) == direction) {
-			ResizableHandleKit.addHandle((GraphicalEditPart) getHost(), handles, direction, getResizeTracker(direction),
+			ResizableHandleKit.addHandle(getHost(), handles, direction, getResizeTracker(direction),
 					Cursors.getDirectionalCursor(direction, getHostFigure().isMirrored()));
 		} else {
 			// display 'resize' handle to allow dragging or indicate selection
@@ -101,26 +100,27 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	/**
 	 * Returns a resize tracker for the given direction to be used by a resize
 	 * handle.
-	 * 
+	 *
 	 * @param direction the resize direction for the {@link ResizeTracker}.
 	 * @return a new {@link ResizeTracker}
 	 * @since 3.7
 	 */
 	protected ResizeTracker getResizeTracker(int direction) {
-		return new ResizeTracker((GraphicalEditPart) getHost(), direction);
+		return new ResizeTracker(getHost(), direction);
 	}
 
 	/**
 	 * Dispatches erase requests to more specific methods.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(org.eclipse.gef.Request)
 	 */
 	@Override
 	public void eraseSourceFeedback(Request request) {
-		if (REQ_RESIZE.equals(request.getType()))
+		if (REQ_RESIZE.equals(request.getType())) {
 			eraseChangeBoundsFeedback((ChangeBoundsRequest) request);
-		else
+		} else {
 			super.eraseSourceFeedback(request);
+		}
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * {@link org.eclipse.gef.RequestConstants#REQ_RESIZE_CHILDREN}. The parent's
 	 * edit policies determine how to perform the resize based on the layout manager
 	 * in use.
-	 * 
+	 *
 	 * @param request the resize request
 	 * @return the command contribution obtained from the parent
 	 */
@@ -168,7 +168,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * <LI>{@link PositionConstants#EAST}
 	 * <LI>{@link PositionConstants#WEST}
 	 * </UL>
-	 * 
+	 *
 	 * @param newDirections the direction in which resizing is allowed
 	 */
 	public void setResizeDirections(int newDirections) {
@@ -202,7 +202,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 
 	/**
 	 * Returns the directions in which resizing should be allowed
-	 * 
+	 *
 	 * Valid values are bit-wise combinations of:
 	 * <UL>
 	 * <LI>{@link PositionConstants#NORTH}
@@ -211,7 +211,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * <LI>{@link PositionConstants#WEST}
 	 * </UL>
 	 * or {@link PositionConstants#NONE}.
-	 * 
+	 *
 	 */
 	public int getResizeDirections() {
 		return resizeDirections;

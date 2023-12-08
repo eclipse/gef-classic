@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,9 +18,9 @@ import org.eclipse.draw2d.geometry.Point;
 /**
  * A Segment representation for the ShortestPathRouting. A segment is a line
  * between two vertices.
- * 
+ *
  * This class is for internal use only
- * 
+ *
  * @author Whitney Sorenson
  * @since 3.0
  */
@@ -30,7 +30,7 @@ class Segment {
 
 	/**
 	 * Creates a segment between the given start and end points.
-	 * 
+	 *
 	 * @param start the start vertex
 	 * @param end   the end vertex
 	 */
@@ -41,7 +41,7 @@ class Segment {
 
 	/**
 	 * Returns the cosine of the made between this segment and the given segment
-	 * 
+	 *
 	 * @param otherSegment the other segment
 	 * @return cosine value (not arc-cos)
 	 */
@@ -59,7 +59,7 @@ class Segment {
 
 	/**
 	 * Returns the cross product of this segment and the given segment
-	 * 
+	 *
 	 * @param otherSegment the other segment
 	 * @return the cross product
 	 */
@@ -75,7 +75,7 @@ class Segment {
 	/**
 	 * Returns a number that represents the sign of the slope of this segment. It
 	 * does not return the actual slope.
-	 * 
+	 *
 	 * @return number representing sign of the slope
 	 */
 	double getSlope() {
@@ -87,7 +87,7 @@ class Segment {
 
 	/**
 	 * Returns true if the given segment intersects this segment.
-	 * 
+	 *
 	 * @param sx start x
 	 * @param sy start y
 	 * @param tx end x
@@ -100,7 +100,7 @@ class Segment {
 
 	/**
 	 * Return true if the segment represented by the points intersects this segment.
-	 * 
+	 *
 	 * @param s start point
 	 * @param t end point
 	 * @return true if the segments intersect

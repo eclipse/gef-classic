@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -79,7 +79,7 @@ public class Figure implements IFigure {
 	private Cursor cursor;
 
 	private PropertyChangeSupport propertyListeners;
-	private EventListenerList eventListeners = new EventListenerList();
+	private final EventListenerList eventListeners = new EventListenerList();
 
 	private List<IFigure> children = Collections.emptyList();
 
@@ -101,33 +101,38 @@ public class Figure implements IFigure {
 	/**
 	 * @deprecated access using {@link #getLocalFont()}
 	 */
+	@Deprecated
 	protected Font font;
 
 	/**
 	 * @deprecated access using {@link #getLocalBackgroundColor()}.
 	 */
+	@Deprecated
 	protected Color bgColor;
 
 	/**
 	 * @deprecated access using {@link #getLocalForegroundColor()}.
 	 */
+	@Deprecated
 	protected Color fgColor;
 
 	/**
 	 * @deprecated access using {@link #getBorder()}
 	 */
+	@Deprecated
 	protected Border border;
 
 	/**
 	 * @deprecated access using {@link #getToolTip()}
 	 */
+	@Deprecated
 	protected IFigure toolTip;
 
 	private AncestorHelper ancestorHelper;
 
 	/**
 	 * Calls {@link #add(IFigure, Object, int)} with -1 as the index.
-	 * 
+	 *
 	 * @see IFigure#add(IFigure, Object)
 	 */
 	@Override
@@ -140,40 +145,48 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void add(IFigure figure, Object constraint, int index) {
-		if (children.equals(Collections.emptyList()))
+		if (children.equals(Collections.emptyList())) {
 			children = new ArrayList<>(2);
-		if (index < -1 || index > children.size())
+		}
+		if (index < -1 || index > children.size()) {
 			throw new IndexOutOfBoundsException("Index does not exist"); //$NON-NLS-1$
+		}
 
 		// Check for Cycle in hierarchy
-		for (IFigure f = this; f != null; f = f.getParent())
-			if (figure == f)
+		for (IFigure f = this; f != null; f = f.getParent()) {
+			if (figure == f) {
 				throw new IllegalArgumentException("Figure being added introduces cycle"); //$NON-NLS-1$
+			}
+		}
 
 		// Detach the child from previous parent
-		if (figure.getParent() != null)
+		if (figure.getParent() != null) {
 			figure.getParent().remove(figure);
+		}
 
-		if (index == -1)
+		if (index == -1) {
 			children.add(figure);
-		else
+		} else {
 			children.add(index, figure);
+		}
 		figure.setParent(this);
 
-		if (layoutManager != null)
+		if (layoutManager != null) {
 			layoutManager.setConstraint(figure, constraint);
+		}
 
 		revalidate();
 
-		if (getFlag(FLAG_REALIZED))
+		if (getFlag(FLAG_REALIZED)) {
 			figure.addNotify();
+		}
 		figure.repaint();
 	}
 
 	/**
 	 * Calls {@link #add(IFigure, Object, int)} with <code>null</code> as the
 	 * constraint and -1 as the index.
-	 * 
+	 *
 	 * @see IFigure#add(IFigure)
 	 */
 	@Override
@@ -184,7 +197,7 @@ public class Figure implements IFigure {
 	/**
 	 * Calls {@link #add(IFigure, Object, int)} with <code>null</code> as the
 	 * constraint.
-	 * 
+	 *
 	 * @see IFigure#add(IFigure, int)
 	 */
 	@Override
@@ -197,8 +210,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void addAncestorListener(AncestorListener ancestorListener) {
-		if (ancestorHelper == null)
+		if (ancestorHelper == null) {
 			ancestorHelper = new AncestorHelper(this);
+		}
 		ancestorHelper.addAncestorListener(ancestorListener);
 	}
 
@@ -236,7 +250,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Appends the given layout listener to the list of layout listeners.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param listener the listener being added
 	 */
@@ -244,14 +258,15 @@ public class Figure implements IFigure {
 	public void addLayoutListener(LayoutListener listener) {
 		if (layoutManager instanceof LayoutNotifier notifier) {
 			notifier.listeners.add(listener);
-		} else
+		} else {
 			layoutManager = new LayoutNotifier(layoutManager, listener);
+		}
 	}
 
 	/**
 	 * Adds a listener of type <i>clazz</i> to this Figure's list of event
 	 * listeners.
-	 * 
+	 *
 	 * @param clazz    The listener type
 	 * @param listener The listener
 	 */
@@ -278,13 +293,14 @@ public class Figure implements IFigure {
 	/**
 	 * Called after the receiver's parent has been set and it has been added to its
 	 * parent.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	@Override
 	public void addNotify() {
-		if (getFlag(FLAG_REALIZED))
+		if (getFlag(FLAG_REALIZED)) {
 			throw new RuntimeException("addNotify() should not be called multiple times"); //$NON-NLS-1$
+		}
 		setFlag(FLAG_REALIZED, true);
 		children.forEach(IFigure::addNotify);
 	}
@@ -294,8 +310,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			propertyListeners = new PropertyChangeSupport(this);
+		}
 		propertyListeners.addPropertyChangeListener(property, listener);
 	}
 
@@ -304,14 +321,15 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			propertyListeners = new PropertyChangeSupport(this);
+		}
 		propertyListeners.addPropertyChangeListener(listener);
 	}
 
 	/**
 	 * This method is final. Override {@link #containsPoint(int, int)} if needed.
-	 * 
+	 *
 	 * @see IFigure#containsPoint(Point)
 	 * @since 2.0
 	 */
@@ -333,8 +351,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void erase() {
-		if (getParent() == null || !isVisible())
+		if (getParent() == null || !isVisible()) {
 			return;
+		}
 
 		Rectangle r = new Rectangle(getBounds());
 		getParent().translateToParent(r);
@@ -345,7 +364,7 @@ public class Figure implements IFigure {
 	 * Returns a descendant of this Figure such that the Figure returned contains
 	 * the point (x, y), and is accepted by the given TreeSearch. Returns
 	 * <code>null</code> if none found.
-	 * 
+	 *
 	 * @param x      The X coordinate
 	 * @param y      The Y coordinate
 	 * @param search the TreeSearch
@@ -354,8 +373,9 @@ public class Figure implements IFigure {
 	protected IFigure findDescendantAtExcluding(int x, int y, TreeSearch search) {
 		PRIVATE_POINT.setLocation(x, y);
 		translateFromParent(PRIVATE_POINT);
-		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
+		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT)) {
 			return null;
+		}
 
 		x = PRIVATE_POINT.x;
 		y = PRIVATE_POINT.y;
@@ -363,8 +383,9 @@ public class Figure implements IFigure {
 		for (IFigure fig : getChildrenRevIterable()) {
 			if (fig.isVisible()) {
 				fig = fig.findFigureAt(x, y, search);
-				if (fig != null)
+				if (fig != null) {
 					return fig;
+				}
 			}
 		}
 		// No descendants were found
@@ -392,15 +413,19 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public IFigure findFigureAt(int x, int y, TreeSearch search) {
-		if (!containsPoint(x, y))
+		if (!containsPoint(x, y)) {
 			return null;
-		if (search.prune(this))
+		}
+		if (search.prune(this)) {
 			return null;
+		}
 		IFigure child = findDescendantAtExcluding(x, y, search);
-		if (child != null)
+		if (child != null) {
 			return child;
-		if (search.accept(this))
+		}
+		if (search.accept(this)) {
 			return this;
+		}
 		return null;
 	}
 
@@ -420,20 +445,23 @@ public class Figure implements IFigure {
 	 * {@link #paintChildren(Graphics)} (thus causing the children to appear
 	 * transformed to the user) should be applied inversely to the points <i>x</i>
 	 * and <i>y</i> when called on the children.
-	 * 
+	 *
 	 * @param x The X coordinate
 	 * @param y The Y coordinate
 	 * @return The deepest descendant for which isMouseEventTarget() returns true
 	 */
 	@Override
 	public IFigure findMouseEventTargetAt(int x, int y) {
-		if (!containsPoint(x, y))
+		if (!containsPoint(x, y)) {
 			return null;
+		}
 		IFigure f = findMouseEventTargetInDescendantsAt(x, y);
-		if (f != null)
+		if (f != null) {
 			return f;
-		if (isMouseEventTarget())
+		}
+		if (isMouseEventTarget()) {
 			return this;
+		}
 		return null;
 	}
 
@@ -441,7 +469,7 @@ public class Figure implements IFigure {
 	 * Searches this Figure's children for the deepest descendant for which
 	 * {@link #isMouseEventTarget()} returns <code>true</code> and returns that
 	 * descendant or <code>null</code> if none found.
-	 * 
+	 *
 	 * @see #findMouseEventTargetAt(int, int)
 	 * @param x The X coordinate
 	 * @param y The Y coordinate
@@ -451,8 +479,9 @@ public class Figure implements IFigure {
 		PRIVATE_POINT.setLocation(x, y);
 		translateFromParent(PRIVATE_POINT);
 
-		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
+		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT)) {
 			return null;
+		}
 
 		for (IFigure fig : getChildrenRevIterable()) {
 			if (fig.isVisible() && fig.isEnabled() && fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
@@ -469,24 +498,26 @@ public class Figure implements IFigure {
 	 * Notifies to all {@link CoordinateListener}s that this figure's local
 	 * coordinate system has changed in a way which affects the absolute bounds of
 	 * figures contained within.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	protected void fireCoordinateSystemChanged() {
-		if (!eventListeners.containsListener(CoordinateListener.class))
+		if (!eventListeners.containsListener(CoordinateListener.class)) {
 			return;
+		}
 		eventListeners.getListenersIterable(CoordinateListener.class).forEach(lst -> lst.coordinateSystemChanged(this));
 	}
 
 	/**
 	 * Notifies to all {@link FigureListener}s that this figure has moved. Moved
 	 * means that the bounds have changed in some way, location and/or size.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	protected void fireFigureMoved() {
-		if (!eventListeners.containsListener(FigureListener.class))
+		if (!eventListeners.containsListener(FigureListener.class)) {
 			return;
+		}
 		eventListeners.getListenersIterable(FigureListener.class).forEach(lst -> lst.figureMoved(this));
 	}
 
@@ -496,11 +527,12 @@ public class Figure implements IFigure {
 	 * for coordinates changed. So to be sure that those new listeners are notified,
 	 * any client code which used called this method will also result in
 	 * notification of coordinate changes.
-	 * 
+	 *
 	 * @since 2.0
 	 * @deprecated call fireFigureMoved() or fireCoordinateSystemChanged() as
 	 *             appropriate
 	 */
+	@Deprecated
 	protected void fireMoved() {
 		fireFigureMoved();
 		fireCoordinateSystemChanged();
@@ -509,30 +541,32 @@ public class Figure implements IFigure {
 	/**
 	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners} listening
 	 * to this Figure that the boolean property with id <i>property</i> has changed.
-	 * 
+	 *
 	 * @param property The id of the property that changed
 	 * @param old      The old value of the changed property
 	 * @param current  The current value of the changed property
 	 * @since 2.0
 	 */
 	protected void firePropertyChange(String property, boolean old, boolean current) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 		propertyListeners.firePropertyChange(property, old, current);
 	}
 
 	/**
 	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners} listening
 	 * to this figure that the Object property with id <i>property</i> has changed.
-	 * 
+	 *
 	 * @param property The id of the property that changed
 	 * @param old      The old value of the changed property
 	 * @param current  The current value of the changed property
 	 * @since 2.0
 	 */
 	protected void firePropertyChange(String property, Object old, Object current) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 		propertyListeners.firePropertyChange(property, old, current);
 	}
 
@@ -540,15 +574,16 @@ public class Figure implements IFigure {
 	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners} listening
 	 * to this figure that the integer property with id <code>property</code> has
 	 * changed.
-	 * 
+	 *
 	 * @param property The id of the property that changed
 	 * @param old      The old value of the changed property
 	 * @param current  The current value of the changed property
 	 * @since 2.0
 	 */
 	protected void firePropertyChange(String property, int old, int current) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 		propertyListeners.firePropertyChange(property, old, current);
 	}
 
@@ -556,13 +591,14 @@ public class Figure implements IFigure {
 	 * Returns this Figure's background color. If this Figure's background color is
 	 * <code>null</code> and its parent is not <code>null</code>, the background
 	 * color is inherited from the parent.
-	 * 
+	 *
 	 * @see IFigure#getBackgroundColor()
 	 */
 	@Override
 	public Color getBackgroundColor() {
-		if (bgColor == null && getParent() != null)
+		if (bgColor == null && getParent() != null) {
 			return getParent().getBackgroundColor();
+		}
 		return bgColor;
 	}
 
@@ -578,7 +614,7 @@ public class Figure implements IFigure {
 	 * Returns the smallest rectangle completely enclosing the figure. Implementors
 	 * may return the Rectangle by reference. For this reason, callers of this
 	 * method must not modify the returned Rectangle.
-	 * 
+	 *
 	 * @return The bounds of this Figure
 	 */
 	@Override
@@ -597,7 +633,7 @@ public class Figure implements IFigure {
 	/**
 	 * Provide an iterable that will iterate in reverse over all children of this
 	 * figure.
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	public Iterable<IFigure> getChildrenRevIterable() {
@@ -611,8 +647,9 @@ public class Figure implements IFigure {
 	public Rectangle getClientArea(Rectangle rect) {
 		rect.setBounds(getBounds());
 		rect.crop(getInsets());
-		if (useLocalCoordinates())
+		if (useLocalCoordinates()) {
 			rect.setLocation(0, 0);
+		}
 		return rect;
 	}
 
@@ -626,7 +663,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Returns the IClippingStrategy used by this figure to clip its children
-	 * 
+	 *
 	 * @return the IClipppingStrategy used to clip this figure's children.
 	 * @since 3.6
 	 */
@@ -640,14 +677,15 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Cursor getCursor() {
-		if (cursor == null && getParent() != null)
+		if (cursor == null && getParent() != null) {
 			return getParent().getCursor();
+		}
 		return cursor;
 	}
 
 	/**
 	 * Returns the value of the given flag.
-	 * 
+	 *
 	 * @param flag The flag to get
 	 * @return The value of the given flag
 	 */
@@ -660,10 +698,12 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Font getFont() {
-		if (font != null)
+		if (font != null) {
 			return font;
-		if (getParent() != null)
+		}
+		if (getParent() != null) {
 			return getParent().getFont();
+		}
 		return null;
 	}
 
@@ -672,8 +712,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Color getForegroundColor() {
-		if (fgColor == null && getParent() != null)
+		if (fgColor == null && getParent() != null) {
 			return getParent().getForegroundColor();
+		}
 		return fgColor;
 	}
 
@@ -681,13 +722,14 @@ public class Figure implements IFigure {
 	 * Returns the border's Insets if the border is set. Otherwise returns
 	 * NO_INSETS, an instance of Insets with all 0s. Returns Insets by reference. DO
 	 * NOT Modify returned value. Cannot return null.
-	 * 
+	 *
 	 * @return This Figure's Insets
 	 */
 	@Override
 	public Insets getInsets() {
-		if (getBorder() != null)
+		if (getBorder() != null) {
 			return getBorder().getInsets(this);
+		}
 		return NO_INSETS;
 	}
 
@@ -696,8 +738,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public LayoutManager getLayoutManager() {
-		if (layoutManager instanceof LayoutNotifier)
+		if (layoutManager instanceof LayoutNotifier) {
 			return ((LayoutNotifier) layoutManager).realLayout;
+		}
 		return layoutManager;
 	}
 
@@ -705,14 +748,15 @@ public class Figure implements IFigure {
 	 * Returns an Iterator over the listeners of type <i>clazz</i> that are
 	 * listening to this Figure. If there are no listeners of type <i>clazz</i>, an
 	 * empty iterator is returned.
-	 * 
+	 *
 	 * @param clazz The type of listeners to get
 	 * @return An Iterator over the requested listeners
 	 * @since 2.0
 	 */
 	protected <T> Iterator<T> getListeners(Class<T> clazz) {
-		if (eventListeners == null)
+		if (eventListeners == null) {
 			return Collections.emptyIterator();
+		}
 		return eventListeners.getListeners(clazz);
 	}
 
@@ -720,21 +764,22 @@ public class Figure implements IFigure {
 	 * * Returns an Iterator over the listeners of type <i>listenerType</i> that are
 	 * listening to this Figure. If there are no listeners of type
 	 * <i>listenerType</i>, an empty iterator is returned.
-	 * 
+	 *
 	 * @param listenerType The type of listeners to get
 	 * @return an Iterable over the requested listeners <i>c</i>
 	 * @since 3.13
 	 */
 	protected <T> Iterable<T> getListenersIterable(final Class<T> listenerType) {
-		if (eventListeners == null)
+		if (eventListeners == null) {
 			return Collections.emptyList();
+		}
 		return eventListeners.getListenersIterable(listenerType);
 	}
 
 	/**
 	 * Returns <code>null</code> or the local background Color of this Figure. Does
 	 * not inherit this Color from the parent.
-	 * 
+	 *
 	 * @return bgColor <code>null</code> or the local background Color
 	 */
 	@Override
@@ -745,7 +790,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>null</code> or the local font setting for this figure. Does not
 	 * return values inherited from the parent figure.
-	 * 
+	 *
 	 * @return <code>null</code> or the local font
 	 * @since 3.1
 	 */
@@ -756,7 +801,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>null</code> or the local foreground Color of this Figure. Does
 	 * not inherit this Color from the parent.
-	 * 
+	 *
 	 * @return fgColor <code>null</code> or the local foreground Color
 	 */
 	@Override
@@ -766,7 +811,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Returns the top-left corner of this Figure's bounds.
-	 * 
+	 *
 	 * @return The top-left corner of this Figure's bounds
 	 * @since 2.0
 	 */
@@ -780,8 +825,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Dimension getMaximumSize() {
-		if (maxSize != null)
+		if (maxSize != null) {
 			return maxSize;
+		}
 		return MAX_DIMENSION;
 	}
 
@@ -798,12 +844,14 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Dimension getMinimumSize(int wHint, int hHint) {
-		if (minSize != null)
+		if (minSize != null) {
 			return minSize;
+		}
 		if (getLayoutManager() != null) {
 			Dimension d = getLayoutManager().getMinimumSize(this, wHint, hHint);
-			if (d != null)
+			if (d != null) {
 				return d;
+			}
 		}
 		return getPreferredSize(wHint, hHint);
 	}
@@ -829,12 +877,14 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
-		if (prefSize != null)
+		if (prefSize != null) {
 			return prefSize;
+		}
 		if (getLayoutManager() != null) {
 			Dimension d = getLayoutManager().getPreferredSize(this, wHint, hHint);
-			if (d != null)
+			if (d != null) {
 				return d;
+			}
 		}
 		return getSize();
 	}
@@ -860,8 +910,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public UpdateManager getUpdateManager() {
-		if (getParent() != null)
+		if (getParent() != null) {
 			return getParent().getUpdateManager();
+		}
 		// Only happens when the figure has not been realized
 		return NO_MANAGER;
 	}
@@ -998,8 +1049,9 @@ public class Figure implements IFigure {
 	@Override
 	public boolean hasFocus() {
 		EventDispatcher dispatcher = internalGetEventDispatcher();
-		if (dispatcher == null)
+		if (dispatcher == null) {
 			return false;
+		}
 		return dispatcher.getFocusOwner() == this;
 	}
 
@@ -1008,8 +1060,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public EventDispatcher internalGetEventDispatcher() {
-		if (getParent() != null)
+		if (getParent() != null) {
 			return getParent().internalGetEventDispatcher();
+		}
 		return null;
 	}
 
@@ -1026,8 +1079,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void invalidate() {
-		if (layoutManager != null)
+		if (layoutManager != null) {
 			layoutManager.invalidate();
+		}
 		setValid(false);
 	}
 
@@ -1037,10 +1091,7 @@ public class Figure implements IFigure {
 	@Override
 	public void invalidateTree() {
 		invalidate();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			IFigure child = (IFigure) iter.next();
-			child.invalidateTree();
-		}
+		children.forEach(IFigure::invalidateTree);
 	}
 
 	/**
@@ -1070,7 +1121,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>true</code> if this Figure can receive {@link MouseEvent
 	 * MouseEvents}.
-	 * 
+	 *
 	 * @return <code>true</code> if this Figure can receive {@link MouseEvent
 	 *         MouseEvents}
 	 * @since 2.0
@@ -1085,8 +1136,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public boolean isMirrored() {
-		if (getParent() != null)
+		if (getParent() != null) {
 			return getParent().isMirrored();
+		}
 		return false;
 	}
 
@@ -1116,7 +1168,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Returns <code>true</code> if this Figure is valid.
-	 * 
+	 *
 	 * @return <code>true</code> if this Figure is valid
 	 * @since 2.0
 	 */
@@ -1127,7 +1179,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>true</code> if revalidating this Figure does not require
 	 * revalidating its parent.
-	 * 
+	 *
 	 * @return <code>true</code> if revalidating this Figure doesn't require
 	 *         revalidating its parent.
 	 * @since 2.0
@@ -1146,17 +1198,18 @@ public class Figure implements IFigure {
 
 	/**
 	 * Lays out this Figure using its {@link LayoutManager}.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void layout() {
-		if (layoutManager != null)
+		if (layoutManager != null) {
 			layoutManager.layout(this);
+		}
 	}
 
 	/**
 	 * Paints this Figure and its children.
-	 * 
+	 *
 	 * @param graphics The Graphics object used for painting
 	 * @see #paintFigure(Graphics)
 	 * @see #paintClientArea(Graphics)
@@ -1164,12 +1217,15 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void paint(Graphics graphics) {
-		if (getLocalBackgroundColor() != null)
+		if (getLocalBackgroundColor() != null) {
 			graphics.setBackgroundColor(getLocalBackgroundColor());
-		if (getLocalForegroundColor() != null)
+		}
+		if (getLocalForegroundColor() != null) {
 			graphics.setForegroundColor(getLocalForegroundColor());
-		if (font != null)
+		}
+		if (font != null) {
 			graphics.setFont(font);
+		}
 
 		graphics.pushState();
 		try {
@@ -1184,14 +1240,15 @@ public class Figure implements IFigure {
 
 	/**
 	 * Paints the border associated with this Figure, if one exists.
-	 * 
+	 *
 	 * @param graphics The Graphics used to paint
 	 * @see Border#paint(IFigure, Graphics, Insets)
 	 * @since 2.0
 	 */
 	protected void paintBorder(Graphics graphics) {
-		if (getBorder() != null)
+		if (getBorder() != null) {
 			getBorder().paint(this, graphics, NO_INSETS);
+		}
 	}
 
 	/**
@@ -1201,7 +1258,7 @@ public class Figure implements IFigure {
 	 * state when the method was entered.
 	 * <P>
 	 * This method must leave the Graphics in its original state upon return.
-	 * 
+	 *
 	 * @param graphics the graphics used to paint
 	 * @since 2.0
 	 */
@@ -1217,9 +1274,9 @@ public class Figure implements IFigure {
 					clipping = new Rectangle[] { child.getBounds() };
 				}
 				// child may now paint inside the clipping areas
-				for (int j = 0; j < clipping.length; j++) {
-					if (clipping[j].intersects(graphics.getClip(Rectangle.SINGLETON))) {
-						graphics.clipRect(clipping[j]);
+				for (Rectangle element : clipping) {
+					if (element.intersects(graphics.getClip(Rectangle.SINGLETON))) {
+						graphics.clipRect(element);
 						child.paint(graphics);
 						graphics.restoreState();
 					}
@@ -1233,26 +1290,28 @@ public class Figure implements IFigure {
 	 * anything inside the Figure's {@link Border} or {@link Insets}, and by default
 	 * includes the children of this Figure. On return, this method must leave the
 	 * given Graphics in its initial state.
-	 * 
+	 *
 	 * @param graphics The Graphics used to paint
 	 * @since 2.0
 	 */
 	protected void paintClientArea(Graphics graphics) {
-		if (children.isEmpty())
+		if (children.isEmpty()) {
 			return;
+		}
 
 		if (useLocalCoordinates()) {
 			graphics.translate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
-			if (!optimizeClip())
+			if (!optimizeClip()) {
 				graphics.clipRect(getClientArea(PRIVATE_RECT));
+			}
 			graphics.pushState();
 			paintChildren(graphics);
 			graphics.popState();
 			graphics.restoreState();
 		} else {
-			if (optimizeClip())
+			if (optimizeClip()) {
 				paintChildren(graphics);
-			else {
+			} else {
 				graphics.clipRect(getClientArea(PRIVATE_RECT));
 				graphics.pushState();
 				paintChildren(graphics);
@@ -1276,20 +1335,22 @@ public class Figure implements IFigure {
 	 * {@link #paintBorder(Graphics)}. Furthermore, it is safe to call
 	 * <code>graphics.restoreState()</code> within this method, and doing so will
 	 * restore the graphics to its original state upon entry.
-	 * 
+	 *
 	 * @param graphics The Graphics used to paint
 	 * @since 2.0
 	 */
 	protected void paintFigure(Graphics graphics) {
-		if (isOpaque())
+		if (isOpaque()) {
 			graphics.fillRectangle(getBounds());
-		if (getBorder() instanceof AbstractBackground)
-			((AbstractBackground) getBorder()).paintBackground(this, graphics, NO_INSETS);
+		}
+		if (getBorder() instanceof AbstractBackground abstractBackground) {
+			abstractBackground.paintBackground(this, graphics, NO_INSETS);
+		}
 	}
 
 	/**
 	 * Translates this Figure's bounds, without firing a move.
-	 * 
+	 *
 	 * @param dx The amount to translate horizontally
 	 * @param dy The amount to translate vertically
 	 * @see #translate(int, int)
@@ -1309,17 +1370,20 @@ public class Figure implements IFigure {
 	 * Removes the given child Figure from this Figure's hierarchy and revalidates
 	 * this Figure. The child Figure's {@link #removeNotify()} method is also
 	 * called.
-	 * 
+	 *
 	 * @param figure The Figure to remove
 	 */
 	@Override
 	public void remove(IFigure figure) {
-		if ((figure.getParent() != this))
+		if ((figure.getParent() != this)) {
 			throw new IllegalArgumentException("Figure is not a child"); //$NON-NLS-1$
-		if (getFlag(FLAG_REALIZED))
+		}
+		if (getFlag(FLAG_REALIZED)) {
 			figure.removeNotify();
-		if (layoutManager != null)
+		}
+		if (layoutManager != null) {
 			layoutManager.remove(figure);
+		}
 		// The updates in the UpdateManager *have* to be
 		// done asynchronously, else will result in
 		// incorrect dirty region corrections.
@@ -1331,7 +1395,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Removes all children from this Figure.
-	 * 
+	 *
 	 * @see #remove(IFigure)
 	 * @since 2.0
 	 */
@@ -1388,7 +1452,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Removes the first occurence of the given listener.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param listener the listener being removed
 	 */
@@ -1396,22 +1460,21 @@ public class Figure implements IFigure {
 	public void removeLayoutListener(LayoutListener listener) {
 		if (layoutManager instanceof LayoutNotifier notifier) {
 			notifier.listeners.remove(listener);
-			if (notifier.listeners.isEmpty())
+			if (notifier.listeners.isEmpty()) {
 				layoutManager = notifier.realLayout;
+			}
 		}
 	}
 
 	/**
 	 * Removes <i>listener</i> of type <i>clazz</i> from this Figure's list of
 	 * listeners.
-	 * 
+	 *
 	 * @param clazz    The type of listener
 	 * @param listener The listener to remove
 	 * @since 2.0
 	 */
 	protected void removeListener(Class clazz, Object listener) {
-		if (eventListeners == null)
-			return;
 		eventListeners.removeListener(clazz, listener);
 	}
 
@@ -1437,8 +1500,9 @@ public class Figure implements IFigure {
 	@Override
 	public void removeNotify() {
 		children.forEach(IFigure::removeNotify);
-		if (internalGetEventDispatcher() != null)
+		if (internalGetEventDispatcher() != null) {
 			internalGetEventDispatcher().requestRemoveFocus(this);
+		}
 		setFlag(FLAG_REALIZED, false);
 	}
 
@@ -1447,8 +1511,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 		propertyListeners.removePropertyChangeListener(listener);
 	}
 
@@ -1457,8 +1522,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 		propertyListeners.removePropertyChangeListener(property, listener);
 	}
 
@@ -1475,8 +1541,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void repaint(int x, int y, int w, int h) {
-		if (isVisible())
+		if (isVisible()) {
 			getUpdateManager().addDirtyRegion(this, x, y, w, h);
+		}
 	}
 
 	/**
@@ -1492,11 +1559,13 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public final void requestFocus() {
-		if (!isRequestFocusEnabled() || hasFocus())
+		if (!isRequestFocusEnabled() || hasFocus()) {
 			return;
+		}
 		EventDispatcher dispatcher = internalGetEventDispatcher();
-		if (dispatcher == null)
+		if (dispatcher == null) {
 			return;
+		}
 		dispatcher.requestFocus(this);
 	}
 
@@ -1506,10 +1575,11 @@ public class Figure implements IFigure {
 	@Override
 	public void revalidate() {
 		invalidate();
-		if (getParent() == null || isValidationRoot())
+		if (getParent() == null || isValidationRoot()) {
 			getUpdateManager().addInvalidFigure(this);
-		else
+		} else {
 			getParent().revalidate();
+		}
 	}
 
 	/**
@@ -1558,7 +1628,7 @@ public class Figure implements IFigure {
 	 * safe to modify that Rectangle and then call setBounds() after making
 	 * modifications. The figure would assume that the bounds are unchanged, and no
 	 * layout or paint would occur. For proper behavior, always use a copy.
-	 * 
+	 *
 	 * @param rect The new bounds
 	 * @since 2.0
 	 */
@@ -1569,8 +1639,9 @@ public class Figure implements IFigure {
 		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
 				translate = (rect.x != x) || (rect.y != y);
 
-		if ((resize || translate) && isVisible())
+		if ((resize || translate) && isVisible()) {
 			erase();
+		}
 		if (translate) {
 			int dx = rect.x - x;
 			int dy = rect.y - y;
@@ -1581,8 +1652,9 @@ public class Figure implements IFigure {
 		bounds.height = rect.height;
 
 		if (translate || resize) {
-			if (resize)
+			if (resize) {
 				invalidate();
+			}
 			fireFigureMoved();
 			repaint();
 		}
@@ -1591,21 +1663,22 @@ public class Figure implements IFigure {
 	/**
 	 * Sets the direction of any {@link Orientable} children. Allowable values for
 	 * <code>dir</code> are found in {@link PositionConstants}.
-	 * 
+	 *
 	 * @param direction The direction
 	 * @see Orientable#setDirection(int)
 	 * @since 2.0
 	 */
 	protected void setChildrenDirection(int direction) {
 		getChildrenRevIterable().forEach(child -> {
-			if (child instanceof Orientable)
-				((Orientable) child).setDirection(direction);
+			if (child instanceof Orientable orientable) {
+				orientable.setDirection(direction);
+			}
 		});
 	}
 
 	/**
 	 * Sets all childrens' enabled property to <i>value</i>.
-	 * 
+	 *
 	 * @param value The enable value
 	 * @see #setEnabled(boolean)
 	 * @since 2.0
@@ -1617,15 +1690,16 @@ public class Figure implements IFigure {
 	/**
 	 * Sets the orientation of any {@link Orientable} children. Allowable values for
 	 * <i>orientation</i> are found in {@link PositionConstants}.
-	 * 
+	 *
 	 * @param orientation The Orientation
 	 * @see Orientable#setOrientation(int)
 	 * @since 2.0
 	 */
 	protected void setChildrenOrientation(int orientation) {
 		getChildrenRevIterable().forEach(child -> {
-			if (child instanceof Orientable)
-				((Orientable) child).setOrientation(orientation);
+			if (child instanceof Orientable orientable) {
+				orientable.setOrientation(orientation);
+			}
 		});
 	}
 
@@ -1634,18 +1708,20 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setConstraint(IFigure child, Object constraint) {
-		if (child.getParent() != this)
+		if (child.getParent() != this) {
 			throw new IllegalArgumentException("Figure must be a child"); //$NON-NLS-1$
+		}
 
-		if (layoutManager != null)
+		if (layoutManager != null) {
 			layoutManager.setConstraint(child, constraint);
+		}
 		revalidate();
 	}
 
 	/**
 	 * Registers a clipping strategy to specify how clipping is performed for child
 	 * figures.
-	 * 
+	 *
 	 * @param clippingStrategy
 	 * @since 3.6
 	 */
@@ -1659,12 +1735,14 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setCursor(Cursor cursor) {
-		if (this.cursor == cursor)
+		if (this.cursor == cursor) {
 			return;
+		}
 		this.cursor = cursor;
 		EventDispatcher dispatcher = internalGetEventDispatcher();
-		if (dispatcher != null)
+		if (dispatcher != null) {
 			dispatcher.updateCursor();
+		}
 	}
 
 	/**
@@ -1672,23 +1750,25 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setEnabled(boolean value) {
-		if (isEnabled() == value)
+		if (isEnabled() == value) {
 			return;
+		}
 		setFlag(FLAG_ENABLED, value);
 	}
 
 	/**
 	 * Sets the given flag to the given value.
-	 * 
+	 *
 	 * @param flag  The flag to set
 	 * @param value The value
 	 * @since 2.0
 	 */
 	protected final void setFlag(int flag, boolean value) {
-		if (value)
+		if (value) {
 			flags |= flag;
-		else
+		} else {
 			flags &= ~flag;
+		}
 	}
 
 	/**
@@ -1696,8 +1776,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setFocusTraversable(boolean focusTraversable) {
-		if (isFocusTraversable() == focusTraversable)
+		if (isFocusTraversable() == focusTraversable) {
 			return;
+		}
 		setFlag(FLAG_FOCUS_TRAVERSABLE, focusTraversable);
 	}
 
@@ -1744,10 +1825,11 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setLayoutManager(LayoutManager manager) {
-		if (layoutManager instanceof LayoutNotifier)
-			((LayoutNotifier) layoutManager).realLayout = manager;
-		else
+		if (layoutManager instanceof LayoutNotifier layoutNotifier) {
+			layoutNotifier.realLayout = manager;
+		} else {
 			layoutManager = manager;
+		}
 		revalidate();
 	}
 
@@ -1756,8 +1838,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setLocation(Point p) {
-		if (getLocation().equals(p))
+		if (getLocation().equals(p)) {
 			return;
+		}
 		Rectangle r = new Rectangle(getBounds());
 		r.setLocation(p);
 		setBounds(r);
@@ -1768,8 +1851,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setMaximumSize(Dimension d) {
-		if (maxSize != null && maxSize.equals(d))
+		if (maxSize != null && maxSize.equals(d)) {
 			return;
+		}
 		maxSize = d;
 		revalidate();
 	}
@@ -1779,8 +1863,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setMinimumSize(Dimension d) {
-		if (minSize != null && minSize.equals(d))
+		if (minSize != null && minSize.equals(d)) {
 			return;
+		}
 		minSize = d;
 		revalidate();
 	}
@@ -1790,8 +1875,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setOpaque(boolean opaque) {
-		if (isOpaque() == opaque)
+		if (isOpaque() == opaque) {
 			return;
+		}
 		setFlag(FLAG_OPAQUE, opaque);
 		repaint();
 	}
@@ -1811,15 +1897,16 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setPreferredSize(Dimension size) {
-		if (prefSize != null && prefSize.equals(size))
+		if (prefSize != null && prefSize.equals(size)) {
 			return;
+		}
 		prefSize = size;
 		revalidate();
 	}
 
 	/**
 	 * Sets the preferred size of this figure.
-	 * 
+	 *
 	 * @param w The new preferred width
 	 * @param h The new preferred height
 	 * @see #setPreferredSize(Dimension)
@@ -1834,8 +1921,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setRequestFocusEnabled(boolean requestFocusEnabled) {
-		if (isRequestFocusEnabled() == requestFocusEnabled)
+		if (isRequestFocusEnabled() == requestFocusEnabled) {
 			return;
+		}
 		setFlag(FLAG_FOCUSABLE, requestFocusEnabled);
 	}
 
@@ -1853,8 +1941,9 @@ public class Figure implements IFigure {
 	@Override
 	public void setSize(int w, int h) {
 		Rectangle bounds = getBounds();
-		if (bounds.width == w && bounds.height == h)
+		if (bounds.width == w && bounds.height == h) {
 			return;
+		}
 		Rectangle r = new Rectangle(getBounds());
 		r.setSize(w, h);
 		setBounds(r);
@@ -1865,15 +1954,16 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setToolTip(IFigure f) {
-		if (toolTip == f)
+		if (toolTip == f) {
 			return;
+		}
 		toolTip = f;
 	}
 
 	/**
 	 * Sets this figure to be valid if <i>value</i> is <code>true</code> and invalid
 	 * otherwise.
-	 * 
+	 *
 	 * @param value The valid value
 	 * @since 2.0
 	 */
@@ -1887,13 +1977,16 @@ public class Figure implements IFigure {
 	@Override
 	public void setVisible(boolean visible) {
 		boolean currentVisibility = isVisible();
-		if (visible == currentVisibility)
+		if (visible == currentVisibility) {
 			return;
-		if (currentVisibility)
+		}
+		if (currentVisibility) {
 			erase();
+		}
 		setFlag(FLAG_VISIBLE, visible);
-		if (visible)
+		if (visible) {
 			repaint();
+		}
 		revalidate();
 	}
 
@@ -1911,8 +2004,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void translateFromParent(Translatable t) {
-		if (useLocalCoordinates())
+		if (useLocalCoordinates()) {
 			t.performTranslate(-getBounds().x - getInsets().left, -getBounds().y - getInsets().top);
+		}
 	}
 
 	/**
@@ -1931,8 +2025,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void translateToParent(Translatable t) {
-		if (useLocalCoordinates())
+		if (useLocalCoordinates()) {
 			t.performTranslate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
+		}
 	}
 
 	/**
@@ -1949,7 +2044,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>true</code> if this Figure uses local coordinates. This means
 	 * its children are placed relative to this Figure's top-left corner.
-	 * 
+	 *
 	 * @return <code>true</code> if this Figure uses local coordinates
 	 * @since 2.0
 	 */
@@ -1962,8 +2057,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void validate() {
-		if (isValid())
+		if (isValid()) {
 			return;
+		}
 		setValid(true);
 		layout();
 		children.forEach(IFigure::validate);
@@ -1983,7 +2079,7 @@ public class Figure implements IFigure {
 
 		/**
 		 * Always returns <code>true</code>.
-		 * 
+		 *
 		 * @see TreeSearch#accept(IFigure)
 		 */
 		@Override
@@ -1993,7 +2089,7 @@ public class Figure implements IFigure {
 
 		/**
 		 * Always returns <code>false</code>.
-		 * 
+		 *
 		 * @see TreeSearch#prune(IFigure)
 		 */
 		@Override
@@ -2014,22 +2110,25 @@ public class Figure implements IFigure {
 
 		@Override
 		public Object getConstraint(IFigure child) {
-			if (realLayout != null)
+			if (realLayout != null) {
 				return realLayout.getConstraint(child);
+			}
 			return null;
 		}
 
 		@Override
 		public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
-			if (realLayout != null)
+			if (realLayout != null) {
 				return realLayout.getMinimumSize(container, wHint, hHint);
+			}
 			return null;
 		}
 
 		@Override
 		public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
-			if (realLayout != null)
+			if (realLayout != null) {
 				return realLayout.getPreferredSize(container, wHint, hHint);
+			}
 			return null;
 		}
 
@@ -2037,8 +2136,9 @@ public class Figure implements IFigure {
 		public void invalidate() {
 			listeners.forEach(listener -> listener.invalidate(Figure.this));
 
-			if (realLayout != null)
+			if (realLayout != null) {
 				realLayout.invalidate();
+			}
 		}
 
 		@Override
@@ -2048,38 +2148,42 @@ public class Figure implements IFigure {
 				consumed |= listener.layout(container);
 			}
 
-			if (realLayout != null && !consumed)
+			if (realLayout != null && !consumed) {
 				realLayout.layout(container);
+			}
 			listeners.forEach(listener -> listener.postLayout(container));
 		}
 
 		@Override
 		public void remove(IFigure child) {
 			listeners.forEach(listener -> listener.remove(child));
-			if (realLayout != null)
+			if (realLayout != null) {
 				realLayout.remove(child);
+			}
 		}
 
 		@Override
 		public void setConstraint(IFigure child, Object constraint) {
 			listeners.forEach(listener -> listener.setConstraint(child, constraint));
-			if (realLayout != null)
+			if (realLayout != null) {
 				realLayout.setConstraint(child, constraint);
+			}
 		}
 	}
 
 	/**
 	 * Iterates over a Figure's children in reverse order.
-	 * 
+	 *
 	 * @deprecated use ReverseFigureChildrenIterator instead
 	 */
+	@Deprecated
 	public static class FigureIterator {
-		private List<? extends IFigure> list;
+		private final List<? extends IFigure> list;
 		private int index;
 
 		/**
 		 * Constructs a new FigureIterator for the given Figure.
-		 * 
+		 *
 		 * @param figure The Figure whose children to iterate over
 		 */
 		public FigureIterator(IFigure figure) {
@@ -2089,7 +2193,7 @@ public class Figure implements IFigure {
 
 		/**
 		 * Returns the next Figure.
-		 * 
+		 *
 		 * @return The next Figure
 		 */
 		public IFigure nextFigure() {
@@ -2098,7 +2202,7 @@ public class Figure implements IFigure {
 
 		/**
 		 * Returns <code>true</code> if there's another Figure to iterate over.
-		 * 
+		 *
 		 * @return <code>true</code> if there's another Figure to iterate over
 		 */
 		public boolean hasNext() {
@@ -2110,7 +2214,7 @@ public class Figure implements IFigure {
 	/**
 	 * Figure children iterator which implements the java iterator interface for
 	 * more convenient figure iteration.
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	public static final class ReverseFigureChildrenIterator extends FigureIterator implements Iterator<IFigure> {

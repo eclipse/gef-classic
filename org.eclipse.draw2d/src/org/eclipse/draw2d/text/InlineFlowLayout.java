@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,10 +18,10 @@ import org.eclipse.draw2d.IFigure;
 
 /**
  * The layout manager for {@link InlineFlow} figures.
- * 
+ *
  * <P>
  * WARNING: This class is not intended to be subclassed by clients.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -29,7 +29,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 
 	/**
 	 * Creates a new InlineFlowLayout with the given FlowFigure.
-	 * 
+	 *
 	 * @param flow The FlowFigure
 	 */
 	public InlineFlowLayout(FlowFigure flow) {
@@ -38,7 +38,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 
 	/**
 	 * Adds the given box as a line below the current line.
-	 * 
+	 *
 	 * @param box the box to add
 	 */
 	@Override
@@ -82,7 +82,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 
 	/**
 	 * InlineFlowLayout gets this information from its context.
-	 * 
+	 *
 	 * @see FlowContext#getContinueOnSameLine()
 	 */
 	@Override
@@ -125,7 +125,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 
 	/**
 	 * InlineFlow passes this information to its context.
-	 * 
+	 *
 	 * @see FlowContext#setContinueOnSameLine(boolean)
 	 */
 	@Override
@@ -135,7 +135,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 
 	/**
 	 * Initializes the given LineBox. Called by createNewLine().
-	 * 
+	 *
 	 * @param line The LineBox to initialize.
 	 */
 	protected void setupLine(LineBox line) {

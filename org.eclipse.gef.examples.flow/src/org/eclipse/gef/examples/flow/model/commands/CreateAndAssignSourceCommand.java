@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -48,7 +48,7 @@ public class CreateAndAssignSourceCommand extends Command {
 
 	/**
 	 * Sets the parent ActivityDiagram
-	 * 
+	 *
 	 * @param sa the parent
 	 */
 	public void setParent(StructuredActivity sa) {
@@ -57,7 +57,7 @@ public class CreateAndAssignSourceCommand extends Command {
 
 	/**
 	 * Sets the Activity to create
-	 * 
+	 *
 	 * @param activity the Activity to create
 	 */
 	public void setChild(Activity activity) {
@@ -67,7 +67,7 @@ public class CreateAndAssignSourceCommand extends Command {
 
 	/**
 	 * Sets the source to the passed activity
-	 * 
+	 *
 	 * @param activity the source
 	 */
 	public void setSource(Activity activity) {

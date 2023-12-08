@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -12,16 +12,17 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.ScalablePolygonShape;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.widgets.Display;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -66,6 +67,7 @@ public class ScalablePolygonShapeTest extends Assert {
 		checkEquals(RECTANGLE_POINTS, points);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testSmallBounds() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
@@ -74,21 +76,24 @@ public class ScalablePolygonShapeTest extends Assert {
 		scalablePolygon.setBounds(new Rectangle(0, 0, 0, 0));
 		int[] scaledPoints = scalablePolygon.getScaledPoints().toIntArray();
 		for (int i = 0; i < scaledPoints.length;) {
-			assertEquals(LINE_WIDTH / 2, scaledPoints[i++]);
+			assertEquals(LINE_WIDTH / 2, scaledPoints[i]);
+			i++;
 		}
 
 		// width < lineWidth
 		scalablePolygon.setBounds(new Rectangle(0, 0, 1, 100));
 		scaledPoints = scalablePolygon.getScaledPoints().toIntArray();
 		for (int i = 0; i < scaledPoints.length; i++) {
-			assertEquals(LINE_WIDTH / 2, scaledPoints[i++]);
+			assertEquals(LINE_WIDTH / 2, scaledPoints[i]);
+			i++;
 		}
 
 		// height < lineWidth
 		scalablePolygon.setBounds(new Rectangle(0, 0, 100, 1));
 		scaledPoints = scalablePolygon.getScaledPoints().toIntArray();
 		for (int i = 1; i < scaledPoints.length; i++) {
-			assertEquals(LINE_WIDTH / 2, scaledPoints[i++]);
+			assertEquals(LINE_WIDTH / 2, scaledPoints[i]);
+			i++;
 		}
 	}
 
@@ -162,7 +167,8 @@ public class ScalablePolygonShapeTest extends Assert {
 		checkScaledPointsNotChanged(scalablePolygon, new PointList(new int[] { 3, 3, 11, 3, 11, 11, 3, 11 }));
 	}
 
-	public void off_testContainsPoints() {
+	@SuppressWarnings("static-method")
+	public void offTestContainsPoints() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
 		scalablePolygon.setPoints(RECTANGLE_POINTS);
 		scalablePolygon.setLineWidth(1);
@@ -192,7 +198,7 @@ public class ScalablePolygonShapeTest extends Assert {
 		for (int x = 0; x < imageSize; x++) {
 			for (int y = 0; y < imageSize; y++) {
 				boolean isPolygonPoint = imageData.getPixel(x, y) == 0;
-				assertTrue("Point (" + x + "," + y + ") is" + (isPolygonPoint ? " " : " not ") + "a point of polygon",
+				assertTrue("Point (" + x + "," + y + ") is" + (isPolygonPoint ? " " : " not ") + "a point of polygon", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 						scalablePolygon.containsPoint(new Point(x, y)) == isPolygonPoint);
 			}
 		}
@@ -206,6 +212,7 @@ public class ScalablePolygonShapeTest extends Assert {
 		return newScaledPoints;
 	}
 
+	@SuppressWarnings("static-method")
 	private void checkNotEquals(PointList original, PointList modified) {
 		if (original.size() != modified.size()) {
 			return;
@@ -217,7 +224,7 @@ public class ScalablePolygonShapeTest extends Assert {
 				return;
 			}
 		}
-		fail("Passed point lists are equals");
+		fail("Passed point lists are equals"); //$NON-NLS-1$
 	}
 
 	private PointList checkScaledPointsNotChanged(ScalablePolygonShape scalablePolygon, PointList oldScaledPoints) {
@@ -226,15 +233,16 @@ public class ScalablePolygonShapeTest extends Assert {
 		return newScaledPoints;
 	}
 
+	@SuppressWarnings("static-method")
 	private void checkEquals(PointList original, PointList modified) {
 		if (original.size() != modified.size()) {
-			fail("Passed point lists are not equals");
+			fail("Passed point lists are not equals"); //$NON-NLS-1$
 		}
 		int[] originalIntArray = original.toIntArray();
 		int[] modifiedIntArray = modified.toIntArray();
 		for (int i = 0; i < modifiedIntArray.length; i++) {
 			if (originalIntArray[i] != modifiedIntArray[i]) {
-				fail("Passed point lists are not equals");
+				fail("Passed point lists are not equals"); //$NON-NLS-1$
 			}
 		}
 	}

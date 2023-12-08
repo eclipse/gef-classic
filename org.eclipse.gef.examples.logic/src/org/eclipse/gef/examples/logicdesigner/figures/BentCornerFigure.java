@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -45,7 +45,7 @@ public class BentCornerFigure extends Figure {
 	/**
 	 * Returns the size, in pixels, that the figure should use to draw its bent
 	 * corner.
-	 * 
+	 *
 	 * @return size of the corner
 	 */
 	public int getCornerSize() {
@@ -91,7 +91,7 @@ public class BentCornerFigure extends Figure {
 
 	/**
 	 * Sets the size of the figure's corner to the given offset.
-	 * 
+	 *
 	 * @param newSize the new size to use.
 	 */
 	public void setCornerSize(int newSize) {

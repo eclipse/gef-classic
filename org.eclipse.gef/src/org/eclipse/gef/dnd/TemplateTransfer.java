@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -15,7 +15,7 @@ package org.eclipse.gef.dnd;
 /**
  * Transfer object used to transfer the template of a palette tool. It is used
  * for drag-and-drop from the palette as well as copy/paste from the palette.
- * 
+ *
  * @author Eric Bordeau
  * @since 2.1
  */
@@ -31,7 +31,7 @@ public final class TemplateTransfer extends SimpleObjectTransfer {
 
 	/**
 	 * Returns the singleton instance
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static TemplateTransfer getInstance() {
@@ -40,7 +40,7 @@ public final class TemplateTransfer extends SimpleObjectTransfer {
 
 	/**
 	 * Returns the <i>template</i> object.
-	 * 
+	 *
 	 * @return the template
 	 */
 	public Object getTemplate() {
@@ -65,7 +65,7 @@ public final class TemplateTransfer extends SimpleObjectTransfer {
 
 	/**
 	 * Sets the <i>template</i> Object.
-	 * 
+	 *
 	 * @param template the template
 	 */
 	public void setTemplate(Object template) {

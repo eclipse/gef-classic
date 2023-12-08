@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,7 +17,7 @@ import org.eclipse.draw2d.geometry.PointList;
 
 /**
  * Base superclass for all polylines/polygons
- * 
+ *
  * @since 3.5
  */
 public abstract class AbstractPointListShape extends Shape {
@@ -38,7 +38,7 @@ public abstract class AbstractPointListShape extends Shape {
 	/**
 	 * Returns <code>true</code> if the point <code>(x, y)</code> is contained
 	 * within one of the child figures.
-	 * 
+	 *
 	 * @param x The X coordinate
 	 * @param y The Y coordinate
 	 * @return <code>true</code> if the point (x,y) is contained in one of the child
@@ -56,7 +56,7 @@ public abstract class AbstractPointListShape extends Shape {
 	/**
 	 * Returns <code>true</code> if the point <code>(x, y)</code> is contained
 	 * within this figure.
-	 * 
+	 *
 	 * @param x The X coordinate
 	 * @param y The Y coordinate
 	 * @return <code>true</code> if the point (x,y) is contained in this figure
@@ -65,7 +65,7 @@ public abstract class AbstractPointListShape extends Shape {
 
 	/**
 	 * Adds the passed point to this figure.
-	 * 
+	 *
 	 * @param pt the Point to be added to this figure
 	 */
 	public void addPoint(Point pt) {
@@ -82,7 +82,7 @@ public abstract class AbstractPointListShape extends Shape {
 
 	/**
 	 * Returns the last point in this Figure.
-	 * 
+	 *
 	 * @return the last point
 	 */
 	public Point getEnd() {
@@ -94,7 +94,7 @@ public abstract class AbstractPointListShape extends Shape {
 	 * is modified, this figure must be informed by calling
 	 * {@link #setPoints(PointList)}. Failure to do so will result in layout and
 	 * paint problems.
-	 * 
+	 *
 	 * @return this Polyline's points
 	 */
 	public PointList getPoints() {
@@ -103,7 +103,7 @@ public abstract class AbstractPointListShape extends Shape {
 
 	/**
 	 * Inserts a given point at a specified index in this figure.
-	 * 
+	 *
 	 * @param pt    the point to be added
 	 * @param index the position in this figure where the point is to be added
 	 */
@@ -122,7 +122,7 @@ public abstract class AbstractPointListShape extends Shape {
 
 	/**
 	 * Removes a point from this figure.
-	 * 
+	 *
 	 * @param index the position of the point to be removed
 	 */
 	public void removePoint(int index) {
@@ -133,7 +133,7 @@ public abstract class AbstractPointListShape extends Shape {
 
 	/**
 	 * Sets the start point of this figure
-	 * 
+	 *
 	 * @param start the point that will become the first point in this figure
 	 */
 	public void setStart(Point start) {
@@ -146,7 +146,7 @@ public abstract class AbstractPointListShape extends Shape {
 
 	/**
 	 * Sets the end point of this figure
-	 * 
+	 *
 	 * @param end the point that will become the last point in this figure
 	 */
 	public void setEnd(Point end) {
@@ -159,7 +159,7 @@ public abstract class AbstractPointListShape extends Shape {
 
 	/**
 	 * Sets the points at both extremes of this figure
-	 * 
+	 *
 	 * @param start the point to become the first point in this figure
 	 * @param end   the point to become the last point in this figure
 	 */
@@ -171,7 +171,7 @@ public abstract class AbstractPointListShape extends Shape {
 	/**
 	 * Sets the point at <code>index</code> to the Point <code>pt</code>. If you're
 	 * going to set multiple Points, use {@link #setPoints(PointList)}.
-	 * 
+	 *
 	 * @param pt    the point
 	 * @param index the index
 	 */
@@ -184,7 +184,7 @@ public abstract class AbstractPointListShape extends Shape {
 	/**
 	 * Sets the list of points to be used by this figure. Removes any previously
 	 * existing points. This figure will hold onto the given list by reference.
-	 * 
+	 *
 	 * @param points new set of points
 	 */
 	public void setPoints(PointList points) {

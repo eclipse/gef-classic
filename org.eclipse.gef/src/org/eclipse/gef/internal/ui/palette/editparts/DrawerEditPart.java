@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -43,7 +43,7 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
  * EditPart for a PaletteDrawer
- * 
+ *
  * @author Pratik Shah
  */
 public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart {
@@ -53,7 +53,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param drawer The PaletteDrawer that this EditPart is representing
 	 */
 	public DrawerEditPart(PaletteDrawer drawer) {
@@ -113,7 +113,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 
 	/**
 	 * Convenience method to get the DrawerFigure for the model drawer.
-	 * 
+	 *
 	 * @return The DrawerFigure created in {@link #createFigure()}
 	 */
 	public DrawerFigure getDrawerFigure() {
@@ -252,7 +252,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 
 	/**
 	 * Sets the expansion state of the DrawerFigure
-	 * 
+	 *
 	 * @param expanded <code>true</code> if the drawer is expanded; false otherwise.
 	 */
 	public void setExpanded(boolean expanded) {

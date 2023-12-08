@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -38,7 +38,7 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	/**
 	 * Constructs a PolylineDecoration. Defaults the PolylineDecoration to fill its
 	 * region with black.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public PolylineDecoration() {
@@ -74,7 +74,7 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	 * Sets the PolylineDecoration's point template. This template is an outline of
 	 * the PolylineDecoration's region. (The default value is TRIANGLE_TIP which is
 	 * a triangle whose tip is pointing to the right).
-	 * 
+	 *
 	 * @param pl the template
 	 * @since 2.0
 	 */
@@ -89,7 +89,7 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	/**
 	 * Sets the amount of scaling to be done along X and Y axes on the
 	 * PolylineDecoration's template.
-	 * 
+	 *
 	 * @param x the x scale
 	 * @param y the y scale
 	 * @since 2.0
@@ -113,7 +113,7 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 
 	/**
 	 * Sets the angle by which rotation is to be done on the PolylineDecoration.
-	 * 
+	 *
 	 * @param angle the angle of rotation
 	 * @since 2.0
 	 */

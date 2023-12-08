@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.ui.actions.ActionFactory;
 
 /**
  * Provides a context menu for the flow editor.
- * 
+ *
  * @author Daniel Lee
  */
 public class FlowContextMenuProvider extends ContextMenuProvider {
@@ -32,7 +32,7 @@ public class FlowContextMenuProvider extends ContextMenuProvider {
 	/**
 	 * Creates a new FlowContextMenuProvider assoicated with the given viewer and
 	 * action registry.
-	 * 
+	 *
 	 * @param viewer   the viewer
 	 * @param registry the action registry
 	 */
@@ -67,7 +67,7 @@ public class FlowContextMenuProvider extends ContextMenuProvider {
 
 	/**
 	 * Sets the action registry
-	 * 
+	 *
 	 * @param registry the action registry
 	 */
 	public void setActionRegistry(ActionRegistry registry) {

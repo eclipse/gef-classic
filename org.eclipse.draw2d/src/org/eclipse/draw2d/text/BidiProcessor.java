@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import com.ibm.icu.text.Bidi;
  * that block.
  * <p>
  * WARNING: This class is for INTERNAL use only.
- * 
+ *
  * @author Pratik Shah
  * @since 3.1
  */
@@ -34,7 +34,7 @@ public final class BidiProcessor {
 	/**
 	 * A helper class to hold information about contributions made to this
 	 * processor.
-	 * 
+	 *
 	 * @author Pratik Shah
 	 * @since 3.1
 	 */
@@ -65,7 +65,7 @@ public final class BidiProcessor {
 	 * Records a String contribution for this bidi context. Contributions are
 	 * concatenated (in the order that they were contributed) to make the final
 	 * String which will determine the bidi info for all contributors.
-	 * 
+	 *
 	 * @param fig the figure that is contributing the given text
 	 * @param str the text contributed by the given figure
 	 * @see #addControlChar(char)
@@ -80,7 +80,7 @@ public final class BidiProcessor {
 	 * Records a character contribution for this bidi context. Contributions are
 	 * concatenated (in the order that they were contributed) to make the final
 	 * String which will determine the bidi info for all contributors.
-	 * 
+	 *
 	 * @param fig the figure that is contributing the given text
 	 * @param c   the character being added
 	 * @see #addControlChar(char)
@@ -94,7 +94,7 @@ public final class BidiProcessor {
 	 * This methods allows FlowFigures to contribute text that may effect the bidi
 	 * evaluation, but is not text that is visible on the screen. The bidi level of
 	 * such text is reported back to the contributing figure.
-	 * 
+	 *
 	 * @param c the control character
 	 */
 	public void addControlChar(char c) {
@@ -106,7 +106,7 @@ public final class BidiProcessor {
 	 * contributed text, and assigns those levels to each figure. Also determines if
 	 * shaping needs to occur between figures and sets the appendJoiner,
 	 * prependJoiner accordingly.
-	 * 
+	 *
 	 * @param levels the calculated levels of all the text in the block
 	 */
 	private void assignResults(int[] levels) {
@@ -236,7 +236,7 @@ public final class BidiProcessor {
 	/**
 	 * Sets the paragraph embedding. The given orientation will be used on
 	 * TextLayout when determining the Bidi levels.
-	 * 
+	 *
 	 * @param newOrientation SWT.LEFT_TO_RIGHT or SWT.RIGHT_TO_LEFT
 	 */
 	public void setOrientation(int newOrientation) {

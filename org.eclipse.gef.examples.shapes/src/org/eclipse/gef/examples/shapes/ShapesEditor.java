@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -69,7 +69,7 @@ import org.eclipse.gef.examples.shapes.parts.ShapesTreeEditPartFactory;
  * A graphical editor with flyout palette that can edit .shapes files. The
  * binding between the .shapes file extension and this editor is done in
  * plugin.xml
- * 
+ *
  * @author Elias Volanakis
  */
 public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
@@ -92,7 +92,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * "work-area". For example, GEF includes zoomable and scrollable root edit
 	 * parts. The EditPartFactory maps model elements to edit parts (controllers).
 	 * </p>
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#configureGraphicalViewer()
 	 */
 	@Override
@@ -112,7 +112,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util
 	 * .EventObject)
 	 */
@@ -130,7 +130,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#
 	 * createPaletteViewerProvider()
 	 */
@@ -156,21 +156,21 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * Create a transfer drop target listener. When using a
 	 * CombinedTemplateCreationEntry tool in the palette, this will enable model
 	 * element creation by dragging from the palette.
-	 * 
+	 *
 	 * @see #createPaletteViewerProvider()
 	 */
 	private TransferDropTargetListener createTransferDropTargetListener() {
 		return new TemplateTransferDropTargetListener(getGraphicalViewer()) {
 			@Override
 			protected CreationFactory getFactory(Object template) {
-				return new SimpleFactory((Class) template);
+				return new SimpleFactory<>((Class<?>) template);
 			}
 		};
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.ISaveablePart#doSave(org.eclipse.core.runtime.
 	 * IProgressMonitor )
 	 */
@@ -204,7 +204,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.ISaveablePart#doSaveAs()
 	 */
 	@Override
@@ -254,8 +254,9 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 	@Override
 	public <T> T getAdapter(final Class<T> type) {
-		if (type == IContentOutlinePage.class)
+		if (type == IContentOutlinePage.class) {
 			return type.cast(new ShapesOutlinePage(new TreeViewer()));
+		}
 		return super.getAdapter(type);
 	}
 
@@ -265,14 +266,15 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getPaletteRoot
 	 * ()
 	 */
 	@Override
 	protected PaletteRoot getPaletteRoot() {
-		if (PALETTE_MODEL == null)
+		if (PALETTE_MODEL == null) {
 			PALETTE_MODEL = ShapesEditorPaletteFactory.createPalette();
+		}
 		return PALETTE_MODEL;
 	}
 
@@ -284,7 +286,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 	/**
 	 * Set up the editor's inital content (after creation).
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#initializeGraphicalViewer()
 	 */
 	@Override
@@ -299,7 +301,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
 	 */
 	@Override
@@ -309,7 +311,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#setInput(org.eclipse.ui.IEditorInput)
 	 */
 	@Override
@@ -332,9 +334,11 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * Creates an outline pagebook for this editor.
 	 */
 	public class ShapesOutlinePage extends ContentOutlinePage {
+		private static final String SHAPES_OUTLINE_CONTEXTMENU = "org.eclipse.gef.examples.shapes.outline.contextmenu"; //$NON-NLS-1$
+
 		/**
 		 * Create a new outline page for the shapes editor.
-		 * 
+		 *
 		 * @param viewer a viewer (TreeViewer instance) used for this outline page
 		 * @throws IllegalArgumentException if editor is null
 		 */
@@ -344,7 +348,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.
 		 * Composite )
 		 */
@@ -358,8 +362,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 			// configure & add context menu to viewer
 			ContextMenuProvider cmProvider = new ShapesEditorContextMenuProvider(getViewer(), getActionRegistry());
 			getViewer().setContextMenu(cmProvider);
-			getSite().registerContextMenu("org.eclipse.gef.examples.shapes.outline.contextmenu", cmProvider,
-					getSite().getSelectionProvider());
+			getSite().registerContextMenu(SHAPES_OUTLINE_CONTEXTMENU, cmProvider, getSite().getSelectionProvider());
 			// hook outline viewer
 			getSelectionSynchronizer().addViewer(getViewer());
 			// initialize outline viewer with model
@@ -369,7 +372,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.ui.part.IPage#dispose()
 		 */
 		@Override
@@ -382,7 +385,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.ui.part.IPage#getControl()
 		 */
 		@Override

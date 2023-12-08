@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ public class FigureUtilities {
 
 	/**
 	 * Returns a new Color the same as the passed color in a darker hue.
-	 * 
+	 *
 	 * @param color the color to darken
 	 * @return the darkened color
 	 * @since 2.0
@@ -48,7 +48,7 @@ public class FigureUtilities {
 
 	/**
 	 * Returns the FontMetrics associated with the passed Font.
-	 * 
+	 *
 	 * @param f the font
 	 * @return the FontMetrics for the given font
 	 * @see GC#getFontMetrics()
@@ -64,7 +64,7 @@ public class FigureUtilities {
 	/**
 	 * Returns the GC used for various utilities. Advanced graphics must not be
 	 * switched on by clients using this GC.
-	 * 
+	 *
 	 * @deprecated do not mess with this GC
 	 * @return the GC
 	 */
@@ -79,7 +79,7 @@ public class FigureUtilities {
 	/**
 	 * Returns the dimensions of the String <i>s</i> using the font <i>f</i>. Tab
 	 * expansion and carriage return processing are performed.
-	 * 
+	 *
 	 * @param s the string
 	 * @param f the font
 	 * @return the text's dimensions
@@ -92,7 +92,7 @@ public class FigureUtilities {
 
 	/**
 	 * Returns the highest ancestor for the given figure
-	 * 
+	 *
 	 * @since 3.0
 	 * @param figure a figure
 	 * @return the root ancestor
@@ -106,7 +106,7 @@ public class FigureUtilities {
 	/**
 	 * Returns the dimensions of the String <i>s</i> using the font <i>f</i>. No tab
 	 * expansion or carriage return processing will be performed.
-	 * 
+	 *
 	 * @param s the string
 	 * @param f the font
 	 * @return the string's dimensions
@@ -120,7 +120,7 @@ public class FigureUtilities {
 	/**
 	 * Returns the Dimensions of the given text, converting newlines and tabs
 	 * appropriately.
-	 * 
+	 *
 	 * @param text the text
 	 * @param f    the font
 	 * @return the dimensions of the given text
@@ -132,7 +132,7 @@ public class FigureUtilities {
 
 	/**
 	 * Returns the Dimensions of <i>s</i> in Font <i>f</i>.
-	 * 
+	 *
 	 * @param s the string
 	 * @param f the font
 	 * @return the dimensions of the given string
@@ -145,7 +145,7 @@ public class FigureUtilities {
 	/**
 	 * Returns the Dimensions of the given text, converting newlines and tabs
 	 * appropriately.
-	 * 
+	 *
 	 * @param s      the string
 	 * @param f      the font
 	 * @param result the Dimension that will contain the result of this calculation
@@ -159,7 +159,7 @@ public class FigureUtilities {
 
 	/**
 	 * Returns the width of <i>s</i> in Font <i>f</i>.
-	 * 
+	 *
 	 * @param s the string
 	 * @param f the font
 	 * @return the width
@@ -171,7 +171,7 @@ public class FigureUtilities {
 
 	/**
 	 * Returns a Color the same as the passed color in a lighter hue.
-	 * 
+	 *
 	 * @param rgb the color
 	 * @return the lighter color
 	 * @since 2.0
@@ -186,7 +186,7 @@ public class FigureUtilities {
 
 	/**
 	 * Produces a ghosting effect on the shape <i>s</i>.
-	 * 
+	 *
 	 * @param s the shape
 	 * @return the ghosted shape
 	 * @since 2.0
@@ -200,7 +200,7 @@ public class FigureUtilities {
 
 	/**
 	 * Mixes the passed Colors and returns the resulting Color.
-	 * 
+	 *
 	 * @param c1     the first color
 	 * @param c2     the second color
 	 * @param weight the first color's weight from 0-1
@@ -215,7 +215,7 @@ public class FigureUtilities {
 
 	/**
 	 * Mixes the passed Colors and returns the resulting Color.
-	 * 
+	 *
 	 * @param c1 the first color
 	 * @param c2 the second color
 	 * @return the new color
@@ -229,7 +229,7 @@ public class FigureUtilities {
 	/**
 	 * Paints a border with an etching effect, having a shadow of Color
 	 * <i>shadow</i> and highlight of Color <i>highlight</i>.
-	 * 
+	 *
 	 * @param g         the graphics object
 	 * @param r         the bounds of the border
 	 * @param shadow    the shadow color
@@ -258,7 +258,7 @@ public class FigureUtilities {
 	/**
 	 * Helper method to paint a grid. Painting is optimized as it is restricted to
 	 * the Graphics' clip.
-	 * 
+	 *
 	 * @param g         The Graphics object to be used for painting
 	 * @param f         The figure in which the grid is to be painted
 	 * @param origin    Any point where the grid lines are expected to intersect
@@ -266,7 +266,7 @@ public class FigureUtilities {
 	 *                  grid lines will not be drawn
 	 * @param distanceY Distance between horizontal grid lines; if 0 or less,
 	 *                  horizontal grid lines will not be drawn
-	 * 
+	 *
 	 * @since 3.0
 	 */
 	public static void paintGrid(Graphics g, IFigure f, org.eclipse.draw2d.geometry.Point origin, int distanceX,
@@ -300,7 +300,7 @@ public class FigureUtilities {
 	 * Paints a border with an etching effect, having a shadow of a darker version
 	 * of g's background color, and a highlight a lighter version of g's background
 	 * color.
-	 * 
+	 *
 	 * @param g the graphics object
 	 * @param r the bounds of the border
 	 * @since 2.0
@@ -312,7 +312,7 @@ public class FigureUtilities {
 
 	/**
 	 * Sets Font to passed value.
-	 * 
+	 *
 	 * @param f the new font
 	 * @since 2.0
 	 */
@@ -330,7 +330,7 @@ public class FigureUtilities {
 	 * it is the parent of another figure, or if it is the ancestor of that figure's
 	 * parent. If one figure is the ancestor of the other, it is returned as the
 	 * common ancestor.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param l left
 	 * @param r right
@@ -362,7 +362,7 @@ public class FigureUtilities {
 	/**
 	 * Returns <code>true</code> if the ancestor contains the descendant, or is the
 	 * ancestor of the descendant's parent.
-	 * 
+	 *
 	 * @param ancestor   the ancestor
 	 * @param descendant the descendant
 	 * @return <code>true</code> if ancestor
@@ -379,7 +379,7 @@ public class FigureUtilities {
 
 	/**
 	 * Determines whether the given figure is showing and not (completely) clipped.
-	 * 
+	 *
 	 * @param figure The figure to test
 	 * @return <code>true</code> if the given figure is showing and not completely
 	 *         clipped, <code>false</code> otherwise.

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,21 +24,21 @@ public interface LabeledBorder extends Border {
 
 	/**
 	 * Returns the label for this Border.
-	 * 
+	 *
 	 * @return The label for this Border
 	 */
 	String getLabel();
 
 	/**
 	 * Sets the Font for the label.
-	 * 
+	 *
 	 * @param f The Font to be set
 	 */
 	void setFont(Font f);
 
 	/**
 	 * Sets the text to be displayed as the label for this Border.
-	 * 
+	 *
 	 * @param l The text
 	 */
 	void setLabel(String l);

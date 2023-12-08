@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ import org.eclipse.gef.commands.UnexecutableCommand;
  * a Tree, so this root implementation should work for all purposes. This
  * implementation does little more than hold onto the viewer, and pass the
  * <code>Tree</code> to the contents as its widget.
- * 
+ *
  * @author hudsonr
  */
 public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart implements RootEditPart, TreeEditPart {
@@ -41,7 +41,7 @@ public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart
 	/**
 	 * This is where the child gets added. No TreeItem is needed here because the
 	 * contents is actually represented by the Tree iteself.
-	 * 
+	 *
 	 * @param childEditPart EditPart of child to be added.
 	 * @param index         Position where it is to be added.
 	 */
@@ -75,7 +75,7 @@ public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart
 
 	/**
 	 * This method will never be called on a tree root.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
 	 */
 	@Override
@@ -85,7 +85,7 @@ public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart
 
 	/**
 	 * Returns <code>this</code>.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getRoot()
 	 */
 	@Override
@@ -103,7 +103,7 @@ public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart
 
 	/**
 	 * The editpart holds onto the SWT Tree, which is also the contents' widget.
-	 * 
+	 *
 	 * @see org.eclipse.gef.TreeEditPart#getWidget()
 	 */
 	@Override
@@ -113,7 +113,7 @@ public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart
 
 	/**
 	 * Overridden to do nothing since the child is explicitly set.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshChildren()
 	 */
 	@Override
@@ -124,7 +124,7 @@ public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart
 	 * This is where the child gets removed. This method is overridden here so that
 	 * the AbstractTreeEditPart does not dispose the widget, which is the Tree in
 	 * this case. The tree is owned by the viewer, not the child.
-	 * 
+	 *
 	 * @param childEditPart EditPart of child to be removed.
 	 */
 	@Override
@@ -160,7 +160,7 @@ public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart
 	 * Called by <code>TreeViewer</code> to set the <code>Tree</code> into the root.
 	 * The root simply holds onto this widget and passes it to the contents when the
 	 * contents is added.
-	 * 
+	 *
 	 * @see org.eclipse.gef.TreeEditPart#setWidget(org.eclipse.swt.widgets.Widget)
 	 */
 	@Override

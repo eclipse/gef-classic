@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ import org.junit.Test;
 
 /**
  * JUnit Tests for PrecisionDimension.
- * 
+ *
  * @author Anthony Hunter
  */
 public class PrecisionDimensionTest extends Assert {
@@ -28,6 +28,7 @@ public class PrecisionDimensionTest extends Assert {
 	/**
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=227977
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testEquals() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
@@ -38,12 +39,14 @@ public class PrecisionDimensionTest extends Assert {
 	/**
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=124904
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetCopy() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
 		assertTrue(p1.equals(p1.getCopy()));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testExpand() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
@@ -52,6 +55,7 @@ public class PrecisionDimensionTest extends Assert {
 		assertTrue(p2.equals(p1.getExpanded(p1)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testShrink() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);

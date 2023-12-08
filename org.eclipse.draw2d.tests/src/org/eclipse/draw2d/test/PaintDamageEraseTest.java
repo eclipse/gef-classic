@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -43,7 +43,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 
 	/**
 	 * Tests a mixed move (x pos,y neg) with relative bounds.
-	 * 
+	 *
 	 */
 	@Test
 	public void testRelativeBoundsMixedMove2() {
@@ -54,7 +54,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 
 	/**
 	 * Tests a mixed move (x pos,y neg) with absolute bounds.
-	 * 
+	 *
 	 */
 	@Test
 	public void testAbsoluteBoundsMixedMove2() {
@@ -65,7 +65,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 
 	/**
 	 * Tests a mixed move (x neg,x pos) with relative bounds.
-	 * 
+	 *
 	 */
 	@Test
 	public void testRelativeBoundsMixedMove() {
@@ -76,7 +76,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 
 	/**
 	 * Tests a mixed move (x neg, y pos) with absolute bounds.
-	 * 
+	 *
 	 */
 	@Test
 	public void testAbsoluteBoundsMixedMove() {
@@ -87,7 +87,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 
 	/**
 	 * Tests a positive move with relative bounds.
-	 * 
+	 *
 	 */
 	@Test
 	public void testRelativeBoundsPositiveMove() {
@@ -98,7 +98,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 
 	/**
 	 * Tests a negative move with relative bounds.
-	 * 
+	 *
 	 */
 	@Test
 	public void testRelativeBoundsNegativeMove() {
@@ -109,7 +109,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 
 	/**
 	 * Tests a positive move with absolute bounds.
-	 * 
+	 *
 	 */
 	@Test
 	public void testAbsoluteBoundsPositiveMove() {
@@ -120,7 +120,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 
 	/**
 	 * Tests a negative move with absolute bounds.
-	 * 
+	 *
 	 */
 	@Test
 	public void testAbsoluteBoundsNegativeMove() {
@@ -133,8 +133,8 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 	 * This method tests to see if the old box has been properly erased by moving
 	 * the box by the given offsets and asserting that the damaged region is
 	 * correct.
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public void doTestEraseBoxAfterMove(int xOffset, int yOffset, String msg) {
 		insideBox.setBounds(insideBox.getBounds().getTranslated(xOffset, yOffset));
@@ -241,7 +241,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.UpdateListener#notifyValidating()
 	 */
 	@Override

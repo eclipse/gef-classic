@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -13,13 +13,10 @@
 
 package org.eclipse.draw2d.test;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
@@ -34,27 +31,28 @@ import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.SWTGraphics;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class AdvancedGraphicsTests extends BaseTestCase {
 
-	static final int LINE[] = new int[] { 5, 5, 20, 20, 35, 5, 50, 5 };
-	static final int POLY[] = new int[] { 5, 5, 45, 15, 20, 30, 20, 20, 45, 35, 5, 45 };
+	static final int[] LINE = { 5, 5, 20, 20, 35, 5, 50, 5 };
+	static final int[] POLY = { 5, 5, 45, 15, 20, 30, 20, 20, 45, 35, 5, 45 };
 	private SWTGraphics g;
 
 	private Image image;
-	private GC imageGC;
-	private Path path1;
-	private Path path2;
-	private Stack resources = new Stack();
+	private final Deque<Resource> resources = new ArrayDeque<>();
 
 	private void assertImageEquality(int width, int height) {
 		ImageData data = image.getImageData();
-		int src, dst;
+		int src;
+		int dst;
 		PaletteData palette = data.palette;
-		for (int y = 0; y < height; y++)
+		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				src = data.getPixel(x, y);
 				dst = data.getPixel(x, y + height);
@@ -64,39 +62,34 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 					RGB rgb2 = palette.getRGB(dst);
 					// HACK, image operations seem to differ by as much as 4
 					if (Math.abs(rgb1.red - rgb2.red) > 4 || Math.abs(rgb1.green - rgb2.green) > 4
-							|| Math.abs(rgb1.blue - rgb2.blue) > 4)
-						assertEquals("Discrepancy at coordinates <" + x + ", " + y + ">", rgb1, rgb2);
+							|| Math.abs(rgb1.blue - rgb2.blue) > 4) {
+						assertEquals("Discrepancy at coordinates <" + x + ", " + y + ">", rgb1, rgb2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					}
 				}
 			}
+		}
 	}
 
 	private void displayImage() {
 		final Shell shell = new Shell(SWT.DIALOG_TRIM);
-		shell.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(PaintEvent e) {
-				e.gc.drawImage(image, 0, 0);
-			}
-		});
+		shell.addPaintListener(e -> e.gc.drawImage(image, 0, 0));
 		shell.setBounds(100, 100, 800, 600);
 		shell.open();
 		Display d = shell.getDisplay();
-		d.asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				if (!shell.isDisposed())
-					shell.close();
+		d.asyncExec(() -> {
+			if (!shell.isDisposed()) {
+				shell.close();
 			}
 		});
 		waitEventLoop(shell, 100);
 	}
 
-	private void performTestcase(Runnable painter, Runnable tests[]) {
+	private void performTestcase(Runnable painter, Runnable[] tests) {
 		g.pushState();
 		painter.run();
-		for (int i = 0; i < tests.length; i++) {
+		for (Runnable test : tests) {
 			g.translate(100, 0);
-			tests[i].run();
+			test.run();
 			g.pushState();
 			painter.run();
 		}
@@ -113,20 +106,20 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		path1 = new Path(null);
+		Path path1 = new Path(null);
 		path1.moveTo(20, 5);
 		path1.quadTo(40, 5, 50, 25);
 		path1.quadTo(20, 25, 20, 45);
 		path1.lineTo(0, 25);
 		path1.close();
 
-		path2 = new Path(null);
+		Path path2 = new Path(null);
 		path2.moveTo(15, 30);
 		path2.cubicTo(50, 0, 50, 30, 20, 60);
 		path2.close();
 
 		image = new Image(Display.getDefault(), 800, 600);
-		imageGC = new GC(image, SWT.NONE);
+		GC imageGC = new GC(image, SWT.NONE);
 		g = new SWTGraphics(imageGC);
 
 		resources.push(path1);
@@ -136,10 +129,11 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		g.dispose();
-		while (!resources.isEmpty())
-			((Resource) resources.pop()).dispose();
+		while (!resources.isEmpty()) {
+			resources.pop().dispose();
+		}
 	}
 
 	@Test
@@ -166,17 +160,14 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		g.setLineWidthFloat(9);
 		g.pushState();
 
-		Runnable tests[] = new Runnable[4];
+		Runnable[] tests = new Runnable[4];
 		tests[0] = new AntialiasSettings(SWT.ON, SWT.ON, ColorConstants.red);
 		tests[1] = new AntialiasSettings(SWT.OFF, SWT.OFF, ColorConstants.blue);
 		tests[2] = new AntialiasSettings(SWT.DEFAULT, SWT.ON, ColorConstants.black);
 		tests[3] = new AntialiasSettings(SWT.ON, SWT.DEFAULT, ColorConstants.darkGreen);
-		performTestcase(new Runnable() {
-			@Override
-			public void run() {
-				g.drawPolyline(LINE);
-				g.drawString("OWVO", 35, 20);
-			}
+		performTestcase(() -> {
+			g.drawPolyline(LINE);
+			g.drawString("OWVO", 35, 20); //$NON-NLS-1$
 		}, tests);
 	}
 
@@ -202,16 +193,11 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		g.setBackgroundColor(ColorConstants.red);
 		g.pushState();
 
-		Runnable tests[] = new Runnable[3];
+		Runnable[] tests = new Runnable[3];
 		tests[0] = new FillRules(SWT.FILL_EVEN_ODD, SWT.ON);
 		tests[1] = new FillRules(SWT.FILL_WINDING, SWT.OFF);
 		tests[2] = new FillRules(SWT.FILL_EVEN_ODD, SWT.DEFAULT);
-		performTestcase(new Runnable() {
-			@Override
-			public void run() {
-				g.fillPolygon(POLY);
-			}
-		}, tests);
+		performTestcase(() -> g.fillPolygon(POLY), tests);
 	}
 
 	// public void testInterpolation() {
@@ -264,16 +250,11 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		g.setLineWidthFloat(9);
 		g.pushState();
 
-		Runnable[] tests = new Runnable[] { new LineSettings(SWT.JOIN_ROUND, SWT.CAP_ROUND, SWT.LINE_DASH),
+		Runnable[] tests = { new LineSettings(SWT.JOIN_ROUND, SWT.CAP_ROUND, SWT.LINE_DASH),
 				new LineSettings(SWT.JOIN_BEVEL, SWT.CAP_FLAT, SWT.LINE_DOT),
 				new LineSettings(SWT.JOIN_ROUND, SWT.CAP_SQUARE, SWT.LINE_SOLID) };
 
-		performTestcase(new Runnable() {
-			@Override
-			public void run() {
-				g.drawPolyline(LINE);
-			}
-		}, tests);
+		performTestcase(() -> g.drawPolyline(LINE), tests);
 	}
 
 	@Test
@@ -285,7 +266,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 	@Test
 	public void testLineAttributes() {
 		class LineSettings implements Runnable {
-			private LineAttributes attributes;
+			private final LineAttributes attributes;
 
 			public LineSettings(LineAttributes attributes) {
 				this.attributes = attributes;
@@ -297,9 +278,9 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 			}
 		}
 
-		float[] dash = new float[] { 2.5f, 3, 8 };
+		float[] dash = { 2.5f, 3, 8 };
 
-		Runnable[] tests = new Runnable[] {
+		Runnable[] tests = {
 				new LineSettings(new LineAttributes(0.0f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
 				new LineSettings(new LineAttributes(1.0f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
 				new LineSettings(new LineAttributes(2.5f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
@@ -311,12 +292,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 				new LineSettings(
 						new LineAttributes(9.5f, SWT.CAP_FLAT, SWT.JOIN_ROUND, SWT.LINE_CUSTOM, dash, 5, 10)), };
 
-		performTestcase(new Runnable() {
-			@Override
-			public void run() {
-				g.drawPolyline(LINE);
-			}
-		}, tests);
+		performTestcase(() -> g.drawPolyline(LINE), tests);
 	}
 
 	@Test
@@ -422,7 +398,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		}
 
 		// Initial state
-		Font f = new Font(null, "Helvetica", 50, SWT.BOLD);
+		Font f = new Font(null, "Helvetica", 50, SWT.BOLD); //$NON-NLS-1$
 		resources.push(f);
 		g.setFont(f);
 		g.setBackgroundColor(ColorConstants.yellow);
@@ -434,14 +410,9 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		resources.push(gradient);
 		resources.push(image);
 
-		Runnable tests[] = new Runnable[1];
+		Runnable[] tests = new Runnable[1];
 		tests[0] = new SetPattern(image, gradient);
-		performTestcase(new Runnable() {
-			@Override
-			public void run() {
-				g.fillText("W", 0, 0);
-			}
-		}, tests);
+		performTestcase(() -> g.fillText("W", 0, 0), tests); //$NON-NLS-1$
 
 	}
 

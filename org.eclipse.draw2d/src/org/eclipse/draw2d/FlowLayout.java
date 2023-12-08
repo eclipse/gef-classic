@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -35,14 +35,14 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Constant to specify components to be aligned on the left/top
-	 * 
+	 *
 	 * @deprecated Use {@link OrderedLayout#ALIGN_TOPLEFT} instead.
 	 */
 	public static final int ALIGN_LEFTTOP = ALIGN_TOPLEFT;
 
 	/**
 	 * Constant to specify components to be aligned on the right/bottom
-	 * 
+	 *
 	 * @deprecated Use {@link OrderedLayout#ALIGN_BOTTOMRIGHT} instead.
 	 */
 	public static final int ALIGN_RIGHTBOTTOM = ALIGN_BOTTOMRIGHT;
@@ -52,7 +52,7 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * The property that determines whether leftover space at the end of a
 	 * row/column should be filled by the last item in that row/column.
-	 * 
+	 *
 	 * @deprecated Use {@link OrderedLayout#setStretchMinorAxis(boolean)} and
 	 *             {@link OrderedLayout#isStretchMinorAxis()} instead.
 	 */
@@ -60,7 +60,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * The alignment along the major axis.
-	 * 
+	 *
 	 * @deprecated Use {@link #getMajorAlignment()} and
 	 *             {@link #setMajorAlignment(int)} instead.
 	 */
@@ -68,7 +68,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * The spacing along the major axis.
-	 * 
+	 *
 	 * @deprecated Use {@link #getMajorSpacing()} and {@link #setMajorSpacing(int)}
 	 *             instead.
 	 */
@@ -76,7 +76,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * The spacing along the minor axis.
-	 * 
+	 *
 	 * @deprecated Use {@link #getMinorSpacing()} and {@link #setMinorSpacing(int)}
 	 *             instead.
 	 */
@@ -84,7 +84,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Constructs a FlowLayout with horizontal orientation.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public FlowLayout() {
@@ -93,7 +93,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Constructs a FlowLayout whose orientation is given in the input.
-	 * 
+	 *
 	 * @param isHorizontal <code>true</code> if the layout should be horizontal
 	 * @since 2.0
 	 */
@@ -175,7 +175,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Provides the given child's preferred size.
-	 * 
+	 *
 	 * @param child the Figure whose preferred size needs to be calculated
 	 * @param wHint the width hint
 	 * @param hHint the height hint
@@ -187,7 +187,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Returns {@link PositionConstants#HORIZONTAL} by default.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.OrderedLayout#getDefaultOrientation()
 	 */
 	@Override
@@ -204,7 +204,7 @@ public class FlowLayout extends OrderedLayout {
 	 * <li>{@link #ALIGN_LEFTTOP}
 	 * <li>{@link #ALIGN_RIGHTBOTTOM}
 	 * </ul>
-	 * 
+	 *
 	 * @return the major alignment
 	 * @since 2.0
 	 */
@@ -215,7 +215,7 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * Returns the spacing in pixels to be used between children in the direction
 	 * parallel to the layout's orientation.
-	 * 
+	 *
 	 * @return the major spacing
 	 */
 	public int getMajorSpacing() {
@@ -224,7 +224,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Returns the spacing to be used between children within a row/column.
-	 * 
+	 *
 	 * @return the minor spacing
 	 */
 	public int getMinorSpacing() {
@@ -244,7 +244,7 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * Initializes state data for laying out children, based on the Figure given as
 	 * input.
-	 * 
+	 *
 	 * @param parent the parent figure
 	 * @since 2.0
 	 */
@@ -272,7 +272,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Overwritten to guarantee backwards compatibility with {@link #fill} field.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.OrderedLayout#isStretchMinorAxis()
 	 */
 	@Override
@@ -327,7 +327,7 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * Layouts one row of components. This is done based on the layout's
 	 * orientation, minor alignment and major alignment.
-	 * 
+	 *
 	 * @param parent the parent figure
 	 * @since 2.0
 	 */
@@ -377,7 +377,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Sets the given bounds for the child figure input.
-	 * 
+	 *
 	 * @param parent the parent figure
 	 * @param child  the child figure
 	 * @param bounds the size of the child to be set
@@ -398,7 +398,7 @@ public class FlowLayout extends OrderedLayout {
 	 * <li>{@link #ALIGN_LEFTTOP}
 	 * <li>{@link #ALIGN_RIGHTBOTTOM}
 	 * </ul>
-	 * 
+	 *
 	 * @param align the major alignment
 	 * @since 2.0
 	 */
@@ -409,7 +409,7 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * Sets the spacing in pixels to be used between children in the direction
 	 * parallel to the layout's orientation.
-	 * 
+	 *
 	 * @param n the major spacing
 	 * @since 2.0
 	 */
@@ -419,7 +419,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Sets the spacing to be used between children within a row/column.
-	 * 
+	 *
 	 * @param n the minor spacing
 	 * @since 2.0
 	 */
@@ -429,7 +429,7 @@ public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Overwritten to guarantee backwards compatibility with {@link #fill} field.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.OrderedLayout#setStretchMinorAxis(boolean)
 	 */
 	@Override

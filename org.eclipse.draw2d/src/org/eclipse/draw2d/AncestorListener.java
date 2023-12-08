@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,14 +26,14 @@ public interface AncestorListener {
 
 	/**
 	 * Called when an ancestor has been added into the listening figure's hierarchy.
-	 * 
+	 *
 	 * @param ancestor The ancestor that was added
 	 */
 	void ancestorAdded(IFigure ancestor);
 
 	/**
 	 * Called when an ancestor has moved to a new location.
-	 * 
+	 *
 	 * @param ancestor The ancestor that has moved
 	 */
 	void ancestorMoved(IFigure ancestor);
@@ -41,7 +41,7 @@ public interface AncestorListener {
 	/**
 	 * Called when an ancestor has been removed from the listening figure's
 	 * hierarchy.
-	 * 
+	 *
 	 * @param ancestor The ancestor that has been removed
 	 */
 	void ancestorRemoved(IFigure ancestor);

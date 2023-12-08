@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ import org.eclipse.draw2d.FigureUtilities;
 
 /**
  * A class to keep miscellaneous palette color utilities.
- * 
+ *
  * @author crevells
  * @since 3.4
  */
@@ -83,7 +83,7 @@ public class PaletteColorUtil {
 	/**
 	 * Gets the color to be used when hovering over palette items. The color differs
 	 * in high contrast mode.
-	 * 
+	 *
 	 * @return the hover color
 	 * @since 3.4
 	 */
@@ -101,7 +101,7 @@ public class PaletteColorUtil {
 	/**
 	 * Gets the color to be used when selecting palette items. The color differs in
 	 * high contrast mode.
-	 * 
+	 *
 	 * @return the selected color
 	 * @since 3.4
 	 */

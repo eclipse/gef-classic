@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2010 Research Group Software Construction, RWTH Aachen University and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -9,13 +9,13 @@
  *
  * Contributors:
  *    Alexander Nyßen (Research Group Software Contruction, RWTH Aachen University) - initial API and implementation
- *     
+ *
  *******************************************************************************/
 package org.eclipse.draw2d.geometry;
 
 /**
  * Represents a straight line within 2-dimensional Euclidean space.
- * 
+ *
  * @author Alexander Nyssen
  * @since 3.6
  */
@@ -29,7 +29,7 @@ public class Straight {
 
 	/**
 	 * Constructs a new Straight with the given position and direction.
-	 * 
+	 *
 	 * @param position
 	 * @param direction
 	 */
@@ -43,7 +43,7 @@ public class Straight {
 
 	/**
 	 * Constructs a new Straight between the two given Points.
-	 * 
+	 *
 	 * @param point1 a first waypoint of the Straight to be constructed
 	 * @param point2 a second waypoint of the Straight to be constructed
 	 */
@@ -53,7 +53,7 @@ public class Straight {
 
 	/**
 	 * Checks whether this Straight and the provided one have an intersection point.
-	 * 
+	 *
 	 * @param other The Straight to use for the calculation.
 	 * @return true if the two Straights intersect, false otherwise.
 	 */
@@ -64,10 +64,10 @@ public class Straight {
 	/**
 	 * Checks whether this Straight and the provided one have an intersection point,
 	 * which is inside the specified segment between segmentStart and segmentEnd.
-	 * 
+	 *
 	 * segmentStart a Vector indicating the start point of the segment. Has to be a
 	 * point on the straight.
-	 * 
+	 *
 	 * @param segmentEnd a Vector indicating the end point of the segment. Has to be
 	 *                   a point on the straight.
 	 * @param other      the Straight to test
@@ -100,7 +100,7 @@ public class Straight {
 	/**
 	 * Computes the intersection point of this Straight and the provided one, if it
 	 * exists.
-	 * 
+	 *
 	 * @param other The Straight to use for calculations.
 	 * @return A Vector pointing to the intersection point, if it exists, null if no
 	 *         intersection point exists (or the Straights are equal).
@@ -118,7 +118,7 @@ public class Straight {
 
 	/**
 	 * Returns the (smallest) angle between this Straight and the provided one.
-	 * 
+	 *
 	 * @param other The Straight to be used for the calculation.
 	 * @return The angle spanned between the two Straights.
 	 */
@@ -130,7 +130,7 @@ public class Straight {
 	 * Returns the projection of the given Vector onto this Straight, which is the
 	 * point on this Straight with the minimal distance to the point, denoted by the
 	 * provided Vector.
-	 * 
+	 *
 	 * @param vector The Vector whose projection should be determined.
 	 * @return A new Vector representing the projection of the provided Vector onto
 	 *         this Straight.
@@ -142,7 +142,7 @@ public class Straight {
 	/**
 	 * Returns the distance of the provided Vector to this Straight, which is the
 	 * distance between the provided Vector and its projection onto this Straight.
-	 * 
+	 *
 	 * @param vector The Vector whose distance is to be calculated.
 	 * @return the distance between this Straight and the provided Vector.
 	 */
@@ -153,7 +153,7 @@ public class Straight {
 	/**
 	 * Calculates whether the point indicated by the provided Vector is a point on
 	 * this Straight.
-	 * 
+	 *
 	 * @param vector the Vector who has to be checked.
 	 * @return true if the point indicated by the given Vector is a point of this
 	 *         Straight, false otherwise.
@@ -165,7 +165,7 @@ public class Straight {
 	/**
 	 * Calculates whether the point indicated by the provided Vector is a point on
 	 * the straight segment between the given start and end points.
-	 * 
+	 *
 	 * @param segmentStart a Vector indicating the start point of the segment. Has
 	 *                     to be a point on the straight.
 	 * @param segmentEnd   a Vector indicating the end point of the segment. Has to
@@ -205,7 +205,7 @@ public class Straight {
 
 	/**
 	 * Checks whether this Straight and the provided one are parallel to each other.
-	 * 
+	 *
 	 * @param other The Straight to test for parallelism.
 	 * @return true if the direction vectors of this Straight and the provided one
 	 *         are parallel, false otherwise.
@@ -218,7 +218,7 @@ public class Straight {
 	 * Checks whether this Straight is equal to the provided Straight. Two Straights
 	 * s1 and s2 are equal, if the position vector of s2 is a point on s1 and the
 	 * direction vectors of s1 and s2 are parallel.
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,7 +18,7 @@ import org.eclipse.gef.RequestConstants;
 
 /**
  * A request to perform direct editing on the receiver of the Request.
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -36,7 +36,7 @@ public class DirectEditRequest extends LocationRequest {
 
 	/**
 	 * Constructor for DirectEditRequest.
-	 * 
+	 *
 	 * @param type the type
 	 */
 	public DirectEditRequest(Object type) {
@@ -46,7 +46,7 @@ public class DirectEditRequest extends LocationRequest {
 	/**
 	 * If the EditPart supports direct editing of multiple features, this parameter
 	 * can be used to discriminate among them.
-	 * 
+	 *
 	 * @return the direct edit feature
 	 */
 	public Object getDirectEditFeature() {
@@ -55,7 +55,7 @@ public class DirectEditRequest extends LocationRequest {
 
 	/**
 	 * Returns the cell editor used to perform the direct edit.
-	 * 
+	 *
 	 * @return the cell editor
 	 */
 	public CellEditor getCellEditor() {
@@ -64,7 +64,7 @@ public class DirectEditRequest extends LocationRequest {
 
 	/**
 	 * Sets the cell editor to be used when direct editing.
-	 * 
+	 *
 	 * @param celleditor the cell editor
 	 */
 	public void setCellEditor(CellEditor celleditor) {
@@ -73,7 +73,7 @@ public class DirectEditRequest extends LocationRequest {
 
 	/**
 	 * Sets the direct edit feature.
-	 * 
+	 *
 	 * @param feature the direct edit feature
 	 * @see #getDirectEditFeature()
 	 */

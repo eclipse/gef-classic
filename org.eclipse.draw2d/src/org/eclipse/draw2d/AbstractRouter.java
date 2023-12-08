@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 
 	/**
 	 * Returns the constraint for the given Connection.
-	 * 
+	 *
 	 * @param connection The connection
 	 * @return The constraint
 	 * @since 2.0
@@ -42,7 +42,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 	 * that is reused to reduce garbage collection. The caller may modify this point
 	 * in any way. However, the point will be reused and its values overwritten
 	 * during the next call to this method.
-	 * 
+	 *
 	 * @param connection The connection
 	 * @return The endpoint
 	 * @since 2.0
@@ -59,7 +59,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 	 * static singleton that is reused to reduce garbage collection. The caller may
 	 * modify this point in any way. However, the point will be reused and its
 	 * values overwritten during the next call to this method.
-	 * 
+	 *
 	 * @param conn The connection
 	 * @return The start point
 	 * @since 2.0
@@ -72,7 +72,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 	/**
 	 * Causes the router to discard any cached information about the given
 	 * Connection.
-	 * 
+	 *
 	 * @param connection The connection to invalidate
 	 * @since 2.0
 	 */
@@ -83,7 +83,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 	/**
 	 * Removes the given Connection from this routers list of Connections it is
 	 * responsible for.
-	 * 
+	 *
 	 * @param connection The connection to remove
 	 * @since 2.0
 	 */
@@ -93,7 +93,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 
 	/**
 	 * Sets the constraint for the given Connection.
-	 * 
+	 *
 	 * @param connection The connection
 	 * @param constraint The constraint
 	 * @since 2.0

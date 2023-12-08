@@ -2,12 +2,12 @@
  * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.viewers.internal;
@@ -31,7 +31,7 @@ import org.eclipse.zest.core.widgets.ZestStyles;
 
 /**
  * Helper class used to style graph elements based on graph element stylers.
- * 
+ *
  * @author Del Myers
  */
 // @tag bug(151327-Styles) : created to help resolve this bug
@@ -192,7 +192,7 @@ public class GraphItemStyler {
 
 	/**
 	 * Styles the given node according to the properties in the style provider.
-	 * 
+	 *
 	 * @param node     the graph element to style.
 	 * @param data     the element that is being styled.
 	 * @param provider the style provier.
@@ -241,7 +241,7 @@ public class GraphItemStyler {
 
 	/**
 	 * Returns the SWT line style for the given zest connection style.
-	 * 
+	 *
 	 */
 	public static int getLineStyleForZestStyle(int style) {
 		int lineStyles = ZestStyles.CONNECTIONS_DASH_DOT | ZestStyles.CONNECTIONS_DASH | ZestStyles.CONNECTIONS_DOT

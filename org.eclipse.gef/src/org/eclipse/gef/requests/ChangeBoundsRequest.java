@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Creates a ChangeBoundsRequest with the given type.
-	 * 
+	 *
 	 * @param type The type of Request.
 	 */
 	public ChangeBoundsRequest(Object type) {
@@ -48,7 +48,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Returns the location of the mouse pointer.
-	 * 
+	 *
 	 * @return The location of the mouse pointer.
 	 */
 	@Override
@@ -66,7 +66,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Returns a Point representing the distance the EditPart has moved.
-	 * 
+	 *
 	 * @return A Point representing the distance the EditPart has moved.
 	 */
 	public Point getMoveDelta() {
@@ -85,7 +85,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 	 * <li>{@link org.eclipse.draw2d.PositionConstants#SOUTH_EAST}
 	 * <li>{@link org.eclipse.draw2d.PositionConstants#SOUTH_WEST}
 	 * </ul>
-	 * 
+	 *
 	 * @return the resize direction
 	 */
 	public int getResizeDirection() {
@@ -94,7 +94,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Returns a Dimension representing how much the EditPart has been resized.
-	 * 
+	 *
 	 * @return A Dimension representing how much the EditPart has been resized.
 	 */
 	public Dimension getSizeDelta() {
@@ -104,7 +104,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 	/**
 	 * Transforms a copy of the passed in rectangle to account for the move and/or
 	 * resize deltas and returns this copy.
-	 * 
+	 *
 	 * @param rect the rectangle to transform
 	 * @return a copy of the passed in rectangle representing the new bounds
 	 */
@@ -114,7 +114,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Returns true if the request is for a centered resize.
-	 * 
+	 *
 	 * @since 3.0
 	 * @return <code>true</code> if centered resize
 	 */
@@ -124,7 +124,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Returns <code>true</code> if the request is for a constrained move
-	 * 
+	 *
 	 * @since 3.0
 	 * @return <code>true</code> if a constrained move
 	 */
@@ -134,7 +134,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Returns <code>true</code> if the request is for a constrained resize
-	 * 
+	 *
 	 * @since 3.0
 	 * @return <code>true</code> if a constrained resize
 	 */
@@ -144,7 +144,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Returns <code>true</code> if snap-to is enabled
-	 * 
+	 *
 	 * @since 3.7
 	 * @return <code>true</code> if the request is for a creation with snap-to
 	 *         enabled
@@ -155,7 +155,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Used to set whether a centered resize is being performed.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param value <code>true</code> if the request is for a centered resize
 	 */
@@ -165,7 +165,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Used to set whether a constrained move is being performed.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param value <code>true</code> if the request is for a constrained move
 	 */
@@ -175,7 +175,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Used to set whether a constrained resize is being performed.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param value <code>true</code> if the request is for a constrained resize
 	 */
@@ -185,7 +185,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Sets the location of the mouse pointer.
-	 * 
+	 *
 	 * @param p The location of the mouse pointer.
 	 */
 	public void setLocation(Point p) {
@@ -202,7 +202,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Sets the move delta.
-	 * 
+	 *
 	 * @param p The Point representing the move delta
 	 */
 	public void setMoveDelta(Point p) {
@@ -211,7 +211,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Sets the direction the figure is being resized.
-	 * 
+	 *
 	 * @param dir the direction of the resize
 	 * @see #getResizeDirection()
 	 */
@@ -221,7 +221,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Sets the size delta.
-	 * 
+	 *
 	 * @param d The Dimension representing the size delta.
 	 */
 	public void setSizeDelta(Dimension d) {
@@ -230,7 +230,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
 	/**
 	 * Used to set whether snap-to is being performed.
-	 * 
+	 *
 	 * @since 3.7
 	 * @param value <code>true</code> if the request is for a creation with snap-to
 	 *              enabled

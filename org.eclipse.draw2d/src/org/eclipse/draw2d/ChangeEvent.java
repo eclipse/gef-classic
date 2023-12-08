@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ public class ChangeEvent extends java.util.EventObject {
 	/**
 	 * Constructs a new ChangeEvent with the given object as the source of the
 	 * event.
-	 * 
+	 *
 	 * @param source The source of the event
 	 */
 	public ChangeEvent(Object source) {
@@ -32,7 +32,7 @@ public class ChangeEvent extends java.util.EventObject {
 
 	/**
 	 * Constructs a new ChangeEvent with the given source object and property name.
-	 * 
+	 *
 	 * @param source   The source of the event
 	 * @param property The property name
 	 */
@@ -43,7 +43,7 @@ public class ChangeEvent extends java.util.EventObject {
 
 	/**
 	 * Returns the name of the property that has changed.
-	 * 
+	 *
 	 * @return String the name of the property that has changed
 	 */
 	public String getPropertyName() {
@@ -52,7 +52,7 @@ public class ChangeEvent extends java.util.EventObject {
 
 	/**
 	 * Sets the name of the property that has changed.
-	 * 
+	 *
 	 * @param string The property name
 	 */
 	protected void setPropertyName(String string) {

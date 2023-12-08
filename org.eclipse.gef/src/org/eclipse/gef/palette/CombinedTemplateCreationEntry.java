@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ import org.eclipse.gef.requests.CreationFactory;
  * A combination of a {@link PaletteTemplateEntry} and {@link ToolEntry}. The
  * entry will be rendered as a ToolEntry, but it will also be possible to use
  * the entry as a DragSource in the same way as a template.
- * 
+ *
  * @author hudsonr
  */
 public class CombinedTemplateCreationEntry extends CreationToolEntry {
@@ -32,7 +32,7 @@ public class CombinedTemplateCreationEntry extends CreationToolEntry {
 	 * creation factory is used by the creation tool when the entry is selected. The
 	 * template is used with the
 	 * {@link org.eclipse.gef.dnd.TemplateTransferDragSourceListener}.
-	 * 
+	 *
 	 * @since 3.2
 	 * @param label     the label
 	 * @param shortDesc the descriptoin
@@ -50,7 +50,7 @@ public class CombinedTemplateCreationEntry extends CreationToolEntry {
 	/**
 	 * Constructs an entry with the given creation factory. The creation factory is
 	 * also used as the template object.
-	 * 
+	 *
 	 * @param label     the label
 	 * @param shortDesc the description
 	 * @param factory   the creation factory and template
@@ -65,7 +65,7 @@ public class CombinedTemplateCreationEntry extends CreationToolEntry {
 
 	/**
 	 * Returns the template object.
-	 * 
+	 *
 	 * @return Object the template
 	 */
 	public Object getTemplate() {
@@ -74,7 +74,7 @@ public class CombinedTemplateCreationEntry extends CreationToolEntry {
 
 	/**
 	 * Sets the template.
-	 * 
+	 *
 	 * @param template The template
 	 */
 	public void setTemplate(Object template) {

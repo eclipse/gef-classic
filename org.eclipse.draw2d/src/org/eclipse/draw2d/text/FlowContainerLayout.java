@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -16,10 +16,10 @@ import org.eclipse.draw2d.IFigure;
 
 /**
  * A layout for FlowFigures with children.
- * 
+ *
  * <P>
  * WARNING: This class is not intended to be subclassed by clients.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -39,7 +39,7 @@ public abstract class FlowContainerLayout extends FlowFigureLayout implements Fl
 
 	/**
 	 * Adds the given box the current line and clears the context's state.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.text.FlowContext#addToCurrentLine(FlowBox)
 	 */
 	@Override
@@ -69,7 +69,7 @@ public abstract class FlowContainerLayout extends FlowFigureLayout implements Fl
 	/**
 	 * FlowBoxes shouldn't be added directly to the current line. Use
 	 * {@link #addToCurrentLine(FlowBox)} for that.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.text.FlowContext#getCurrentLine()
 	 */
 	LineBox getCurrentLine() {

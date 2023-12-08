@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2011, 2023 Google, Inc.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -42,7 +42,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_repaint() throws Exception {
+	public void testRepaint() {
 		testFigure.setBounds(new Rectangle(10, 11, 50, 78));
 		actualLogger.clear();
 		//
@@ -60,7 +60,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_add() throws Exception {
+	public void testAdd() {
 		//
 		// check reset state during add child figure with empty bounds
 		testFigure.add(new Figure());
@@ -78,7 +78,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_remove() throws Exception {
+	public void testRemove() {
 		testFigure.setBounds(new Rectangle(10, 11, 50, 78));
 		actualLogger.clear();
 		//
@@ -106,7 +106,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_bounds() throws Exception {
+	public void testBounds() {
 		// check reset state during setBounds()
 		testFigure.setBounds(new Rectangle(1, 2, 3, 4));
 		expectedLogger.log("erase()");
@@ -162,7 +162,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_border() throws Exception {
+	public void testBorder() {
 		// check repaint during setBorder()
 		LineBorder border = new LineBorder();
 		testFigure.setBorder(border);
@@ -192,7 +192,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_background() throws Exception {
+	public void testBackground() {
 		// check repaint during setBackgroundColor()
 		testFigure.setBackgroundColor(ColorConstants.red);
 		expectedLogger.log("repaint(0, 0, 0, 0)");
@@ -218,7 +218,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_foreground() throws Exception {
+	public void testForeground() {
 		// check repaint during setForegroundColor()
 		testFigure.setForegroundColor(ColorConstants.red);
 		expectedLogger.log("repaint(0, 0, 0, 0)");
@@ -244,7 +244,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_font() throws Exception {
+	public void testFont() {
 		// check reset state during setFont()
 		testFigure.setFont(new Font(null, "Courier New", 12, SWT.BOLD));
 		expectedLogger.log("invalidate()");
@@ -273,7 +273,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_cursor() throws Exception {
+	public void testCursor() {
 		// check invoke updateCursor() during setCursor()
 		testFigure.setCursor(Display.getCurrent().getSystemCursor(SWT.CURSOR_HELP));
 		expectedLogger.log("updateCursor()");
@@ -299,7 +299,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_opaque() throws Exception {
+	public void testOpaque() {
 		// check repaint during setOpaque()
 		testFigure.setOpaque(true);
 		expectedLogger.log("repaint(0, 0, 0, 0)");
@@ -320,7 +320,7 @@ public class FigurePaintingTest extends BaseTestCase {
 	}
 
 	@Test
-	public void test_visible() throws Exception {
+	public void testVisible() {
 		// check reset state during setVisible()
 		testFigure.setVisible(false);
 		expectedLogger.log("erase()");

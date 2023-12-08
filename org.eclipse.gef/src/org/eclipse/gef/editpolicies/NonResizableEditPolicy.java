@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,14 +21,12 @@ import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FocusBorder;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.SharedCursors;
@@ -53,7 +51,7 @@ import org.eclipse.gef.tools.SelectEditPartTracker;
  * <P>
  * During feedback, a rectangle filled using XOR and outlined with dashes is
  * drawn. Subclasses can tailor the feedback.
- * 
+ *
  * @author hudsonr
  */
 public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
@@ -64,7 +62,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Creates the figure used for feedback.
-	 * 
+	 *
 	 * @return the new feedback figure
 	 */
 	protected IFigure createDragSourceFeedbackFigure() {
@@ -97,7 +95,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * Creates a 'resize'/'drag' handle, which uses a {@link DragEditPartsTracker}
 	 * in case {@link #isDragAllowed()} returns true, and a
 	 * {@link SelectEditPartTracker} otherwise.
-	 * 
+	 *
 	 * @param handles   The list of handles to add the resize handle to
 	 * @param direction A position constant indicating the direction to create the
 	 *                  handle for
@@ -106,19 +104,17 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	protected void createDragHandle(List handles, int direction) {
 		if (isDragAllowed()) {
 			// display 'resize' handles to allow dragging (drag tracker)
-			NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(), handles, direction, getDragTracker(),
-					SharedCursors.SIZEALL);
+			NonResizableHandleKit.addHandle(getHost(), handles, direction, getDragTracker(), SharedCursors.SIZEALL);
 		} else {
 			// display 'resize' handles to indicate selection only (selection
 			// tracker)
-			NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(), handles, direction, getSelectTracker(),
-					SharedCursors.ARROW);
+			NonResizableHandleKit.addHandle(getHost(), handles, direction, getSelectTracker(), SharedCursors.ARROW);
 		}
 	}
 
 	/**
 	 * Returns a selection tracker to use by a selection handle.
-	 * 
+	 *
 	 * @return a new {@link ResizeTracker}
 	 * @since 3.7
 	 */
@@ -128,7 +124,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Returns a drag tracker to use by a resize handle.
-	 * 
+	 *
 	 * @return a new {@link ResizeTracker}
 	 * @since 3.7
 	 */
@@ -140,18 +136,17 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * Creates a 'move' handle, which uses a {@link DragEditPartsTracker} in case
 	 * {@link #isDragAllowed()} returns true, and a {@link SelectEditPartTracker}
 	 * otherwise.
-	 * 
+	 *
 	 * @param handles The list of handles to add the move handle to.
 	 * @since 3.7
 	 */
 	protected void createMoveHandle(List handles) {
 		if (isDragAllowed()) {
 			// display 'move' handle to allow dragging
-			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(), handles, getDragTracker(), Cursors.SIZEALL);
+			ResizableHandleKit.addMoveHandle(getHost(), handles, getDragTracker(), Cursors.SIZEALL);
 		} else {
 			// display 'move' handle only to indicate selection
-			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(), handles, getSelectTracker(),
-					SharedCursors.ARROW);
+			ResizableHandleKit.addMoveHandle(getHost(), handles, getSelectTracker(), SharedCursors.ARROW);
 		}
 	}
 
@@ -171,7 +166,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Erases drag feedback. This method called whenever an erase feedback request
 	 * is received of the appropriate type.
-	 * 
+	 *
 	 * @param request the request
 	 */
 	protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
@@ -187,8 +182,9 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	@Override
 	public void eraseSourceFeedback(Request request) {
 		if ((REQ_MOVE.equals(request.getType()) && isDragAllowed()) || REQ_CLONE.equals(request.getType())
-				|| REQ_ADD.equals(request.getType()))
+				|| REQ_ADD.equals(request.getType())) {
 			eraseChangeBoundsFeedback((ChangeBoundsRequest) request);
+		}
 	}
 
 	/**
@@ -198,30 +194,34 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	public Command getCommand(Request request) {
 		Object type = request.getType();
 
-		if (REQ_MOVE.equals(type) && isDragAllowed())
+		if (REQ_MOVE.equals(type) && isDragAllowed()) {
 			return getMoveCommand((ChangeBoundsRequest) request);
-		if (REQ_ORPHAN.equals(type))
+		}
+		if (REQ_ORPHAN.equals(type)) {
 			return getOrphanCommand(request);
-		if (REQ_ALIGN.equals(type))
+		}
+		if (REQ_ALIGN.equals(type)) {
 			return getAlignCommand((AlignmentRequest) request);
+		}
 
 		return null;
 	}
 
 	/**
 	 * Lazily creates and returns the feedback figure used during drags.
-	 * 
+	 *
 	 * @return the feedback figure
 	 */
 	protected IFigure getDragSourceFeedbackFigure() {
-		if (feedback == null)
+		if (feedback == null) {
 			feedback = createDragSourceFeedbackFigure();
+		}
 		return feedback;
 	}
 
 	/**
 	 * Returns the command contribution to an alignment request
-	 * 
+	 *
 	 * @param request the alignment request
 	 * @return the contribution to the alignment
 	 */
@@ -237,13 +237,14 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * Returns the bounds of the host's figure by reference to be used to calculate
 	 * the initial location of the feedback. The returned Rectangle should not be
 	 * modified. Uses handle bounds if available.
-	 * 
+	 *
 	 * @return the host figure's bounding Rectangle
 	 */
 	protected Rectangle getInitialFeedbackBounds() {
-		if (((GraphicalEditPart) getHost()).getFigure() instanceof HandleBounds)
-			return ((HandleBounds) ((GraphicalEditPart) getHost()).getFigure()).getHandleBounds();
-		return ((GraphicalEditPart) getHost()).getFigure().getBounds();
+		if (getHost().getFigure() instanceof HandleBounds handleBounds) {
+			return handleBounds.getHandleBounds();
+		}
+		return getHost().getFigure().getBounds();
 	}
 
 	/**
@@ -251,7 +252,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * implementation actually redispatches the request to the host's parent
 	 * editpart as a {@link RequestConstants#REQ_MOVE_CHILDREN} request. The
 	 * parent's contribution is returned.
-	 * 
+	 *
 	 * @param request the change bounds request
 	 * @return the command contribution to the request
 	 */
@@ -272,7 +273,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * are not forwarded to the host's parent here. That is done in
 	 * {@link ComponentEditPolicy}. So, if the host has a component editpolicy, then
 	 * the parent will already have a chance to contribute.
-	 * 
+	 *
 	 * @param req the orphan request
 	 * @return <code>null</code> by default
 	 */
@@ -282,20 +283,21 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Hides the focus rectangle displayed in <code>showFocus()</code>.
-	 * 
+	 *
 	 * @see #showFocus()
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideFocus()
 	 */
 	@Override
 	protected void hideFocus() {
-		if (focusRect != null)
+		if (focusRect != null) {
 			removeFeedback(focusRect);
+		}
 		focusRect = null;
 	}
 
 	/**
 	 * Returns true if this EditPolicy allows its EditPart to be dragged.
-	 * 
+	 *
 	 * @return true if the EditPart can be dragged.
 	 */
 	public boolean isDragAllowed() {
@@ -305,18 +307,19 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Sets the dragability of the EditPolicy to the given value. If the value is
 	 * false, the EditPolicy should not allow its EditPart to be dragged.
-	 * 
+	 *
 	 * @param isDragAllowed whether or not the EditPolicy can be dragged.
 	 */
 	public void setDragAllowed(boolean isDragAllowed) {
-		if (isDragAllowed == this.isDragAllowed)
+		if (isDragAllowed == this.isDragAllowed) {
 			return;
+		}
 		this.isDragAllowed = isDragAllowed;
 	}
 
 	/**
 	 * Shows or updates feedback for a change bounds request.
-	 * 
+	 *
 	 * @param request the request
 	 */
 	protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
@@ -335,24 +338,22 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Shows a focus rectangle around the host's figure. The focus rectangle is
 	 * expanded by 5 pixels from the figure's bounds.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showFocus()
 	 */
 	@Override
 	protected void showFocus() {
-		focusRect = new AbstractHandle((GraphicalEditPart) getHost(), new Locator() {
-			@Override
-			public void relocate(IFigure target) {
-				IFigure figure = getHostFigure();
-				Rectangle r;
-				if (figure instanceof HandleBounds)
-					r = ((HandleBounds) figure).getHandleBounds().getCopy();
-				else
-					r = getHostFigure().getBounds().getResized(-1, -1);
-				getHostFigure().translateToAbsolute(r);
-				target.translateToRelative(r);
-				target.setBounds(r.expand(5, 5).resize(1, 1));
+		focusRect = new AbstractHandle(getHost(), target -> {
+			IFigure figure = getHostFigure();
+			Rectangle r;
+			if (figure instanceof HandleBounds handleBounds) {
+				r = handleBounds.getHandleBounds().getCopy();
+			} else {
+				r = getHostFigure().getBounds().getResized(-1, -1);
 			}
+			getHostFigure().translateToAbsolute(r);
+			target.translateToRelative(r);
+			target.setBounds(r.expand(5, 5).resize(1, 1));
 		}) {
 			{
 				setBorder(new FocusBorder());
@@ -368,30 +369,33 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Calls other methods as appropriate.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
 	 */
 	@Override
 	public void showSourceFeedback(Request request) {
 		if ((REQ_MOVE.equals(request.getType()) && isDragAllowed()) || REQ_ADD.equals(request.getType())
-				|| REQ_CLONE.equals(request.getType()))
+				|| REQ_CLONE.equals(request.getType())) {
 			showChangeBoundsFeedback((ChangeBoundsRequest) request);
+		}
 	}
 
 	/**
 	 * Returns <code>true</code> for move, align, add, and orphan request types.
 	 * This method is never called for some of these types, but they are included
 	 * for possible future use.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#understandsRequest(org.eclipse.gef.Request)
 	 */
 	@Override
 	public boolean understandsRequest(Request request) {
-		if (REQ_MOVE.equals(request.getType()))
+		if (REQ_MOVE.equals(request.getType())) {
 			return isDragAllowed();
-		else if (REQ_CLONE.equals(request.getType()) || REQ_ADD.equals(request.getType())
-				|| REQ_ORPHAN.equals(request.getType()) || REQ_ALIGN.equals(request.getType()))
+		}
+		if (REQ_CLONE.equals(request.getType()) || REQ_ADD.equals(request.getType())
+				|| REQ_ORPHAN.equals(request.getType()) || REQ_ALIGN.equals(request.getType())) {
 			return true;
+		}
 		return super.understandsRequest(request);
 	}
 

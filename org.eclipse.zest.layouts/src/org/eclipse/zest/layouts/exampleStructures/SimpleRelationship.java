@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.exampleStructures;
@@ -81,7 +81,7 @@ public class SimpleRelationship implements LayoutRelationship {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param sourceEntity      The sourceEntity of this SimpleRelation.
 	 * @param destinationEntity The object of this SimpleRelation.
 	 * @param bidirectional     Determines if the <code>sourceEntity</code> and
@@ -97,7 +97,7 @@ public class SimpleRelationship implements LayoutRelationship {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param sourceEntity      The sourceEntity of this SimpleRelation.
 	 * @param destinationEntity The destinationEntity of this SimpleRelation.
 	 * @param exchangeable      Determines if the <code>sourceEntity</code> and
@@ -121,7 +121,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	/**
 	 * Gets the sourceEntity of this SimpleRelation whether the relation is
 	 * exchangeable or not.
-	 * 
+	 *
 	 * @return The sourceEntity.
 	 */
 	@Override
@@ -132,7 +132,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	/**
 	 * Gets the destinationEntity of this SimpleRelation whether the relation is
 	 * exchangeable or not.
-	 * 
+	 *
 	 * @return The destinationEntity of this SimpleRelation.
 	 */
 	@Override
@@ -225,7 +225,7 @@ public class SimpleRelationship implements LayoutRelationship {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ca.uvic.cs.chisel.layouts.LayoutRelationship#getInternalRelationship()
 	 */
 	@Override
@@ -235,7 +235,7 @@ public class SimpleRelationship implements LayoutRelationship {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * ca.uvic.cs.chisel.layouts.LayoutRelationship#setInternalRelationship(java.
 	 * lang.Object)

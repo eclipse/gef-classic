@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
 
 /**
  * The default entry page for drawers.
- * 
+ *
  * @author Pratik Shah
  */
 public class DrawerEntryPage extends DefaultEntryPage {
@@ -69,7 +69,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 
 	/**
 	 * Creates the button that provides the option to pin a drawer open at start-up.
-	 * 
+	 *
 	 * @param panel The parent Composite
 	 * @return The button for the new option
 	 */
@@ -95,7 +95,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	/**
 	 * Creates the button that provides the option to have a drawer open at
 	 * start-up.
-	 * 
+	 *
 	 * @param panel The parent Composite
 	 * @return The button for the new option
 	 */
@@ -125,7 +125,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 
 	/**
 	 * Convenience method that provides access to the PaletteDrawer.
-	 * 
+	 *
 	 * @return the entry as a PaletteDrawer
 	 */
 	protected PaletteDrawer getDrawer() {
@@ -135,7 +135,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	/**
 	 * Returns the checkbox button which controls whether the drawer is initially
 	 * open.
-	 * 
+	 *
 	 * @return the checkbox button which controls the initially open setting.
 	 */
 	protected Button getOpenDrawerInitiallyButton() {
@@ -145,7 +145,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	/**
 	 * Returns the checkbox button which controls whether the drawer is initially
 	 * pinned.
-	 * 
+	 *
 	 * @return the checkbox button which controls the initially pinned setting.
 	 */
 	protected Button getPinDrawerInitiallyButton() {
@@ -157,7 +157,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	 * at start-up is toggled.
 	 * <p>
 	 * It sets the initial state of the drawer accordingly.
-	 * 
+	 *
 	 * @param selection <code>true</code> if that option is now selected
 	 */
 	protected void handleOpenSelected(boolean selection) {
@@ -174,7 +174,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	 * open at start-up is toggled.
 	 * <p>
 	 * It sets the initial state of the drawer accordingly.
-	 * 
+	 *
 	 * @param selection <code>true</code> if that option is now selected
 	 */
 	protected void handlePinSelected(boolean selection) {

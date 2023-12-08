@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,14 +21,14 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * figure implements <code>HandleBounds</code>, then
  * {@link HandleBounds#getHandleBounds()} will be used as the reference box. If
  * not, the behavior is the same as that of the superclass.
- * 
+ *
  * @author hudsonr
  */
 public class RelativeHandleLocator extends org.eclipse.draw2d.RelativeLocator {
 
 	/**
 	 * Constructs a new locator using the given reference figure and location.
-	 * 
+	 *
 	 * @param reference the reference figure
 	 * @param location  one of NORTH, NORTH_EAST, etc.
 	 */
@@ -39,7 +39,7 @@ public class RelativeHandleLocator extends org.eclipse.draw2d.RelativeLocator {
 	/**
 	 * Overridden to check for reference figures implementing the
 	 * <code>HandleBounds</code> interface.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.RelativeLocator#getReferenceBox()
 	 */
 	@Override

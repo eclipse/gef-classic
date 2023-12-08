@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -42,7 +42,7 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	/**
 	 * Constructs a non-root, i.e. child entry, which may obtain the command stack
 	 * from its parent.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	private UndoablePropertySheetEntry() {
@@ -50,7 +50,7 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 
 	/**
 	 * Constructs the root entry using the given command stack.
-	 * 
+	 *
 	 * @param commandStack the command stack to use
 	 * @since 3.1
 	 */
@@ -88,7 +88,7 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	/**
 	 * Returns the {@link CommandStack} that is used by this entry. It is obtained
 	 * from the parent in case the entry is not a root entry.
-	 * 
+	 *
 	 * @return the {@link CommandStack} to be used.
 	 * @since 3.7
 	 */

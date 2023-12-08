@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -51,7 +51,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 
 	/**
 	 * Constructs a new ConnectionEndpointTracker for the given ConnectionEditPart.
-	 * 
+	 *
 	 * @param cep the ConnectionEditPart
 	 */
 	public ConnectionEndpointTracker(ConnectionEditPart cep) {
@@ -62,7 +62,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	/**
 	 * Returns a custom "plug" cursor if this tool is in the initial, drag or
 	 * accessible drag state. Otherwise defers to <code>super</code>.
-	 * 
+	 *
 	 * @return the cursor
 	 */
 	@Override
@@ -74,7 +74,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 
 	/**
 	 * Erases source and target feedback and executes the current command.
-	 * 
+	 *
 	 * @see DragTracker#commitDrag()
 	 */
 	@Override
@@ -86,7 +86,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 
 	/**
 	 * Creates the target request, a {@link ReconnectRequest}.
-	 * 
+	 *
 	 * @return the target request
 	 */
 	@Override
@@ -100,7 +100,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * Erases feedback and sets the viewer's focus to <code>null</code>. This will
 	 * remove any focus rectangles that were painted to show the new target or
 	 * source edit part.
-	 * 
+	 *
 	 * @see Tool#deactivate()
 	 */
 	@Override
@@ -130,7 +130,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 
 	/**
 	 * Returns the ConnectionEditPart's figure.
-	 * 
+	 *
 	 * @return the connection
 	 */
 	protected Connection getConnection() {
@@ -139,7 +139,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 
 	/**
 	 * Returns the ConnectionEditPart.
-	 * 
+	 *
 	 * @return the ConnectionEditPart
 	 */
 	protected ConnectionEditPart getConnectionEditPart() {
@@ -169,7 +169,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	/**
 	 * If currently in the drag-in-progress state, it goes into the terminal state
 	 * erases feedback and executes the current command.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
 	@Override
@@ -185,7 +185,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	/**
 	 * Updates the request and the mouse target, asks to show feedback, and gets the
 	 * current command.
-	 * 
+	 *
 	 * @return <code>true</code>
 	 */
 	@Override
@@ -221,7 +221,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * Processes the arrow keys (to choose a different source or target edit part)
 	 * and forwardslash and backslash keys (to try to connect to another
 	 * connection).
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
 	 */
 	@Override
@@ -319,7 +319,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 
 	/**
 	 * Sets the command name.
-	 * 
+	 *
 	 * @param newCommandName the new command name
 	 */
 	public void setCommandName(String newCommandName) {
@@ -328,7 +328,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 
 	/**
 	 * Sets the connection edit part that is being reconnected.
-	 * 
+	 *
 	 * @param cep the connection edit part
 	 */
 	public void setConnectionEditPart(ConnectionEditPart cep) {
@@ -345,7 +345,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 
 	/**
 	 * Updates the request location.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
 	@Override

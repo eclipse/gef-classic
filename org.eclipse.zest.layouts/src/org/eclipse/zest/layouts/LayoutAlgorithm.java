@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts;
@@ -19,10 +19,10 @@ import org.eclipse.zest.layouts.progress.ProgressListener;
 
 /**
  * A simple interface used by all layouts.
- * 
+ *
  * Each layout Algorithm must implement the applyLayoutInternal method which
  * actually compute the layout
- * 
+ *
  * @author Casey Best
  * @author Ian Bull
  */
@@ -31,7 +31,7 @@ public interface LayoutAlgorithm {
 	/**
 	 * Apply the layout to the given entities. The entities will be moved and
 	 * resized based on the algorithm.
-	 * 
+	 *
 	 * @param entitiesToLayout        Apply the algorithm to these entities
 	 * @param relationshipsToConsider Only consider these relationships when
 	 *                                applying the algorithm.
@@ -51,7 +51,7 @@ public interface LayoutAlgorithm {
 
 	/**
 	 * Returns whether or not the algorithm is currenly running
-	 * 
+	 *
 	 * @return True if a layout algorithm is currenly running, false otherwise
 	 */
 	public boolean isRunning();
@@ -103,13 +103,13 @@ public interface LayoutAlgorithm {
 	/**
 	 * Sets the style for this layout algorithm. This will overwrite any other style
 	 * set.
-	 * 
+	 *
 	 * @param style
 	 */
 	public void setStyle(int style);
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public int getStyle();
@@ -122,6 +122,6 @@ public interface LayoutAlgorithm {
 
 	public void removeRelationship(LayoutRelationship relationship);
 
-	public void removeRelationships(List relationships);
+	public void removeRelationships(List<? extends LayoutRelationship> relationships);
 
 }

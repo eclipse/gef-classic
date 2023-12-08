@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -51,7 +51,7 @@ import org.eclipse.gef.examples.shapes.model.commands.ConnectionReconnectCommand
  * This edit part must implement the PropertyChangeListener interface, so it can
  * be notified of property changes in the corresponding model element.
  * </p>
- * 
+ *
  * @author Elias Volanakis
  */
 class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener, NodeEditPart {
@@ -71,7 +71,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
 	@Override
@@ -83,7 +83,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new GraphicalNodeEditPolicy() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
 			 * getConnectionCompleteCommand
 			 * (org.eclipse.gef.requests.CreateConnectionRequest)
@@ -97,7 +97,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
 			 * getConnectionCreateCommand (org.eclipse.gef.requests.CreateConnectionRequest)
 			 */
@@ -112,7 +112,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
 			 * getReconnectSourceCommand (org.eclipse.gef.requests.ReconnectRequest)
 			 */
@@ -127,7 +127,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
 			 * getReconnectTargetCommand (org.eclipse.gef.requests.ReconnectRequest)
 			 */
@@ -144,7 +144,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
 	@Override
@@ -202,7 +202,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelSourceConnections
 	 * ()
@@ -214,7 +214,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelTargetConnections
 	 * ()
@@ -226,7 +226,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef
 	 * .ConnectionEditPart)
 	 */
@@ -237,7 +237,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef
 	 * .Request)
 	 */
@@ -248,7 +248,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef
 	 * .ConnectionEditPart)
 	 */
@@ -259,7 +259,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef
 	 * .Request)
 	 */
@@ -270,7 +270,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
 	 * PropertyChangeEvent)
 	 */

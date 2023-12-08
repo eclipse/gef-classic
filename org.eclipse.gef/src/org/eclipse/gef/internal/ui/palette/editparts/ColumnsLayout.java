@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,7 +17,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 
 /**
  * Special FlowLayout to display the palette in the columns view.
- * 
+ *
  * @author Pratik Shah
  */
 public class ColumnsLayout extends PaletteContainerFlowLayout {
@@ -88,7 +88,7 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 
 	/**
 	 * For use by the palette
-	 * 
+	 *
 	 * @param d The constraints to be respected by the children of the figure that
 	 *          has this layout; Should not be <code>null</code>.
 	 */

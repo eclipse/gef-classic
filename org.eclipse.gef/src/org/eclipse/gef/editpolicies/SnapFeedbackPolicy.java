@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,6 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGuides;
@@ -34,15 +33,15 @@ import org.eclipse.gef.SnapToGuides;
 /**
  * An EditPolicy that is used to show snap feedback for guides (red lines) and
  * geometry (blue lines). This policy is not required for Grids.
- * 
+ *
  * @author Randy Hudson
  * @author Pratik Shah
  * @since 3.0
  */
 public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 
-	IFigure guide[] = new IFigure[6];
-	Integer location[] = new Integer[6];
+	IFigure[] guide = new IFigure[6];
+	Integer[] location = new Integer[6];
 
 	/**
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(org.eclipse.gef.Request)
@@ -50,8 +49,9 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 	@Override
 	public void eraseTargetFeedback(Request request) {
 		for (int i = 0; i < guide.length; i++) {
-			if (guide[i] != null)
+			if (guide[i] != null) {
 				removeFeedback(guide[i]);
+			}
 			guide[i] = null;
 			location[i] = null;
 		}
@@ -96,19 +96,17 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 					image = new Image(display, iData);
 					count++;
 				}
-				Display.getCurrent().timerExec(100, new Runnable() {
-					@Override
-					public void run() {
-						opacity = Math.min(FRAMES, opacity + 1);
-						repaint();
-					}
+				Display.getCurrent().timerExec(100, () -> {
+					opacity = Math.min(FRAMES, opacity + 1);
+					repaint();
 				});
 			}
 			Rectangle r = getBounds();
-			if (image != null)
+			if (image != null) {
 				graphics.drawImage(image, 0, 0, 1, 1, r.x, r.y, r.width, r.height);
-			else
+			} else {
 				super.paintFigure(graphics);
+			}
 		}
 
 		/**
@@ -139,7 +137,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 		// translate pos to absolute, and then make it relative to fig.
 		int position = pos.intValue();
 		PrecisionPoint loc = new PrecisionPoint(position, position);
-		IFigure contentPane = ((GraphicalEditPart) getHost()).getContentPane();
+		IFigure contentPane = getHost().getContentPane();
 		contentPane.translateToParent(loc);
 		contentPane.translateToAbsolute(loc);
 

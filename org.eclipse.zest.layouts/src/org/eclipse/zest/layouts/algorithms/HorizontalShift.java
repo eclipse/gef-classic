@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright 2006, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2006, 2023 CHISEL Group, University of Victoria, Victoria, BC,
+ *                      Canada, Johannes Kepler University Linz
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -7,13 +8,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria
+ * Contributors: The Chisel Group, University of Victoria, Alois Zoitl
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.zest.layouts.LayoutEntity;
@@ -38,7 +38,7 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 
-		ArrayList row = new ArrayList();
+		List<List<InternalNode>> row = new ArrayList<>();
 		for (InternalNode element : entitiesToLayout) {
 			addToRowList(element, row);
 		}
@@ -46,27 +46,19 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 		int heightSoFar = 0;
 
 		Collections.sort(row, (arg0, arg1) -> {
-			// TODO Auto-generated method stub
-			List a0 = (List) arg0;
-			List a1 = (List) arg1;
-			LayoutEntity node0 = ((InternalNode) a0.get(0)).getLayoutEntity();
-			LayoutEntity node1 = ((InternalNode) a1.get(0)).getLayoutEntity();
+			LayoutEntity node0 = arg0.get(0).getLayoutEntity();
+			LayoutEntity node1 = arg1.get(0).getLayoutEntity();
 			return (int) (node0.getYInLayout() - (node1.getYInLayout()));
 		});
 
-		Iterator iterator = row.iterator();
-		while (iterator.hasNext()) {
-			List currentRow = (List) iterator.next();
-			Collections.sort(currentRow, (arg0, arg1) -> (int) (((InternalNode) arg1).getLayoutEntity().getYInLayout()
-					- ((InternalNode) arg0).getLayoutEntity().getYInLayout()));
-			Iterator iterator2 = currentRow.iterator();
+		for (List<InternalNode> currentRow : row) {
+			Collections.sort(currentRow, (arg0,
+					arg1) -> (int) (arg1.getLayoutEntity().getYInLayout() - arg0.getLayoutEntity().getYInLayout()));
 			int i = 0;
 			int width = (int) ((boundsWidth / 2) - currentRow.size() * 75);
 
-			heightSoFar += ((InternalNode) currentRow.get(0)).getLayoutEntity().getHeightInLayout() + VSPACING * 8;
-			while (iterator2.hasNext()) {
-				InternalNode currentNode = (InternalNode) iterator2.next();
-
+			heightSoFar += currentRow.get(0).getLayoutEntity().getHeightInLayout() + VSPACING * 8;
+			for (InternalNode currentNode : currentRow) {
 				i++;
 				double location = width + 10 * i;
 				currentNode.setLocation(location, heightSoFar);
@@ -75,12 +67,11 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 		}
 	}
 
-	private void addToRowList(InternalNode node, ArrayList list) {
+	private static void addToRowList(InternalNode node, List<List<InternalNode>> list) {
 		double layoutY = node.getLayoutEntity().getYInLayout();
 
-		for (Object element : list) {
-			List currentRow = (List) element;
-			InternalNode currentRowNode = (InternalNode) currentRow.get(0);
+		for (List<InternalNode> currentRow : list) {
+			InternalNode currentRowNode = currentRow.get(0);
 			double currentRowY = currentRowNode.getLayoutEntity().getYInLayout();
 			// double currentRowHeight =
 			// currentRowNode.getLayoutEntity().getHeightInLayout();
@@ -90,7 +81,7 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 				return;
 			}
 		}
-		List newRow = new ArrayList();
+		List<InternalNode> newRow = new ArrayList<>();
 		newRow.add(node);
 		list.add(newRow);
 	}

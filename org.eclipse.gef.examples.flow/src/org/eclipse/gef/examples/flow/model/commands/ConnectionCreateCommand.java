@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -50,7 +50,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/**
 	 * Returns the source Activity
-	 * 
+	 *
 	 * @return the source
 	 */
 	public Activity getSource() {
@@ -59,7 +59,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/**
 	 * Returns the target Activity
-	 * 
+	 *
 	 * @return the target
 	 */
 	public Activity getTarget() {
@@ -68,7 +68,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/**
 	 * Returns the Transistion between the source and target Activities
-	 * 
+	 *
 	 * @return the transistion
 	 */
 	public Transition getTransition() {
@@ -86,7 +86,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/**
 	 * Sets the source Activity
-	 * 
+	 *
 	 * @param activity the source Activity
 	 */
 	public void setSource(Activity activity) {
@@ -95,7 +95,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/**
 	 * Sets the Transistion between the source and target Activities
-	 * 
+	 *
 	 * @param transition the transistion
 	 */
 	public void setTransition(Transition transition) {
@@ -104,7 +104,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/**
 	 * Sets the target Activity
-	 * 
+	 *
 	 * @param activity the target
 	 */
 	public void setTarget(Activity activity) {

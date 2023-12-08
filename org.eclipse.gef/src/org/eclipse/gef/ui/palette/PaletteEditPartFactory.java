@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,14 +36,14 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
  * Factory to create EditParts for different PaletteEntries.
- * 
+ *
  * @author Pratik Shah
  */
 public class PaletteEditPartFactory implements EditPartFactory {
 
 	/**
 	 * Create DrawerEditPart - edit part for PaletteDrawer
-	 * 
+	 *
 	 * @param parentEditPart the parent of the new editpart to be created
 	 * @param model          the PaletteDrawer
 	 * @return the newly created EditPart
@@ -81,7 +81,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 
 	/**
 	 * Create SeparatorEditPart - edit part for PaletteSeparator
-	 * 
+	 *
 	 * @param parentEditPart the parent of the new editpart to be created
 	 * @param model          the PaletteSeparator
 	 * @return the newly created EditPart
@@ -92,7 +92,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 
 	/**
 	 * Create PaletteStackEditPart - edit part for PaletteStack
-	 * 
+	 *
 	 * @param parentEditPart the parent of the new editpart to be created
 	 * @param model          the PaletteStack
 	 * @return the newly created EditPart
@@ -106,7 +106,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 
 	/**
 	 * Create ToolEntryEditPart - edit part for ToolEntry
-	 * 
+	 *
 	 * @param parentEditPart the parent of the new editpart to be created
 	 * @param model          the ToolEntry
 	 * @return the newly created EditPart
@@ -117,7 +117,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 
 	/**
 	 * Create GroupEditPart - edit part for PaletteGroup
-	 * 
+	 *
 	 * @param parentEditPart the parent of the new editpart to be created
 	 * @param model          the PaletteGroup
 	 * @return the newly created EditPart
@@ -128,7 +128,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 
 	/**
 	 * Create ToolbarEditPart - edit part for PaletteToolbar
-	 * 
+	 *
 	 * @param parentEditPart the parent of the new editpart to be created
 	 * @param model          the PaletteToolbar
 	 * @return the newly created EditPart
@@ -139,7 +139,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 
 	/**
 	 * Create SliderPaletteEditPart - edit part for PaletteRoot
-	 * 
+	 *
 	 * @param parentEditPart the parent of the new editpart to be created
 	 * @param model          the PaletteRoot
 	 * @return the newly created EditPart
@@ -150,7 +150,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 
 	/**
 	 * Create TemplateEditPart - edit part for PaletteTemplateEntry
-	 * 
+	 *
 	 * @param parentEditPart the parent of the new editpart to be created
 	 * @param model          the PaletteTemplateEntry
 	 * @return the newly created EditPart

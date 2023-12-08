@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ public class Transposer {
 
 	/**
 	 * Convenience constructor to initialize the "enabled" flag during creation.
-	 * 
+	 *
 	 * @param enabled {code true}, whether geometrical objects should be transposed.
 	 * @since 3.13
 	 */
@@ -36,7 +36,7 @@ public class Transposer {
 
 	/**
 	 * Disables transposing of inputs.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public void disable() {
@@ -45,7 +45,7 @@ public class Transposer {
 
 	/**
 	 * Enables transposing of inputs.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public void enable() {
@@ -54,7 +54,7 @@ public class Transposer {
 
 	/**
 	 * Returns <code>true</code> if this Transposer is enabled.
-	 * 
+	 *
 	 * @return <code>true</code> if this Transposer is enabled
 	 * @since 2.0
 	 */
@@ -64,7 +64,7 @@ public class Transposer {
 
 	/**
 	 * Sets the enabled state of this Transposer.
-	 * 
+	 *
 	 * @param e New enabled value
 	 * @since 2.0
 	 */
@@ -74,7 +74,7 @@ public class Transposer {
 
 	/**
 	 * Returns a new transposed Dimension of the input Dimension.
-	 * 
+	 *
 	 * @param d Input dimension being transposed.
 	 * @return The new transposed dimension.
 	 * @since 2.0
@@ -87,7 +87,7 @@ public class Transposer {
 
 	/**
 	 * Returns a new transposed Insets of the input Insets.
-	 * 
+	 *
 	 * @param i Insets to be transposed.
 	 * @return The new transposed Insets.
 	 * @since 2.0
@@ -100,7 +100,7 @@ public class Transposer {
 
 	/**
 	 * Returns a new transposed Point of the input Point.
-	 * 
+	 *
 	 * @param p Point to be transposed.
 	 * @return The new transposed Point.
 	 * @since 2.0
@@ -113,7 +113,7 @@ public class Transposer {
 
 	/**
 	 * Returns a new transposed Rectangle of the input Rectangle.
-	 * 
+	 *
 	 * @param r Rectangle to be transposed.
 	 * @return The new trasnposed Rectangle.
 	 * @since 2.0

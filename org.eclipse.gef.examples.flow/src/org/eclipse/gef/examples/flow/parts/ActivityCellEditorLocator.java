@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * CellEditorLocator for Activities.
- * 
+ *
  * @author Daniel Lee
  */
 public class ActivityCellEditorLocator implements CellEditorLocator {
@@ -29,7 +29,7 @@ public class ActivityCellEditorLocator implements CellEditorLocator {
 
 	/**
 	 * Creates a new ActivityCellEditorLocator for the given Label
-	 * 
+	 *
 	 * @param label the Label
 	 */
 	public ActivityCellEditorLocator(Label label) {
@@ -50,7 +50,7 @@ public class ActivityCellEditorLocator implements CellEditorLocator {
 
 	/**
 	 * Returns the Label figure.
-	 * 
+	 *
 	 * @return the Label
 	 */
 	protected Label getLabel() {
@@ -59,7 +59,7 @@ public class ActivityCellEditorLocator implements CellEditorLocator {
 
 	/**
 	 * Sets the label.
-	 * 
+	 *
 	 * @param label The label to set
 	 */
 	protected void setLabel(Label label) {

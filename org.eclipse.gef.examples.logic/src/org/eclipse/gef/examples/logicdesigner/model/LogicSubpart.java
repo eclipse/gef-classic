@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -125,7 +125,7 @@ public abstract class LogicSubpart extends LogicElement {
 	/**
 	 * Returns useful property descriptors for the use in property sheets. this
 	 * supports location and size.
-	 * 
+	 *
 	 * @return Array of property descriptors.
 	 */
 	@Override
@@ -136,7 +136,7 @@ public abstract class LogicSubpart extends LogicElement {
 	/**
 	 * Returns an Object which represents the appropriate value for the property
 	 * name supplied.
-	 * 
+	 *
 	 * @param propName Name of the property for which the the values are needed.
 	 * @return Object which is the value of the property.
 	 */
@@ -166,7 +166,7 @@ public abstract class LogicSubpart extends LogicElement {
 	}
 
 	/**
-	* 
+	*
 	*/
 	public boolean isPropertySet() {
 		return true;
@@ -182,9 +182,9 @@ public abstract class LogicSubpart extends LogicElement {
 	/*
 	 * Does nothing for the present, but could be used to reset the properties of
 	 * this to whatever values are desired.
-	 * 
+	 *
 	 * @param id Parameter which is to be reset.
-	 * 
+	 *
 	 * public void resetPropertyValue(Object id){ if(ID_SIZE.equals(id)){;}
 	 * if(ID_LOCATION.equals(id)){;} }
 	 */
@@ -208,7 +208,7 @@ public abstract class LogicSubpart extends LogicElement {
 	/**
 	 * Sets the value of a given property with the value supplied. Also fires a
 	 * property change if necessary.
-	 * 
+	 *
 	 * @param id    Name of the parameter to be changed.
 	 * @param value Value to be set to the given parameter.
 	 */

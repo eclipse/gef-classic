@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -47,7 +47,7 @@ public class ActionRegistry {
 
 	/**
 	 * Returns <code>null</code> or the <code>IAction</code> with the given key.
-	 * 
+	 *
 	 * @param key the ID of the action being requested
 	 * @return <code>null</code> or the action with the corresponding ID
 	 */
@@ -57,7 +57,7 @@ public class ActionRegistry {
 
 	/**
 	 * Returns an {@link Iterator} over all the actions.
-	 * 
+	 *
 	 * @return an iterator over all actions
 	 */
 	public Iterator getActions() {
@@ -66,7 +66,7 @@ public class ActionRegistry {
 
 	/**
 	 * Register an action with this registry. The action must have an ID.
-	 * 
+	 *
 	 * @param action the action being registered.
 	 */
 	public void registerAction(IAction action) {
@@ -84,7 +84,7 @@ public class ActionRegistry {
 
 	/**
 	 * Removes an action from this registry. The action must have an ID.
-	 * 
+	 *
 	 * @param action the action to remove
 	 */
 	public void removeAction(IAction action) {

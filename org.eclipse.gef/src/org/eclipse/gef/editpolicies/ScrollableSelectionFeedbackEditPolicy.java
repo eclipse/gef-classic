@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2010, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -45,17 +45,17 @@ import org.eclipse.gef.util.EditPartUtilities;
  * {@link IScrollableEditPart} to provide primary selection feedback by
  * rendering the hidden contents of the host figure's {@link ScrollPane}'s
  * nested {@link Viewport} by means of {@link GhostImageFigure}s.
- * 
+ *
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
- * 
+ *
  * @since 3.6
  */
 public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 
 	private int feedbackAlpha = 100;
 
-	private final List feedbackFigures = new ArrayList();
+	private final List<IFigure> feedbackFigures = new ArrayList<>();
 
 	private final FigureListener figureListener = source -> {
 		// react on host figure move
@@ -96,15 +96,12 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	@Override
 	public void activate() {
 		super.activate();
-		// register listeners to all viewports in the host figure's path;
-		// listeners
-		// to the host figure itself will be registered within showFeedback()
-		// and
-		// unregistered within hideFeedback()
-		for (Iterator iterator = ViewportUtilities
-				.getViewportsPath(getHostFigureViewport(), ViewportUtilities.getRootViewport(getHostFigure()))
-				.iterator(); iterator.hasNext();) {
-			Viewport viewport = (Viewport) iterator.next();
+		// register listeners to all viewports in the host figure's path:
+		// listeners the host figure itself will be registered within showFeedback()
+		// and unregistered within hideFeedback()
+		for (Object element : ViewportUtilities.getViewportsPath(getHostFigureViewport(),
+				ViewportUtilities.getRootViewport(getHostFigure()))) {
+			Viewport viewport = (Viewport) element;
 			viewport.addPropertyChangeListener(viewportViewLocationChangeListener);
 		}
 	}
@@ -112,7 +109,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Adds a given feedback figure to the feedback layer (using the provided bounds
 	 * to layout it) and registers it in the local {@link #feedbackFigures} list.
-	 * 
+	 *
 	 * @param feedbackFigure               the feedback figure to add to the
 	 *                                     feedback layer
 	 * @param feedbackFigureAbsoluteBounds the absolute bounds used to layout the
@@ -130,7 +127,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Creates a ghost image feedback figure for the given
 	 * {@link ConnectionEditPart}'s figure and adds it to the feedback layer.
-	 * 
+	 *
 	 * @param connectionEditPart
 	 */
 	protected void createConnectionFeedbackFigure(ConnectionEditPart connectionEditPart) {
@@ -144,11 +141,9 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * Creates the connection layer feedback figures.
 	 */
 	protected void createConnectionFeedbackFigures() {
-		HashSet transitiveNestedConnections = EditPartUtilities
-				.getAllNestedConnectionEditParts((GraphicalEditPart) getHost());
+		HashSet transitiveNestedConnections = EditPartUtilities.getAllNestedConnectionEditParts(getHost());
 
-		for (Iterator iterator = transitiveNestedConnections.iterator(); iterator.hasNext();) {
-			Object connection = iterator.next();
+		for (Object connection : transitiveNestedConnections) {
 			if (connection instanceof ConnectionEditPart) {
 				createConnectionFeedbackFigure((ConnectionEditPart) connection);
 			}
@@ -159,7 +154,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Creates a ghost image feedback figure for the given
 	 * {@link GraphicalEditPart}'s figure and adds it to the feedback layer.
-	 * 
+	 *
 	 * @param childEditPart
 	 */
 	protected void createNodeFeedbackFigure(GraphicalEditPart childEditPart) {
@@ -172,11 +167,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 */
 	protected void createNodeFeedbackFigures() {
 		// create ghost feedback for node children
-		getHost().getChildren().forEach(child -> {
-			if (child instanceof GraphicalEditPart gEP) {
-				createNodeFeedbackFigure(gEP);
-			}
-		});
+		getHost().getChildren().forEach(this::createNodeFeedbackFigure);
 	}
 
 	/**
@@ -187,10 +178,9 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		// remove viewport listeners; listener to host figure, which were
 		// registered during showSelection() will be unregistered during
 		// hideSelection(), so they do not have to be unregistered here
-		for (Iterator iterator = ViewportUtilities
-				.getViewportsPath(getHostFigureViewport(), ViewportUtilities.getRootViewport(getHostFigure()))
-				.iterator(); iterator.hasNext();) {
-			Viewport viewport = (Viewport) iterator.next();
+		for (Object element : ViewportUtilities.getViewportsPath(getHostFigureViewport(),
+				ViewportUtilities.getRootViewport(getHostFigure()))) {
+			Viewport viewport = (Viewport) element;
 			viewport.removePropertyChangeListener(viewportViewLocationChangeListener);
 
 		}
@@ -200,7 +190,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Used to obtain the alpha value used for all feedback figures. The valid range
 	 * is the one documented for {@link Graphics#setAlpha(int)}.
-	 * 
+	 *
 	 * @return the alpha
 	 */
 	protected int getAlpha() {
@@ -217,7 +207,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 
 	/**
 	 * Provides access to the host figure's {@link Viewport}.
-	 * 
+	 *
 	 * @return the nested {@link Viewport} of the host figure's {@link ScrollPane}
 	 */
 	protected Viewport getHostFigureViewport() {
@@ -229,9 +219,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * {@link #feedbackFigures} list.
 	 */
 	protected void hideFeedback() {
-		for (Iterator iterator = feedbackFigures.iterator(); iterator.hasNext();) {
-			removeFeedback((IFigure) iterator.next());
-		}
+		feedbackFigures.forEach(this::removeFeedback);
 		feedbackFigures.clear();
 	}
 
@@ -250,7 +238,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Used to specify the alpha value used for all feedback figures. The valid
 	 * range is the one documented for {@link Graphics#setAlpha(int)}.
-	 * 
+	 *
 	 * @param alpha
 	 */
 	public void setAlpha(int alpha) {

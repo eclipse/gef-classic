@@ -29,7 +29,7 @@ import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 
 /**
  * Shows curved edges.
- * 
+ *
  * @author Fabian Steeg
  */
 public class GraphJFaceSnippet8 {

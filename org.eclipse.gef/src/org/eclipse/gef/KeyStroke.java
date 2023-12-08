@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ public class KeyStroke {
 	/**
 	 * Constructs a KeyStroke that will match the given {@link KeyEvent#character}
 	 * and {@link KeyEvent#stateMask} during a press event.
-	 * 
+	 *
 	 * @param character the character to match
 	 * @param stateMask the stateMask to match
 	 * @return a new KeyStroke
@@ -37,7 +37,7 @@ public class KeyStroke {
 	/**
 	 * Constructs a KeyStroke that will match the given {@link KeyEvent#keyCode} and
 	 * {@link KeyEvent#stateMask} during a press event.
-	 * 
+	 *
 	 * @param keyCode   the keyCode to match
 	 * @param stateMask the stateMask to match
 	 * @return a new KeyStroke
@@ -50,7 +50,7 @@ public class KeyStroke {
 	 * Constructs a KeyStroke that will match the given {@link KeyEvent#character},
 	 * {@link KeyEvent#keyCode}, and {@link KeyEvent#stateMask} during a press
 	 * event.
-	 * 
+	 *
 	 * @param character the character to match
 	 * @param keyCode   the keyCode to match
 	 * @param stateMask the stateMask to match
@@ -63,7 +63,7 @@ public class KeyStroke {
 	/**
 	 * Constructs a KeyStroke that will match the given {@link KeyEvent#character}
 	 * and {@link KeyEvent#stateMask} during a release event.
-	 * 
+	 *
 	 * @param character the character to match
 	 * @param stateMask the stateMask to match
 	 * @return a new KeyStroke
@@ -75,7 +75,7 @@ public class KeyStroke {
 	/**
 	 * Constructs a KeyStroke that will match the given {@link KeyEvent#keyCode} and
 	 * {@link KeyEvent#stateMask} during a release event.
-	 * 
+	 *
 	 * @param keyCode   the keyCode to match
 	 * @param stateMask the stateMask to match
 	 * @return a new KeyStroke
@@ -88,7 +88,7 @@ public class KeyStroke {
 	 * Constructs a KeyStroke that will match the given {@link KeyEvent#character},
 	 * {@link KeyEvent#keyCode}, and {@link KeyEvent#stateMask} during a release
 	 * event.
-	 * 
+	 *
 	 * @param character the character to match
 	 * @param keyCode   the keyCode to match
 	 * @param stateMask the stateMask to match
@@ -105,7 +105,7 @@ public class KeyStroke {
 
 	/**
 	 * Creates a KeyStroke for the specified KeyEvent and pressed value.
-	 * 
+	 *
 	 * @param event   The KeyEvent
 	 * @param pressed true if the KeyStroke is for a press event
 	 */

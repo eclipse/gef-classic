@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -11,8 +11,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
-
-import java.util.List;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
@@ -35,11 +33,10 @@ public class LogicContainerEditPolicy extends ContainerEditPolicy {
 
 	@Override
 	public Command getOrphanChildrenCommand(GroupRequest request) {
-		List parts = request.getEditParts();
 		CompoundCommand result = new CompoundCommand(LogicMessages.LogicContainerEditPolicy_OrphanCommandLabelText);
-		for (int i = 0; i < parts.size(); i++) {
+		for (EditPart child : request.getEditParts()) {
 			OrphanChildCommand orphan = new OrphanChildCommand();
-			orphan.setChild((LogicSubpart) ((EditPart) parts.get(i)).getModel());
+			orphan.setChild((LogicSubpart) child.getModel());
 			orphan.setParent((LogicDiagram) getHost().getModel());
 			orphan.setLabel(LogicMessages.LogicElementEditPolicy_OrphanCommandLabelText);
 			result.add(orphan);

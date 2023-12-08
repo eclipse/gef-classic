@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -42,7 +42,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * work properly, the given <code>Viewport</code> should have its scrollbars
  * always visible or never visible. Otherwise, these settings may cause
  * undesired effects.
- * 
+ *
  * @author Dan Lee
  * @author Eric Bordeau
  * @since 3.13
@@ -76,11 +76,11 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Creates a new ZoomManager.
-	 * 
+	 *
 	 * @param pane         The ScalableFigure associated with this ZoomManager
 	 * @param viewport     The Viewport associated with this ZoomManager
 	 * @param scrollPolicy The zoom scroll policy to be used with this ZoomManager
-	 * 
+	 *
 	 * @since 3.12
 	 */
 	protected AbstractZoomManager(ScalableFigure pane, Viewport viewport, IZoomScrollPolicy scrollPolicy) {
@@ -91,7 +91,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Creates a new ZoomManager.
-	 * 
+	 *
 	 * @param pane     The ScalableFigure associated with this ZoomManager
 	 * @param viewport The Viewport associated with this ZoomManager
 	 */
@@ -101,7 +101,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Adds the given ZoomListener to this ZoomManager's list of listeners.
-	 * 
+	 *
 	 * @param listener the ZoomListener to be added
 	 */
 	public void addZoomListener(ZoomListener listener) {
@@ -110,7 +110,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Removes the given ZoomListener from this ZoomManager's list of listeners.
-	 * 
+	 *
 	 * @param listener the ZoomListener to be removed
 	 */
 	public void removeZoomListener(ZoomListener listener) {
@@ -120,7 +120,7 @@ public abstract class AbstractZoomManager {
 	/**
 	 * returns <code>true</code> if the zoommanager can perform
 	 * <code>zoomIn()</code>.
-	 * 
+	 *
 	 * @return boolean true if zoomIn can be called
 	 */
 	public boolean canZoomIn() {
@@ -130,7 +130,7 @@ public abstract class AbstractZoomManager {
 	/**
 	 * returns <code>true</code> if the zoommanager can perform
 	 * <code>zoomOut()</code>.
-	 * 
+	 *
 	 * @return boolean true if zoomOut can be called
 	 */
 	public boolean canZoomOut() {
@@ -176,7 +176,7 @@ public abstract class AbstractZoomManager {
 	 * Calculates and returns the zoom percent required so that the entire height of
 	 * the {@link #getScalableFigure() scalable figure} is visible on the screen.
 	 * This is the zoom level associated with {@link #isFitHeight(String)}.
-	 * 
+	 *
 	 * @return zoom setting required to fit the scalable figure vertically on the
 	 *         screen
 	 */
@@ -189,7 +189,7 @@ public abstract class AbstractZoomManager {
 	 * {@link #getScalableFigure() scalable figure} on the screen. This is the zoom
 	 * setting associated with {@link #isFitAll(String)}. It is the minimum of
 	 * {@link #getFitHeightZoomLevel()} and {@link #getFitWidthZoomLevel()}.
-	 * 
+	 *
 	 * @return zoom setting required to fit the entire scalable figure on the screen
 	 */
 	protected double getFitPageZoomLevel() {
@@ -200,7 +200,7 @@ public abstract class AbstractZoomManager {
 	 * Calculates and returns the zoom percentage required so that the entire width
 	 * of the {@link #getScalableFigure() scalable figure} is visible on the screen.
 	 * This is the zoom setting associated with {@link #isFitWidth(String)}.
-	 * 
+	 *
 	 * @return zoom setting required to fit the scalable figure horizontally on the
 	 *         screen
 	 */
@@ -210,7 +210,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Returns the maxZoom.
-	 * 
+	 *
 	 * @return double
 	 */
 	public double getMaxZoom() {
@@ -219,7 +219,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Returns the minZoom.
-	 * 
+	 *
 	 * @return double
 	 */
 	public double getMinZoom() {
@@ -230,7 +230,7 @@ public abstract class AbstractZoomManager {
 	 * Returns the mutltiplier. This value is used to use zoom levels internally
 	 * that are proportionally different than those displayed to the user. e.g. with
 	 * a multiplier value of 2.0, the zoom level 1.0 will be displayed as "200%".
-	 * 
+	 *
 	 * @return double The multiplier
 	 */
 	public double getUIMultiplier() {
@@ -240,7 +240,7 @@ public abstract class AbstractZoomManager {
 	/**
 	 * Returns the zoom level that is one level higher than the current level. If
 	 * zoom level is at maximum, returns the maximum.
-	 * 
+	 *
 	 * @return double The next zoom level
 	 */
 	public double getNextZoomLevel() {
@@ -253,7 +253,7 @@ public abstract class AbstractZoomManager {
 	/**
 	 * Returns the zoom level that is one level higher than the current level. If
 	 * zoom level is at maximum, returns the maximum.
-	 * 
+	 *
 	 * @return double The previous zoom level
 	 */
 	public double getPreviousZoomLevel() {
@@ -265,7 +265,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Returns the figure which performs the actual zooming.
-	 * 
+	 *
 	 * @return the scalable figure
 	 */
 	public ScalableFigure getScalableFigure() {
@@ -274,7 +274,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Returns the viewport.
-	 * 
+	 *
 	 * @return Viewport
 	 */
 	public Viewport getViewport() {
@@ -283,7 +283,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Returns the current zoom level.
-	 * 
+	 *
 	 * @return double the zoom level
 	 */
 	public double getZoom() {
@@ -292,7 +292,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Returns the current zoom level as a percentage formatted String
-	 * 
+	 *
 	 * @return String The current zoom level as a String
 	 */
 	public String getZoomAsText() {
@@ -303,7 +303,7 @@ public abstract class AbstractZoomManager {
 	 * Returns the list of strings that should be appended to the list of numerical
 	 * zoom levels. These could be things such as Fit Width, Fit Page, etc. May
 	 * return <code>null</code>.
-	 * 
+	 *
 	 * @return the list of contributed zoom levels
 	 */
 	public List getZoomLevelContributions() {
@@ -312,7 +312,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Returns the zoomLevels.
-	 * 
+	 *
 	 * @return double[]
 	 */
 	public double[] getZoomLevels() {
@@ -323,7 +323,7 @@ public abstract class AbstractZoomManager {
 	 * Returns the list of zoom levels as Strings in percent notation, plus any
 	 * additional zoom levels that were contributed using
 	 * {@link #setZoomLevelContributions(List)}.
-	 * 
+	 *
 	 * @return List The list of zoom levels
 	 */
 	public String[] getZoomLevelsAsText() {
@@ -341,7 +341,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Sets the zoom level to the given value. Min-max range check is not done.
-	 * 
+	 *
 	 * @param zoom the new zoom level
 	 */
 	protected void primSetZoom(double zoom) {
@@ -362,7 +362,7 @@ public abstract class AbstractZoomManager {
 	 * When the UI multiplier is <code>1.0</code>, the User will see the exact zoom
 	 * level that is being applied. If the value is <code>2.0</code>, then a scale
 	 * of <code>0.5</code> will be labeled "100%" to the User.
-	 * 
+	 *
 	 * @param multiplier The mutltiplier to set
 	 */
 	public void setUIMultiplier(double multiplier) {
@@ -371,7 +371,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Sets the Viewport's view associated with this ZoomManager to the passed Point
-	 * 
+	 *
 	 * @param p The new location for the Viewport's view.
 	 */
 	public void setViewLocation(Point p) {
@@ -382,7 +382,7 @@ public abstract class AbstractZoomManager {
 	/**
 	 * Sets the zoom level to the given value. If the zoom is out of the min-max
 	 * range, it will be ignored.
-	 * 
+	 *
 	 * @param zoom the new zoom level
 	 */
 	public void setZoom(double zoom) {
@@ -394,7 +394,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Sets which zoom methods get animated.
-	 * 
+	 *
 	 * @param style the style bits determining the zoom methods to be animated.
 	 */
 	public void setZoomAnimationStyle(int style) {
@@ -407,7 +407,7 @@ public abstract class AbstractZoomManager {
 	 * character. If the zoom level contribution list has been set, this method
 	 * should be overridden to provide the appropriate zoom implementation for the
 	 * new zoom levels.
-	 * 
+	 *
 	 * @param zoomString The new zoom level
 	 */
 	public void setZoomAsText(String zoomString) {
@@ -441,9 +441,9 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Check if the given zoom string represents the fit width representation.
-	 * 
+	 *
 	 * Has to provided by subclasses.
-	 * 
+	 *
 	 * @param zoomString the zoomstring use to set a zoom level
 	 * @return true if the the zoomString represents a fit width
 	 * @since 3.12
@@ -452,9 +452,9 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Check if the given zoom string represents the fit all representation.
-	 * 
+	 *
 	 * Has to provided by subclasses.
-	 * 
+	 *
 	 * @param zoomString the zoomstring use to set a zoom level
 	 * @return true if the the zoomString represents fit all
 	 * @since 3.12
@@ -463,9 +463,9 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Check if the given zoom string represents the fit height representation.
-	 * 
+	 *
 	 * Has to provided by subclasses.
-	 * 
+	 *
 	 * @param zoomString the zoomstring use to set a zoom level
 	 * @return true if the the zoomString represents fit height
 	 * @since 3.12
@@ -478,7 +478,7 @@ public abstract class AbstractZoomManager {
 	 * {@link #isFitWidth(String)} and {@link #isFitAll(String)} you must subclass
 	 * this class and override the {@link #setZoomAsText(String)} method to
 	 * implement your contributed zoom function.
-	 * 
+	 *
 	 * @param contributions the list of contributed zoom levels
 	 */
 	public void setZoomLevelContributions(List contributions) {
@@ -487,7 +487,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Sets the zoomLevels.
-	 * 
+	 *
 	 * @param zoomLevels The zoomLevels to set
 	 */
 	public void setZoomLevels(double[] zoomLevels) {
@@ -510,7 +510,7 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Currently does nothing.
-	 * 
+	 *
 	 * @param rect a rectangle
 	 */
 	public void zoomTo(Rectangle rect) {

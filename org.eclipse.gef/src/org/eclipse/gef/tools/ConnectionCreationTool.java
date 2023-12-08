@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -46,7 +46,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 
 	/**
 	 * Constructs a new ConnectionCreationTool with the given factory.
-	 * 
+	 *
 	 * @param factory the creation factory
 	 */
 	public ConnectionCreationTool(CreationFactory factory) {
@@ -66,7 +66,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	 * If the connections is already started, the second button down will call
 	 * {@link AbstractConnectionCreationTool#handleCreateConnection()}. Otherwise,
 	 * it attempts to start the connection.
-	 * 
+	 *
 	 * @param button the button that was pressed
 	 * @return <code>true</code> if the button down was processed
 	 */
@@ -85,7 +85,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 
 	/**
 	 * Cleans up feedback and resets the tool when focus is lost.
-	 * 
+	 *
 	 * @return <code>true</code> if this focus lost event was processed
 	 */
 	@Override
@@ -102,7 +102,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	/**
 	 * Processes the arrow keys (to move the cursor to nearby anchor locations) and
 	 * the enter key (to start or complete a connections).
-	 * 
+	 *
 	 * @param event the key event
 	 * @return <code>true</code> if this key down event was processed
 	 */
@@ -183,7 +183,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	 * Scrolling can happen either in the {@link AbstractTool#STATE_INITIAL initial}
 	 * state or once the source of the connection has been
 	 * {@link AbstractConnectionCreationTool#STATE_CONNECTION_STARTED identified}.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#mouseWheelScrolled(org.eclipse.swt.widgets.Event,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -82,7 +82,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Creates a {@link SelectionRequest} for the target request.
-	 * 
+	 *
 	 * @see TargetingTool#createTargetRequest()
 	 */
 	@Override
@@ -133,7 +133,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Returns the current drag tracker.
-	 * 
+	 *
 	 * @return the drag tracker
 	 */
 	protected DragTracker getDragTracker() {
@@ -149,7 +149,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * Returns a new Conditional that evaluates to <code>true</code> if the queried
 	 * edit part's {@link EditPart#isSelectable()} method returns <code>true</code>.
-	 * 
+	 *
 	 * @see TargetingTool#getTargetingConditional()
 	 */
 	@Override
@@ -166,7 +166,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * Returns the target hover request. If <code>null</code>, it will be created
 	 * via {@link #createHoverRequest()}.
-	 * 
+	 *
 	 * @return the hover request
 	 */
 	protected Request getTargetHoverRequest() {
@@ -179,7 +179,7 @@ public class SelectionTool extends TargetingTool {
 	 * If there is a {@link Handle} under the mouse, this method sets the drag
 	 * tracker returned from the handle. If there's an {@link EditPart} under the
 	 * mouse, this method sets the drag tracker returned from the edit part.
-	 * 
+	 *
 	 * @see AbstractTool#handleButtonDown(int)
 	 */
 	@Override
@@ -216,7 +216,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Resets this tool when the last button is released.
-	 * 
+	 *
 	 * @see AbstractTool#handleButtonUp(int)
 	 */
 	@Override
@@ -243,7 +243,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * Sets the drag tracker to <code>null</code> and goes into the initial state
 	 * when focus is lost.
-	 * 
+	 *
 	 * @see AbstractTool#handleFocusLost()
 	 */
 	@Override
@@ -260,7 +260,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Called when the mouse hovers. Calls {@link #showHoverFeedback()}.
-	 * 
+	 *
 	 * @see AbstractTool#handleHover()
 	 */
 	@Override
@@ -273,7 +273,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * Called when the mouse hover stops (i.e. the mouse moves or a button is
 	 * clicked). Calls {@link #eraseHoverFeedback()}.
-	 * 
+	 *
 	 * @see TargetingTool#handleHoverStop()
 	 */
 	@Override
@@ -288,7 +288,7 @@ public class SelectionTool extends TargetingTool {
 	 * and the ENTER key for committing a drag. If none of these keys were pressed
 	 * and the current viewer has a {@link KeyHandler}, it calls
 	 * {@link KeyHandler#keyPressed(KeyEvent)}.
-	 * 
+	 *
 	 * @see AbstractTool#handleKeyDown(KeyEvent)
 	 */
 	@Override
@@ -343,7 +343,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * If in the initial state and the viewer has a {@link KeyHandler}, calls
 	 * {@link KeyHandler#keyReleased(KeyEvent)} sending it the given key event.
-	 * 
+	 *
 	 * @see AbstractTool#handleKeyUp(KeyEvent)
 	 */
 	@Override
@@ -360,7 +360,7 @@ public class SelectionTool extends TargetingTool {
 	 * show target feedback. If in the traverse handle state, finds the next handle,
 	 * moves the mouse cursor to that handle, and gets a drag tracker from the
 	 * handle.
-	 * 
+	 *
 	 * @see AbstractTool#handleMove()
 	 */
 	@Override
@@ -392,7 +392,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * If there's a drag tracker, calls handleNativeDragFinished() on the drag
 	 * tracker and then sets the drag tracker to <code>null</code>.
-	 * 
+	 *
 	 * @see AbstractTool#handleNativeDragFinished(DragSourceEvent)
 	 */
 	@Override
@@ -406,7 +406,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * If there's a drag tracker, calls nativeDragStarted() on the drag tracker.
-	 * 
+	 *
 	 * @see AbstractTool#handleNativeDragStarted(DragSourceEvent)
 	 */
 	@Override
@@ -469,7 +469,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * If there's a drag tracker, sets it to <code>null</code> and then sets this
 	 * tool's state to the initial state.
-	 * 
+	 *
 	 * @see AbstractTool#handleViewerExited()
 	 */
 	@Override
@@ -485,7 +485,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Forwards the key down event to the drag tracker, if one exists.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#keyDown(KeyEvent, org.eclipse.gef.EditPartViewer)
 	 */
 	@Override
@@ -497,7 +497,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Forwards the key up event to the drag tracker, if one exists.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#keyUp(KeyEvent, org.eclipse.gef.EditPartViewer)
 	 */
 	@Override
@@ -509,7 +509,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Forwards the mouse down event to the drag tracker, if one exists.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#mouseDown(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
@@ -522,7 +522,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Forwards the mouse double clicked event to the drag tracker, if one exists.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#mouseDoubleClick(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
@@ -535,7 +535,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Forwards the mouse drag event to the drag tracker, if one exists.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#mouseDrag(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
@@ -548,7 +548,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Forwards the mouse hover event to the drag tracker, if one exists.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#mouseHover(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
@@ -561,7 +561,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Forwards the mouse move event to the drag tracker, if one exists.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#mouseMove(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
@@ -574,7 +574,7 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Forwards the mouse up event to the drag tracker, if one exists.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#mouseUp(MouseEvent, org.eclipse.gef.EditPartViewer)
 	 */
 	@Override
@@ -587,7 +587,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * Delegates the scrolling to the DragTracker (if there is one). If not, invokes
 	 * the super method.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#mouseWheelScrolled(org.eclipse.swt.widgets.Event,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
@@ -603,7 +603,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * If there is a drag tracker, this method does nothing so that the drag tracker
 	 * can take care of the cursor. Otherwise, calls <code>super</code>.
-	 * 
+	 *
 	 * @see AbstractTool#refreshCursor()
 	 */
 	@Override
@@ -618,7 +618,7 @@ public class SelectionTool extends TargetingTool {
 	 * not <code>null</code>, this method deactivates it. If the new drag tracker is
 	 * not <code>null</code>, this method will activate it and set the
 	 * {@link EditDomain} and {@link EditPartViewer}.
-	 * 
+	 *
 	 * @param newDragTracker the new drag tracker
 	 */
 	public void setDragTracker(DragTracker newDragTracker) {
@@ -669,7 +669,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * Sets the modifiers , type and location of the target request (which is a
 	 * {@link SelectionRequest}) and then calls {@link #updateHoverRequest()}.
-	 * 
+	 *
 	 * @see TargetingTool#updateTargetRequest()
 	 */
 	@Override

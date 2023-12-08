@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ public class ReconnectRequest extends LocationRequest implements DropRequest, Ta
 
 	/**
 	 * Creates a ReconnectRequest with the given type.
-	 * 
+	 *
 	 * @param type the type
 	 */
 	public ReconnectRequest(Object type) {
@@ -41,7 +41,7 @@ public class ReconnectRequest extends LocationRequest implements DropRequest, Ta
 
 	/**
 	 * Returns the ConnectionEditPart to be reconnected.
-	 * 
+	 *
 	 * @return The ConnectionEditPart to be reconnected.
 	 */
 	public ConnectionEditPart getConnectionEditPart() {
@@ -50,7 +50,7 @@ public class ReconnectRequest extends LocationRequest implements DropRequest, Ta
 
 	/**
 	 * Returns the target edit part that the connection should be connected to.
-	 * 
+	 *
 	 * @return the target edit part
 	 */
 	public EditPart getTarget() {
@@ -60,7 +60,7 @@ public class ReconnectRequest extends LocationRequest implements DropRequest, Ta
 	/**
 	 * Returns <code>true</code> if the start (source) anchor is the anchor being
 	 * moved.
-	 * 
+	 *
 	 * @return whether the start anchor is being moved
 	 */
 	public boolean isMovingStartAnchor() {
@@ -69,7 +69,7 @@ public class ReconnectRequest extends LocationRequest implements DropRequest, Ta
 
 	/**
 	 * Sets the ConnectionEditPart to be reconnected.
-	 * 
+	 *
 	 * @param conn The ConnectionEditPart.
 	 */
 	public void setConnectionEditPart(ConnectionEditPart conn) {
@@ -78,7 +78,7 @@ public class ReconnectRequest extends LocationRequest implements DropRequest, Ta
 
 	/**
 	 * Sets the target edit part that the connection should be connected to.
-	 * 
+	 *
 	 * @param ep the target edit part
 	 */
 	@Override

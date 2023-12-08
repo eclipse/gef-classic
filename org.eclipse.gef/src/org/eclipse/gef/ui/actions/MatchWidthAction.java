@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -28,7 +28,7 @@ public class MatchWidthAction extends MatchSizeAction {
 	/**
 	 * Constructs a <code>MatchWidthAction</code> and associates it with the given
 	 * part.
-	 * 
+	 *
 	 * @param part The workbench part associated with this MatchWidthAction
 	 */
 	public MatchWidthAction(IWorkbenchPart part) {
@@ -42,7 +42,7 @@ public class MatchWidthAction extends MatchSizeAction {
 
 	/**
 	 * Returns 0 to make this action affect only the width delta.
-	 * 
+	 *
 	 * @param precisePartBounds    the precise bounds of the EditPart's Figure to be
 	 *                             matched
 	 * @param precisePrimaryBounds the precise bounds of the Primary Selection

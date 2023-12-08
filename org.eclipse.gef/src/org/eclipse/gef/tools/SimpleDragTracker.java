@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -66,7 +66,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 
 	/**
 	 * Creates and returns a new Request that is used during the drag.
-	 * 
+	 *
 	 * @return a new source request
 	 */
 	protected Request createSourceRequest() {
@@ -99,7 +99,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 
 	/**
 	 * Returns the request for the source of the drag, creating it if necessary.
-	 * 
+	 *
 	 * @return the source request
 	 */
 	protected Request getSourceRequest() {
@@ -111,7 +111,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	/**
 	 * Looks for button 1, and goes into the drag state. Any other button is invalid
 	 * input.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
 	@Override
@@ -126,7 +126,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 
 	/**
 	 * If dragging is in progress, cleans up feedback and calls performDrag().
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
 	@Override
@@ -153,7 +153,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 
 	/**
 	 * Transitions Drag to Drag in progress state.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragStarted()
 	 */
 	@Override
@@ -163,7 +163,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 
 	/**
 	 * Called when the mouse and/or keyboard input is invalid.
-	 * 
+	 *
 	 * @return <code>true</code>
 	 */
 	@Override
@@ -175,7 +175,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 
 	/**
 	 * Looks for keys which are used during accessible drags.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
 	 */
 	@Override
@@ -223,7 +223,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 
 	/**
 	 * Returns <code>true</code> if feedback is being shown.
-	 * 
+	 *
 	 * @return <code>true</code> if feedback is showing
 	 */
 	protected boolean isShowingFeedback() {

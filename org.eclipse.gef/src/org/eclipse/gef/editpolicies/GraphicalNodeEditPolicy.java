@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,9 +31,9 @@ import org.eclipse.gef.requests.ReconnectRequest;
 /**
  * A GraphicalNodeEditPolicy is responsible for creating and reconnecting
  * connections graphically.
- * 
+ *
  * Created on :Nov 11, 2002
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -50,7 +50,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Returns a connection to be used as feeback during creates.
-	 * 
+	 *
 	 * @param req the operation being performed
 	 * @return a connection to use as feedback
 	 */
@@ -73,7 +73,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Erases connection feedback if necessary. Frees unused fields.
-	 * 
+	 *
 	 * @param request the CreateConnectionRequest
 	 */
 	protected void eraseCreationFeedback(CreateConnectionRequest request) {
@@ -87,7 +87,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Calls {@link #eraseCreationFeedback(CreateConnectionRequest)} when
 	 * appropriate.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request)
 	 */
 	@Override
@@ -98,7 +98,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Override to erase target feedback. Does nothing by default.
-	 * 
+	 *
 	 * @param request the DropRequest
 	 */
 	protected void eraseTargetConnectionFeedback(DropRequest request) {
@@ -106,7 +106,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Calls {@link #eraseTargetConnectionFeedback(DropRequest)} when appropriate.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
 	 */
 	@Override
@@ -119,7 +119,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Factors the request into one of four abstract methods. Subclasses must
 	 * implement these methods.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
 	@Override
@@ -141,7 +141,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 * creation. {@link CreateConnectionRequest#getStartCommand()} is used here to
 	 * obtain the contribution from the EditPart from which the User started the
 	 * <i>creation</i>.
-	 * 
+	 *
 	 * @param request the CreateConnectionRequest
 	 * @return the complete command to create a connection
 	 */
@@ -156,7 +156,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 * this, the start command may be registered on the passed in create request
 	 * (see {@link CreateConnectionRequest#setStartCommand(Command)}) before
 	 * returning it here.
-	 * 
+	 *
 	 * @param request the CreateConnectionRequest
 	 * @see #getConnectionCompleteCommand(CreateConnectionRequest)
 	 * @return a Command representing half of a connection creation
@@ -165,7 +165,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Returns the ConnectionRouter for the creation feedback's connection.
-	 * 
+	 *
 	 * @param request the create request
 	 * @return a connection router
 	 * @since 3.2
@@ -178,7 +178,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 * Returns the FeedbackHelper that is ready to use. The feedback helper must be
 	 * configured with the connection that will be used to display feedback, and
 	 * that connection must be added to the appropriate layer in the diagram.
-	 * 
+	 *
 	 * @param request the CreateConnectionRequest
 	 * @return a FeedbackHelper
 	 */
@@ -199,7 +199,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Returns the <code>Command</code> to reconnect a connection's <i>target</i>
 	 * end to the host.
-	 * 
+	 *
 	 * @param request the ReconnectRequest
 	 * @return a Command
 	 */
@@ -208,7 +208,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Returns the <code>Command</code> to reconnect a connection's <i>source</i>
 	 * end to the host.
-	 * 
+	 *
 	 * @param request the ReconnectRequest
 	 * @return a Command
 	 */
@@ -217,7 +217,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Called during the display of creation feedback to snap the feedback to the
 	 * nearest source ConnectionAnchor.
-	 * 
+	 *
 	 * @param request CreateConnectionRequest
 	 * @return <code>null</code> or the nearest source ConnectionAnchor
 	 */
@@ -229,7 +229,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Called during the display of creation feedback to snap the feedback to the
 	 * nearest target ConnectionAnchor.
-	 * 
+	 *
 	 * @param request CreateConnectionRequest
 	 * @return <code>null</code> or the nearest target ConnectionAnchor
 	 */
@@ -241,7 +241,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Returns the <i>host</i> for the appropriate <code>Requests</code>. Returns
 	 * <code>null</code> otherwise.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
 	@Override
@@ -254,7 +254,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Shows feedback during a creation.
-	 * 
+	 *
 	 * @param request CreateConnectionRequest
 	 */
 	protected void showCreationFeedback(CreateConnectionRequest request) {
@@ -266,7 +266,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * calls {@link #showCreationFeedback(CreateConnectionRequest)} when
 	 * appropriate.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request)
 	 */
 	@Override
@@ -277,7 +277,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Override to show target connection feedback. Does nothing by default.
-	 * 
+	 *
 	 * @param request the DropRequest
 	 */
 	protected void showTargetConnectionFeedback(DropRequest request) {
@@ -285,7 +285,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Calls {@link #showTargetConnectionFeedback(DropRequest)} when appropriate.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
 	 */
 	@Override

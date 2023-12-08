@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2011, 2023 Google, Inc.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -37,6 +37,7 @@ public class InsetsTest extends BaseTestCase {
 		assertEquals(1, 2, 3, 4, new Insets(new Insets(1, 2, 3, 4)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testEqualsObject() throws Exception {
 		Insets testInsets = new Insets(1, 2, 3, 4);
@@ -47,6 +48,7 @@ public class InsetsTest extends BaseTestCase {
 		assertFalse(testInsets.equals(new Insets()));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testToString() throws Exception {
 		assertNotNull(new Insets().toString());
@@ -54,16 +56,19 @@ public class InsetsTest extends BaseTestCase {
 		assertNotNull(new Insets(1, 2, 3, 4).toString());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetHeight() throws Exception {
 		assertEquals(11, new Insets(1, 1, 10, 5).getHeight());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetWidth() throws Exception {
 		assertEquals(6, new Insets(1, 1, 10, 5).getWidth());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testIsEmpty() throws Exception {
 		assertTrue(new Insets().isEmpty());

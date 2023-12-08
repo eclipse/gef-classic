@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,7 +19,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * Root class (statically) for the palette model.
- * 
+ *
  * @author Pratik Shah
  */
 public class PaletteEntry {
@@ -84,7 +84,7 @@ public class PaletteEntry {
 	 * however, they cannot be deleted from the palette. The children
 	 * PaletteContainers with this permission level can be reordered within that
 	 * container (however, cross-container moving is not allowed).
-	 * 
+	 *
 	 */
 	public static final int PERMISSION_LIMITED_MODIFICATION = 7;
 
@@ -112,7 +112,7 @@ public class PaletteEntry {
 	 * <p>
 	 * Any parameter can be <code>null</code>
 	 * </p>
-	 * 
+	 *
 	 * @param label            The entry's name
 	 * @param shortDescription The entry's description
 	 */
@@ -125,7 +125,7 @@ public class PaletteEntry {
 	 * <p>
 	 * Any parameter can be <code>null</code>
 	 * </p>
-	 * 
+	 *
 	 * @param label            The entry's name
 	 * @param shortDescription The entry's description
 	 * @param type             The entry's type
@@ -139,7 +139,7 @@ public class PaletteEntry {
 	 * <p>
 	 * Any parameter can be <code>null</code>
 	 * </p>
-	 * 
+	 *
 	 * @param label            The entry's name
 	 * @param shortDescription The entry's description
 	 * @param iconSmall        The small icon to represent this entry
@@ -154,7 +154,7 @@ public class PaletteEntry {
 	 * <p>
 	 * Any parameter can be <code>null</code>
 	 * </p>
-	 * 
+	 *
 	 * @param label            The entry's name
 	 * @param shortDescription The entry's description
 	 * @param iconSmall        The small icon to represent this entry
@@ -171,7 +171,7 @@ public class PaletteEntry {
 	 * <p>
 	 * Any parameter can be <code>null</code>
 	 * </p>
-	 * 
+	 *
 	 * @param label            The entry's name
 	 * @param shortDescription The entry's description
 	 * @param smallIcon        The small icon to represent this entry
@@ -191,7 +191,7 @@ public class PaletteEntry {
 
 	/**
 	 * A listener can only be added once. Adding it more than once will do nothing.
-	 * 
+	 *
 	 * @param listener the PropertyChangeListener that is to be notified of changes
 	 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
 	 */
@@ -210,7 +210,7 @@ public class PaletteEntry {
 	/**
 	 * Returns the id. If no ID has been set (or it is <code>null</code>), an empty
 	 * String will be returned.
-	 * 
+	 *
 	 * @return String id
 	 */
 	public String getId() {
@@ -263,7 +263,7 @@ public class PaletteEntry {
 	 * <LI>PERMISSION_LIMITED_MODIFICATION</LI>
 	 * <LI>PERMISSION_FULL_MODIFICATION</LI>
 	 * </UL>
-	 * 
+	 *
 	 * @return the permission level for this entry.
 	 * @see #setUserModificationPermission(int)
 	 */
@@ -289,7 +289,7 @@ public class PaletteEntry {
 
 	/**
 	 * Mutator method for description
-	 * 
+	 *
 	 * @param s The new description
 	 */
 	public void setDescription(String s) {
@@ -306,7 +306,7 @@ public class PaletteEntry {
 
 	/**
 	 * Sets the id. Can be <code>null</code>.
-	 * 
+	 *
 	 * @param id The new id to be set
 	 */
 	public void setId(String id) {
@@ -315,7 +315,7 @@ public class PaletteEntry {
 
 	/**
 	 * Mutator method for label
-	 * 
+	 *
 	 * @param s The new name
 	 */
 	public void setLabel(String s) {
@@ -332,7 +332,7 @@ public class PaletteEntry {
 
 	/**
 	 * Mutator method for large icon
-	 * 
+	 *
 	 * @param icon The large icon to represent this entry
 	 */
 	public void setLargeIcon(ImageDescriptor icon) {
@@ -345,7 +345,7 @@ public class PaletteEntry {
 
 	/**
 	 * Sets the parent of this entry
-	 * 
+	 *
 	 * @param newParent The parent PaletteContainer
 	 */
 	public void setParent(PaletteContainer newParent) {
@@ -358,7 +358,7 @@ public class PaletteEntry {
 
 	/**
 	 * Mutator method for small icon
-	 * 
+	 *
 	 * @param icon The new small icon to represent this entry
 	 */
 	public void setSmallIcon(ImageDescriptor icon) {
@@ -371,7 +371,7 @@ public class PaletteEntry {
 
 	/**
 	 * Mutator method for type
-	 * 
+	 *
 	 * @param newType The new type
 	 */
 	public void setType(Object newType) {
@@ -397,7 +397,7 @@ public class PaletteEntry {
 	 * <LI>PERMISSION_FULL_MODIFICATION</LI>
 	 * </UL>
 	 * Default is <code>PERMISSION_FULL_MODIFICATION</code>
-	 * 
+	 *
 	 * @param permission One of the above-specified permission levels
 	 */
 	public void setUserModificationPermission(int permission) {
@@ -407,7 +407,7 @@ public class PaletteEntry {
 	/**
 	 * Makes this entry visible or invisible. An invisible entry does not show up on
 	 * the palette.
-	 * 
+	 *
 	 * @param newVal The new boolean indicating whether the entry is visible or not
 	 */
 	public void setVisible(boolean newVal) {

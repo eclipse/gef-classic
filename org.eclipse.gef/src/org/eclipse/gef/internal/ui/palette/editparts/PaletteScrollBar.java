@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -102,7 +102,7 @@ public final class PaletteScrollBar extends ScrollBar {
 
 	/**
 	 * Creates the figure used for the scrollbar button.
-	 * 
+	 *
 	 * @param down true if the arrow should be pointing down; false, if it should be
 	 *             pointing up.
 	 * @return a new <code>Toggle</code> figure for the scroll bar button
@@ -138,7 +138,7 @@ public final class PaletteScrollBar extends ScrollBar {
 
 	/**
 	 * Transposes a list of points using the <code>transposer</code>.
-	 * 
+	 *
 	 * @param origPoints the original list of points
 	 * @return a new list of transposed points
 	 */

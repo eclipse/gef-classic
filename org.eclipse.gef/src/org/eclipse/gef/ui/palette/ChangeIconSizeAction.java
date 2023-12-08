@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,7 +17,7 @@ import org.eclipse.jface.action.Action;
 /**
  * This action toggles the "Use Large Icons" option for the current layout mode
  * of the palette.
- * 
+ *
  * @author Pratik Shah
  */
 public class ChangeIconSizeAction extends Action {
@@ -26,7 +26,7 @@ public class ChangeIconSizeAction extends Action {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param prefs The <code>PaletteViewerPreferences</code> object that this
 	 *              action is manipulating
 	 */
@@ -38,7 +38,7 @@ public class ChangeIconSizeAction extends Action {
 
 	/**
 	 * Toggles the "Use Large Icons" option for the current layout mode.
-	 * 
+	 *
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ import org.eclipse.draw2d.geometry.Point;
  * the mouse is moving. The client may stop calling <code>step(Point)</code> at
  * any time, even if <code>false</code> was never returned, such as when the
  * user releases the mouse.
- * 
+ *
  * @author hudsonr
  */
 public interface AutoexposeHelper {
@@ -50,7 +50,7 @@ public interface AutoexposeHelper {
 	 * AutoexposeHelper. The helper should do something if it returns
 	 * <code>true</code>, or it may wait for {@link #step(Point)} to be called
 	 * later.
-	 * 
+	 *
 	 * @param where the mouse's current location in the viewer
 	 * @return <code>true</code> if the location is interesting
 	 */
@@ -64,7 +64,7 @@ public interface AutoexposeHelper {
 	 * <P>
 	 * The client may stop calling this method at any time, even if the previous
 	 * invocation returned <code>true</code>. The return value is a hint.
-	 * 
+	 *
 	 * @param where the current location of the mouse in the viewer
 	 * @return a hint indicating whether this helper should continue to be invoked
 	 */
@@ -79,7 +79,7 @@ public interface AutoexposeHelper {
 	class Search implements EditPartViewer.Conditional {
 		/**
 		 * Constructs a new Search at a point on the viewer.
-		 * 
+		 *
 		 * @param pt the mouse location
 		 */
 		public Search(Point pt) {

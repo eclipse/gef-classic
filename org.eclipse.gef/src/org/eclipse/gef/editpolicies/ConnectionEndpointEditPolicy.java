@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -28,7 +28,6 @@ import org.eclipse.draw2d.Polygon;
 import org.eclipse.draw2d.geometry.PointList;
 
 import org.eclipse.gef.ConnectionEditPart;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
@@ -43,7 +42,7 @@ import org.eclipse.gef.requests.ReconnectRequest;
  * <P>
  * A connection can receive focus but not selection by pressing
  * <code>Control+/</code> on the keyboard.
- * 
+ *
  * @since 2.0
  */
 public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
@@ -94,8 +93,9 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 
 		@Override
 		public void validate() {
-			if (isValid())
+			if (isValid()) {
 				return;
+			}
 			PointList points = getConnection().getPoints().getCopy();
 			getConnection().translateToAbsolute(points);
 			points = StrokePointList.strokeList(points, 5);
@@ -109,7 +109,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	@Override
 	protected List createSelectionHandles() {
-		List list = new ArrayList();
+		List<ConnectionEndpointHandle> list = new ArrayList<>();
 		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(), ConnectionLocator.SOURCE));
 		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(), ConnectionLocator.TARGET));
 		return list;
@@ -118,16 +118,18 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Erases connection move feedback. This method is called when a
 	 * ReconnectRequest is received.
-	 * 
+	 *
 	 * @param request the reconnect request.
 	 */
 	protected void eraseConnectionMoveFeedback(ReconnectRequest request) {
-		if (originalAnchor == null)
+		if (originalAnchor == null) {
 			return;
-		if (request.isMovingStartAnchor())
+		}
+		if (request.isMovingStartAnchor()) {
 			getConnection().setSourceAnchor(originalAnchor);
-		else
+		} else {
 			getConnection().setTargetAnchor(originalAnchor);
+		}
 		originalAnchor = null;
 		feedbackHelper = null;
 	}
@@ -137,8 +139,9 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	@Override
 	public void eraseSourceFeedback(Request request) {
-		if (REQ_RECONNECT_TARGET.equals(request.getType()) || REQ_RECONNECT_SOURCE.equals(request.getType()))
+		if (REQ_RECONNECT_TARGET.equals(request.getType()) || REQ_RECONNECT_SOURCE.equals(request.getType())) {
 			eraseConnectionMoveFeedback((ReconnectRequest) request);
+		}
 	}
 
 	/**
@@ -151,18 +154,18 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Convenience method for obtaining the host's <code>Connection</code> figure.
-	 * 
+	 *
 	 * @return the Connection figure
 	 */
 	protected Connection getConnection() {
-		return (Connection) ((GraphicalEditPart) getHost()).getFigure();
+		return (Connection) getHost().getFigure();
 	}
 
 	/**
 	 * Lazily creates and returns the feedback helper for the given request. The
 	 * helper will be configured as either moving the source or target end of the
 	 * connection.
-	 * 
+	 *
 	 * @param request the reconnect request
 	 * @return the feedback helper
 	 */
@@ -178,7 +181,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Hides the focus indicator. The focus indicator is a dotted outline around the
 	 * connection.
-	 * 
+	 *
 	 * @see #showFocus()
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideFocus()
 	 */
@@ -193,25 +196,28 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Shows or updates connection move feedback. Called whenever a show feedback
 	 * request is received for reconnection.
-	 * 
+	 *
 	 * @param request the reconnect request
 	 */
 	protected void showConnectionMoveFeedback(ReconnectRequest request) {
 		NodeEditPart node = null;
-		if (request.getTarget() instanceof NodeEditPart)
-			node = (NodeEditPart) request.getTarget();
+		if (request.getTarget() instanceof NodeEditPart nodeEP) {
+			node = nodeEP;
+		}
 		if (originalAnchor == null) {
-			if (request.isMovingStartAnchor())
+			if (request.isMovingStartAnchor()) {
 				originalAnchor = getConnection().getSourceAnchor();
-			else
+			} else {
 				originalAnchor = getConnection().getTargetAnchor();
+			}
 		}
 		ConnectionAnchor anchor = null;
 		if (node != null) {
-			if (request.isMovingStartAnchor())
+			if (request.isMovingStartAnchor()) {
 				anchor = node.getSourceConnectionAnchor(request);
-			else
+			} else {
 				anchor = node.getTargetConnectionAnchor(request);
+			}
 		}
 		FeedbackHelper helper = getFeedbackHelper(request);
 		helper.update(anchor, request.getLocation());
@@ -219,7 +225,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Shows focus around the connection.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showFocus()
 	 */
 	@Override
@@ -235,8 +241,9 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	@Override
 	public void showSourceFeedback(Request request) {
-		if (REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
+		if (REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType())) {
 			showConnectionMoveFeedback((ReconnectRequest) request);
+		}
 	}
 
 }

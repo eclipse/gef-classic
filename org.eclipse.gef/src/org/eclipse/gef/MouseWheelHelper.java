@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Event;
  * The most common usage of MouseWheelHelpers involves scrolling of an
  * EditPart's figure. They should be returned in the EditPart's getAdapter()
  * method.
- * 
+ *
  * @see org.eclipse.gef.editparts.ViewportMouseWheelHelper
  * @author Pratik Shah
  * @since 3.1
@@ -35,7 +35,7 @@ public interface MouseWheelHelper {
 	 * Handles mouse-wheel events. If the given event was handled in some way, its
 	 * {@link Event#doit doit} field should be set to false so as to prevent further
 	 * processing of that event.
-	 * 
+	 *
 	 * @param event The SWT event that was generated as a result of the mouse-wheel
 	 *              scrolling
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -67,8 +67,9 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 
 			Iterator i = attachedEditParts.iterator();
 
-			while (i.hasNext())
+			while (i.hasNext()) {
 				((EditPart) i.next()).eraseSourceFeedback(req);
+			}
 			attachedEditParts = null;
 		}
 	}
@@ -86,9 +87,10 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 	}
 
 	private List getAttachedEditParts() {
-		if (attachedEditParts == null)
+		if (attachedEditParts == null) {
 			attachedEditParts = getGuideEditPart().getRulerProvider().getAttachedEditParts(getHost().getModel(),
 					((RulerEditPart) getHost().getParent()).getDiagramViewer());
+		}
 		return attachedEditParts;
 	}
 
@@ -187,15 +189,17 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 		ChangeBoundsRequest req = new ChangeBoundsRequest(request.getType());
 		req.setEditParts(getAttachedEditParts());
 
-		if (getGuideEditPart().isHorizontal())
+		if (getGuideEditPart().isHorizontal()) {
 			req.setMoveDelta(new Point(0, request.getMoveDelta().y));
-		else
+		} else {
 			req.setMoveDelta(new Point(request.getMoveDelta().x, 0));
+		}
 
 		Iterator i = getAttachedEditParts().iterator();
 
-		while (i.hasNext())
+		while (i.hasNext()) {
 			((EditPart) i.next()).showSourceFeedback(req);
+		}
 	}
 
 	@Override

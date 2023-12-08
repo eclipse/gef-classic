@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * A custom layout manager for rulers. It is not meant to be used externally or
  * with any figure other than a
  * {@link org.eclipse.gef.internal.ui.rulers.RulerFigure ruler}.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ import org.eclipse.gef.examples.digraph1.policy.Digraph1XYLayoutEditPolicy;
 
 /**
  * The edit part for the directed graph.
- * 
+ *
  * @author Anthony Hunter
  */
 public class Digraph1GraphEditPart extends AbstractGraphicalEditPart {

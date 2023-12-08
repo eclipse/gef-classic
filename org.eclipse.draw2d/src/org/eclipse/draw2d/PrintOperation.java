@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Implementation of draw2d's printing capabilities.
- * 
+ *
  * @author Dan Lee
  * @author Eric Bordeau
  */
@@ -42,7 +42,7 @@ public abstract class PrintOperation {
 
 	/**
 	 * Creates a new PrintOperation on Printer p
-	 * 
+	 *
 	 * @param p The printer to print on
 	 */
 	public PrintOperation(Printer p) {
@@ -65,7 +65,7 @@ public abstract class PrintOperation {
 	/**
 	 * Returns a new PrinterGraphics setup for the Printer associated with this
 	 * PrintOperation.
-	 * 
+	 *
 	 * @return PrinterGraphics The new PrinterGraphics
 	 */
 	protected PrinterGraphics getFreshPrinterGraphics() {
@@ -85,7 +85,7 @@ public abstract class PrintOperation {
 	 * This method is invoked by the {@link #run(String)} method to determine the
 	 * orientation of the GC to be used for printing. This default implementation
 	 * always returns SWT.LEFT_TO_RIGHT.
-	 * 
+	 *
 	 * @return SWT.LEFT_TO_RIGHT or SWT.RIGHT_TO_LEFT
 	 * @since 3.1
 	 * @TODO Make protected post-3.1
@@ -96,7 +96,7 @@ public abstract class PrintOperation {
 
 	/**
 	 * Returns the printer.
-	 * 
+	 *
 	 * @return Printer
 	 */
 	public Printer getPrinter() {
@@ -106,7 +106,7 @@ public abstract class PrintOperation {
 	/**
 	 * Returns a Rectangle that represents the region that can be printed to. The x,
 	 * y, height, and width values are using the printers coordinates.
-	 * 
+	 *
 	 * @return the print region
 	 */
 	public Rectangle getPrintRegion() {
@@ -145,7 +145,7 @@ public abstract class PrintOperation {
 
 	/**
 	 * Sets the print job into motion.
-	 * 
+	 *
 	 * @param jobName A String representing the name of the print job
 	 */
 	public void run(String jobName) {
@@ -161,7 +161,7 @@ public abstract class PrintOperation {
 
 	/**
 	 * Sets the printer.
-	 * 
+	 *
 	 * @param printer The printer to set
 	 */
 	public void setPrinter(Printer printer) {
@@ -171,7 +171,7 @@ public abstract class PrintOperation {
 	/**
 	 * Sets the page margin in pels (logical pixels) to the passed Insets.(72 pels
 	 * == 1 inch)
-	 * 
+	 *
 	 * @param margin The margin to set on the page
 	 */
 	public void setPrintMargin(Insets margin) {
@@ -181,7 +181,7 @@ public abstract class PrintOperation {
 	/**
 	 * Manipulates the PrinterGraphics to position it to paint in the desired region
 	 * of the page. (Default is the top left corner of the page).
-	 * 
+	 *
 	 * @param pg The PrinterGraphics to setup
 	 */
 	protected void setupGraphicsForPage(PrinterGraphics pg) {

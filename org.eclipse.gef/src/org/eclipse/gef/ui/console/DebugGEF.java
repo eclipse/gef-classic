@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -28,7 +28,7 @@ import org.eclipse.gef.GEF;
 
 /**
  * View used for debugging information in GEF
- * 
+ *
  * @deprecated in 3.1
  */
 public class DebugGEF extends ViewPart {
@@ -71,7 +71,7 @@ public class DebugGEF extends ViewPart {
 	/**
 	 * Called by createPartControl(Composite). Adds all actions to the
 	 * {@link IToolBarManager}.
-	 * 
+	 *
 	 */
 	protected void fillActions() {
 		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();

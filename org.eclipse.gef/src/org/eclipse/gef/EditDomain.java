@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -67,7 +67,7 @@ public class EditDomain {
 	 * Adds an EditPartViewer into the EditDomain. A viewer is most likely placed in
 	 * a {@link org.eclipse.ui.IWorkbenchPart WorkbenchPart} of some form, such as
 	 * the IEditorPart or an IViewPart.
-	 * 
+	 *
 	 * @param viewer The EditPartViewer
 	 */
 	public void addViewer(EditPartViewer viewer) {
@@ -78,7 +78,7 @@ public class EditDomain {
 
 	/**
 	 * Called when one of the EditDomain's Viewers receives keyboard focus.
-	 * 
+	 *
 	 * @param event  The SWT focus event
 	 * @param viewer the Viewer that received the event.
 	 */
@@ -90,7 +90,7 @@ public class EditDomain {
 
 	/**
 	 * Called when one of the EditDomain's Viewers is losing keyboard focus.
-	 * 
+	 *
 	 * @param event  The SWT focus event
 	 * @param viewer the Viewer that received the event.
 	 */
@@ -102,7 +102,7 @@ public class EditDomain {
 
 	/**
 	 * Returns the active Tool
-	 * 
+	 *
 	 * @return the active Tool
 	 */
 	public Tool getActiveTool() {
@@ -112,7 +112,7 @@ public class EditDomain {
 	/**
 	 * Returns the CommandStack. Command stacks could potentially be shared across
 	 * domains depending on the application.
-	 * 
+	 *
 	 * @return The command stack
 	 */
 	public CommandStack getCommandStack() {
@@ -123,7 +123,7 @@ public class EditDomain {
 	 * Returns the default tool for this edit domain. This will be a
 	 * {@link org.eclipse.gef.tools.SelectionTool} unless specifically replaced
 	 * using {@link #setDefaultTool(Tool)}.
-	 * 
+	 *
 	 * @return The default Tool for this domain
 	 */
 	public Tool getDefaultTool() {
@@ -134,7 +134,7 @@ public class EditDomain {
 
 	/**
 	 * Returns the palette viewer currently associated with this domain.
-	 * 
+	 *
 	 * @since 1.0
 	 * @return The current palette viewer
 	 */
@@ -155,7 +155,7 @@ public class EditDomain {
 
 	/**
 	 * Called when a key is <B>pressed</B> on a Viewer.
-	 * 
+	 *
 	 * @param keyEvent The SWT key event
 	 * @param viewer   The source of the event.
 	 */
@@ -167,7 +167,7 @@ public class EditDomain {
 
 	/**
 	 * Called when a traversal occurs on a viewer.
-	 * 
+	 *
 	 * @param traverseEvent the SWT traverse event
 	 * @param viewer        the source of the event
 	 * @since 3.1
@@ -180,7 +180,7 @@ public class EditDomain {
 
 	/**
 	 * Called when a key is <B>released</b> on a Viewer.
-	 * 
+	 *
 	 * @param keyEvent The SWT key event
 	 * @param viewer   the source of the event.
 	 */
@@ -210,7 +210,7 @@ public class EditDomain {
 
 	/**
 	 * Called when the mouse button has been double-clicked on a Viewer.
-	 * 
+	 *
 	 * @param mouseEvent The SWT mouse event
 	 * @param viewer     The source of the event.
 	 */
@@ -222,7 +222,7 @@ public class EditDomain {
 
 	/**
 	 * Called when the mouse button has been pressed on a Viewer.
-	 * 
+	 *
 	 * @param mouseEvent The SWT mouse event
 	 * @param viewer     The source of the event.
 	 */
@@ -234,7 +234,7 @@ public class EditDomain {
 
 	/**
 	 * Called when the mouse has been dragged within a Viewer.
-	 * 
+	 *
 	 * @param mouseEvent The SWT mouse event
 	 * @param viewer     The source of the event.
 	 */
@@ -246,7 +246,7 @@ public class EditDomain {
 
 	/**
 	 * Called when the mouse has hovered on a Viewer.
-	 * 
+	 *
 	 * @param mouseEvent The SWT mouse event
 	 * @param viewer     The source of the event.
 	 */
@@ -258,7 +258,7 @@ public class EditDomain {
 
 	/**
 	 * Called when the mouse has been moved on a Viewer.
-	 * 
+	 *
 	 * @param mouseEvent The SWT mouse event
 	 * @param viewer     The viewer that the mouse event is over.
 	 */
@@ -270,7 +270,7 @@ public class EditDomain {
 
 	/**
 	 * Called when the mouse button has been released on a Viewer.
-	 * 
+	 *
 	 * @param mouseEvent The SWT mouse event
 	 * @param viewer     The source of the event.
 	 */
@@ -282,7 +282,7 @@ public class EditDomain {
 
 	/**
 	 * Called by the DomainEventDispatcher when the mouse wheel has been scrolled.
-	 * 
+	 *
 	 * @param event  The SWT event
 	 * @param viewer The source of the event
 	 */
@@ -294,7 +294,7 @@ public class EditDomain {
 
 	/**
 	 * Called when a native drag has finished on a Viewer.
-	 * 
+	 *
 	 * @param event  The DragSourceEvent
 	 * @param viewer The viewer where the drag finished
 	 */
@@ -306,7 +306,7 @@ public class EditDomain {
 
 	/**
 	 * Called when a native drag has started on a Viewer.
-	 * 
+	 *
 	 * @param event  The DragSourceEvent
 	 * @param viewer The viewer where the drag started
 	 */
@@ -320,7 +320,7 @@ public class EditDomain {
 	 * Removes a previously added viewer from the EditDomain. A Viewer that is
 	 * removed from the EditDomain will no longer forward input to the domain and
 	 * its active Tool.
-	 * 
+	 *
 	 * @param viewer the Viewer being removed
 	 */
 	public void removeViewer(EditPartViewer viewer) {
@@ -330,7 +330,7 @@ public class EditDomain {
 
 	/**
 	 * Sets the <code>CommandStack</code>.
-	 * 
+	 *
 	 * @param stack the CommandStack
 	 */
 	public void setCommandStack(CommandStack stack) {
@@ -340,7 +340,7 @@ public class EditDomain {
 	/**
 	 * Sets the default Tool, which is used if the Palette does not provide a
 	 * default
-	 * 
+	 *
 	 * @param tool <code>null</code> or a Tool
 	 */
 	public void setDefaultTool(Tool tool) {
@@ -356,7 +356,7 @@ public class EditDomain {
 	 * components (such as the PaletteCustomizerDialog for the PaletteViewer) might
 	 * still hold on to the old root. If the input has changed or needs to be
 	 * refreshed, just remove all the children from the root and add the new ones.
-	 * 
+	 *
 	 * @param root the palette's root
 	 */
 	public void setPaletteRoot(PaletteRoot root) {
@@ -371,7 +371,7 @@ public class EditDomain {
 
 	/**
 	 * Sets the <code>PaletteViewer</code> for this EditDomain
-	 * 
+	 *
 	 * @param palette the PaletteViewer
 	 */
 	public void setPaletteViewer(PaletteViewer palette) {
@@ -392,7 +392,7 @@ public class EditDomain {
 	/**
 	 * Sets the active Tool for this EditDomain. If a current Tool is active, it is
 	 * deactivated. The new Tool is told its EditDomain, and is activated.
-	 * 
+	 *
 	 * @param tool the Tool
 	 */
 	public void setActiveTool(Tool tool) {
@@ -407,7 +407,7 @@ public class EditDomain {
 
 	/**
 	 * Called when the mouse enters a Viewer.
-	 * 
+	 *
 	 * @param mouseEvent the SWT mouse event
 	 * @param viewer     the Viewer being entered
 	 */
@@ -419,7 +419,7 @@ public class EditDomain {
 
 	/**
 	 * Called when the mouse exits a Viewer.
-	 * 
+	 *
 	 * @param mouseEvent the SWT mouse event
 	 * @param viewer     the Viewer being exited
 	 */

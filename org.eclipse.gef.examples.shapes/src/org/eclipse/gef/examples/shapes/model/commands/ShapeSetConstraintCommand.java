@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.gef.examples.shapes.model.Shape;
 
 /**
  * A command to resize and/or move a shape. The command can be undone or redone.
- * 
+ *
  * @author Elias Volanakis
  */
 public class ShapeSetConstraintCommand extends Command {
@@ -38,7 +38,7 @@ public class ShapeSetConstraintCommand extends Command {
 
 	/**
 	 * Create a command that can resize and/or move a shape.
-	 * 
+	 *
 	 * @param shape     the shape to manipulate
 	 * @param req       the move and resize request
 	 * @param newBounds the new size and location
@@ -56,7 +56,7 @@ public class ShapeSetConstraintCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
 	@Override
@@ -69,7 +69,7 @@ public class ShapeSetConstraintCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
 	@Override
@@ -80,7 +80,7 @@ public class ShapeSetConstraintCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
 	@Override
@@ -91,7 +91,7 @@ public class ShapeSetConstraintCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
 	@Override

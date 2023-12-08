@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,7 +27,7 @@ public class CreateConnectionRequest extends CreateRequest implements TargetRequ
 	/**
 	 * Returns the EditPart that the source end of the connection should be
 	 * connected to.
-	 * 
+	 *
 	 * @return the source EditPart
 	 */
 	public EditPart getSourceEditPart() {
@@ -37,7 +37,7 @@ public class CreateConnectionRequest extends CreateRequest implements TargetRequ
 	/**
 	 * Returns the EditPart that the target end of the connection should be
 	 * connected to.
-	 * 
+	 *
 	 * @return the target EditPart
 	 */
 	public EditPart getTargetEditPart() {
@@ -47,7 +47,7 @@ public class CreateConnectionRequest extends CreateRequest implements TargetRequ
 	/**
 	 * Returns the start command. This command is only used to pass on information
 	 * to the target EditPart so it can create the final command.
-	 * 
+	 *
 	 * @return the command
 	 */
 	public Command getStartCommand() {
@@ -56,7 +56,7 @@ public class CreateConnectionRequest extends CreateRequest implements TargetRequ
 
 	/**
 	 * Sets the source of the Connection to the given EditPart.
-	 * 
+	 *
 	 * @param part the source EditPart
 	 */
 	public void setSourceEditPart(EditPart part) {
@@ -65,7 +65,7 @@ public class CreateConnectionRequest extends CreateRequest implements TargetRequ
 
 	/**
 	 * Sets the target of the Connection to the given EditPart.
-	 * 
+	 *
 	 * @param part the target EditPart
 	 */
 	@Override
@@ -76,7 +76,7 @@ public class CreateConnectionRequest extends CreateRequest implements TargetRequ
 	/**
 	 * Sets the start command. This command is only used to pass on information to
 	 * the target EditPart so it can create the final command.
-	 * 
+	 *
 	 * @param c the command
 	 */
 	public void setStartCommand(Command c) {

@@ -2,12 +2,12 @@
  * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.examples.uml;
@@ -16,6 +16,7 @@ import org.eclipse.draw2d.AbstractBorder;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.OrderedLayout;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Insets;
 
@@ -23,7 +24,7 @@ public class CompartmentFigure extends Figure {
 
 	public CompartmentFigure() {
 		ToolbarLayout layout = new ToolbarLayout();
-		layout.setMinorAlignment(ToolbarLayout.ALIGN_TOPLEFT);
+		layout.setMinorAlignment(OrderedLayout.ALIGN_TOPLEFT);
 		layout.setStretchMinorAxis(false);
 		layout.setSpacing(2);
 		setLayoutManager(layout);

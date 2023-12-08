@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ public class ButtonGroup {
 
 	/**
 	 * Constructs a ButtonGroup with no default selection.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public ButtonGroup() {
@@ -44,7 +44,7 @@ public class ButtonGroup {
 
 	/**
 	 * Adds the passed ButtonModel to the ButtonGroup.
-	 * 
+	 *
 	 * @param model ButtonModel to be added to this group
 	 * @since 2.0
 	 */
@@ -58,7 +58,7 @@ public class ButtonGroup {
 	/**
 	 * Adds the passed listener. ButtonGroups use PropertyChangeListeners to react
 	 * to selection changes in the ButtonGroup.
-	 * 
+	 *
 	 * @param listener Listener to be added to this group
 	 * @since 2.0
 	 */
@@ -69,7 +69,7 @@ public class ButtonGroup {
 	/**
 	 * Fires a PropertyChangeEvent to all PropertyChangeListeners added to this
 	 * ButtonGroup.
-	 * 
+	 *
 	 * @param oldValue Old selection value
 	 * @param newValue New selection value
 	 * @since 2.0
@@ -81,7 +81,7 @@ public class ButtonGroup {
 
 	/**
 	 * Returns the ButtonModel which is selected by default for this ButtonGroup.
-	 * 
+	 *
 	 * @return The default ButtonModel
 	 * @since 2.0
 	 */
@@ -92,7 +92,7 @@ public class ButtonGroup {
 	/**
 	 * Returns a List which contains all of the {@link ButtonModel ButtonModels}
 	 * added to this ButtonGroup.
-	 * 
+	 *
 	 * @return The List of ButtonModels in this ButtonGroup
 	 * @since 2.0
 	 */
@@ -102,7 +102,7 @@ public class ButtonGroup {
 
 	/**
 	 * Returns the ButtonModel for the currently selected button.
-	 * 
+	 *
 	 * @return The ButtonModel for the currently selected button
 	 * @since 2.0
 	 */
@@ -112,7 +112,7 @@ public class ButtonGroup {
 
 	/**
 	 * Determines if the given ButtonModel is selected or not.
-	 * 
+	 *
 	 * @param model Model being tested for selected status
 	 * @return Selection state of the given model
 	 * @since 2.0
@@ -123,7 +123,7 @@ public class ButtonGroup {
 
 	/**
 	 * Removes the given ButtonModel from this ButtonGroup.
-	 * 
+	 *
 	 * @param model ButtonModel being removed
 	 * @since 2.0
 	 */
@@ -137,7 +137,7 @@ public class ButtonGroup {
 
 	/**
 	 * Removes the passed PropertyChangeListener from this ButtonGroup.
-	 * 
+	 *
 	 * @param listener PropertyChangeListener to be removed
 	 * @since 2.0
 	 */
@@ -148,7 +148,7 @@ public class ButtonGroup {
 	/**
 	 * Sets the passed ButtonModel to be the currently selected ButtonModel of this
 	 * ButtonGroup. Fires a property change.
-	 * 
+	 *
 	 * @param model ButtonModel to be selected
 	 * @since 2.0
 	 */
@@ -163,7 +163,7 @@ public class ButtonGroup {
 	/**
 	 * Sets the default selection of this ButtonGroup. Does nothing if it is not
 	 * present in the group. Sets selection to the passed ButtonModel.
-	 * 
+	 *
 	 * @param model ButtonModel which is to be the default selection.
 	 * @since 2.0
 	 */
@@ -175,7 +175,7 @@ public class ButtonGroup {
 
 	/**
 	 * Sets the button with the given ButtonModel to be selected.
-	 * 
+	 *
 	 * @param model The ButtonModel to be selected
 	 * @since 2.0
 	 */
@@ -205,7 +205,7 @@ public class ButtonGroup {
 	 * it was.
 	 * </ul>
 	 * </ul>
-	 * 
+	 *
 	 * @param model The model to be affected
 	 * @param value The selected state
 	 * @since 2.0

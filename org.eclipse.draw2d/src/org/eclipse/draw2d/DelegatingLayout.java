@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ public class DelegatingLayout extends AbstractLayout {
 	/**
 	 * Calculates the preferred size of the given Figure. For the DelegatingLayout,
 	 * this is the largest width and height values of the passed Figure's children.
-	 * 
+	 *
 	 * @param parent the figure whose preferred size is being calculated
 	 * @param wHint  the width hint
 	 * @param hHint  the height hint
@@ -56,7 +56,7 @@ public class DelegatingLayout extends AbstractLayout {
 	/**
 	 * Lays out the given figure's children based on their {@link Locator}
 	 * constraint.
-	 * 
+	 *
 	 * @param parent the figure whose children should be layed out
 	 */
 	@Override
@@ -71,7 +71,7 @@ public class DelegatingLayout extends AbstractLayout {
 
 	/**
 	 * Removes the locator for the given figure.
-	 * 
+	 *
 	 * @param child the child being removed
 	 */
 	@Override
@@ -81,7 +81,7 @@ public class DelegatingLayout extends AbstractLayout {
 
 	/**
 	 * Sets the constraint for the given figure.
-	 * 
+	 *
 	 * @param figure     the figure whose contraint is being set
 	 * @param constraint the new constraint
 	 */

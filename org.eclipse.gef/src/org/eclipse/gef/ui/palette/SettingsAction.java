@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,7 +19,7 @@ import org.eclipse.gef.ui.palette.customize.PaletteSettingsDialog;
 
 /**
  * An action to launch the Settings dialog for the given palette.
- * 
+ *
  * @author Pratik Shah
  */
 public class SettingsAction extends Action {
@@ -28,7 +28,7 @@ public class SettingsAction extends Action {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param palette The Palette which has to be customized when this action is run
 	 */
 	public SettingsAction(PaletteViewer palette) {
@@ -39,7 +39,7 @@ public class SettingsAction extends Action {
 
 	/**
 	 * Opens the Settings dialog
-	 * 
+	 *
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	@Override

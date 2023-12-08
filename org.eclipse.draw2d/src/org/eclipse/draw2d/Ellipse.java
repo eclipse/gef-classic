@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class Ellipse extends Shape {
 	/**
 	 * Constructs a new Ellipse with the default values of a Shape.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public Ellipse() {
@@ -30,7 +30,7 @@ public class Ellipse extends Shape {
 	/**
 	 * Returns <code>true</code> if the given point (x,y) is contained within this
 	 * ellipse.
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @return <code>true</code>if the given point is contained
@@ -49,7 +49,7 @@ public class Ellipse extends Shape {
 
 	/**
 	 * Fills the ellipse.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Shape#fillShape(org.eclipse.draw2d.Graphics)
 	 */
 	@Override
@@ -59,7 +59,7 @@ public class Ellipse extends Shape {
 
 	/**
 	 * Outlines the ellipse.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Shape#outlineShape(org.eclipse.draw2d.Graphics)
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -28,7 +28,7 @@ import org.eclipse.gef.EditPartViewer;
  * viewer lifecycle. When <code>dispose()</code> is called in the superclass,
  * the EditPartViewer will receive widget dispose callback, and perform any
  * necessary cleanup. This class is just an adapter.
- * 
+ *
  * @author hudsonr
  */
 public class ContentOutlinePage extends org.eclipse.ui.part.Page
@@ -39,7 +39,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 
 	/**
 	 * Constructs a ContentOutlinePage for the given viewer.
-	 * 
+	 *
 	 * @param viewer the viewer
 	 */
 	public ContentOutlinePage(EditPartViewer viewer) {
@@ -56,7 +56,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 
 	/**
 	 * Forwards the createControl request to the editpartviewer.
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
@@ -74,7 +74,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 
 	/**
 	 * Forwards selection request to the viewer.
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
 	@Override
@@ -87,7 +87,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 
 	/**
 	 * Returns the EditPartViewer
-	 * 
+	 *
 	 * @return the viewer
 	 */
 	protected EditPartViewer getViewer() {

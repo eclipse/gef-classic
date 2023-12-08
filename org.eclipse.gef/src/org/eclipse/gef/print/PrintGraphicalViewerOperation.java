@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PrintFigureOperation;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.LayerManager;
@@ -32,11 +33,11 @@ import org.eclipse.gef.editparts.LayerManager;
 public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 
 	private GraphicalViewer viewer;
-	private List selectedEditParts;
+	private List<EditPart> selectedEditParts;
 
 	/**
 	 * Constructor for PrintGraphicalViewerOperation
-	 * 
+	 *
 	 * @param p The Printer to print to
 	 * @param g The viewer containing what is to be printed NOTE: The
 	 *          GraphicalViewer to be printed must have a
@@ -53,7 +54,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 
 	/**
 	 * Returns the viewer.
-	 * 
+	 *
 	 * @return GraphicalViewer
 	 */
 	public GraphicalViewer getViewer() {
@@ -66,7 +67,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 	@Override
 	protected void preparePrintSource() {
 		super.preparePrintSource();
-		selectedEditParts = new ArrayList(viewer.getSelectedEditParts());
+		selectedEditParts = new ArrayList<>(viewer.getSelectedEditParts());
 		viewer.deselectAll();
 	}
 
@@ -81,7 +82,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 
 	/**
 	 * Sets the viewer.
-	 * 
+	 *
 	 * @param viewer The viewer to set
 	 */
 	public void setViewer(GraphicalViewer viewer) {

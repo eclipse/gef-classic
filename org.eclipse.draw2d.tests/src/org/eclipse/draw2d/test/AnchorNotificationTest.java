@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 package org.eclipse.draw2d.test;
+
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.Figure;
@@ -26,20 +27,20 @@ import org.junit.Test;
 
 /**
  * Tests the notification of anchors and connection figures.
- * 
+ *
  * <pre>
  * &#64;Contents figure
  *   &#64;LocalCoordinates
  *      &#64;connection
- *      &#64;endpoint1 
+ *      &#64;endpoint1
  *    &#64;LocalCoordinates
  *      @endpoint2
  * </pre>
- * 
+ *
  * Moving the outermost localcoordinate figure should not notify. Moving either
  * endpoint should notify. Moving the innermost localcoordinates figure should
  * notify.
- * 
+ *
  * @since 3.1
  */
 
@@ -122,7 +123,7 @@ public class AnchorNotificationTest extends Assert {
 	public void testMoveTargetParent() {
 		count = 0;
 		nestedCoordinates.translate(10, 10);
-		assertTrue("Count != 1 :" + count, count == 1);
+		assertTrue("Count != 1 :" + count, count == 1); //$NON-NLS-1$
 	}
 
 	@Test

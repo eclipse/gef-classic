@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ import java.util.Set;
  * The run method will force a validation pass to capture the final states, and
  * then commence the animation. The animation is synchronous and the method does
  * not return until the animation has completed.
- * 
+ *
  * @see LayoutAnimator
  * @since 3.2
  */
@@ -149,7 +149,7 @@ public class Animation {
 
 	/**
 	 * Returns the final animation state for the given figure.
-	 * 
+	 *
 	 * @param animator the animator for the figure
 	 * @param figure   the figure being animated
 	 * @return the final state
@@ -162,7 +162,7 @@ public class Animation {
 	/**
 	 * Returns the initial animation state for the given animator and figure. If no
 	 * state was recorded, <code>null</code> is returned.
-	 * 
+	 *
 	 * @param animator the animator for the figure
 	 * @param figure   the figure being animated
 	 * @return the initial state
@@ -174,7 +174,7 @@ public class Animation {
 
 	/**
 	 * Returns the animation progress, where 0.0 < progress &#8804; 1.0.
-	 * 
+	 *
 	 * @return the progress of the animation
 	 * @since 3.2
 	 */
@@ -202,7 +202,7 @@ public class Animation {
 
 	/**
 	 * Returns <code>true</code> if animation is in progress.
-	 * 
+	 *
 	 * @return <code>true</code> when animating
 	 * @since 3.2
 	 */
@@ -221,7 +221,7 @@ public class Animation {
 	/**
 	 * Marks the beginning of the animation process. If the beginning has already
 	 * been marked, this has no effect.
-	 * 
+	 *
 	 * @return returns <code>true</code> if beginning was not previously marked
 	 * @since 3.2
 	 */
@@ -255,7 +255,7 @@ public class Animation {
 
 	/**
 	 * Runs animation using the recommended duration: 250 milliseconds.
-	 * 
+	 *
 	 * @see #run(int)
 	 * @since 3.2
 	 */
@@ -265,7 +265,7 @@ public class Animation {
 
 	/**
 	 * Captures the final states for the animation and then plays the animation.
-	 * 
+	 *
 	 * @param duration the length of animation in milliseconds
 	 * @since 3.2
 	 */

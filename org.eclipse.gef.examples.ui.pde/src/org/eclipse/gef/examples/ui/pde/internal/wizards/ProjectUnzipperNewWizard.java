@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -59,7 +59,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
  * The page lets users define the name and location of the project where to
  * unzip the project archive. The wizard performs: project creation, the unzip
  * operation, the classpath update, the progress monitoring
- * 
+ *
  * @see Wizard
  */
 abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWizard, IExecutableExtension {
@@ -117,7 +117,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param pageNameIn        The name of the project creation page
 	 * @param pageTitleIn       The title of the project creation page
 	 * @param pageDescriptionIn The description of the project creation page
@@ -133,7 +133,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param pageNameIn          The name of the project creation page
 	 * @param pageTitleIn         The title of the project creation page
 	 * @param pageDescriptionIn   The description of the project creation page
@@ -169,7 +169,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 	/**
 	 * Performs the bulk of the wizard functionality: project creation, the unzip
 	 * operation and classpath update
-	 * 
+	 *
 	 * @see Wizard#performFinish
 	 */
 	@Override
@@ -270,14 +270,14 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Unzip the project archive to the specified folder
-	 * 
+	 *
 	 * @param projectFolderFile The folder where to unzip the project archive
 	 * @param monitor           Monitor to display progress and/or cancel operation
 	 * @throws IOException
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws FileNotFoundException
-	 * 
+	 *
 	 * @throws FileNotFoundException
 	 * @throws InterruptedException
 	 */
@@ -311,7 +311,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Unzips the platform formatted zip file to specified folder
-	 * 
+	 *
 	 * @param zipFile           The platform formatted zip file
 	 * @param projectFolderFile The folder where to unzip the project archive
 	 * @param monitor           Monitor to display progress and/or cancel operation
@@ -397,7 +397,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Renames the specified project to the specified name
-	 * 
+	 *
 	 * @param project     Project to rename
 	 * @param projectName New name for the project
 	 * @throws CoreException
@@ -411,7 +411,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 	/**
 	 * Creates the sole wizard page contributed by this base implementation; the
 	 * standard Eclipse WizardNewProjectCreationPage.
-	 * 
+	 *
 	 * @see WizardNewProjectCreationPage#WizardNewProjectCreationPage(String)
 	 */
 	@Override
@@ -430,7 +430,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Accessor to the pageName field
-	 * 
+	 *
 	 * @return The pageName field value
 	 */
 	private String getPageName() {
@@ -439,7 +439,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Accessor to the pageTitle field
-	 * 
+	 *
 	 * @return The pageTitle field value
 	 */
 	private String getPageTitle() {
@@ -448,7 +448,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Accessor to the pageDescription field
-	 * 
+	 *
 	 * @return The pageDescription field value
 	 */
 	private String getPageDescription() {
@@ -457,7 +457,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Accessor to the PageProjectName field
-	 * 
+	 *
 	 * @return The PageProjectName field value
 	 */
 	private String getPageProjectName() {
@@ -466,7 +466,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Accessor to the ProjectZipURL field
-	 * 
+	 *
 	 * @return The projectZipURL field value
 	 */
 	private URL[] getProjectZipURL() {
@@ -475,7 +475,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/**
 	 * Accessor to the config field
-	 * 
+	 *
 	 * @return The config field value
 	 */
 	private IConfigurationElement getConfigurationElement() {
@@ -484,7 +484,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org
 	 * .eclipse.core.runtime.IConfigurationElement, java.lang.String,
 	 * java.lang.Object)

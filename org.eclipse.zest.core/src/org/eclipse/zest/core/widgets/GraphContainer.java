@@ -541,7 +541,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * @since 1.9
+	 * @since 1.10
 	 */
 	public LayoutAlgorithm getLayoutAlgorithm() {
 		return this.layoutAlgorithm;
@@ -549,7 +549,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	@Override
 	public void applyLayout() {
-		if ((this.getNodes().size() == 0)) {
+		if ((this.getNodes().isEmpty())) {
 			return;
 		}
 

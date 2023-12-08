@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -11,8 +11,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
-
-import java.util.Iterator;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
@@ -36,7 +34,7 @@ public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayout
 	 * Override to return the <code>Command</code> to perform an
 	 * {@link RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code> is
 	 * returned.
-	 * 
+	 *
 	 * @param request the Clone Request
 	 * @return A command to perform the Clone.
 	 */
@@ -48,12 +46,10 @@ public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayout
 		EditPart after = getInsertionReference(request);
 		int index = getHost().getChildren().indexOf(after);
 
-		Iterator i = request.getEditParts().iterator();
-		GraphicalEditPart currPart = null;
-
-		while (i.hasNext()) {
-			currPart = (GraphicalEditPart) i.next();
-			clone.addPart((LogicSubpart) currPart.getModel(), index++);
+		for (EditPart ep : request.getEditParts()) {
+			GraphicalEditPart currPart = (GraphicalEditPart) ep;
+			clone.addPart((LogicSubpart) currPart.getModel(), index);
+			index++;
 		}
 
 		return clone;
@@ -85,8 +81,9 @@ public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayout
 		LogicDiagram parentModel = (LogicDiagram) getHost().getModel();
 		int oldIndex = getHost().getChildren().indexOf(child);
 		int newIndex = getHost().getChildren().indexOf(after);
-		if (newIndex > oldIndex)
+		if (newIndex > oldIndex) {
 			newIndex--;
+		}
 		return new ReorderPartCommand(childModel, parentModel, newIndex);
 	}
 

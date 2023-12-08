@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * The figure for a node in the directed graph.
- * 
+ *
  * @author Anthony Hunter
  */
 public class Digraph1NodeFigure extends Figure {
@@ -42,7 +42,7 @@ public class Digraph1NodeFigure extends Figure {
 
 	/**
 	 * Constructor for a Digraph1NodeFigure.
-	 * 
+	 *
 	 * @param number the node number in the directed graph.
 	 */
 	public Digraph1NodeFigure(int number) {
@@ -59,7 +59,7 @@ public class Digraph1NodeFigure extends Figure {
 
 	/**
 	 * Get the label in the node figure.
-	 * 
+	 *
 	 * @return the label in the node figure.
 	 */
 	public Label getLabel() {
@@ -68,7 +68,7 @@ public class Digraph1NodeFigure extends Figure {
 
 	/**
 	 * Get the rectangle in the node figure.
-	 * 
+	 *
 	 * @return the rectangle in the node figure.
 	 */
 	public RectangleFigure getRectangleFigure() {

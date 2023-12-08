@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -113,7 +113,7 @@ public class RulerFigure extends Figure {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Figure#invalidate()
 	 */
 	@Override
@@ -132,7 +132,7 @@ public class RulerFigure extends Figure {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
 	@Override
@@ -361,9 +361,9 @@ public class RulerFigure extends Figure {
 	/**
 	 * Allows the client to set the number of units to be displayed per major mark,
 	 * and the number of divisions to be shown per major mark.
-	 * 
+	 *
 	 * A number on the ruler is considered to be a major mark.
-	 * 
+	 *
 	 * @param unitsPerMajorMark     if less than 1, it will be ignored; if there is
 	 *                              not enough space to display that many units per
 	 *                              major mark, its smallest multiple that leaves
@@ -371,7 +371,7 @@ public class RulerFigure extends Figure {
 	 * @param divisionsPerMajorMark if less than 1, it will be ignored; if
 	 *                              displaying that many divisions does not leave
 	 *                              enough room between marks, it will be ignored.
-	 * 
+	 *
 	 */
 	public void setInterval(int unitsPerMajorMark, int divisionsPerMajorMark) {
 		interval = unitsPerMajorMark;

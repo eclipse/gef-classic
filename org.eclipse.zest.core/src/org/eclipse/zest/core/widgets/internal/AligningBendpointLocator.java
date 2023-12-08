@@ -2,12 +2,12 @@
  * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
@@ -22,7 +22,7 @@ import org.eclipse.draw2d.geometry.PointList;
 
 /**
  * A locator that finds the middle of a connection based on the bendpoints.
- * 
+ *
  * @author Del Myers
  *
  */
@@ -99,7 +99,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.ConnectionLocator#getReferencePoint()
 	 */
 	@Override
@@ -134,7 +134,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 
 	/**
 	 * Recalculates the position of the figure and returns the updated bounds.
-	 * 
+	 *
 	 * @param target The figure to relocate
 	 */
 	@Override
@@ -151,7 +151,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 	/**
 	 * Translates the center point depending on the horizontal and veritical
 	 * alignments based on the given bounds.
-	 * 
+	 *
 	 * @param center
 	 */
 	private void calculatePosition() {

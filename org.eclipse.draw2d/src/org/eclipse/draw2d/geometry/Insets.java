@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -30,7 +30,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 
 	/**
 	 * Constructs an Insets with all zeroes.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public Insets() {
@@ -38,7 +38,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 
 	/**
 	 * Constructs a new Insets with initial values the same as the provided Insets.
-	 * 
+	 *
 	 * @param i The insets to copy.
 	 * @since 2.0
 	 */
@@ -48,7 +48,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 
 	/**
 	 * Constructs a new Insets with all the sides set to the speicifed value.
-	 * 
+	 *
 	 * @param i Value applied to all sides of new Insets.
 	 * @since 2.0
 	 */
@@ -58,7 +58,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 
 	/**
 	 * Creates a new Insets with the specified top, left, bottom, and right values.
-	 * 
+	 *
 	 * @param top    Value of the top space.
 	 * @param left   Value of the left space.
 	 * @param bottom Value of the bottom space.
@@ -74,7 +74,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 
 	/**
 	 * Adds the values of the specified Insets to this Insets' values.
-	 * 
+	 *
 	 * @return <code>this</code> for convenience
 	 * @param insets the Insets being added
 	 * @since 2.0
@@ -90,7 +90,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	/**
 	 * Test for equality. The Insets are equal if their top, left, bottom, and right
 	 * values are equivalent.
-	 * 
+	 *
 	 * @param o Object being tested for equality.
 	 * @return true if all values are the same.
 	 * @since 2.0
@@ -106,7 +106,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	/**
 	 * Creates an Insets representing the sum of this Insets with the specified
 	 * Insets.
-	 * 
+	 *
 	 * @param insets Insets to be added
 	 * @return A new Insets
 	 * @since 2.0
@@ -118,7 +118,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	/**
 	 * Returns the height for this Insets, equal to <code>top</code> +
 	 * <code>bottom</code>.
-	 * 
+	 *
 	 * @return The sum of top + bottom
 	 * @see #getWidth()
 	 * @since 2.0
@@ -130,7 +130,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	/**
 	 * Creates a new Insets with transposed values. Top and Left are transposed.
 	 * Bottom and Right are transposed.
-	 * 
+	 *
 	 * @return New Insets with the transposed values.
 	 * @since 2.0
 	 */
@@ -141,7 +141,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	/**
 	 * Creates a new {@link Insets} with negated values. Top, Left, Bottom and Right
 	 * are multiplied by {@code -1}
-	 * 
+	 *
 	 * @return The negate of this {@link Insets}
 	 * @since 3.13
 	 */
@@ -152,7 +152,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	/**
 	 * Returns the width for this Insets, equal to <code>left</code> +
 	 * <code>right</code>.
-	 * 
+	 *
 	 * @return The sum of left + right
 	 * @see #getHeight()
 	 * @since 2.0
@@ -171,7 +171,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 
 	/**
 	 * Returns true if all values are 0.
-	 * 
+	 *
 	 * @return true if all values are 0
 	 * @since 2.0
 	 */
@@ -192,7 +192,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	/**
 	 * Transposes this object. Top and Left are exchanged. Bottom and Right are
 	 * exchanged. Can be used in orientation changes.
-	 * 
+	 *
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
@@ -210,7 +210,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	 * Creates a new minimal {@link Insets} using the distances of the given
 	 * arguments. The Top, Left, Bottom and Right computes using the minimum of the
 	 * respective distances.
-	 * 
+	 *
 	 * @param insets_1 The first {@link Insets}.
 	 * @param insets_2 The second {@link Insets}.
 	 * @return the minimal {@link Insets} (minimum for each side) from two given

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -30,7 +30,7 @@ public class AlignmentRetargetAction extends LabelRetargetAction {
 	 * {@link PositionConstants#BOTTOM}, {@link PositionConstants#CENTER},
 	 * {@link PositionConstants#LEFT}, {@link PositionConstants#MIDDLE},
 	 * {@link PositionConstants#RIGHT}, and {@link PositionConstants#TOP}.
-	 * 
+	 *
 	 * @param align the alignment.
 	 */
 	public AlignmentRetargetAction(int align) {

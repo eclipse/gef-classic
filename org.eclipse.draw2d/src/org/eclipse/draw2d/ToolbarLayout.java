@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -30,21 +30,21 @@ public class ToolbarLayout extends OrderedLayout {
 
 	/**
 	 * Constant for horizontal alignment
-	 * 
+	 *
 	 * @deprecated Unused.
 	 */
 	public static final boolean HORIZONTAL = true;
 
 	/**
 	 * Constant for vertical alignment
-	 * 
+	 *
 	 * @deprecated Unused.
 	 */
 	public static final boolean VERTICAL = false;
 
 	/**
 	 * Sets whether children should "stretch" with their container
-	 * 
+	 *
 	 * @deprecated Use {@link OrderedLayout#setStretchMinorAxis(boolean)} and
 	 *             {@link OrderedLayout#isStretchMinorAxis()} instead.
 	 */
@@ -52,7 +52,7 @@ public class ToolbarLayout extends OrderedLayout {
 
 	/**
 	 * Space in pixels between Figures
-	 * 
+	 *
 	 * @deprecated Use {@link #getSpacing()} and {@link #setSpacing(int)} instead.
 	 */
 	protected int spacing;
@@ -61,7 +61,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * Constructs a vertically oriented ToolbarLayout with child spacing of 0
 	 * pixels, {@link #setStretchMinorAxis(boolean)} <code>true</code>, and
 	 * {@link #ALIGN_TOPLEFT} minor alignment.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public ToolbarLayout() {
@@ -73,7 +73,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * Constructs a ToolbarLayout with a specified orientation. Default values are:
 	 * child spacing 0 pixels, {@link #setStretchMinorAxis(boolean)}
 	 * <code>false</code>, and {@link #ALIGN_TOPLEFT} alignment.
-	 * 
+	 *
 	 * @param isHorizontal whether the children are oriented horizontally
 	 * @since 2.0
 	 */
@@ -104,7 +104,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * height is the sum of the minimum heights of all children, plus the spacing
 	 * between them. The border and insets of the container figure are also
 	 * accounted for.
-	 * 
+	 *
 	 * @param container the figure whose minimum size has to be calculated
 	 * @param wHint     the width hint (the desired width of the container)
 	 * @param hHint     the height hint (the desired height of the container)
@@ -147,7 +147,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * height is the sum of the preferred heights of all children, plus the spacing
 	 * between them. The border and insets of the container figure are also
 	 * accounted for.
-	 * 
+	 *
 	 * @param container the figure whose preferred size has to be calculated
 	 * @param wHint     the width hint (the desired width of the container)
 	 * @param hHint     the height hint (the desired height of the container)
@@ -206,7 +206,7 @@ public class ToolbarLayout extends OrderedLayout {
 
 	/**
 	 * Returns {@link PositionConstants#VERTICAL} by default.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.OrderedLayout#getDefaultOrientation()
 	 */
 	@Override
@@ -240,7 +240,7 @@ public class ToolbarLayout extends OrderedLayout {
 	/**
 	 * Returns <code>true</code> if stretch minor axis has been enabled. The default
 	 * value is false.
-	 * 
+	 *
 	 * @return <code>true</code> if stretch minor axis is enabled
 	 * @deprecated Use {@link #isStretchMinorAxis()} instead.
 	 */
@@ -251,7 +251,7 @@ public class ToolbarLayout extends OrderedLayout {
 	/**
 	 * Overwritten to guarantee backwards compatibility with {@link #matchWidth}
 	 * field.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.OrderedLayout#isStretchMinorAxis()
 	 */
 	@Override
@@ -291,7 +291,7 @@ public class ToolbarLayout extends OrderedLayout {
 		 * Calculate sum of preferred heights of all children(totalHeight). Calculate
 		 * sum of minimum heights of all children(minHeight). Cache Preferred Sizes and
 		 * Minimum Sizes of all children.
-		 * 
+		 *
 		 * totalHeight is the sum of the preferred heights of all children
 		 * totalMinHeight is the sum of the minimum heights of all children
 		 * prefMinSumHeight is the sum of the difference between all children's
@@ -319,7 +319,7 @@ public class ToolbarLayout extends OrderedLayout {
 		 * The total amount that the children must be shrunk is the sum of the preferred
 		 * Heights of the children minus Max(the available area and the sum of the
 		 * minimum heights of the children).
-		 * 
+		 *
 		 * amntShrinkHeight is the combined amount that the children must shrink
 		 * amntShrinkCurrentHeight is the amount each child will shrink respectively
 		 */
@@ -371,7 +371,7 @@ public class ToolbarLayout extends OrderedLayout {
 	/**
 	 * Sets children's width (if vertically oriented) or height (if horizontally
 	 * oriented) to stretch with their container.
-	 * 
+	 *
 	 * @deprecated use {@link #setStretchMinorAxis(boolean)}
 	 * @param match whether to stretch children
 	 * @since 2.0
@@ -382,7 +382,7 @@ public class ToolbarLayout extends OrderedLayout {
 
 	/**
 	 * Sets the amount of space between children.
-	 * 
+	 *
 	 * @param space the amount of space between children
 	 * @since 2.0
 	 */
@@ -393,7 +393,7 @@ public class ToolbarLayout extends OrderedLayout {
 	/**
 	 * Overwritten to guarantee backwards compatibility with {@link #matchWidth}
 	 * field.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.OrderedLayout#setStretchMinorAxis(boolean)
 	 */
 	@Override
@@ -403,7 +403,7 @@ public class ToolbarLayout extends OrderedLayout {
 
 	/**
 	 * Sets the orientation of the layout
-	 * 
+	 *
 	 * @param flag whether the orientation should be vertical
 	 * @since 2.0
 	 * @deprecated Use {@link #setHorizontal(boolean)} with argument

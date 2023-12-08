@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,7 +27,7 @@ import org.eclipse.draw2d.geometry.Translatable;
  * SnapToHelpers are employed. This means that helpers can assume that
  * everything else is static, and there is no need to track changes outside of
  * the helper.
- * 
+ *
  * @since 3.0
  * @author Randy Hudson
  * @author Pratik Shah
@@ -36,7 +36,7 @@ public abstract class SnapToHelper implements PositionConstants {
 
 	/**
 	 * Translates from a given figure to absolute coordinates.
-	 * 
+	 *
 	 * @param figure the reference figure
 	 * @param t      the object to translate
 	 */
@@ -46,7 +46,7 @@ public abstract class SnapToHelper implements PositionConstants {
 
 	/**
 	 * Translates from absolute to coordinates relative to the given figure.
-	 * 
+	 *
 	 * @param figure the reference figure
 	 * @param t      the object to translate
 	 */
@@ -69,7 +69,7 @@ public abstract class SnapToHelper implements PositionConstants {
 	 * <P>
 	 * All coordinate information received and returned by this method should be in
 	 * absolute coordinates.
-	 * 
+	 *
 	 * @param request        a request or <code>null</code>
 	 * @param snapDirections the directions in which snapping should occur.
 	 * @param where          the rectangle used to determine snapping
@@ -101,7 +101,7 @@ public abstract class SnapToHelper implements PositionConstants {
 	 * <P>
 	 * All coordinate information received and returned by this method should be in
 	 * absolute coordinates.
-	 * 
+	 *
 	 * @param request       the request or <code>null</code>
 	 * @param snapLocations the types of snapping to perform
 	 * @param rects         an array of one or more rectangles used to perform the
@@ -125,7 +125,7 @@ public abstract class SnapToHelper implements PositionConstants {
 	 * <P>
 	 * All coordinate information received and returned by this method should be in
 	 * absolute coordinates.
-	 * 
+	 *
 	 * @param request         the request or <code>null</code>
 	 * @param baseRects       the prioritized rectangles to snap to
 	 * @param result          the output
@@ -153,7 +153,7 @@ public abstract class SnapToHelper implements PositionConstants {
 	 * <P>
 	 * All coordinate information received and returned by this method should be in
 	 * absolute coordinates.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param request         the request or <code>null</code>
 	 * @param baseRect        the input rectangle

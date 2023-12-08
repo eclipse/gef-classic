@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.gef.rulers.RulerProvider;
 
 /**
  * An Action that creates a guide on a ruler and reveals it.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -35,7 +35,7 @@ public class CreateGuideAction extends Action {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param ruler the viewer for the ruler on which the guide is to be created
 	 */
 	public CreateGuideAction(EditPartViewer ruler) {

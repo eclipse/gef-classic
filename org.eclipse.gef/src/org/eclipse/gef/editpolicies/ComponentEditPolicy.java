@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -37,14 +37,14 @@ import org.eclipse.gef.requests.GroupRequest;
  * This EditPolicy should not be used with
  * {@link org.eclipse.gef.ConnectionEditPart}. Connections do not really have a
  * parent; use {@link ConnectionEditPolicy}.
- * 
+ *
  * @since 2.0
  */
 public abstract class ComponentEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Override to contribute to the component's being deleted.
-	 * 
+	 *
 	 * @param deleteRequest the DeleteRequest
 	 * @return Command <code>null</code> or a contribution to the delete
 	 */
@@ -54,7 +54,7 @@ public abstract class ComponentEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Factors the incoming Request into ORPHANs and DELETEs.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
 	@Override
@@ -69,7 +69,7 @@ public abstract class ComponentEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Calls and returns {@link #createDeleteCommand(GroupRequest)}. This method is
 	 * here for historical reasons and used to perform additional function.
-	 * 
+	 *
 	 * @param request the DeleteRequest
 	 * @return a delete command
 	 */
@@ -81,7 +81,7 @@ public abstract class ComponentEditPolicy extends AbstractEditPolicy {
 	 * Returns the command contribution for orphaning this component from its
 	 * container. By default, ORPHAN is redispatched to the host's parent as an
 	 * ORPHAN_CHILDREN Request. The parents contribution is then returned.
-	 * 
+	 *
 	 * @return the contribution obtained from the host's parent.
 	 */
 	protected Command getOrphanCommand() {

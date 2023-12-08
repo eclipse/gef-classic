@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 /**
  * Provides context menu actions for the ShapesEditor.
- * 
+ *
  * @author Elias Volanakis
  */
 class ShapesEditorContextMenuProvider extends ContextMenuProvider {
@@ -34,7 +34,7 @@ class ShapesEditorContextMenuProvider extends ContextMenuProvider {
 	/**
 	 * Instantiate a new menu context provider for the specified EditPartViewer and
 	 * ActionRegistry.
-	 * 
+	 *
 	 * @param viewer   the editor's graphical viewer
 	 * @param registry the editor's action registry
 	 * @throws IllegalArgumentException if registry is <tt>null</tt>.
@@ -50,7 +50,7 @@ class ShapesEditorContextMenuProvider extends ContextMenuProvider {
 	/**
 	 * Called when the context menu is about to show. Actions, whose state is
 	 * enabled, will appear in the context menu.
-	 * 
+	 *
 	 * @see org.eclipse.gef.ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
 	 */
 	@Override

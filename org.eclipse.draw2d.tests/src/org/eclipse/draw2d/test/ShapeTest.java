@@ -1,25 +1,27 @@
 /**
- * 
+ *
  */
 package org.eclipse.draw2d.test;
 
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.Shape;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.LineAttributes;
+
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.Shape;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author nyssen
- * 
+ *
  */
 public class ShapeTest extends Assert {
 
 	/**
 	 * Test case to demonstate bug #297223
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testLineStyleBackwardsCompatibility() {
 		LineAttributes attributes = new LineAttributes(1);
@@ -41,6 +43,7 @@ public class ShapeTest extends Assert {
 		assertEquals(SWT.LINE_DASHDOT, shape.getLineStyle());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testLineWidthBackwardsCompatibility() {
 		LineAttributes attributes = new LineAttributes(4);

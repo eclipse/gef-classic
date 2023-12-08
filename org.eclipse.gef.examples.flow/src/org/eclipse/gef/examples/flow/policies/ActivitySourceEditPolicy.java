@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,12 +18,13 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editpolicies.AbstractEditPolicy;
 import org.eclipse.gef.editpolicies.ContainerEditPolicy;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
+
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.model.commands.AddAndAssignSourceCommand;
 import org.eclipse.gef.examples.flow.model.commands.CreateAndAssignSourceCommand;
-import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * @author Daniel Lee
@@ -36,11 +37,11 @@ public class ActivitySourceEditPolicy extends ContainerEditPolicy {
 	@Override
 	protected Command getAddCommand(GroupRequest request) {
 		CompoundCommand cmd = new CompoundCommand();
-		for (int i = 0; i < request.getEditParts().size(); i++) {
+		for (EditPart ep : request.getEditParts()) {
 			AddAndAssignSourceCommand add = new AddAndAssignSourceCommand();
 			add.setParent((StructuredActivity) getHost().getParent().getModel());
 			add.setSource((Activity) getHost().getModel());
-			add.setChild(((Activity) ((EditPart) request.getEditParts().get(i)).getModel()));
+			add.setChild((Activity) ep.getModel());
 			cmd.add(add);
 		}
 		return cmd;
@@ -63,12 +64,15 @@ public class ActivitySourceEditPolicy extends ContainerEditPolicy {
 	 */
 	@Override
 	public EditPart getTargetEditPart(Request request) {
-		if (REQ_CREATE.equals(request.getType()))
+		if (REQ_CREATE.equals(request.getType())) {
 			return getHost();
-		if (REQ_ADD.equals(request.getType()))
+		}
+		if (REQ_ADD.equals(request.getType())) {
 			return getHost();
-		if (REQ_MOVE.equals(request.getType()))
+		}
+		if (REQ_MOVE.equals(request.getType())) {
 			return getHost();
+		}
 		return super.getTargetEditPart(request);
 	}
 

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -58,7 +58,7 @@ import org.eclipse.gef.ui.properties.UndoablePropertySheetPage;
  * <EM>IMPORTANT</EM>This class should only be used as a reference for creating
  * your own EditorPart implementation. This class will not suit everyone's
  * needs, and may change in the future. Clients may copy the implementation.
- * 
+ *
  * @author hudsonr
  */
 public abstract class GraphicalEditor extends EditorPart implements CommandStackListener, ISelectionListener {
@@ -97,7 +97,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	/**
 	 * When the command stack changes, the actions interested in the command stack
 	 * are updated.
-	 * 
+	 *
 	 * @param event the change event
 	 */
 	@Override
@@ -146,7 +146,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 
 	/**
 	 * Creates the GraphicalViewer on the specified <code>Composite</code>.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 */
 	protected void createGraphicalViewer(Composite parent) {
@@ -163,7 +163,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * <P>
 	 * WARNING: This method may or may not be called by the workbench prior to
 	 * {@link #dispose()}.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 */
 	@Override
@@ -186,7 +186,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	/**
 	 * Does nothing be default. This method should be overridden if
 	 * {@link #isSaveAsAllowed()} has been overridden to return <code>true</code>.
-	 * 
+	 *
 	 * @see org.eclipse.ui.ISaveablePart#doSaveAs()
 	 */
 	@Override
@@ -205,7 +205,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 
 	/**
 	 * Lazily creates and returns the action registry.
-	 * 
+	 *
 	 * @return the action registry
 	 */
 	protected ActionRegistry getActionRegistry() {
@@ -216,12 +216,12 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 
 	/**
 	 * Returns the adapter for the specified key.
-	 * 
+	 *
 	 * <P>
 	 * <EM>IMPORTANT</EM> certain requests, such as the property sheet, may be made
 	 * before or after {@link #createPartControl(Composite)} is called. The order is
 	 * unspecified by the Workbench.
-	 * 
+	 *
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
 	@Override
@@ -246,7 +246,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 
 	/**
 	 * Returns the command stack.
-	 * 
+	 *
 	 * @return the command stack
 	 */
 	protected CommandStack getCommandStack() {
@@ -255,7 +255,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 
 	/**
 	 * Returns the edit domain.
-	 * 
+	 *
 	 * @return the edit domain
 	 */
 	protected DefaultEditDomain getEditDomain() {
@@ -264,7 +264,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 
 	/**
 	 * Returns the graphical viewer.
-	 * 
+	 *
 	 * @return the graphical viewer
 	 */
 	protected GraphicalViewer getGraphicalViewer() {
@@ -276,7 +276,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * the Editor. These actions should implement the {@link UpdateAction} interface
 	 * so that they can be updated in response to property changes. An example is
 	 * the "Save" action.
-	 * 
+	 *
 	 * @return the list of property-dependant actions
 	 */
 	protected List getPropertyActions() {
@@ -289,7 +289,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * found in the action registry. Such actions should implement the
 	 * {@link UpdateAction} interface so that they can be updated in response to
 	 * selection changes.
-	 * 
+	 *
 	 * @see #updateActions(List)
 	 * @return the list of selection-dependant action IDs
 	 */
@@ -300,7 +300,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	/**
 	 * Returns the selection syncronizer object. The synchronizer can be used to
 	 * sync the selection of 2 or more EditPartViewers.
-	 * 
+	 *
 	 * @return the syncrhonizer
 	 */
 	protected SelectionSynchronizer getSelectionSynchronizer() {
@@ -315,7 +315,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * registry. These actions should implement the {@link UpdateAction} interface
 	 * so that they can be updated in response to command stack changes. An example
 	 * is the "undo" action.
-	 * 
+	 *
 	 * @return the list of stack-dependant action IDs
 	 */
 	protected List getStackActions() {
@@ -338,7 +338,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * actions. Subclasses may extend this method, but should always call
 	 * <code>super.init(site, input)
 	 * </code>.
-	 * 
+	 *
 	 * @see org.eclipse.ui.IEditorPart#init(IEditorSite, IEditorInput)
 	 */
 	@Override
@@ -367,14 +367,14 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	/**
 	 * Override to set the contents of the GraphicalViewer after it has been
 	 * created.
-	 * 
+	 *
 	 * @see #createGraphicalViewer(Composite)
 	 */
 	protected abstract void initializeGraphicalViewer();
 
 	/**
 	 * Returns <code>true</code> if the command stack is dirty
-	 * 
+	 *
 	 * @see org.eclipse.ui.ISaveablePart#isDirty()
 	 */
 	@Override
@@ -385,7 +385,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	/**
 	 * Returns <code>false</code> by default. Subclasses must return
 	 * <code>true</code> to allow {@link #doSaveAs()} to be called.
-	 * 
+	 *
 	 * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
 	 */
 	@Override
@@ -406,7 +406,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 
 	/**
 	 * Sets the ActionRegistry for this EditorPart.
-	 * 
+	 *
 	 * @param registry the registry
 	 */
 	protected void setActionRegistry(ActionRegistry registry) {
@@ -415,7 +415,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 
 	/**
 	 * Sets the EditDomain for this EditorPart.
-	 * 
+	 *
 	 * @param ed the domain
 	 */
 	protected void setEditDomain(DefaultEditDomain ed) {
@@ -432,7 +432,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 
 	/**
 	 * Sets the graphicalViewer for this EditorPart.
-	 * 
+	 *
 	 * @param viewer the graphical viewer
 	 */
 	protected void setGraphicalViewer(GraphicalViewer viewer) {
@@ -446,7 +446,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * {@link #getActionRegistry() action registry}. If the corresponding action is
 	 * an {@link UpdateAction}, it will have its <code>update()</code> method
 	 * called.
-	 * 
+	 *
 	 * @param actionIds the list of IDs to update
 	 */
 	protected void updateActions(List actionIds) {

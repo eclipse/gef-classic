@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ import org.eclipse.gef.tools.ConnectionEndpointTracker;
  * {@link org.eclipse.draw2d.Connection}. A ConnectionEndpointHandle may be
  * extended rather than using the final {@link ConnectionStartHandle} or
  * {@link ConnectionEndHandle}
- * 
+ *
  * @author Anthony Hunter
  * @since 3.4
  */
@@ -41,7 +41,7 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 	/**
 	 * Creates a new ConnectionStartHandle, sets its owner to <code>owner</code> ,
 	 * and sets its locator to a {@link ConnectionLocator}.
-	 * 
+	 *
 	 * @param owner    the ConnectionEditPart owner
 	 * @param endPoint one of {@link ConnectionLocator#SOURCE} or
 	 *                 {@link ConnectionLocator#TARGET}.
@@ -56,7 +56,7 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 	/**
 	 * Creates a new ConnectionStartHandle and sets its owner to <code>owner</code>.
 	 * If the handle is fixed, it cannot be dragged.
-	 * 
+	 *
 	 * @param owner    the ConnectionEditPart owner
 	 * @param fixed    if true, handle cannot be dragged.
 	 * @param endPoint one of {@link ConnectionLocator#SOURCE} or
@@ -72,7 +72,7 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 
 	/**
 	 * Creates a new ConnectionStartHandle.
-	 * 
+	 *
 	 * @param endPoint one of {@link ConnectionLocator#SOURCE} or
 	 *                 {@link ConnectionLocator#TARGET}.
 	 */
@@ -83,7 +83,7 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 
 	/**
 	 * Creates and returns a new {@link ConnectionEndpointTracker}.
-	 * 
+	 *
 	 * @return the new ConnectionEndpointTracker
 	 */
 	@Override
@@ -103,7 +103,7 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 
 	/**
 	 * Return the endpoint handle.
-	 * 
+	 *
 	 * @return the endPoint handle, which is is either
 	 *         {@link ConnectionLocator#SOURCE} or {@link ConnectionLocator#TARGET}.
 	 * @since 3.5

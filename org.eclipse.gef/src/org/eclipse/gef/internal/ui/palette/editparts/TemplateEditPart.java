@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -40,7 +40,7 @@ public class TemplateEditPart extends PaletteEditPart {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param entry The model entry
 	 */
 	public TemplateEditPart(PaletteTemplateEntry entry) {
@@ -139,7 +139,7 @@ public class TemplateEditPart extends PaletteEditPart {
 	/**
 	 * If this edit part's name is truncated in its label, the name should be
 	 * prepended to the tooltip.
-	 * 
+	 *
 	 * @return whether the name needs to be included in the tooltip
 	 */
 	@Override

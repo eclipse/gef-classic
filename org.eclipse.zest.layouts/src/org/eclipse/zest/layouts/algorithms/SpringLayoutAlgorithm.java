@@ -1,14 +1,14 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC,
+ *                      Canada, Johannes Kepler University Linz
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors: The Chisel Group, University of Victoria
+ *
+ * Contributors: The Chisel Group, University of Victoria, Alois Zoitl
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
@@ -34,14 +34,14 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * 4. Execute {@link #compute compute()}; <br>
  * 5. Execute {@link #fitWithinBounds fitWithinBounds(...)}; <br>
  * 6. Query the computed results(node size and node position).
- * 
+ *
  * @version 2.0
  * @author Ian Bull
  * @author Casey Best (version 1.0 by Jingwei Wu/Rob Lintern)
  */
 public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
-	private final static boolean DEFAULT_ANCHOR = false;
+	private static final boolean DEFAULT_ANCHOR = false;
 
 	/**
 	 * The default value for the spring layout number of interations.
@@ -145,18 +145,18 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	 * Maps a src and dest object to the number of relations between them. Key is
 	 * src.toString() + dest.toString(), value is an Integer
 	 */
-	private Map srcDestToNumRelsMap;
+	private Map<String, Integer> srcDestToNumRelsMap;
 
 	/**
 	 * Maps a src and dest object to the average weight of the relations between
 	 * them. Key is src.toString() + dest.toString(), value is a Double
 	 */
-	private Map srcDestToRelsAvgWeightMap;
+	private Map<String, Double> srcDestToRelsAvgWeightMap;
 
 	/**
 	 * Maps a relationship type to a weight. Key is a string, value is a Double
 	 */
-	private static Map relTypeToWeightMap = new HashMap();
+	private static Map<String, Double> relTypeToWeightMap = new HashMap<>();
 
 	private int iteration;
 
@@ -183,8 +183,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	 */
 	public SpringLayoutAlgorithm(int styles) {
 		super(styles);
-		srcDestToNumRelsMap = new HashMap();
-		srcDestToRelsAvgWeightMap = new HashMap();
+		srcDestToNumRelsMap = new HashMap<>();
+		srcDestToRelsAvgWeightMap = new HashMap<>();
 		date = new Date();
 	}
 
@@ -203,7 +203,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the spring layout move-control.
-	 * 
+	 *
 	 * @param move The move-control value.
 	 */
 	public void setSpringMove(double move) {
@@ -213,7 +213,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Returns the move-control value of this SpringLayoutAlgorithm in double
 	 * presion.
-	 * 
+	 *
 	 * @return The move-control value.
 	 */
 	public double getSpringMove() {
@@ -222,7 +222,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the spring layout strain-control.
-	 * 
+	 *
 	 * @param strain The strain-control value.
 	 */
 	public void setSpringStrain(double strain) {
@@ -232,7 +232,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Returns the strain-control value of this SpringLayoutAlgorithm in double
 	 * presion.
-	 * 
+	 *
 	 * @return The strain-control value.
 	 */
 	public double getSpringStrain() {
@@ -241,7 +241,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the spring layout length-control.
-	 * 
+	 *
 	 * @param length The length-control value.
 	 */
 	public void setSpringLength(double length) {
@@ -250,7 +250,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Gets the max time this algorithm will run for
-	 * 
+	 *
 	 * @return
 	 */
 	public long getSpringTimeout() {
@@ -259,7 +259,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the spring timeout
-	 * 
+	 *
 	 * @param timeout
 	 */
 	public void setSpringTimeout(long timeout) {
@@ -269,7 +269,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Returns the length-control value of this SpringLayoutAlgorithm in double
 	 * presion.
-	 * 
+	 *
 	 * @return The length-control value.
 	 */
 	public double getSpringLength() {
@@ -278,7 +278,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the spring layout gravitation-control.
-	 * 
+	 *
 	 * @param gravitation The gravitation-control value.
 	 */
 	public void setSpringGravitation(double gravitation) {
@@ -288,7 +288,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Returns the gravitation-control value of this SpringLayoutAlgorithm in double
 	 * presion.
-	 * 
+	 *
 	 * @return The gravitation-control value.
 	 */
 	public double getSpringGravitation() {
@@ -297,7 +297,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the number of iterations to be used.
-	 * 
+	 *
 	 * @param gravitation The number of iterations.
 	 */
 	public void setIterations(int iterations) {
@@ -306,7 +306,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Returns the number of iterations to be used.
-	 * 
+	 *
 	 * @return The number of iterations.
 	 */
 	public int getIterations() {
@@ -316,7 +316,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Sets whether or not this SpringLayoutAlgorithm will layout the nodes randomly
 	 * before beginning iterations.
-	 * 
+	 *
 	 * @param random The random placement value.
 	 */
 	public void setRandom(boolean random) {
@@ -336,7 +336,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	}
 
 	public double getWeight(String relType) {
-		Double weight = (Double) relTypeToWeightMap.get(relType);
+		Double weight = relTypeToWeightMap.get(relType);
 		return (weight == null) ? 1 : weight.doubleValue();
 	}
 
@@ -353,7 +353,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Clean up after done
-	 * 
+	 *
 	 * @param entitiesToLayout
 	 */
 	private void reset(InternalNode[] entitiesToLayout) {
@@ -363,9 +363,9 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		forcesY = null;
 		anchors = null;
 		setDefaultConditions();
-		srcDestToNumRelsMap = new HashMap();
-		srcDestToRelsAvgWeightMap = new HashMap();
-		relTypeToWeightMap = new HashMap();
+		srcDestToNumRelsMap = new HashMap<>();
+		srcDestToRelsAvgWeightMap = new HashMap<>();
+		relTypeToWeightMap = new HashMap<>();
 	}
 
 	private long startTime = 0;
@@ -388,8 +388,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		for (int i = 0; i < entitiesToLayout.length; i++) {
 			anchors[i] = DEFAULT_ANCHOR;
 		}
-		for (int i = 0; i < relationshipsToConsider.length; i++) {
-			InternalRelationship layoutRelationship = relationshipsToConsider[i];
+		for (InternalRelationship layoutRelationship : relationshipsToConsider) {
 			addRelation(layoutRelationship);
 		}
 
@@ -406,36 +405,34 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Adds a simple relation between two nodes to the relation repository.
-	 * 
+	 *
 	 * @param layoutRelationship The simple relation to be added
 	 * @throws java.lang.NullPointerExcetption If <code>sr</code> is null
 	 * @see SimpleRelation
 	 */
 	private void addRelation(InternalRelationship layoutRelationship) {
 		if (layoutRelationship == null) {
-			throw new IllegalArgumentException("The arguments can not be null!");
-		} else {
-			double weight = layoutRelationship.getWeight();
-			weight = (weight <= 0 ? 0.1 : weight);
-			String key1 = layoutRelationship.getSource().toString() + layoutRelationship.getDestination().toString();
-			String key2 = layoutRelationship.getDestination().toString() + layoutRelationship.getSource().toString();
-			String[] keys = { key1, key2 };
-			for (int i = 0; i < keys.length; i++) {
-				String key = keys[i];
-				Integer count = (Integer) srcDestToNumRelsMap.get(key);
-				Double avgWeight = (Double) srcDestToRelsAvgWeightMap.get(key);
-				if (count == null) {
-					count = Integer.valueOf(1);
-					avgWeight = Double.valueOf(weight);
-				} else {
-					int newCount = count.intValue() + 1;
-					double newAverage = (avgWeight.doubleValue() * count.doubleValue() + weight) / newCount;
-					avgWeight = Double.valueOf(newAverage);
-					count = Integer.valueOf(newCount);
-				}
-				srcDestToNumRelsMap.put(key, count);
-				srcDestToRelsAvgWeightMap.put(key, avgWeight);
+			throw new IllegalArgumentException("The arguments can not be null!"); //$NON-NLS-1$
+		}
+		double weight = layoutRelationship.getWeight();
+		weight = (weight <= 0 ? 0.1 : weight);
+		String key1 = layoutRelationship.getSource().toString() + layoutRelationship.getDestination().toString();
+		String key2 = layoutRelationship.getDestination().toString() + layoutRelationship.getSource().toString();
+		String[] keys = { key1, key2 };
+		for (String key : keys) {
+			Integer count = srcDestToNumRelsMap.get(key);
+			Double avgWeight = srcDestToRelsAvgWeightMap.get(key);
+			if (count == null) {
+				count = Integer.valueOf(1);
+				avgWeight = Double.valueOf(weight);
+			} else {
+				int newCount = count.intValue() + 1;
+				double newAverage = (avgWeight.doubleValue() * count.doubleValue() + weight) / newCount;
+				avgWeight = Double.valueOf(newAverage);
+				count = Integer.valueOf(newCount);
 			}
+			srcDestToNumRelsMap.put(key, count);
+			srcDestToRelsAvgWeightMap.put(key, avgWeight);
 		}
 	}
 
@@ -455,10 +452,11 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			}
 		}
 
-		if (sprRandom)
+		if (sprRandom) {
 			placeRandomly(entitiesToLayout); // put vertices in random places
-		else
+		} else {
 			convertToUnitCoordinates(entitiesToLayout);
+		}
 
 		iteration = 1;
 		largestMovement = Double.MAX_VALUE;
@@ -488,15 +486,19 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			double screenWidth, double screenHeight, DisplayIndependentRectangle layoutBounds) {
 
 		// If the node selected is outside the screen, map it to the boarder
-		if (px > screenWidth)
+		if (px > screenWidth) {
 			px = screenWidth;
-		if (py > screenHeight)
+		}
+		if (py > screenHeight) {
 			py = screenHeight;
+		}
 
-		if (px < 0)
+		if (px < 0) {
 			px = 1;
-		if (py < 0)
+		}
+		if (py < 0) {
 			py = 1;
+		}
 
 		double x = (px / screenWidth) * layoutBounds.width + layoutBounds.x;
 		double y = (py / screenHeight) * layoutBounds.height + layoutBounds.y;
@@ -532,11 +534,12 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	 * running for. You can set the MaxTime in maxTimeMS!
 	 */
 	private void setSprIterationsBasedOnTime() {
-		if (maxTimeMS <= 0)
+		if (maxTimeMS <= 0) {
 			return;
+		}
 
 		long currentTime = date.getTime();
-		double fractionComplete = (double) ((double) (currentTime - startTime) / ((double) maxTimeMS));
+		double fractionComplete = (double) (currentTime - startTime) / ((double) maxTimeMS);
 		int currentIteration = (int) (fractionComplete * sprIterations);
 		if (currentIteration > iteration) {
 			iteration = currentIteration;
@@ -547,10 +550,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	@Override
 	protected boolean performAnotherNonContinuousIteration() {
 		setSprIterationsBasedOnTime();
-		if (iteration <= sprIterations && largestMovement >= sprMove)
-			return true;
-		else
-			return false;
+		return iteration <= sprIterations && largestMovement >= sprMove;
 	}
 
 	@Override
@@ -566,8 +566,9 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	@Override
 	protected void computeOneIteration(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
-		if (bounds == null)
+		if (bounds == null) {
 			bounds = new DisplayIndependentRectangle(x, y, width, height);
+		}
 		checkPreferredLocation(entitiesToLayout, bounds);
 		computeForces(entitiesToLayout);
 		largestMovement = Double.MAX_VALUE;
@@ -740,8 +741,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		double maxX = Double.MIN_VALUE;
 		double minY = Double.MAX_VALUE;
 		double maxY = Double.MIN_VALUE;
-		for (int i = 0; i < entitiesToLayout.length; i++) {
-			InternalNode layoutEntity = entitiesToLayout[i];
+		for (InternalNode layoutEntity : entitiesToLayout) {
 			minX = Math.min(minX, layoutEntity.getInternalX());
 			minY = Math.min(minY, layoutEntity.getInternalY());
 			maxX = Math.max(maxX, layoutEntity.getInternalX());
@@ -769,44 +769,33 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	 * Examines the number of specified relation between the <code>src</code> and
 	 * the <code>dest</code> that exist in this SpringLayoutAlgorithm's relation
 	 * repository.
-	 * 
+	 *
 	 * @param src  The source part of the relaton to be examined.
 	 * @param dest The destination part of the relation to be examined.
 	 * @return The number of relations between src and dest.
 	 */
 	private int numRelations(Object src, Object dest) {
 		String key = src.toString() + dest.toString();
-		Integer count = (Integer) srcDestToNumRelsMap.get(key);
-		int intCount = (count == null) ? 0 : count.intValue();
-		return intCount;
+		Integer count = srcDestToNumRelsMap.get(key);
+		return (count == null) ? 0 : count.intValue();
 	}
 
 	/**
 	 * Returns the average weight between a src and dest object.
-	 * 
+	 *
 	 * @param src
 	 * @param dest
 	 * @return The average weight between the given src and dest nodes
 	 */
 	private double avgWeight(Object src, Object dest) {
 		String key = src.toString() + dest.toString();
-		Double avgWeight = (Double) srcDestToRelsAvgWeightMap.get(key);
-		double doubleWeight = (avgWeight == null) ? 1 : avgWeight.doubleValue();
-		return doubleWeight;
+		Double avgWeight = srcDestToRelsAvgWeightMap.get(key);
+		return (avgWeight == null) ? 1 : avgWeight.doubleValue();
 	}
 
 	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
-		if (asynchronous && continueous)
-			return true;
-		else if (asynchronous && !continueous)
-			return true;
-		else if (!asynchronous && continueous)
-			return false;
-		else if (!asynchronous && !continueous)
-			return true;
-
-		return false;
+		return asynchronous || !continueous;
 	}
 
 }

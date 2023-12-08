@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -43,28 +43,27 @@ public class CircuitBorder extends AbstractBorder {
 	}
 
 	private static void drawConnectors(Graphics g, Rectangle rec) {
-		int y1 = rec.y, width = rec.width, x1, bottom = y1 + rec.height;
 		g.setBackgroundColor(LogicColorConstants.connectorGreen);
 		for (int i = 0; i < 4; i++) {
-			x1 = rec.x + (2 * i + 1) * width / 8;
+			int x1 = rec.x + (2 * i + 1) * rec.width / 8;
 
 			// Draw the "gap" for the connector
 			g.setForegroundColor(ColorConstants.listBackground);
-			g.drawLine(x1 - 2, y1 + 2, x1 + 3, y1 + 2);
+			g.drawLine(x1 - 2, rec.y + 2, x1 + 3, rec.y + 2);
 
 			// Draw the connectors
 			g.setForegroundColor(LogicColorConstants.connectorGreen);
-			connector.translate(x1, y1);
+			connector.translate(x1, rec.y);
 			g.fillPolygon(connector);
 			g.drawPolygon(connector);
-			connector.translate(-x1, -y1);
+			connector.translate(-x1, -rec.y);
 			g.setForegroundColor(ColorConstants.listBackground);
-			g.drawLine(x1 - 2, bottom - 3, x1 + 3, bottom - 3);
+			g.drawLine(x1 - 2, rec.bottom() - 3, x1 + 3, rec.bottom() - 3);
 			g.setForegroundColor(LogicColorConstants.connectorGreen);
-			bottomConnector.translate(x1, bottom);
+			bottomConnector.translate(x1, rec.bottom());
 			g.fillPolygon(bottomConnector);
 			g.drawPolygon(bottomConnector);
-			bottomConnector.translate(-x1, -bottom);
+			bottomConnector.translate(-x1, -rec.bottom());
 		}
 	}
 

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2008 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: IBM Corporation - initial API and implementation Chisel Group,
  * University of Victoria
  ******************************************************************************/
@@ -17,9 +17,9 @@ package org.eclipse.zest.core.viewers;
  * (IGraphEntityContentProvider or IGraphEntityRelationshipContentProvider) can
  * also implement this interface. Any node that "hasChildren" will be rendered
  * as a container.
- * 
+ *
  * Note: Containers cannot contain other containers.
- * 
+ *
  * @author irbull
  */
 public interface INestedContentProvider {
@@ -27,7 +27,7 @@ public interface INestedContentProvider {
 	/**
 	 * Does the current node have children? If so, it will be rendered as a
 	 * container.
-	 * 
+	 *
 	 * @param element The current node
 	 * @return True if it has children, false otherwise
 	 */
@@ -36,7 +36,7 @@ public interface INestedContentProvider {
 	/**
 	 * Gets the children of this node. This method will not be called if hasChildren
 	 * returns false.
-	 * 
+	 *
 	 * @param element The current node
 	 * @return The list of children for this node.
 	 */

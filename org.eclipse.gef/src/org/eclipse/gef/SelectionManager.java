@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -35,7 +35,7 @@ import org.eclipse.gef.ui.parts.AbstractEditPartViewer;
  * mechanism for modifying the selection and any validation.
  * <P>
  * WARNING: Subclassing this class is considered experimental at this point.
- * 
+ *
  * @since 3.2
  */
 public class SelectionManager {
@@ -47,7 +47,7 @@ public class SelectionManager {
 
 	/**
 	 * Default Constructor
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	protected SelectionManager() {
@@ -55,7 +55,7 @@ public class SelectionManager {
 
 	/**
 	 * Creates the default implementation for a selection manager.
-	 * 
+	 *
 	 * @return the default selection manager
 	 * @since 3.2
 	 */
@@ -67,7 +67,7 @@ public class SelectionManager {
 	 * Appends the <code>EditPart</code> to the current selection. The EditPart
 	 * becomes the new primary selection. Fires selection changed to all
 	 * {@link org.eclipse.jface.viewers.ISelectionChangedListener}s.
-	 * 
+	 *
 	 * @param editpart the EditPart to append
 	 * @since 3.2
 	 */
@@ -94,7 +94,7 @@ public class SelectionManager {
 
 	/**
 	 * Removes the <code>EditPart</code> from the current selection.
-	 * 
+	 *
 	 * @param editpart the editpart
 	 * @since 3.2
 	 */
@@ -128,7 +128,7 @@ public class SelectionManager {
 
 	/**
 	 * Deselects everything.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	public void deselectAll() {
@@ -148,7 +148,7 @@ public class SelectionManager {
 
 	/**
 	 * Causes the viewer to fire selection changed notification to all listeners.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	protected final void fireSelectionChanged() {
@@ -157,7 +157,7 @@ public class SelectionManager {
 
 	/**
 	 * Returns the focus editpart.
-	 * 
+	 *
 	 * @return the focus editpart
 	 * @since 3.2
 	 */
@@ -167,7 +167,7 @@ public class SelectionManager {
 
 	/**
 	 * Returns the current selection.
-	 * 
+	 *
 	 * @return the selection
 	 * @since 3.2
 	 */
@@ -179,7 +179,7 @@ public class SelectionManager {
 
 	/**
 	 * Returns <code>null</code> or the viewer whose selection is managed.
-	 * 
+	 *
 	 * @return <code>null</code> or the viewer
 	 * @since 3.2
 	 */
@@ -189,7 +189,7 @@ public class SelectionManager {
 
 	/**
 	 * For internal use only. This API is subject to change.
-	 * 
+	 *
 	 * @param control the control
 	 * @since 3.2
 	 */
@@ -198,7 +198,7 @@ public class SelectionManager {
 
 	/**
 	 * For internal use only. This API is subject to change.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	public void internalUninstall() {
@@ -206,7 +206,7 @@ public class SelectionManager {
 
 	/**
 	 * Provides a hook for when the viewer has been set.
-	 * 
+	 *
 	 * @param viewer the viewer.
 	 * @since 3.2
 	 */
@@ -215,7 +215,7 @@ public class SelectionManager {
 
 	/**
 	 * For internal use only.
-	 * 
+	 *
 	 * @param viewer    viewer
 	 * @param selection selection
 	 * @param notifier  notifier
@@ -231,7 +231,7 @@ public class SelectionManager {
 
 	/**
 	 * Sets the focus part.
-	 * 
+	 *
 	 * @param part the focus part
 	 * @since 3.2
 	 */
@@ -264,7 +264,7 @@ public class SelectionManager {
 
 	/**
 	 * Sets the selection.
-	 * 
+	 *
 	 * @param newSelection the new selection
 	 * @since 3.2
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -33,7 +33,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 
 	/**
 	 * Gets the constraint for the given {@link Connection}.
-	 * 
+	 *
 	 * @param connection The connection whose constraint we are retrieving
 	 * @return The constraint
 	 */
@@ -44,7 +44,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 
 	/**
 	 * Removes the given connection from the map of constraints.
-	 * 
+	 *
 	 * @param connection The connection to remove
 	 */
 	@Override
@@ -55,7 +55,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	/**
 	 * Routes the {@link Connection}. Expects the constraint to be a List of
 	 * {@link org.eclipse.draw2d.Bendpoint Bendpoints}.
-	 * 
+	 *
 	 * @param conn The connection to route
 	 */
 	@Override
@@ -97,7 +97,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 
 	/**
 	 * Sets the constraint for the given {@link Connection}.
-	 * 
+	 *
 	 * @param connection The connection whose constraint we are setting
 	 * @param constraint The constraint
 	 */

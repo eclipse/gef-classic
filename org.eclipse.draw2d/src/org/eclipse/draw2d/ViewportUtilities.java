@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,12 +19,12 @@ import java.util.List;
 
 /**
  * Utility class to support working with {@link Viewport}s.
- * 
+ *
  * @author Philip Ritzkopf
  * @author Alexander Nyssen
- * 
+ *
  * @since 3.6
- * 
+ *
  */
 public final class ViewportUtilities {
 
@@ -37,7 +37,7 @@ public final class ViewportUtilities {
 	 * Returns all enclosing {@link Viewport}s for a given {@link IFigure},
 	 * beginning with its direct enclosing {@link Viewport} up the root
 	 * {@link Viewport} in the figure's parent hierarchy.
-	 * 
+	 *
 	 * @param figure
 	 * @return A list of {@link Viewport}s representing the figure's enclosing
 	 *         {@link Viewport} path, where the nearest enclosing {@link Viewport}
@@ -59,7 +59,7 @@ public final class ViewportUtilities {
 	 * element, and all its enclosing {@link Viewport}s up to the root
 	 * {@link Viewport}, where the root {@link Viewport} forms the last element of
 	 * the list.
-	 * 
+	 *
 	 * @param leafViewport The {@link Viewport}, whose parent hierarchy is
 	 *                     processed.
 	 * @param rootViewport an ancestor of the given leafViewport, which marks the
@@ -81,7 +81,7 @@ public final class ViewportUtilities {
 	 * {@link Viewport}. The root {@link Viewport} forms the last element of the
 	 * list, in case includeRootViewport is set to true, otherwise the viewport
 	 * directly nested below the root viewport will be the last in the list.
-	 * 
+	 *
 	 * @param leafViewport        The {@link Viewport}, whose parent hierarchy is
 	 *                            processed.
 	 * @param rootViewport        an ancestor of the given leafViewport, which marks
@@ -124,7 +124,7 @@ public final class ViewportUtilities {
 	/**
 	 * Returns the nearest common enclosing {@link Viewport} for two given
 	 * {@link Figure}s.
-	 * 
+	 *
 	 * @param firstFigure
 	 * @param secondFigure
 	 * @return The nearest common {@link Viewport} of the two given figures, or null
@@ -137,7 +137,7 @@ public final class ViewportUtilities {
 	/**
 	 * Returns the upper most enclosing {@link Viewport} for the given
 	 * {@link IFigure}.
-	 * 
+	 *
 	 * @param figure
 	 * @return The upper most enclosing {@link Viewport} or null if there is no
 	 *         enclosing {@link Viewport} for the given {@link IFigure},
@@ -153,7 +153,7 @@ public final class ViewportUtilities {
 	/**
 	 * Returns the given figure in case it is a {@link Viewport} itself, otherwise
 	 * its nearest enclosing {@link Viewport}.
-	 * 
+	 *
 	 * @param figure
 	 * @return The given figure in case it is a {@link Viewport} itself, otherwise
 	 *         the nearest enclosing {@link Viewport} or null if there is no nearest
@@ -173,7 +173,7 @@ public final class ViewportUtilities {
 	/**
 	 * Returns the nearest enclosing {@link Viewport} of a given {@link IFigure} by
 	 * walking up the figure's hierarchy.
-	 * 
+	 *
 	 * @param figure
 	 * @return The nearest enclosing {@link Viewport} of the given figure, or null
 	 *         if none could be found.

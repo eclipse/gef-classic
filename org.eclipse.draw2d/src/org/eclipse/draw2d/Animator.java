@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ package org.eclipse.draw2d;
  * implementation for the specific requirements. Animators are generally
  * stateless, which allows them to be shared and prevents them from leaking
  * memory.
- * 
+ *
  * @since 3.2
  */
 public abstract class Animator {
@@ -32,7 +32,7 @@ public abstract class Animator {
 	/**
 	 * Captures the final state of the given figure. This method is called once
 	 * after the update manager has completed validation of all invalid figures.
-	 * 
+	 *
 	 * @param figure the container
 	 * @since 3.2
 	 */
@@ -43,7 +43,7 @@ public abstract class Animator {
 	/**
 	 * Returns an object encapsulating the current state of the figure. This method
 	 * is called to capture both the initial and final states.
-	 * 
+	 *
 	 * @param figure the figure
 	 * @return the current state
 	 * @since 3.2
@@ -54,7 +54,7 @@ public abstract class Animator {
 	 * Plays back the animation for the given figure and returns <code>true</code>
 	 * if successful. This method does nothing by default and return
 	 * <code>false</code>.
-	 * 
+	 *
 	 * @param figure the figure being animated
 	 * @return <code>true</code> if playback was successful
 	 * @since 3.2
@@ -65,7 +65,7 @@ public abstract class Animator {
 
 	/**
 	 * Sent as playback is starting for a given figure.
-	 * 
+	 *
 	 * @param figure the figure
 	 * @since 3.2
 	 */
@@ -74,7 +74,7 @@ public abstract class Animator {
 
 	/**
 	 * Records the final state information for a figure.
-	 * 
+	 *
 	 * @param figure the figure
 	 * @since 3.2
 	 */
@@ -84,7 +84,7 @@ public abstract class Animator {
 
 	/**
 	 * Records initial state information for the given figure.
-	 * 
+	 *
 	 * @param figure the container.
 	 * @since 3.2
 	 */
@@ -98,7 +98,7 @@ public abstract class Animator {
 	 * capture the figure's current state, and set any animation-time settings for
 	 * the figure. Changes made to the figure should be reverted in
 	 * {@link #tearDown(IFigure)}.
-	 * 
+	 *
 	 * @param figure the animated figure
 	 * @since 3.2
 	 */
@@ -110,7 +110,7 @@ public abstract class Animator {
 	 * Reverts any temporary changes made to the figure during animation. This
 	 * method is called exactly once after all animation has been completed.
 	 * Subclasses should extend this method to revert any changes.
-	 * 
+	 *
 	 * @param figure the animated figure
 	 * @since 3.2
 	 * @see #init(IFigure)

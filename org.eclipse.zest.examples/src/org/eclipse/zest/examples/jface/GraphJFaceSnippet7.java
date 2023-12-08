@@ -2,12 +2,12 @@
  * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.examples.jface;
@@ -38,14 +38,14 @@ import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
  * This snippet shows how to use the INestedGraphContentProvider to create a
  * graph with Zest. In this example, getElements returns 3 edges: * Rock2Paper *
  * Paper2Scissors * Scissors2Rock
- * 
+ *
  * And for each of these, the source and destination are returned in getSource
  * and getDestination.
- * 
+ *
  * A label provider is also used to create the text and icons for the graph.
- * 
+ *
  * @author Ian Bull
- * 
+ *
  */
 public class GraphJFaceSnippet7 {
 

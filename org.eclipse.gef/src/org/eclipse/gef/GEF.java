@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * This is an internal class used for debugging
- * 
+ *
  * @deprecated in 3.1 This class will be removed in future releases.
  */
 public final class GEF {
@@ -66,7 +66,7 @@ public final class GEF {
 
 	/**
 	 * Clears the trace console if active
-	 * 
+	 *
 	 * @since 1.0
 	 */
 	public static void clearConsole() {
@@ -77,7 +77,7 @@ public final class GEF {
 
 	/**
 	 * Sets a text control to be used as a console.
-	 * 
+	 *
 	 * @since 1.0
 	 * @param textBox the text control for streaming
 	 */
@@ -90,7 +90,7 @@ public final class GEF {
 
 	/**
 	 * decrements the tracing indentation
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public static void debugPop() {
@@ -99,7 +99,7 @@ public final class GEF {
 
 	/**
 	 * Prints the given string to a trace window and increments indentation.
-	 * 
+	 *
 	 * @since 2.0
 	 * @param heading the message describing the indented text to follow
 	 */
@@ -110,7 +110,7 @@ public final class GEF {
 
 	/**
 	 * Prints the given message to a trace window if available.
-	 * 
+	 *
 	 * @since 1.0
 	 * @param message a debug message
 	 */

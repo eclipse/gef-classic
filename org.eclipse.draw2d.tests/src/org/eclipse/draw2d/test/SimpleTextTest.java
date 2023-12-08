@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -13,13 +13,14 @@
 
 package org.eclipse.draw2d.test;
 
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.TextFlow;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.Display;
 
 import org.junit.Before;
 
@@ -28,7 +29,7 @@ import org.junit.Before;
  */
 public class SimpleTextTest extends AbstractTextTest {
 
-	public static final String PHRASE = "The quick brown fox jumped over the lazy dog. ";
+	public static final String PHRASE = "The quick brown fox jumped over the lazy dog. "; //$NON-NLS-1$
 	public FlowPage flowpage = new FlowPage();
 	public TextFlow sentence = new TextFlow(PHRASE);
 	public InlineFlow inline = new InlineFlow();

@@ -10,14 +10,16 @@ package org.eclipse.zest.tests;
 
 import java.util.List;
 
-import org.eclipse.draw2d.Figure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
+
+import org.eclipse.draw2d.Figure;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,9 +27,9 @@ import org.junit.Test;
 
 /**
  * General tests for the {@link Graph} class.
- * 
+ *
  * @author Fabian Steeg (fsteeg)
- * 
+ *
  */
 public class GraphTests extends Assert {
 
@@ -51,58 +53,59 @@ public class GraphTests extends Assert {
 
 	@Test
 	public void testGraphData() {
-		graph.setData("graph data");
-		assertEquals("graph data", graph.getData());
+		graph.setData("graph data"); //$NON-NLS-1$
+		assertEquals("graph data", graph.getData()); //$NON-NLS-1$
 	}
 
 	@Test
 	public void testNodeItemData() {
-		GraphItem item = (GraphNode) graph.getNodes().get(0);
-		item.setData("node item data");
-		assertEquals("node item data", item.getData());
+		GraphItem item = graph.getNodes().get(0);
+		item.setData("node item data"); //$NON-NLS-1$
+		assertEquals("node item data", item.getData()); //$NON-NLS-1$
 	}
 
 	@Test
 	public void testConnectionItemData() {
-		GraphItem item = (GraphConnection) graph.getConnections().get(0);
-		item.setData("connection item data");
-		assertEquals("connection item data", item.getData());
+		GraphItem item = graph.getConnections().get(0);
+		item.setData("connection item data"); //$NON-NLS-1$
+		assertEquals("connection item data", item.getData()); //$NON-NLS-1$
 	}
 
 	/**
 	 * Avoid infinite loop by disposed nodes during graph disposal.
-	 * 
+	 *
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361541
 	 */
 	@Test
 	public void testDisposeGraphWithDisposedNode() {
 		nodes[0].dispose(); // removes the node from the graph's nodes list
 		((List<GraphNode>) graph.getNodes()).add(nodes[0]); // but we're malicious and add it back
-		assertTrue("Node should be disposed", nodes[0].isDisposed());
+		assertTrue("Node should be disposed", nodes[0].isDisposed()); //$NON-NLS-1$
 		graph.dispose();
-		assertTrue("Graph should be disposed", graph.isDisposed());
+		assertTrue("Graph should be disposed", graph.isDisposed()); //$NON-NLS-1$
 	}
 
 	/**
 	 * Avoid infinite loop by disposed connections during graph disposal.
-	 * 
+	 *
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361541
 	 */
 	@Test
 	public void testDisposeGraphWithDisposedConnection() {
 		connection.dispose();
 		((List<GraphConnection>) graph.getConnections()).add(connection);
-		assertTrue("Connection should be disposed", connection.isDisposed());
+		assertTrue("Connection should be disposed", connection.isDisposed()); //$NON-NLS-1$
 		graph.dispose();
-		assertTrue("Graph should be disposed", graph.isDisposed());
+		assertTrue("Graph should be disposed", graph.isDisposed()); //$NON-NLS-1$
 	}
 
 	/**
 	 * Avoid issues when un-highlighting non-existent nodes on
 	 * {@link #ZestRootLayer}.
-	 * 
+	 *
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361525
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testUnHighlightNode() {
 		new ZestRootLayer().unHighlightNode(new Figure());
@@ -111,9 +114,10 @@ public class GraphTests extends Assert {
 	/**
 	 * Avoid issues when un-highlighting non-existent connections on
 	 * {@link #ZestRootLayer}.
-	 * 
+	 *
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361525
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testUnHighlightConnection() {
 		new ZestRootLayer().unHighlightConnection(new Figure());
@@ -125,11 +129,11 @@ public class GraphTests extends Assert {
 	 */
 	@Test
 	public void testDisposal() {
-		GraphNode n = (GraphNode) graph.getNodes().get(0);
-		GraphConnection c = (GraphConnection) graph.getConnections().get(0);
+		GraphNode n = graph.getNodes().get(0);
+		GraphConnection c = graph.getConnections().get(0);
 		shell.dispose();
-		assertTrue("The graph's nodes should be disposed", n.isDisposed());
-		assertTrue("The graph's edges should be disposed", c.isDisposed());
+		assertTrue("The graph's nodes should be disposed", n.isDisposed()); //$NON-NLS-1$
+		assertTrue("The graph's edges should be disposed", c.isDisposed()); //$NON-NLS-1$
 
 	}
 

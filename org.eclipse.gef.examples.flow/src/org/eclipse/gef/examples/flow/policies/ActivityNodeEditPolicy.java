@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
 
 /**
- * 
+ *
  * Created on Jul 17, 2003
  */
 public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
@@ -52,7 +52,7 @@ public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 
 	/**
 	 * Returns the ActivityPart on which this EditPolicy is installed
-	 * 
+	 *
 	 * @return the
 	 */
 	protected ActivityPart getActivityPart() {
@@ -62,7 +62,7 @@ public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 	/**
 	 * Returns the model associated with the EditPart on which this EditPolicy is
 	 * installed
-	 * 
+	 *
 	 * @return the model
 	 */
 	protected Activity getActivity() {

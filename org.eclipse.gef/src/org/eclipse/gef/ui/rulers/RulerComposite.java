@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -69,7 +69,7 @@ import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
  * ruler} properties are set on the given viewer, and the value of the
  * {@link org.eclipse.gef.rulers.RulerProvider#PROPERTY_RULER_VISIBILITY
  * visibility} property.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -94,7 +94,7 @@ public class RulerComposite extends Composite {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param parent a widget which will be the parent of the new instance (cannot
 	 *               be null)
 	 * @param style  the style of widget to construct
@@ -113,7 +113,7 @@ public class RulerComposite extends Composite {
 	/**
 	 * Calculates the proper trim. Includes scrollbars' sizes only if they're
 	 * visible.
-	 * 
+	 *
 	 * @param canvas The canvas.
 	 * @since 3.6
 	 */
@@ -134,7 +134,7 @@ public class RulerComposite extends Composite {
 
 	/**
 	 * Calculates the proper trim for the ruler.
-	 * 
+	 *
 	 * @param canvas The canvas.
 	 * @since 3.6
 	 */
@@ -216,7 +216,7 @@ public class RulerComposite extends Composite {
 
 	/**
 	 * Perform the ruler layout.
-	 * 
+	 *
 	 * @since 3.6
 	 */
 	public void doLayout() {
@@ -303,7 +303,7 @@ public class RulerComposite extends Composite {
 	 * RulerProvider.PROPERTY_VERTICAL_RULER) as a property on the given viewer. It
 	 * can be done after this method is invoked.
 	 * RulerProvider.PROPERTY_RULER_VISIBILITY can be used to show/hide the rulers.
-	 * 
+	 *
 	 * @param primaryViewer The graphical viewer for which the rulers have to be
 	 *                      created
 	 */
@@ -421,7 +421,7 @@ public class RulerComposite extends Composite {
 
 		/**
 		 * Constructor
-		 * 
+		 *
 		 * @param isHorizontal whether or not the ruler being bordered is horizontal or
 		 *                     not
 		 */
@@ -456,7 +456,7 @@ public class RulerComposite extends Composite {
 
 	/**
 	 * Custom graphical viewer intended to be used for rulers.
-	 * 
+	 *
 	 * @author Pratik Shah
 	 * @since 3.0
 	 */
@@ -513,7 +513,7 @@ public class RulerComposite extends Composite {
 		/**
 		 * Requests to reveal a ruler are ignored since that causes undesired scrolling
 		 * to the origin of the ruler
-		 * 
+		 *
 		 * @see org.eclipse.gef.EditPartViewer#reveal(org.eclipse.gef.EditPart)
 		 */
 		@Override
@@ -523,7 +523,7 @@ public class RulerComposite extends Composite {
 		}
 
 		/**
-		 * 
+		 *
 		 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#handleFocusGained(org.eclipse.swt.events.FocusEvent)
 		 */
 		@Override
@@ -535,7 +535,7 @@ public class RulerComposite extends Composite {
 		}
 
 		/**
-		 * 
+		 *
 		 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#handleFocusLost(org.eclipse.swt.events.FocusEvent)
 		 */
 		@Override
@@ -548,14 +548,14 @@ public class RulerComposite extends Composite {
 
 		/**
 		 * Custom KeyHandler intended to be used with a RulerViewer
-		 * 
+		 *
 		 * @author Pratik Shah
 		 * @since 3.0
 		 */
 		protected static class RulerKeyHandler extends GraphicalViewerKeyHandler {
 			/**
 			 * Constructor
-			 * 
+			 *
 			 * @param viewer The viewer for which this handler processes keyboard input
 			 */
 			public RulerKeyHandler(GraphicalViewer viewer) {
@@ -592,7 +592,7 @@ public class RulerComposite extends Composite {
 
 	/**
 	 * Retrieve the left ruler graphical viewer.
-	 * 
+	 *
 	 * @return The left ruler graphical viewer.
 	 * @since 3.6
 	 */
@@ -602,7 +602,7 @@ public class RulerComposite extends Composite {
 
 	/**
 	 * Retrieve the top ruler graphical viewer.
-	 * 
+	 *
 	 * @return The top ruler graphical viewer.
 	 * @since 3.6
 	 */
@@ -612,7 +612,7 @@ public class RulerComposite extends Composite {
 
 	/**
 	 * Retrieve the editor figure canvas.
-	 * 
+	 *
 	 * @return The editor figure canvas.
 	 * @since 3.6
 	 */

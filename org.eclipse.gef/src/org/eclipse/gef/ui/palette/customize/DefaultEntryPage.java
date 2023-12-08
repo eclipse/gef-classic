@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  * displays the entry's label, description and visible fields (and allows for
  * their modification). It is live in the sense that the model is updated with
  * the changes immediately (on every keystroke).
- * 
+ *
  * @author Pratik Shah
  */
 public class DefaultEntryPage implements EntryPage {
@@ -95,7 +95,7 @@ public class DefaultEntryPage implements EntryPage {
 	/**
 	 * Creates the <code>Text</code> where the description of the entry is to be
 	 * displayed.
-	 * 
+	 *
 	 * @param panel The Composite in which the <code>Text</code> is to be created
 	 * @return The newly created <code>Text</code>
 	 */
@@ -121,7 +121,7 @@ public class DefaultEntryPage implements EntryPage {
 	/**
 	 * Creates the <code>Button</code> (CheckBox) for indicating the hidden status
 	 * of the entry. It initializes it with the current hidden state of entry.
-	 * 
+	 *
 	 * @param panel The Composite in which the Button is to be created
 	 * @return The newly created Button
 	 */
@@ -147,7 +147,7 @@ public class DefaultEntryPage implements EntryPage {
 
 	/**
 	 * Creates a label
-	 * 
+	 *
 	 * @param panel The Composite in which the Label is to be created
 	 * @param style The stylebits for the Label
 	 * @param text  The Label's text
@@ -162,7 +162,7 @@ public class DefaultEntryPage implements EntryPage {
 
 	/**
 	 * Creates the Text where the name of the entry is to be displayed.
-	 * 
+	 *
 	 * @param panel The Composite in which the Text is to be created
 	 * @return Text - The newly created Text
 	 */
@@ -183,7 +183,7 @@ public class DefaultEntryPage implements EntryPage {
 	/**
 	 * Creates a <code>Text</code>. This method is mainly a result of
 	 * code-factoring.
-	 * 
+	 *
 	 * @param panel The Composite in which the Text is to be created
 	 * @param style The stylebits for the Text
 	 * @param text  The text to be displayed in the Text
@@ -214,7 +214,7 @@ public class DefaultEntryPage implements EntryPage {
 
 	/**
 	 * Provides sub-classes with access to the entry this class is monitoring.
-	 * 
+	 *
 	 * @return PaletteEntry - The entry this class is monitoring
 	 */
 	protected PaletteEntry getEntry() {
@@ -224,7 +224,7 @@ public class DefaultEntryPage implements EntryPage {
 	/**
 	 * Sub-classes should override this method to provide appropriate error
 	 * notification messages.
-	 * 
+	 *
 	 * @return The message to be used when notifying listeners about a state change
 	 */
 	protected String getMessage() {
@@ -248,7 +248,7 @@ public class DefaultEntryPage implements EntryPage {
 	 * This method is invoked on every keystroke in the Text displaying the
 	 * description of the entry.
 	 * </p>
-	 * 
+	 *
 	 * @param text The new description
 	 */
 	protected void handleDescriptionChanged(String text) {
@@ -263,7 +263,7 @@ public class DefaultEntryPage implements EntryPage {
 	 * <p>
 	 * This method is invokes whenever the "Hidden" checkbox is selected.
 	 * </p>
-	 * 
+	 *
 	 * @param isChecked The new selection value
 	 */
 	protected void handleHiddenSelected(boolean isChecked) {
@@ -279,7 +279,7 @@ public class DefaultEntryPage implements EntryPage {
 	 * This method is invoked on every keystroke in the Text displaying the entry's
 	 * name.
 	 * </p>
-	 * 
+	 *
 	 * @param text The new name
 	 */
 	protected void handleNameChanged(String text) {

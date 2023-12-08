@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -11,6 +11,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.test;
+
 import org.eclipse.draw2d.geometry.Vector;
 
 import org.junit.Assert;
@@ -18,40 +19,44 @@ import org.junit.Test;
 
 /**
  * Vector's tests
- * 
+ *
  * @author aboyko
- * 
+ *
  */
 public class VectorTest extends Assert {
 
 	@Test
-	public void test_getLength() {
+	public void testGetLength() {
 		testLengthValues(3, 4, 5);
 		testLengthValues(0, Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_getOrthoComplement() {
+	public void testGetOrthoComplement() {
 		Vector a = new Vector(3, -5);
 		assertTrue(a.getOrthogonalComplement().equals(new Vector(5, 3)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_getDotProduct() {
+	public void testGetDotProduct() {
 		Vector a = new Vector(3, 2);
 		Vector b = new Vector(2, -2);
 		assertTrue(a.getDotProduct(b) == 2);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_getAngle() {
+	public void testGetAngle() {
 		Vector a = new Vector(24.03809869102058, -6.868028197434448);
 		Vector b = new Vector(-24.038098691020593, 6.868028197434448);
 		assertTrue(a.getAngle(b) == 180.0);
 	}
 
+	@SuppressWarnings("static-method")
 	private void testLengthValues(int x, int y, double expectedLength) {
-		Vector Vector = new Vector(x, y);
-		assertEquals(expectedLength, Vector.getLength(), 0);
+		Vector vector = new Vector(x, y);
+		assertEquals(expectedLength, vector.getLength(), 0);
 	}
 }

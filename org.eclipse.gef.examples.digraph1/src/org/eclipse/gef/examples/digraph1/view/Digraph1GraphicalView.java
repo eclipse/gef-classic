@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.ui.part.ViewPart;
 
 /**
  * The example view for the directed graph.
- * 
+ *
  * @author Anthony Hunter
  */
 public class Digraph1GraphicalView extends ViewPart {
@@ -52,7 +52,7 @@ public class Digraph1GraphicalView extends ViewPart {
 
 	/**
 	 * Get the EditDomain for this ViewPart.
-	 * 
+	 *
 	 * @return the EditDomain for this ViewPart.
 	 */
 	protected DefaultEditDomain getEditDomain() {
@@ -61,7 +61,7 @@ public class Digraph1GraphicalView extends ViewPart {
 
 	/**
 	 * Returns the graphical viewer.
-	 * 
+	 *
 	 * @return the graphical viewer
 	 */
 	protected GraphicalViewer getGraphicalViewer() {
@@ -70,7 +70,7 @@ public class Digraph1GraphicalView extends ViewPart {
 
 	/**
 	 * Sets the EditDomain for this ViewPart.
-	 * 
+	 *
 	 * @param anEditDomain the EditDomain for this ViewPart.
 	 */
 	protected void setEditDomain(DefaultEditDomain anEditDomain) {
@@ -87,7 +87,7 @@ public class Digraph1GraphicalView extends ViewPart {
 
 	/**
 	 * Sets the graphicalViewer for this EditorPart.
-	 * 
+	 *
 	 * @param viewer the graphical viewer
 	 */
 	protected void setGraphicalViewer(GraphicalViewer viewer) {
