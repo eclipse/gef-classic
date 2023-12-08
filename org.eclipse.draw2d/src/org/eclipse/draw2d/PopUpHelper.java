@@ -92,10 +92,12 @@ public abstract class PopUpHelper {
 	 * @since 2.0
 	 */
 	public void dispose() {
-		if (isShowing())
+		if (isShowing()) {
 			hide();
-		if (shell != null && !shell.isDisposed())
+		}
+		if (shell != null && !shell.isDisposed()) {
 			shell.dispose();
+		}
 	}
 
 	/**
@@ -147,8 +149,9 @@ public abstract class PopUpHelper {
 	 * @since 2.0
 	 */
 	protected void hide() {
-		if (shell != null && !shell.isDisposed())
+		if (shell != null && !shell.isDisposed()) {
 			shell.setVisible(false);
+		}
 		tipShowing = false;
 	}
 
