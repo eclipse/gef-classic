@@ -35,21 +35,29 @@ pipeline {
 	 				)
 	 			}
 				failure {
-		            mail bcc: '', body: "<b>GEF Classic: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: GEF Classic -> ${env.JOB_NAME}", to: "alois.zoitl@gmx.at";
+					script {
+						if (env.BRANCH_NAME == 'master') {
+							mail bcc: '', body: "<b>GEF Classic: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: GEF Classic -> ${env.JOB_NAME}", to: "alois.zoitl@gmx.at";
+						}
+					}
 		        }
 			}
 
 		}
         stage('Deploy') {
             steps {
-                sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
-                    sh '''
-                        ssh -o BatchMode=yes genie.gef@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/tools/gef/classic/latest
-                        ssh -o BatchMode=yes genie.gef@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/tools/gef/classic/latest
-                        scp -o BatchMode=yes -r org.eclipse.gef.repository/target/repository/* genie.gef@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/tools/gef/classic/latest
-                    '''
-                    }
-                }
+				script {
+					if (env.BRANCH_NAME == 'master') {
+						sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
+							sh '''
+								ssh -o BatchMode=yes genie.gef@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/tools/gef/classic/latest
+								ssh -o BatchMode=yes genie.gef@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/tools/gef/classic/latest
+								scp -o BatchMode=yes -r org.eclipse.gef.repository/target/repository/* genie.gef@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/tools/gef/classic/latest
+							'''
+						}
+					}
+				}
+			}
         }
 	}
 }
