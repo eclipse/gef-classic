@@ -15,16 +15,19 @@ pipeline {
 		
 		stage('Build') {
 			steps {
-				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
+				withSonarQubeEnv(credentialsId: 'sonarcloud-token', installationName: 'SonarCloud.io') {
+				    wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
 					sh '''
 					export GDK_BACKEND=x11
 					mvn clean verify -Dmaven.repo.local=$WORKSPACE/.m2/repository \
 						-DapiBaselineTargetDirectory=${WORKSPACE} \
 						-Dgpg.passphrase="${KEYRING_PASSPHRASE}" \
 						-Dproject.build.sourceEncoding=UTF-8 \
-						-Peclipse-sign
+						-Peclipse-sign \
+						-B sonar:sonar -Dsonar.projectKey=gef-classic -Dsonar.organization=eclipse
 					'''
-				}
+				    }
+			        }
 			}
 			post {
 				always {
