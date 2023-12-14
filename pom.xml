@@ -36,6 +36,13 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
+					<compilerArgs>
+						<args>-verbose</args>
+						<args>-proceedOnError</args>
+					</compilerArgs>
+					<log>xml</log>
+					<logDirectory>${project.build.directory}/ecj</logDirectory>
+					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
 			
