@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -31,7 +31,7 @@ import org.eclipse.draw2d.internal.MultiValueMap;
 public abstract class AutomaticRouter extends AbstractRouter {
 
 	private ConnectionRouter nextRouter;
-	private MultiValueMap connections = new MultiValueMap();
+	private final MultiValueMap<HashKey, Connection> connections = new MultiValueMap<>();
 
 	private static final class HashKey {
 
@@ -105,11 +105,11 @@ public abstract class AutomaticRouter extends AbstractRouter {
 		if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null)
 			return;
 		HashKey connectionKey = new HashKey(conn);
-		ArrayList connectionList = connections.get(connectionKey);
+		List<Connection> connectionList = connections.get(connectionKey);
 		int affected = connections.remove(connectionKey, conn);
 		if (affected != -1) {
 			for (int i = affected; i < connectionList.size(); i++)
-				((Connection) connectionList.get(i)).revalidate();
+				connectionList.get(i).revalidate();
 		} else
 			connections.removeValue(conn);
 
@@ -133,11 +133,11 @@ public abstract class AutomaticRouter extends AbstractRouter {
 		if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null)
 			return;
 		HashKey connectionKey = new HashKey(conn);
-		ArrayList connectionList = connections.get(connectionKey);
+		List<Connection> connectionList = connections.get(connectionKey);
 		if (connectionList != null) {
 			int index = connections.remove(connectionKey, conn);
 			for (int i = index + 1; i < connectionList.size(); i++)
-				((Connection) connectionList.get(i)).revalidate();
+				connectionList.get(i).revalidate();
 		}
 		if (next() != null)
 			next().remove(conn);
@@ -162,7 +162,7 @@ public abstract class AutomaticRouter extends AbstractRouter {
 		if (conn.getPoints().size() == 2) {
 			PointList points = conn.getPoints();
 			HashKey connectionKey = new HashKey(conn);
-			ArrayList connectionList = connections.get(connectionKey);
+			List<Connection> connectionList = connections.get(connectionKey);
 
 			if (connectionList != null) {
 
