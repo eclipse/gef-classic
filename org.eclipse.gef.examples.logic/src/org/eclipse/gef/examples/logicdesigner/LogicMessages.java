@@ -14,6 +14,7 @@ package org.eclipse.gef.examples.logicdesigner;
 
 import org.eclipse.osgi.util.NLS;
 
+@SuppressWarnings("squid:S3008") // tell sonar the java naming convention does not make sense for this class
 public class LogicMessages extends NLS {
 
 	public static String AddCommand_Label;
