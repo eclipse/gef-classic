@@ -17,7 +17,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -25,11 +32,6 @@ import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * This snippet uses a very simple file format to read a graph. Edges are listed
@@ -44,9 +46,20 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class GraphJFaceSnippet3 {
 
-	public static final String graph = "a calls b\n" + "a calls c\n" + "b calld d\n" + "b calls e\n" + "c calls f\n"
-			+ "c calls g\n" + "d calls h\n" + "d calls i\n" + "e calls j\n" + "e calls k\n" + "f calls l\n"
-			+ "f calls m\n";
+	public static final String GRAPH = """
+			a calls b
+			a calls c
+			b calld d
+			b calls e
+			c calls f
+			c calls g
+			d calls h
+			d calls i
+			e calls j
+			e calls k
+			f calls l
+			f calls m
+			"""; //$NON-NLS-1$
 
 	static class SimpleGraphContentProvider implements IGraphContentProvider {
 
@@ -55,13 +68,13 @@ public class GraphJFaceSnippet3 {
 		@Override
 		public Object getDestination(Object rel) {
 			String string = (String) rel;
-			String[] parts = string.split(" ");
+			String[] parts = string.split(" "); //$NON-NLS-1$
 			return parts[2];
 		}
 
 		@Override
 		public Object[] getElements(Object input) {
-			ArrayList listOfEdges = new ArrayList();
+			List<String> listOfEdges = new ArrayList<>();
 			while (graph.hasMoreTokens()) {
 				listOfEdges.add(graph.nextToken());
 			}
@@ -71,7 +84,7 @@ public class GraphJFaceSnippet3 {
 		@Override
 		public Object getSource(Object rel) {
 			String string = (String) rel;
-			String[] parts = string.split(" ");
+			String[] parts = string.split(" "); //$NON-NLS-1$
 			return parts[0];
 		}
 
@@ -87,7 +100,7 @@ public class GraphJFaceSnippet3 {
 		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			if (newInput != null) {
-				graph = new StringTokenizer((String) newInput, "\n");
+				graph = new StringTokenizer((String) newInput, "\n"); //$NON-NLS-1$
 			}
 		}
 
@@ -96,13 +109,13 @@ public class GraphJFaceSnippet3 {
 	public static void main(String[] args) throws IOException {
 		Display display = new Display();
 		Shell shell = new Shell(display);
-		shell.setText("Simple Graph File Format");
+		shell.setText("Simple Graph File Format"); //$NON-NLS-1$
 
 		FileDialog dialog = new FileDialog(shell, SWT.OPEN);
-		dialog.setFilterNames(new String[] { "Simple Graph Files (*.sgf)", "All Files (*.*)" });
-		dialog.setFilterExtensions(new String[] { "*.sgf", "*.*" }); // Windows wild cards
+		dialog.setFilterNames(new String[] { "Simple Graph Files (*.sgf)", "All Files (*.*)" }); //$NON-NLS-1$ //$NON-NLS-2$
+		dialog.setFilterExtensions(new String[] { "*.sgf", "*.*" }); // Windows wild cards //$NON-NLS-1$ //$NON-NLS-2$
 
-		String directory = System.getProperty("user.dir") + "/src/org/eclipse/zest/tests/jface/SimpleGraph.sgf"; // eclipse/zest/examples/jface/";
+		String directory = System.getProperty("user.dir") + "/src/org/eclipse/zest/tests/jface/SimpleGraph.sgf"; // eclipse/zest/examples/jface/"; //$NON-NLS-1$ //$NON-NLS-2$
 		System.out.println(directory);
 		dialog.setFilterPath(directory);
 		// dialog.setFilterPath(System.getProperty("user.dir") +
@@ -122,13 +135,13 @@ public class GraphJFaceSnippet3 {
 
 		if (fileName == null) {
 			// use the sample graph
-			viewer.setInput(graph);
+			viewer.setInput(GRAPH);
 		} else {
 			FileReader fileReader = new FileReader(new File(fileName));
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			StringBuffer stringBuffer = new StringBuffer();
+			StringBuilder stringBuffer = new StringBuilder();
 			while (bufferedReader.ready()) {
-				stringBuffer.append(bufferedReader.readLine() + "\n");
+				stringBuffer.append(bufferedReader.readLine() + "\n"); //$NON-NLS-1$
 			}
 			viewer.setInput(stringBuffer.toString());
 		}

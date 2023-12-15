@@ -125,7 +125,7 @@ public class CommandStack {
 	 */
 	public static final int PRE_MASK = PRE_EXECUTE | PRE_UNDO | PRE_REDO | PRE_FLUSH | PRE_MARK_SAVE;
 
-	private List eventListeners = new ArrayList();
+	private final List eventListeners = new ArrayList();
 
 	/**
 	 * The list of {@link CommandStackListener}s.
@@ -133,13 +133,14 @@ public class CommandStack {
 	 * @deprecated This field should not be referenced, use
 	 *             {@link #notifyListeners()}
 	 */
+	@Deprecated
 	protected List listeners = new ArrayList();
 
-	private Stack redoable = new Stack();
+	private final Stack redoable = new Stack();
 
 	private int saveLocation = 0;
 
-	private Stack undoable = new Stack();
+	private final Stack undoable = new Stack();
 
 	private int undoLimit = 0;
 
@@ -170,6 +171,7 @@ public class CommandStack {
 	 *             {@link #addCommandStackEventListener(CommandStackEventListener)}
 	 *             instead.
 	 */
+	@Deprecated
 	public void addCommandStackListener(CommandStackListener listener) {
 		listeners.add(listener);
 	}
@@ -178,8 +180,9 @@ public class CommandStack {
 	 * @return <code>true</code> if it is appropriate to call {@link #redo()}.
 	 */
 	public boolean canRedo() {
-		if (redoable.size() == 0)
+		if (redoable.isEmpty()) {
 			return false;
+		}
 		return ((Command) redoable.peek()).canRedo();
 	}
 
@@ -187,8 +190,9 @@ public class CommandStack {
 	 * @return <code>true</code> if {@link #undo()} can be called
 	 */
 	public boolean canUndo() {
-		if (undoable.size() == 0)
+		if (undoable.isEmpty()) {
 			return false;
+		}
 		return ((Command) undoable.peek()).canUndo();
 	}
 
@@ -216,8 +220,9 @@ public class CommandStack {
 	 * @see CommandStackEventListener
 	 */
 	public void execute(Command command) {
-		if (command == null || !command.canExecute())
+		if (command == null || !command.canExecute()) {
 			return;
+		}
 		flushRedo();
 		notifyListeners(command, PRE_EXECUTE);
 		try {
@@ -225,13 +230,15 @@ public class CommandStack {
 			if (getUndoLimit() > 0) {
 				while (undoable.size() >= getUndoLimit()) {
 					((Command) undoable.remove(0)).dispose();
-					if (saveLocation > -1)
+					if (saveLocation > -1) {
 						saveLocation--;
+					}
 				}
 			}
-			if (saveLocation > undoable.size())
+			if (saveLocation > undoable.size()) {
 				saveLocation = -1; // The save point was somewhere in the redo
-									// stack
+			}
+			// stack
 			undoable.push(command);
 			notifyListeners();
 		} finally {
@@ -253,13 +260,15 @@ public class CommandStack {
 	}
 
 	private void flushRedo() {
-		while (!redoable.isEmpty())
+		while (!redoable.isEmpty()) {
 			((Command) redoable.pop()).dispose();
+		}
 	}
 
 	private void flushUndo() {
-		while (!undoable.isEmpty())
+		while (!undoable.isEmpty()) {
 			((Command) undoable.pop()).dispose();
+		}
 	}
 
 	/**
@@ -334,10 +343,12 @@ public class CommandStack {
 	 *
 	 * @deprecated Use {@link #notifyListeners(Command, int)} instead.
 	 */
+	@Deprecated
 	protected void notifyListeners() {
 		EventObject event = new EventObject(this);
-		for (int i = 0; i < listeners.size(); i++)
-			((CommandStackListener) listeners.get(i)).commandStackChanged(event);
+		for (Object listener : listeners) {
+			((CommandStackListener) listener).commandStackChanged(event);
+		}
 	}
 
 	/**
@@ -350,8 +361,9 @@ public class CommandStack {
 	 */
 	protected void notifyListeners(Command command, int state) {
 		CommandStackEvent event = new CommandStackEvent(this, command, state);
-		for (int i = 0; i < eventListeners.size(); i++)
-			((CommandStackEventListener) eventListeners.get(i)).stackChanged(event);
+		for (Object eventListener : eventListeners) {
+			((CommandStackEventListener) eventListener).stackChanged(event);
+		}
 	}
 
 	/**
@@ -361,8 +373,9 @@ public class CommandStack {
 	 */
 	public void redo() {
 		// Assert.isTrue(canRedo())
-		if (!canRedo())
+		if (!canRedo()) {
 			return;
+		}
 		Command command = (Command) redoable.pop();
 		notifyListeners(command, PRE_REDO);
 		try {
@@ -389,6 +402,7 @@ public class CommandStack {
 	 * @param listener the listener
 	 * @deprecated Use {@link CommandStackEventListener} instead.
 	 */
+	@Deprecated
 	public void removeCommandStackListener(CommandStackListener listener) {
 		listeners.remove(listener);
 	}
@@ -410,8 +424,9 @@ public class CommandStack {
 	 * only be called when {@link #canUndo()} returns <code>true</code>.
 	 */
 	public void undo() {
-		if (!canUndo())
+		if (!canUndo()) {
 			return;
+		}
 		// Assert.isTrue(canUndo());
 		Command command = (Command) undoable.pop();
 		notifyListeners(command, PRE_UNDO);

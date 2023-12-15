@@ -33,7 +33,7 @@ public abstract class BaseTestCase extends Assert {
 
 	protected static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
 
-	public void assertEquals(Image expected, Image actual) {
+	public static void assertEquals(Image expected, Image actual) {
 		assertTrue("The given images did not match", //$NON-NLS-1$
 				Arrays.equals(expected.getImageData().data, actual.getImageData().data));
 	}
@@ -43,7 +43,7 @@ public abstract class BaseTestCase extends Assert {
 	 * <code>(width, height)</code>. Actual object <code>{@link Dimension}</code>.
 	 * If they are not an AssertionFailedError is thrown.
 	 */
-	public void assertEquals(int width, int height, Dimension dimension) throws Exception {
+	public static void assertEquals(int width, int height, Dimension dimension) {
 		assertEquals(width, dimension.width);
 		assertEquals(height, dimension.height);
 	}
@@ -53,7 +53,7 @@ public abstract class BaseTestCase extends Assert {
 	 * Actual object <code>{@link Point}</code>. If they are not an
 	 * AssertionFailedError is thrown.
 	 */
-	public void assertEquals(int x, int y, Point point) throws Exception {
+	public static void assertEquals(int x, int y, Point point) {
 		assertEquals(x, point.x);
 		assertEquals(y, point.y);
 	}
@@ -64,7 +64,7 @@ public abstract class BaseTestCase extends Assert {
 	 * <code>{@link Insets}</code>. If they are not an AssertionFailedError is
 	 * thrown.
 	 */
-	public void assertEquals(int top, int left, int bottom, int right, Insets insets) throws Exception {
+	public static void assertEquals(int top, int left, int bottom, int right, Insets insets) {
 		assertEquals(top, insets.top);
 		assertEquals(left, insets.left);
 		assertEquals(bottom, insets.bottom);
@@ -77,7 +77,7 @@ public abstract class BaseTestCase extends Assert {
 	 * <code>{@link Rectangle}</code>. If they are not an AssertionFailedError is
 	 * thrown.
 	 */
-	public void assertEquals(int x, int y, int width, int height, Rectangle rectangle) throws Exception {
+	public static void assertEquals(int x, int y, int width, int height, Rectangle rectangle) {
 		assertEquals(x, rectangle.x);
 		assertEquals(y, rectangle.y);
 		assertEquals(width, rectangle.width);
@@ -89,7 +89,7 @@ public abstract class BaseTestCase extends Assert {
 	 * <code>(begin, length)</code>. Actual object <code>{@link Interval}</code>. If
 	 * they are not an AssertionFailedError is thrown.
 	 */
-	public void assertEquals(int begin, int length, Interval interval) throws Exception {
+	public static void assertEquals(int begin, int length, Interval interval) {
 		assertEquals(begin, interval.begin());
 		assertEquals(length, interval.length());
 	}
@@ -98,7 +98,7 @@ public abstract class BaseTestCase extends Assert {
 	 * Waits given number of milliseconds and pumps the SWT event queue.<br>
 	 * At least one events loop will be executed.
 	 */
-	protected void waitEventLoop(Shell shell, int timeMillis) {
+	protected static void waitEventLoop(Shell shell, int timeMillis) {
 		long start = System.currentTimeMillis();
 		do {
 			// One of the events might dispose the shell...

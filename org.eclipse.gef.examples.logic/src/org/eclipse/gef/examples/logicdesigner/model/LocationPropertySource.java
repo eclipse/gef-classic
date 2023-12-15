@@ -85,7 +85,7 @@ public class LocationPropertySource implements IPropertySource {
 
 	@Override
 	public String toString() {
-		return new String("[" + point.x + "," + point.y + "]");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+		return "[" + point.x + "," + point.y + "]";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 	}
 
 }

@@ -22,8 +22,9 @@ import org.junit.Test;
  */
 public class InsetsTest extends BaseTestCase {
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructors() throws Exception {
+	public void testConstructors() {
 		// check create object use constructor()
 		assertEquals(0, 0, 0, 0, new Insets());
 		//
@@ -39,9 +40,9 @@ public class InsetsTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testEqualsObject() throws Exception {
+	public void testEqualsObject() {
 		Insets testInsets = new Insets(1, 2, 3, 4);
-		assertFalse(testInsets.equals(null));
+		assertNotNull(testInsets);
 		assertFalse(testInsets.equals(new Object()));
 		assertTrue(testInsets.equals(testInsets));
 		assertTrue(testInsets.equals(new Insets(testInsets)));
@@ -50,7 +51,7 @@ public class InsetsTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testToString() throws Exception {
+	public void testToString() {
 		assertNotNull(new Insets().toString());
 		assertNotNull(new Insets(3).toString());
 		assertNotNull(new Insets(1, 2, 3, 4).toString());
@@ -58,33 +59,35 @@ public class InsetsTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetHeight() throws Exception {
+	public void testGetHeight() {
 		assertEquals(11, new Insets(1, 1, 10, 5).getHeight());
 	}
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetWidth() throws Exception {
+	public void testGetWidth() {
 		assertEquals(6, new Insets(1, 1, 10, 5).getWidth());
 	}
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testIsEmpty() throws Exception {
+	public void testIsEmpty() {
 		assertTrue(new Insets().isEmpty());
 		assertFalse(new Insets(7).isEmpty());
 		assertFalse(new Insets(1, 0, 0, 0).isEmpty());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testAddInsets() throws Exception {
+	public void testAddInsets() {
 		Insets testInsets = new Insets(1, 2, 3, 4);
 		assertSame(testInsets, testInsets.add(new Insets(4, 3, 2, 1)));
 		assertEquals(5, 5, 5, 5, testInsets);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testTranspose() throws Exception {
+	public void testTranspose() {
 		int top = 1;
 		int left = 2;
 		int bottom = 3;
@@ -94,16 +97,18 @@ public class InsetsTest extends BaseTestCase {
 		assertEquals(left, top, right, bottom, testInsets);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetAdded() throws Exception {
+	public void testGetAdded() {
 		Insets template = new Insets(1, 2, 3, 4);
 		Insets testInsets = template.getAdded(new Insets(4, 3, 2, 1));
 		assertNotSame(template, testInsets);
 		assertEquals(5, 5, 5, 5, testInsets);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetTransposed() throws Exception {
+	public void testGetTransposed() {
 		int top = 1;
 		int left = 2;
 		int bottom = 3;
@@ -114,8 +119,9 @@ public class InsetsTest extends BaseTestCase {
 		assertEquals(left, top, right, bottom, testInsets);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetNegated() throws Exception {
+	public void testGetNegated() {
 		Insets template = new Insets(1, 2, 3, 4);
 		Insets testInsets = template.getNegated();
 		assertNotSame(template, testInsets);

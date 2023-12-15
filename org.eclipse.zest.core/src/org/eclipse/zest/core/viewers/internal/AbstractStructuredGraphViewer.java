@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Widget;
+
 import org.eclipse.zest.core.viewers.AbstractZoomableViewer;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.core.widgets.CGraphNode;
@@ -38,6 +38,8 @@ import org.eclipse.zest.core.widgets.IContainer;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 
+import org.eclipse.draw2d.IFigure;
+
 /**
  * Abstraction of graph viewers to implement functionality used by all of them.
  * Not intended to be implemented by clients. Use one of the provided children
@@ -49,7 +51,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * Contains top-level styles for the entire graph. Set in the constructor. *
 	 */
-	private int graphStyle;
+	private final int graphStyle;
 
 	/**
 	 * Contains node-level styles for the graph. Set in setNodeStyle(). Defaults are
@@ -69,7 +71,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * The constraint adapters
 	 */
-	private List constraintAdapters = new ArrayList();
+	private final List constraintAdapters = new ArrayList();
 
 	/**
 	 * A simple graph comparator that orders graph elements based on their type
@@ -94,7 +96,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		public int compare(Object arg0, Object arg1) {
 			if (arg0 instanceof GraphNode && arg1 instanceof GraphConnection) {
 				return 1;
-			} else if (arg0 instanceof GraphConnection && arg1 instanceof GraphNode) {
+			}
+			if (arg0 instanceof GraphConnection && arg1 instanceof GraphNode) {
 				return -1;
 			}
 			if (arg0.equals(arg1)) {
@@ -256,10 +259,11 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	}
 
 	/**
-	 * Implement and return the new node object, enables to define custom graph nodes
+	 * Implement and return the new node object, enables to define custom graph
+	 * nodes
 	 *
 	 * @param graphModel where the created nodes gets added to
-	 * @param figure of the created node object
+	 * @param figure     of the created node object
 	 * @return instance of a {@link GraphNode}
 	 *
 	 * @since 1.7
@@ -269,10 +273,11 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	}
 
 	/**
-	 * Implement and return the new connection object, enables to define custom graph connections
+	 * Implement and return the new connection object, enables to define custom
+	 * graph connections
 	 *
-	 * @param graphModel where the created nodes gets added to
-	 * @param source {@link GraphNode}
+	 * @param graphModel  where the created nodes gets added to
+	 * @param source      {@link GraphNode}
 	 * @param destination {@link GraphNode}
 	 * @return instance of a {@link GraphConnection}
 	 *
@@ -406,8 +411,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	protected List getSelectionFromWidget() {
 		List internalSelection = getWidgetSelection();
 		LinkedList externalSelection = new LinkedList();
-		for (Iterator i = internalSelection.iterator(); i.hasNext();) {
-			Object data = ((GraphItem) i.next()).getData();
+		for (Object element : internalSelection) {
+			Object data = ((GraphItem) element).getData();
 			if (data != null) {
 				externalSelection.add(data);
 			}
@@ -440,8 +445,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	protected void setSelectionToWidget(List l, boolean reveal) {
 		Graph control = (Graph) getControl();
 		List selection = new LinkedList();
-		for (Iterator i = l.iterator(); i.hasNext();) {
-			Object obj = i.next();
+		for (Object obj : l) {
 			GraphNode node = (GraphNode) nodesMap.get(obj);
 			GraphConnection conn = (GraphConnection) connectionsMap.get(obj);
 			if (node != null) {
@@ -508,8 +512,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 		// check if any of the pre-existing nodes are still present
 		// in this case we want them to keep the same location & size
-		for (Iterator iter = oldNodesMap.keySet().iterator(); iter.hasNext();) {
-			Object data = iter.next();
+		for (Object data : oldNodesMap.keySet()) {
 			GraphNode newNode = (GraphNode) nodesMap.get(data);
 			if (newNode != null) {
 				GraphNode oldNode = (GraphNode) oldNodesMap.get(data);
@@ -545,32 +548,32 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 			// set everything to invisible.
 			// @tag zest.bug.156528-Filters.check : should we only filter out
 			// the nodes?
-			for (Iterator i = connections.iterator(); i.hasNext();) {
-				GraphConnection c = (GraphConnection) i.next();
+			for (Object connection : connections) {
+				GraphConnection c = (GraphConnection) connection;
 				c.setVisible(false);
 			}
-			for (Iterator i = nodes.iterator(); i.hasNext();) {
-				GraphNode n = (GraphNode) i.next();
+			for (Object node : nodes) {
+				GraphNode n = (GraphNode) node;
 				n.setVisible(false);
 			}
 			return;
 		}
-		for (Iterator i = connections.iterator(); i.hasNext();) {
-			GraphConnection c = (GraphConnection) i.next();
+		for (Object connection : connections) {
+			GraphConnection c = (GraphConnection) connection;
 			if (c.getExternalConnection() != null) {
 				unfilteredElements.add(c);
 			}
 		}
-		for (Iterator i = nodes.iterator(); i.hasNext();) {
-			GraphNode n = (GraphNode) i.next();
+		for (Object node : nodes) {
+			GraphNode n = (GraphNode) node;
 			if (n.getData() != null) {
 				unfilteredElements.add(n);
 			}
 		}
-		for (int i = 0; i < filtered.length; i++) {
-			Object modelElement = connectionsMap.get(filtered[i]);
+		for (Object element : filtered) {
+			Object modelElement = connectionsMap.get(element);
 			if (modelElement == null) {
-				modelElement = nodesMap.get(filtered[i]);
+				modelElement = nodesMap.get(element);
 			}
 			if (modelElement != null) {
 				filteredElements.add(modelElement);
@@ -579,12 +582,12 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		unfilteredElements.removeAll(filteredElements);
 		// set all the elements that did not pass the filters to invisible, and
 		// all the elements that passed to visible.
-		while (unfilteredElements.size() > 0) {
+		while (!unfilteredElements.isEmpty()) {
 			GraphItem i = (GraphItem) unfilteredElements.first();
 			i.setVisible(false);
 			unfilteredElements.remove(i);
 		}
-		while (filteredElements.size() > 0) {
+		while (!filteredElements.isEmpty()) {
 			GraphItem i = (GraphItem) filteredElements.first();
 			i.setVisible(true);
 			filteredElements.remove(i);
@@ -605,14 +608,14 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 			if (getGraphControl() != null) {
 				List connections = getGraphControl().getConnections();
 				List nodes = getGraphControl().getNodes();
-				for (Iterator i = connections.iterator(); i.hasNext();) {
-					GraphConnection c = (GraphConnection) i.next();
+				for (Object connection : connections) {
+					GraphConnection c = (GraphConnection) connection;
 					if (c.getExternalConnection() != null) {
 						children.add(c.getExternalConnection());
 					}
 				}
-				for (Iterator i = nodes.iterator(); i.hasNext();) {
-					GraphNode n = (GraphNode) i.next();
+				for (Object node : nodes) {
+					GraphNode n = (GraphNode) node;
 					if (n.getData() != null) {
 						children.add(n.getData());
 					}
@@ -629,8 +632,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	@Override
 	public void reveal(Object element) {
 		Widget[] items = this.findItems(element);
-		for (int i = 0; i < items.length; i++) {
-			Widget item = items[i];
+		for (Widget item : items) {
 			if (item instanceof GraphNode graphModelNode) {
 				graphModelNode.highlight();
 			} else if (item instanceof GraphConnection graphModelConnection) {
@@ -641,8 +643,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	public void unReveal(Object element) {
 		Widget[] items = this.findItems(element);
-		for (int i = 0; i < items.length; i++) {
-			Widget item = items[i];
+		for (Widget item : items) {
 			if (item instanceof GraphNode graphModelNode) {
 				graphModelNode.unhighlight();
 			} else if (item instanceof GraphConnection graphModelConnection) {
@@ -733,15 +734,14 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	public void addRelationship(Object connection) {
 		IStylingGraphModelFactory modelFactory = getFactory();
 		if (connectionsMap.get(connection) == null) {
-			if (modelFactory.getContentProvider() instanceof IGraphContentProvider) {
-				IGraphContentProvider content = ((IGraphContentProvider) modelFactory.getContentProvider());
-				Object source = content.getSource(connection);
-				Object dest = content.getDestination(connection);
-				// create the new relationship
-				modelFactory.createConnection(getGraphControl(), connection, source, dest);
-			} else {
+			if (!(modelFactory.getContentProvider() instanceof IGraphContentProvider)) {
 				throw new UnsupportedOperationException();
 			}
+			IGraphContentProvider content = ((IGraphContentProvider) modelFactory.getContentProvider());
+			Object source = content.getSource(connection);
+			Object dest = content.getDestination(connection);
+			// create the new relationship
+			modelFactory.createConnection(getGraphControl(), connection, source, dest);
 		}
 	}
 
@@ -753,8 +753,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 */
 	protected GraphConnection[] getConnectionsArray(Graph graph) {
 		GraphConnection[] connsArray = new GraphConnection[graph.getConnections().size()];
-		connsArray = (GraphConnection[]) graph.getConnections().toArray(connsArray);
-		return connsArray;
+		return graph.getConnections().toArray(connsArray);
 	}
 
 	/**
@@ -764,8 +763,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 */
 	protected GraphNode[] getNodesArray(Graph graph) {
 		GraphNode[] nodesArray = new GraphNode[graph.getNodes().size()];
-		nodesArray = (GraphNode[]) graph.getNodes().toArray(nodesArray);
-		return nodesArray;
+		return graph.getNodes().toArray(nodesArray);
 	}
 
 }

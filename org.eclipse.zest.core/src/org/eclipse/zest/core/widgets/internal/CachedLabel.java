@@ -12,6 +12,12 @@
  ******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
@@ -20,11 +26,6 @@ import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.ScaledGraphics;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * A cached label to improve performance of text drawing under linux
@@ -163,10 +164,8 @@ public abstract class CachedLabel extends Label {
 
 	@Override
 	protected void paintFigure(Graphics graphics) {
-		if (graphics.getClass() == ScaledGraphics.class) {
-			if (((ScaledGraphics) graphics).getAbsoluteScale() < 0.30) {
-				return;
-			}
+		if (graphics instanceof ScaledGraphics sg && sg.getAbsoluteScale() < 0.30) {
+			return;
 		}
 		if (!cacheLabel) {
 			if (isOpaque()) {
@@ -235,11 +234,7 @@ public abstract class CachedLabel extends Label {
 	 * @return
 	 */
 	private boolean shouldInvalidateCache() {
-		if (invalidationRequired && !Animation.isAnimating()) {
-			return true;
-		} else {
-			return false;
-		}
+		return (invalidationRequired && !Animation.isAnimating());
 	}
 
 	/**

@@ -12,16 +12,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.swt;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Ellipse;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.Polyline;
-import org.eclipse.draw2d.RectangleFigure;
-import org.eclipse.draw2d.RoundedRectangle;
-import org.eclipse.draw2d.Shape;
-import org.eclipse.draw2d.Triangle;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -32,6 +22,17 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Ellipse;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.Polyline;
+import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.RoundedRectangle;
+import org.eclipse.draw2d.Shape;
+import org.eclipse.draw2d.Triangle;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 public class ShapeStylesExample {
 
@@ -48,66 +49,62 @@ public class ShapeStylesExample {
 					new StyleItem("SWT.LINE_DASH", SWT.LINE_DASH), new StyleItem("SWT.LINE_DASHDOT", SWT.LINE_DASHDOT), //$NON-NLS-1$ //$NON-NLS-2$
 					new StyleItem("SWT.LINE_DASHDOTDOT", SWT.LINE_DASHDOTDOT), //$NON-NLS-1$
 					new StyleItem("SWT.LINE_DOT", SWT.LINE_DOT), }) { //$NON-NLS-1$
-		@Override
-		public void applyTo(Shape shape, int i) {
-			shape.setLineStyle((int) elements[i].getValue());
-		}
-	},
+				@Override
+				public void applyTo(Shape shape, int i) {
+					shape.setLineStyle((int) elements[i].getValue());
+				}
+			},
 
 			new StyleAxis("Line Cap", new StyleItem[] { new StyleItem("SWT.CAP_FLAT", SWT.CAP_FLAT), //$NON-NLS-1$ //$NON-NLS-2$
 					new StyleItem("SWT.CAP_ROUND", SWT.CAP_ROUND), new StyleItem("SWT.CAP_SQUARE", SWT.CAP_SQUARE), }) { //$NON-NLS-1$ //$NON-NLS-2$
-		@Override
-		public void applyTo(Shape shape, int i) {
-			shape.setLineCap((int) elements[i].getValue());
-		}
-	},
+				@Override
+				public void applyTo(Shape shape, int i) {
+					shape.setLineCap((int) elements[i].getValue());
+				}
+			},
 
 			new StyleAxis("Line Miter Limit", //$NON-NLS-1$
 					new StyleItem[] { new StyleItem(0.0f), new StyleItem(0.5f), new StyleItem(1.0f),
 							new StyleItem(2.0f), new StyleItem(5.0f), new StyleItem(10.0f), new StyleItem(50.0f), }) {
-		@Override
-		public void applyTo(Shape shape, int i) {
-			shape.setLineMiterLimit(elements[i].getValue());
-		}
-	},
+				@Override
+				public void applyTo(Shape shape, int i) {
+					shape.setLineMiterLimit(elements[i].getValue());
+				}
+			},
 
 			new StyleAxis("Line Dash Offset", //$NON-NLS-1$
 					new StyleItem[] { new StyleItem(0.0f), new StyleItem(0.25f), new StyleItem(0.5f),
 							new StyleItem(1.0f), new StyleItem(2.0f), new StyleItem(2.5f), new StyleItem(5.0f),
 							new StyleItem(10.0f), }) {
-		@Override
-		public void applyTo(Shape shape, int i) {
-			shape.setLineDashOffset(elements[i].getValue());
-		}
-	},
+				@Override
+				public void applyTo(Shape shape, int i) {
+					shape.setLineDashOffset(elements[i].getValue());
+				}
+			},
 
 			new StyleAxis("Anti-Aliasing", new StyleItem[] { new StyleItem("SWT.ON", SWT.ON), //$NON-NLS-1$ //$NON-NLS-2$
 					new StyleItem("SWT.OFF", SWT.OFF), new StyleItem("SWT.DEFAULT", SWT.DEFAULT), }) { //$NON-NLS-1$ //$NON-NLS-2$
-		@Override
-		public void applyTo(Shape shape, int i) {
-			shape.setAntialias((int) elements[i].getValue());
-		}
-	},
+				@Override
+				public void applyTo(Shape shape, int i) {
+					shape.setAntialias((int) elements[i].getValue());
+				}
+			},
 
 			new StyleAxis("Alpha", new StyleItem[] { new StyleItem(0), new StyleItem(10), new StyleItem(50), //$NON-NLS-1$
 					new StyleItem(100), new StyleItem(150), new StyleItem(200), new StyleItem(255), }) {
-		@Override
-		public void applyTo(Shape shape, int i) {
-			shape.setAlpha((int) elements[i].getValue());
-		}
-	},
+				@Override
+				public void applyTo(Shape shape, int i) {
+					shape.setAlpha((int) elements[i].getValue());
+				}
+			},
 
 			new StyleAxis("Enabled", new StyleItem[] { new StyleItem("true", 1), new StyleItem("false", 0), }) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		@Override
-		public void applyTo(Shape shape, int i) {
-			int setting = (int) elements[i].getValue();
-			if (setting == 1) {
-				shape.setEnabled(true);
-			} else {
-				shape.setEnabled(false);
-			}
-		}
-	}, };
+				@Override
+				public void applyTo(Shape shape, int i) {
+					int setting = (int) elements[i].getValue();
+					shape.setEnabled(setting == 1);
+				}
+			}, };
 
 	static final String[] sampleShapeClasses = { Ellipse.class.getName(), RectangleFigure.class.getName(),
 			RoundedRectangle.class.getName(), Triangle.class.getName(), Polyline.class.getName() };
@@ -305,7 +302,7 @@ public class ShapeStylesExample {
 	}
 
 	static abstract class StyleAxis {
-		private String name;
+		private final String name;
 		protected StyleItem[] elements;
 
 		public StyleAxis(String name, StyleItem[] elements) {
@@ -329,8 +326,8 @@ public class ShapeStylesExample {
 	}
 
 	static class StyleItem {
-		private String name;
-		private float value;
+		private final String name;
+		private final float value;
 
 		public StyleItem(float value) {
 			this.name = Float.toString(value);

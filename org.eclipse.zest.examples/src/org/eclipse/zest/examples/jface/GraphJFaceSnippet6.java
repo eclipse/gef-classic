@@ -12,16 +12,15 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.jface;
 
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
@@ -43,29 +42,35 @@ import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
  *
  */
 public class GraphJFaceSnippet6 {
+	private static final String SCISSORS = "scissors"; //$NON-NLS-1$
+	private static final String PAPER = "paper"; //$NON-NLS-1$
+	private static final String ROCK = "rock"; //$NON-NLS-1$
+	private static final String THIRD = "Third"; //$NON-NLS-1$
+	private static final String SECOND = "Second"; //$NON-NLS-1$
+	private static final String FIRST = "First"; //$NON-NLS-1$
 
 	static class MyContentProvider implements IGraphEntityContentProvider, INestedContentProvider {
 
 		@Override
 		public Object[] getConnectedTo(Object entity) {
-			if (entity.equals("First")) {
-				return new Object[] { "Second" };
+			if (entity.equals(FIRST)) {
+				return new Object[] { SECOND };
 			}
-			if (entity.equals("Second")) {
-				return new Object[] { "Third", "rock" };
+			if (entity.equals(SECOND)) {
+				return new Object[] { THIRD, ROCK };
 			}
-			if (entity.equals("Third")) {
-				return new Object[] { "First" };
+			if (entity.equals(THIRD)) {
+				return new Object[] { FIRST };
 			}
-			if (entity.equals("rock")) {
-				return new Object[] { "paper" };
+			if (entity.equals(ROCK)) {
+				return new Object[] { PAPER };
 			}
 			return null;
 		}
 
 		@Override
 		public Object[] getElements(Object inputElement) {
-			return new String[] { "First", "Second", "Third" };
+			return new String[] { FIRST, SECOND, THIRD };
 		}
 
 		public double getWeight(Object entity1, Object entity2) {
@@ -84,16 +89,12 @@ public class GraphJFaceSnippet6 {
 
 		@Override
 		public Object[] getChildren(Object element) {
-			// TODO Auto-generated method stub
-			return new Object[] { "rock", "paper", "scissors" };
+			return new Object[] { ROCK, PAPER, SCISSORS };
 		}
 
 		@Override
 		public boolean hasChildren(Object element) {
-			// TODO Auto-generated method stub
-			if (element.equals("First"))
-				return true;
-			return false;
+			return element.equals(FIRST);
 		}
 
 	}
@@ -103,7 +104,7 @@ public class GraphJFaceSnippet6 {
 
 		@Override
 		public Image getImage(Object element) {
-			if (element.equals("Rock") || element.equals("Paper") || element.equals("Scissors")) {
+			if (ROCK.equals(element) || PAPER.equals(element) || SCISSORS.equals(element)) {
 				return image;
 			}
 			return null;
@@ -111,8 +112,9 @@ public class GraphJFaceSnippet6 {
 
 		@Override
 		public String getText(Object element) {
-			if (element instanceof EntityConnectionData)
-				return "";
+			if (element instanceof EntityConnectionData) {
+				return ""; //$NON-NLS-1$
+			}
 			return element.toString();
 		}
 
@@ -126,7 +128,7 @@ public class GraphJFaceSnippet6 {
 	public static void main(String[] args) {
 		Display d = new Display();
 		Shell shell = new Shell(d);
-		shell.setText("GraphJFaceSnippet2");
+		shell.setText("GraphJFaceSnippet2"); //$NON-NLS-1$
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		shell.setSize(400, 400);
 		viewer = new GraphViewer(shell, SWT.NONE);
@@ -136,19 +138,9 @@ public class GraphJFaceSnippet6 {
 		viewer.setInput(new Object());
 
 		Button button = new Button(shell, SWT.PUSH);
-		button.setText("push");
-		button.addSelectionListener(new SelectionListener() {
+		button.setText("push"); //$NON-NLS-1$
+		button.addListener(SWT.Selection, e -> viewer.setInput(new Object()));
 
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				viewer.setInput(new Object());
-			}
-
-		});
 		shell.open();
 		while (!shell.isDisposed()) {
 			while (!d.readAndDispatch()) {

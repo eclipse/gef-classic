@@ -65,8 +65,9 @@ public class PointListTests extends BaseTestCase {
 		assertFalse(points.intersects(new Rectangle(0, 0, 1, 1)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testAddPointGetPointInt() throws Exception {
+	public void testAddPointGetPointInt() {
 		PointList list = new PointList();
 		list.addPoint(10, 20);
 		list.addPoint(new Point(-90, 0));
@@ -88,8 +89,9 @@ public class PointListTests extends BaseTestCase {
 		assertThrows(IndexOutOfBoundsException.class, () -> list.getPoint(3));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testInsertPoint() throws Exception {
+	public void testInsertPoint() {
 		PointList list = new PointList();
 		//
 		// check insert point use wrong index
@@ -111,8 +113,9 @@ public class PointListTests extends BaseTestCase {
 		assertThrows(NullPointerException.class, () -> list.insertPoint(null, 0));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testRemovePoint() throws Exception {
+	public void testRemovePoint() {
 		PointList list = new PointList();
 		//
 		list.addPoint(10, -20);
@@ -144,7 +147,7 @@ public class PointListTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testRemoveAllPoints() throws Exception {
+	public void testRemoveAllPoints() {
 		PointList list = new PointList();
 		//
 		// check work removeAllPoints() when not childrens
@@ -165,8 +168,9 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(0, list.size());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSizeSetSize() throws Exception {
+	public void testSizeSetSize() {
 		assertEquals(0, new PointList().size());
 		assertEquals(0, new PointList(7).size());
 		//
@@ -194,8 +198,9 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(0, list.size());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testToIntArray() throws Exception {
+	public void testToIntArray() {
 		PointList list = new PointList(5);
 		list.addPoint(10, -20);
 		list.addPoint(-90, 0);
@@ -212,7 +217,7 @@ public class PointListTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetCopy() throws Exception {
+	public void testGetCopy() {
 		PointList list = new PointList();
 		list.addPoint(10, -20);
 		list.addPoint(-90, 0);
@@ -228,8 +233,9 @@ public class PointListTests extends BaseTestCase {
 		}
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetFirstPoint() throws Exception {
+	public void testGetFirstPoint() {
 		PointList list = new PointList();
 		//
 		list.addPoint(10, -20);
@@ -240,8 +246,9 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(10, -20, list.getFirstPoint());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetLastPoint() throws Exception {
+	public void testGetLastPoint() {
 		PointList list = new PointList();
 		//
 		list.addPoint(10, -20);
@@ -254,8 +261,9 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(120, 120, list.getLastPoint());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetMidpoint() throws Exception {
+	public void testGetMidpoint() {
 		PointList list = new PointList();
 		list.addPoint(10, -20);
 		list.addPoint(-90, 0);
@@ -270,8 +278,9 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(30, 30, list.getMidpoint());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetPointPointInt() throws Exception {
+	public void testGetPointPointInt() {
 		PointList list = new PointList();
 		list.addPoint(10, -20);
 		list.addPoint(40, 40);
@@ -295,8 +304,9 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(10, -20, point);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSetPointPointInt() throws Exception {
+	public void testSetPointPointInt() {
 		PointList list = new PointList();
 		list.addPoint(10, -20);
 		list.addPoint(40, 40);
@@ -325,8 +335,9 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(point, list.getPoint(0));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetBounds() throws Exception {
+	public void testGetBounds() {
 		PointList list = new PointList();
 		//
 		list.addPoint(10, 10);
@@ -342,8 +353,9 @@ public class PointListTests extends BaseTestCase {
 		assertSame(boundsNew, list.getBounds());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetSmallestBounds() throws Exception {
+	public void testGetSmallestBounds() {
 		PointList list = new PointList();
 		//
 		list.addPoint(10, 10);
@@ -374,8 +386,9 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(0, 0, 21, 21, list.getBounds());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testTranslate() throws Exception {
+	public void testTranslate() {
 		PointList list = new PointList();
 		for (int i = 0; i < 5; i++) {
 			list.addPoint(i, -i);

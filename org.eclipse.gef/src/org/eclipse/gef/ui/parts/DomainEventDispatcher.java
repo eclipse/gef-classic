@@ -58,7 +58,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	protected EditPartViewer viewer;
 	private boolean editorCaptured = false;
 	private Cursor overrideCursor;
-	private Map accessibles = new HashMap();
+	private final Map<Integer, AccessibleEditPart> accessibles = new HashMap<>();
 	private EditPartAccessibilityDispatcher accessibilityDispatcher;
 
 	/**
@@ -69,12 +69,13 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	protected class EditPartAccessibilityDispatcher extends AccessibilityDispatcher {
 		private AccessibleEditPart get(int childID) {
 			if (childID == ACC.CHILDID_SELF || childID == ACC.CHILDID_NONE) {
-				if (getViewer().getContents() != null)
+				if (getViewer().getContents() != null) {
 					return getViewer().getContents().getAdapter(AccessibleEditPart.class);
+				}
 
 				return null;
 			}
-			return (AccessibleEditPart) accessibles.get(Integer.valueOf(childID));
+			return accessibles.get(Integer.valueOf(childID));
 		}
 
 		/**
@@ -85,11 +86,13 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 			org.eclipse.swt.graphics.Point p = new org.eclipse.swt.graphics.Point(e.x, e.y);
 			p = getViewer().getControl().toControl(p);
 			EditPart part = getViewer().findObjectAt(new Point(p.x, p.y));
-			if (part == null)
+			if (part == null) {
 				return;
+			}
 			AccessibleEditPart acc = part.getAdapter(AccessibleEditPart.class);
-			if (acc != null)
+			if (acc != null) {
 				e.childID = acc.getAccessibleID();
+			}
 		}
 
 		/**
@@ -98,8 +101,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getChildCount(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getChildCount(e);
+			}
 		}
 
 		/**
@@ -108,8 +112,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getChildren(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getChildren(e);
+			}
 		}
 
 		/**
@@ -118,8 +123,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getDefaultAction(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getDefaultAction(e);
+			}
 		}
 
 		/**
@@ -128,8 +134,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getDescription(AccessibleEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getDescription(e);
+			}
 		}
 
 		/**
@@ -138,8 +145,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getFocus(AccessibleControlEvent e) {
 			AccessibleEditPart acc = getViewer().getFocusEditPart().getAdapter(AccessibleEditPart.class);
-			if (acc != null)
+			if (acc != null) {
 				e.childID = acc.getAccessibleID();
+			}
 		}
 
 		/**
@@ -148,8 +156,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getHelp(AccessibleEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getHelp(e);
+			}
 		}
 
 		/**
@@ -158,8 +167,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getKeyboardShortcut(AccessibleEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getKeyboardShortcut(e);
+			}
 		}
 
 		/**
@@ -168,8 +178,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getLocation(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getLocation(e);
+			}
 		}
 
 		/**
@@ -178,8 +189,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getName(AccessibleEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getName(e);
+			}
 		}
 
 		/**
@@ -188,8 +200,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getRole(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getRole(e);
+			}
 		}
 
 		/**
@@ -205,8 +218,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getState(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getState(e);
+			}
 		}
 
 		/**
@@ -215,8 +229,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		@Override
 		public void getValue(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
-			if (acc != null)
+			if (acc != null) {
 				acc.getValue(e);
+			}
 		}
 	}
 
@@ -258,11 +273,13 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) {
 		if (!editorCaptured) {
 			super.dispatchKeyPressed(e);
-			if (draw2dBusy())
+			if (draw2dBusy()) {
 				return;
+			}
 		}
-		if (okToDispatch())
+		if (okToDispatch()) {
 			domain.keyDown(e, viewer);
+		}
 	}
 
 	/**
@@ -272,11 +289,13 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	public void dispatchKeyTraversed(TraverseEvent e) {
 		if (!editorCaptured) {
 			super.dispatchKeyTraversed(e);
-			if (!e.doit)
+			if (!e.doit) {
 				return;
+			}
 		}
-		if (okToDispatch())
+		if (okToDispatch()) {
 			domain.keyTraversed(e, viewer);
+		}
 	}
 
 	/**
@@ -286,11 +305,13 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	public void dispatchKeyReleased(org.eclipse.swt.events.KeyEvent e) {
 		if (!editorCaptured) {
 			super.dispatchKeyReleased(e);
-			if (draw2dBusy())
+			if (draw2dBusy()) {
 				return;
+			}
 		}
-		if (okToDispatch())
+		if (okToDispatch()) {
 			domain.keyUp(e, viewer);
+		}
 	}
 
 	/**
@@ -300,11 +321,13 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseDoubleClicked(me);
-			if (draw2dBusy())
+			if (draw2dBusy()) {
 				return;
+			}
 		}
-		if (okToDispatch())
+		if (okToDispatch()) {
 			domain.mouseDoubleClick(me, viewer);
+		}
 	}
 
 	/**
@@ -314,8 +337,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	public void dispatchMouseEntered(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseEntered(me);
-			if (draw2dBusy())
+			if (draw2dBusy()) {
 				return;
+			}
 		}
 		if (okToDispatch()) {
 			domain.viewerEntered(me, viewer);
@@ -329,8 +353,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseExited(me);
-			if (draw2dBusy())
+			if (draw2dBusy()) {
 				return;
+			}
 		}
 		if (okToDispatch()) {
 			domain.viewerExited(me, viewer);
@@ -344,11 +369,13 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseHover(me);
-			if (draw2dBusy())
+			if (draw2dBusy()) {
 				return;
+			}
 		}
-		if (okToDispatch())
+		if (okToDispatch()) {
 			domain.mouseHover(me, viewer);
+		}
 	}
 
 	/**
@@ -358,8 +385,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMousePressed(me);
-			if (draw2dBusy())
+			if (draw2dBusy()) {
 				return;
+			}
 		}
 		if (okToDispatch()) {
 			setFocus(null);
@@ -376,14 +404,16 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseMoved(me);
-			if (draw2dBusy())
+			if (draw2dBusy()) {
 				return;
+			}
 		}
 		if (okToDispatch()) {
-			if ((me.stateMask & InputEvent.ANY_BUTTON) != 0)
+			if ((me.stateMask & InputEvent.ANY_BUTTON) != 0) {
 				domain.mouseDrag(me, viewer);
-			else
+			} else {
 				domain.mouseMove(me, viewer);
+			}
 		}
 	}
 
@@ -394,8 +424,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseReleased(me);
-			if (draw2dBusy())
+			if (draw2dBusy()) {
 				return;
+			}
 		}
 		if (okToDispatch()) {
 			setRouteEventsToEditor(false);
@@ -434,20 +465,20 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	 */
 	@Override
 	public void dispatchMouseWheelScrolled(Event evt) {
-		if (!editorCaptured)
+		if (!editorCaptured) {
 			super.dispatchMouseWheelScrolled(evt);
+		}
 
-		if (evt.doit && okToDispatch())
+		if (evt.doit && okToDispatch()) {
 			domain.mouseWheelScrolled(evt, viewer);
+		}
 	}
 
 	private boolean draw2dBusy() {
-		if (getCurrentEvent() != null)
-			if (getCurrentEvent().isConsumed())
-				return true;
-		if (isCaptured())
+		if (getCurrentEvent() != null && getCurrentEvent().isConsumed()) {
 			return true;
-		return false;
+		}
+		return isCaptured();
 	}
 
 	/**
@@ -457,8 +488,9 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	 */
 	@Override
 	protected AccessibilityDispatcher getAccessibilityDispatcher() {
-		if (accessibilityDispatcher == null)
+		if (accessibilityDispatcher == null) {
 			accessibilityDispatcher = new EditPartAccessibilityDispatcher();
+		}
 		return accessibilityDispatcher;
 	}
 
@@ -500,10 +532,11 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	 */
 	@Override
 	protected void setCursor(Cursor newCursor) {
-		if (overrideCursor == null)
+		if (overrideCursor == null) {
 			super.setCursor(newCursor);
-		else
+		} else {
 			super.setCursor(overrideCursor);
+		}
 	}
 
 	/**
@@ -522,13 +555,15 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	 * @param newCursor the cursor
 	 */
 	public void setOverrideCursor(Cursor newCursor) {
-		if (overrideCursor == newCursor)
+		if (overrideCursor == newCursor) {
 			return;
+		}
 		overrideCursor = newCursor;
-		if (overrideCursor == null)
+		if (overrideCursor == null) {
 			updateCursor();
-		else
+		} else {
 			setCursor(overrideCursor);
+		}
 	}
 
 }

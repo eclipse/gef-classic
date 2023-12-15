@@ -73,8 +73,9 @@ public class CreationTool extends TargetingTool {
 	@Override
 	protected void applyProperty(Object key, Object value) {
 		if (PROPERTY_CREATION_FACTORY.equals(key)) {
-			if (value instanceof CreationFactory)
-				setFactory((CreationFactory) value);
+			if (value instanceof CreationFactory cf) {
+				setFactory(cf);
+			}
 			return;
 		}
 		super.applyProperty(key, value);
@@ -174,8 +175,9 @@ public class CreationTool extends TargetingTool {
 			getCreateRequest().setLocation(getLocation());
 			lockTargetEditPart(getTargetEditPart());
 			// Snap only when size on drop is employed
-			if (getTargetEditPart() != null)
+			if (getTargetEditPart() != null) {
 				helper = getTargetEditPart().getAdapter(SnapToHelper.class);
+			}
 		}
 		return true;
 	}
@@ -246,8 +248,9 @@ public class CreationTool extends TargetingTool {
 	 */
 	@Override
 	protected boolean handleHover() {
-		if (isInState(STATE_INITIAL))
+		if (isInState(STATE_INITIAL)) {
 			updateAutoexposeHelper();
+		}
 		return true;
 	}
 
@@ -285,11 +288,12 @@ public class CreationTool extends TargetingTool {
 	 */
 	private void selectAddedObject(EditPartViewer viewer) {
 		final Object model = getCreateRequest().getNewObject();
-		if (model == null || viewer == null)
+		if (model == null || viewer == null) {
 			return;
+		}
 		Object editpart = viewer.getEditPartRegistry().get(model);
 		viewer.flush();
-		if (editpart != null && editpart instanceof EditPart && ((EditPart) editpart).isSelectable()) {
+		if (editpart instanceof EditPart ep && ep.isSelectable()) {
 			// Force the new object to get positioned in the viewer.
 			viewer.select((EditPart) editpart);
 		}

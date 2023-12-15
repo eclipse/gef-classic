@@ -87,7 +87,7 @@ public class Path {
 	private double prevCostRatio;
 	List segments;
 
-	private SegmentStack stack;
+	private final SegmentStack stack;
 	Vertex start, end;
 	private Path subPath;
 	double threshold;
@@ -188,20 +188,26 @@ public class Path {
 	private void addConnectingSegment(Segment segment, Obstacle o1, Obstacle o2, boolean checkTopRight1,
 			boolean checkTopRight2) {
 		if (threshold != 0 && (segment.end.getDistance(end) + segment.end.getDistance(start) > threshold
-				|| segment.start.getDistance(end) + segment.start.getDistance(start) > threshold))
+				|| segment.start.getDistance(end) + segment.start.getDistance(start) > threshold)) {
 			return;
+		}
 
-		if (o2.containsProper(segment.start) || o1.containsProper(segment.end))
+		if (o2.containsProper(segment.start) || o1.containsProper(segment.end)) {
 			return;
+		}
 
-		if (checkTopRight1 && segment.intersects(o1.x, o1.bottom() - 1, o1.right() - 1, o1.y))
+		if (checkTopRight1 && segment.intersects(o1.x, o1.bottom() - 1, o1.right() - 1, o1.y)) {
 			return;
-		if (checkTopRight2 && segment.intersects(o2.x, o2.bottom() - 1, o2.right() - 1, o2.y))
+		}
+		if (checkTopRight2 && segment.intersects(o2.x, o2.bottom() - 1, o2.right() - 1, o2.y)) {
 			return;
-		if (!checkTopRight1 && segment.intersects(o1.x, o1.y, o1.right() - 1, o1.bottom() - 1))
+		}
+		if (!checkTopRight1 && segment.intersects(o1.x, o1.y, o1.right() - 1, o1.bottom() - 1)) {
 			return;
-		if (!checkTopRight2 && segment.intersects(o2.x, o2.y, o2.right() - 1, o2.bottom() - 1))
+		}
+		if (!checkTopRight2 && segment.intersects(o2.x, o2.y, o2.right() - 1, o2.bottom() - 1)) {
 			return;
+		}
 
 		stack.push(o1);
 		stack.push(o2);
@@ -218,8 +224,9 @@ public class Path {
 		Iterator oItr = new HashSet(visibleObstacles).iterator();
 		while (oItr.hasNext()) {
 			Obstacle currObs = (Obstacle) oItr.next();
-			if (newObs != currObs)
+			if (newObs != currObs) {
 				addSegmentsFor(newObs, currObs);
+			}
 		}
 		addPerimiterSegments(newObs);
 		addSegmentsFor(start, newObs);
@@ -263,20 +270,23 @@ public class Path {
 	 */
 	private void addSegment(Segment segment, Obstacle exclude1, Obstacle exclude2, List allObstacles) {
 		if (threshold != 0 && (segment.end.getDistance(end) + segment.end.getDistance(start) > threshold
-				|| segment.start.getDistance(end) + segment.start.getDistance(start) > threshold))
+				|| segment.start.getDistance(end) + segment.start.getDistance(start) > threshold)) {
 			return;
+		}
 
-		for (int i = 0; i < allObstacles.size(); i++) {
-			Obstacle obs = (Obstacle) allObstacles.get(i);
+		for (Object obstacle : allObstacles) {
+			Obstacle obs = (Obstacle) obstacle;
 
-			if (obs == exclude1 || obs == exclude2 || obs.exclude)
+			if (obs == exclude1 || obs == exclude2 || obs.exclude) {
 				continue;
+			}
 
 			if (segment.intersects(obs.x, obs.y, obs.right() - 1, obs.bottom() - 1)
 					|| segment.intersects(obs.x, obs.bottom() - 1, obs.right() - 1, obs.y)
 					|| obs.containsProper(segment.start) || obs.containsProper(segment.end)) {
-				if (!visibleObstacles.contains(obs))
+				if (!visibleObstacles.contains(obs)) {
 					addObstacle(obs);
+				}
 				return;
 			}
 		}
@@ -291,16 +301,17 @@ public class Path {
 	 * @param target target obstacle
 	 */
 	private void addSegmentsFor(Obstacle source, Obstacle target) {
-		if (source.intersects(target))
+		if (source.intersects(target)) {
 			addAllSegmentsBetween(source, target);
-		else if (target.bottom() - 1 < source.y)
+		} else if (target.bottom() - 1 < source.y) {
 			addSegmentsTargetAboveSource(source, target);
-		else if (source.bottom() - 1 < target.y)
+		} else if (source.bottom() - 1 < target.y) {
 			addSegmentsTargetAboveSource(target, source);
-		else if (target.right() - 1 < source.x)
+		} else if (target.right() - 1 < source.x) {
 			addSegmentsTargetBesideSource(source, target);
-		else
+		} else {
 			addSegmentsTargetBesideSource(target, source);
+		}
 	}
 
 	/**
@@ -372,10 +383,11 @@ public class Path {
 		Segment seg2 = null;
 		if (target.x > source.x) {
 			seg = new Segment(source.topLeft, target.topLeft);
-			if (target.x < source.right() - 1)
+			if (target.x < source.right() - 1) {
 				seg2 = new Segment(source.topRight, target.bottomLeft);
-			else
+			} else {
 				seg2 = new Segment(source.bottomRight, target.topLeft);
+			}
 		} else if (source.x == target.x) {
 			seg = new Segment(source.topLeft, target.bottomLeft);
 			seg2 = new Segment(source.topRight, target.bottomLeft);
@@ -395,10 +407,11 @@ public class Path {
 
 		if (target.right() < source.right()) {
 			seg = new Segment(source.topRight, target.topRight);
-			if (target.right() - 1 > source.x)
+			if (target.right() - 1 > source.x) {
 				seg2 = new Segment(source.topLeft, target.bottomRight);
-			else
+			} else {
 				seg2 = new Segment(source.bottomLeft, target.topRight);
+			}
 		} else if (source.right() == target.right()) {
 			seg = new Segment(source.topRight, target.bottomRight);
 			seg2 = new Segment(source.topLeft, target.bottomRight);
@@ -421,10 +434,11 @@ public class Path {
 		Segment seg2 = null;
 		if (target.y > source.y) {
 			seg = new Segment(source.topLeft, target.topLeft);
-			if (target.y < source.bottom() - 1)
+			if (target.y < source.bottom() - 1) {
 				seg2 = new Segment(source.bottomLeft, target.topRight);
-			else
+			} else {
 				seg2 = new Segment(source.bottomRight, target.topLeft);
+			}
 		} else if (source.y == target.y) {
 			// degenerate case
 			seg = new Segment(source.topLeft, target.topRight);
@@ -444,10 +458,11 @@ public class Path {
 
 		if (target.bottom() < source.bottom()) {
 			seg = new Segment(source.bottomLeft, target.bottomLeft);
-			if (target.bottom() - 1 > source.y)
+			if (target.bottom() - 1 > source.y) {
 				seg2 = new Segment(source.topLeft, target.bottomRight);
-			else
+			} else {
 				seg2 = new Segment(source.topRight, target.bottomLeft);
+			}
 		} else if (source.bottom() == target.bottom()) {
 			seg = new Segment(source.bottomLeft, target.bottomRight);
 			seg2 = new Segment(source.topLeft, target.bottomRight);
@@ -481,8 +496,9 @@ public class Path {
 		stack.push(null);
 		stack.push(new Segment(start, end));
 
-		while (!stack.isEmpty())
+		while (!stack.isEmpty()) {
 			addSegment(stack.pop(), stack.popObstacle(), stack.popObstacle(), allObstacles);
+		}
 	}
 
 	/**
@@ -492,16 +508,18 @@ public class Path {
 	 * @return true if a path can be found.
 	 */
 	private boolean determineShortestPath() {
-		if (!labelGraph())
+		if (!labelGraph()) {
 			return false;
+		}
 		Vertex vertex = end;
 		prevCostRatio = end.cost / start.getDistance(end);
 
 		Vertex nextVertex;
 		while (!vertex.equals(start)) {
 			nextVertex = vertex.label;
-			if (nextVertex == null)
+			if (nextVertex == null) {
 				return false;
+			}
 			Segment s = new Segment(nextVertex, vertex);
 			segments.add(s);
 			vertex = nextVertex;
@@ -520,8 +538,9 @@ public class Path {
 		if (prevCostRatio == 0) {
 			double distance = start.getDistance(end);
 			threshold = distance * OVAL_CONSTANT;
-		} else
+		} else {
 			threshold = prevCostRatio * EPSILON * start.getDistance(end);
+		}
 		visibleObstacles.clear();
 		resetPartial();
 	}
@@ -536,8 +555,9 @@ public class Path {
 	boolean generateShortestPath(List allObstacles) {
 		createVisibilityGraph(allObstacles);
 
-		if (visibleVertices.size() == 0)
+		if (visibleVertices.isEmpty()) {
 			return false;
+		}
 
 		return determineShortestPath();
 	}
@@ -611,10 +631,11 @@ public class Path {
 		int stop = grownSegments.indexOf(currentSegment);
 		for (int i = 0; i < stop; i++) {
 			Vertex vertex = ((Segment) grownSegments.get(i)).end;
-			if (vertex.type == Vertex.INNIE)
+			if (vertex.type == Vertex.INNIE) {
 				vertex.type = Vertex.OUTIE;
-			else
+			} else {
 				vertex.type = Vertex.INNIE;
+			}
 		}
 	}
 
@@ -641,11 +662,12 @@ public class Path {
 		double newCost;
 		while (numPermanentNodes != visibleVertices.size()) {
 			List neighbors = vertex.neighbors;
-			if (neighbors == null)
+			if (neighbors == null) {
 				return false;
+			}
 			// label neighbors if they have a new shortest path
-			for (int i = 0; i < neighbors.size(); i++) {
-				neighborVertex = (Vertex) neighbors.get(i);
+			for (Object neighbor : neighbors) {
+				neighborVertex = (Vertex) neighbor;
 				if (!neighborVertex.isPermanent) {
 					newCost = vertex.cost + vertex.getDistance(neighborVertex);
 					if (neighborVertex.label == null) {
@@ -682,10 +704,12 @@ public class Path {
 	 * @param segment the segment to add
 	 */
 	private void linkVertices(Segment segment) {
-		if (segment.start.neighbors == null)
+		if (segment.start.neighbors == null) {
 			segment.start.neighbors = new ArrayList();
-		if (segment.end.neighbors == null)
+		}
+		if (segment.end.neighbors == null) {
 			segment.end.neighbors = new ArrayList();
+		}
 
 		if (!segment.start.neighbors.contains(segment.end)) {
 			segment.start.neighbors.add(segment.end);
@@ -735,9 +759,9 @@ public class Path {
 			o.exclude = false;
 
 			if (o.contains(start)) {
-				if (o.containsProper(start))
+				if (o.containsProper(start)) {
 					o.exclude = true;
-				else {
+				} else {
 					/*
 					 * $TODO Check for corners. If the path begins exactly at the corner of an
 					 * obstacle, the exclude should also be true.
@@ -749,15 +773,16 @@ public class Path {
 			}
 
 			if (o.contains(end)) {
-				if (o.containsProper(end))
+				if (o.containsProper(end)) {
 					o.exclude = true;
-				else {
+				} else {
 					// check for corners. See above statement.
 				}
 			}
 
-			if (o.exclude && !excludedObstacles.contains(o))
+			if (o.exclude && !excludedObstacles.contains(o)) {
 				excludedObstacles.add(o);
+			}
 		}
 	}
 
@@ -790,8 +815,9 @@ public class Path {
 	 * @param end the new end point for this path
 	 */
 	public void setEndPoint(Point end) {
-		if (end.equals(this.end))
+		if (end.equals(this.end)) {
 			return;
+		}
 		this.end = new Vertex(end, null);
 		isDirty = true;
 	}
@@ -802,8 +828,9 @@ public class Path {
 	 * @param start the new start point for this path
 	 */
 	public void setStartPoint(Point start) {
-		if (start.equals(this.start))
+		if (start.equals(this.start)) {
 			return;
+		}
 		this.start = new Vertex(start, null);
 		isDirty = true;
 	}
@@ -817,12 +844,14 @@ public class Path {
 	 * @return <code>true</code> if a clean path touches the obstacle
 	 */
 	boolean testAndSet(Obstacle obs) {
-		if (isDirty)
+		if (isDirty) {
 			return false;
+		}
 		// This will never actually happen because obstacles are not stored by
 		// identity
-		if (excludedObstacles.contains(obs))
+		if (excludedObstacles.contains(obs)) {
 			return false;
+		}
 
 		Segment seg1 = new Segment(obs.topLeft, obs.bottomRight);
 		Segment seg2 = new Segment(obs.topRight, obs.bottomLeft);

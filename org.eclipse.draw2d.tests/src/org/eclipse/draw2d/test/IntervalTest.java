@@ -24,18 +24,21 @@ import org.junit.Test;
  */
 public class IntervalTest extends BaseTestCase {
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructor() throws Exception {
+	public void testConstructor() {
 		assertEquals(0, 0, new Interval());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorIntInt() throws Exception {
+	public void testConstructorIntInt() {
 		assertEquals(-1, 2, new Interval(-1, 2));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorInterval() throws Exception {
+	public void testConstructorInterval() {
 		Interval template = new Interval(-1, 2);
 		assertEquals(-1, 2, new Interval(template));
 		assertEquals(-1, 2, template); // assert read only argument interval
@@ -43,7 +46,7 @@ public class IntervalTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetCopy() throws Exception {
+	public void testGetCopy() {
 		Interval template = new Interval(-1, 2);
 		Interval testInterval = template.getCopy();
 		assertNotNull(testInterval);
@@ -51,8 +54,9 @@ public class IntervalTest extends BaseTestCase {
 		assertEquals(template, testInterval);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testEnd() throws Exception {
+	public void testEnd() {
 		Interval interval = new Interval(1, 2);
 		assertEquals(3, interval.end());
 		assertEquals(1, 2, interval);
@@ -60,7 +64,7 @@ public class IntervalTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testIsEmpty() throws Exception {
+	public void testIsEmpty() {
 		Interval interval = new Interval();
 		assertTrue(interval.isEmpty());
 
@@ -70,7 +74,7 @@ public class IntervalTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testCenter() throws Exception {
+	public void testCenter() {
 		Interval interval = new Interval(1, 2);
 		assertEquals(2, interval.center());
 
@@ -87,7 +91,7 @@ public class IntervalTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testDistance() throws Exception {
+	public void testDistance() {
 		Interval interval = new Interval(10, 100);
 		assertEquals(7, interval.distance(3));
 		assertEquals(0, interval.distance(10));
@@ -98,7 +102,7 @@ public class IntervalTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testContains() throws Exception {
+	public void testContains() {
 		Interval interval = new Interval(1, 2);
 		assertFalse(interval.contains(0));
 		assertTrue(interval.contains(1));
@@ -109,7 +113,7 @@ public class IntervalTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testIntersects() throws Exception {
+	public void testIntersects() {
 		// not intersects
 		Interval interval1 = new Interval(10, 20);
 		Interval interval2 = new Interval(2, 6);
@@ -131,7 +135,7 @@ public class IntervalTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testIsLeadingOf() throws Exception {
+	public void testIsLeadingOf() {
 		Interval interval1 = new Interval(10, 20);
 		Interval interval2 = new Interval(15, 20);
 		assertTrue(interval1.isLeadingOf(interval2));
@@ -140,7 +144,7 @@ public class IntervalTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testIsTrailingOf() throws Exception {
+	public void testIsTrailingOf() {
 		Interval interval1 = new Interval(10, 20);
 		Interval interval2 = new Interval(15, 20);
 		assertFalse(interval1.isTrailingOf(interval2));
@@ -149,7 +153,7 @@ public class IntervalTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetIntersection() throws Exception {
+	public void testGetIntersection() {
 		// intervals intersect
 		Interval interval1 = new Interval(10, 20);
 		Interval interval2 = new Interval(15, 20);
@@ -168,8 +172,9 @@ public class IntervalTest extends BaseTestCase {
 		assertTrue(intersection.length() == 0);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGrowLeading() throws Exception {
+	public void testGrowLeading() {
 		// to right
 		Interval interval = new Interval(1, 2);
 		assertEquals(3, 0, interval.growLeading(2));
@@ -178,8 +183,9 @@ public class IntervalTest extends BaseTestCase {
 		assertEquals(0, 3, interval.growLeading(-1));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGrowTrailing() throws Exception {
+	public void testGrowTrailing() {
 		// to right
 		Interval interval = new Interval(1, 2);
 		assertEquals(1, 4, interval.growTrailing(2));
@@ -191,7 +197,7 @@ public class IntervalTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetRightMostIntervalIndex() throws Exception {
+	public void testGetRightMostIntervalIndex() {
 		Interval[] intervals = { new Interval(1, 5), new Interval(8, 1) };
 		assertEquals(-1, Interval.getRightMostIntervalIndex(intervals, 3));
 		assertEquals(0, Interval.getRightMostIntervalIndex(intervals, 7));

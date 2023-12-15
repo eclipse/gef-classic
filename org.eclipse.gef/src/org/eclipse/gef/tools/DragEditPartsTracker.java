@@ -57,10 +57,11 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	static final int MODIFIER_CLONE;
 
 	static {
-		if (Platform.OS_MACOSX.equals(Platform.getOS()))
+		if (Platform.OS_MACOSX.equals(Platform.getOS())) {
 			MODIFIER_CLONE = SWT.ALT;
-		else
+		} else {
 			MODIFIER_CLONE = SWT.CTRL;
+		}
 	}
 
 	/**
@@ -74,7 +75,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	private List<IFigure> exclusionSet;
 	private PrecisionPoint sourceRelativeStartPoint;
 	private SnapToHelper snapToHelper;
-	private PrecisionRectangle sourceRectangle, compoundSrcRect;
+	private PrecisionRectangle sourceRectangle;
+	private PrecisionRectangle compoundSrcRect;
 	private boolean cloneActive;
 
 	/**
@@ -98,8 +100,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	private boolean acceptClone(KeyEvent e) {
 		int key = e.keyCode;
-		if (!(isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)))
+		if (!(isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))) {
 			return false;
+		}
 		return (key == MODIFIER_CLONE);
 	}
 
@@ -116,8 +119,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	@Override
 	protected Cursor getDefaultCursor() {
-		if (isCloneActive())
+		if (isCloneActive()) {
 			return SharedCursors.CURSOR_TREE_ADD;
+		}
 		return super.getDefaultCursor();
 	}
 
@@ -181,29 +185,33 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	private void captureSourceDimensions() {
 		List editparts = getOperationSet();
-		for (int i = 0; i < editparts.size(); i++) {
-			GraphicalEditPart child = (GraphicalEditPart) editparts.get(i);
+		for (Object editpart : editparts) {
+			GraphicalEditPart child = (GraphicalEditPart) editpart;
 			IFigure figure = child.getFigure();
 			PrecisionRectangle bounds = null;
-			if (figure instanceof HandleBounds)
-				bounds = new PrecisionRectangle(((HandleBounds) figure).getHandleBounds());
-			else
+			if (figure instanceof HandleBounds hb) {
+				bounds = new PrecisionRectangle(hb.getHandleBounds());
+			} else {
 				bounds = new PrecisionRectangle(figure.getBounds());
+			}
 			figure.translateToAbsolute(bounds);
 
-			if (compoundSrcRect == null)
+			if (compoundSrcRect == null) {
 				compoundSrcRect = new PrecisionRectangle(bounds);
-			else
+			} else {
 				compoundSrcRect = compoundSrcRect.union(bounds);
-			if (child == getSourceEditPart())
+			}
+			if (child == getSourceEditPart()) {
 				sourceRectangle = bounds;
+			}
 		}
 		if (sourceRectangle == null) {
 			IFigure figure = ((GraphicalEditPart) getSourceEditPart()).getFigure();
-			if (figure instanceof HandleBounds)
+			if (figure instanceof HandleBounds) {
 				sourceRectangle = new PrecisionRectangle(((HandleBounds) figure).getHandleBounds());
-			else
+			} else {
 				sourceRectangle = new PrecisionRectangle(figure.getBounds());
+			}
 			figure.translateToAbsolute(sourceRectangle);
 		}
 	}
@@ -238,10 +246,10 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	@Override
 	protected Request createTargetRequest() {
-		if (isCloneActive())
+		if (isCloneActive()) {
 			return new ChangeBoundsRequest(REQ_CLONE);
-		else
-			return new ChangeBoundsRequest(REQ_MOVE);
+		}
+		return new ChangeBoundsRequest(REQ_MOVE);
 	}
 
 	/**
@@ -265,12 +273,13 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * set} to erase their source feedback.
 	 */
 	protected void eraseSourceFeedback() {
-		if (!getFlag(FLAG_SOURCE_FEEDBACK))
+		if (!getFlag(FLAG_SOURCE_FEEDBACK)) {
 			return;
+		}
 		setFlag(FLAG_SOURCE_FEEDBACK, false);
 		List editParts = getOperationSet();
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart editPart = (EditPart) editParts.get(i);
+		for (Object editPart2 : editParts) {
+			EditPart editPart = (EditPart) editPart2;
 			editPart.eraseSourceFeedback(getTargetRequest());
 		}
 	}
@@ -293,12 +302,13 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 		Request request = getTargetRequest();
 
-		if (isCloneActive())
+		if (isCloneActive()) {
 			request.setType(REQ_CLONE);
-		else if (isMove())
+		} else if (isMove()) {
 			request.setType(REQ_MOVE);
-		else
+		} else {
 			request.setType(REQ_ORPHAN);
+		}
 
 		if (!isCloneActive()) {
 			while (iter.hasNext()) {
@@ -308,13 +318,15 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		}
 
 		if (!isMove() || isCloneActive()) {
-			if (!isCloneActive())
+			if (!isCloneActive()) {
 				request.setType(REQ_ADD);
+			}
 
-			if (getTargetEditPart() == null)
+			if (getTargetEditPart() == null) {
 				command.add(UnexecutableCommand.INSTANCE);
-			else
+			} else {
 				command.add(getTargetEditPart().getCommand(getTargetRequest()));
+			}
 		}
 
 		return command.unwrap();
@@ -325,12 +337,13 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	@Override
 	protected String getCommandName() {
-		if (isCloneActive())
+		if (isCloneActive()) {
 			return REQ_CLONE;
-		else if (isMove())
+		}
+		if (isMove()) {
 			return REQ_MOVE;
-		else
-			return REQ_ADD;
+		}
+		return REQ_ADD;
 	}
 
 	/**
@@ -353,8 +366,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		if (exclusionSet == null) {
 			List set = getOperationSet();
 			exclusionSet = new ArrayList<>(set.size() + 1);
-			for (int i = 0; i < set.size(); i++) {
-				GraphicalEditPart editpart = (GraphicalEditPart) set.get(i);
+			for (Object element : set) {
+				GraphicalEditPart editpart = (GraphicalEditPart) element;
 				exclusionSet.add(editpart.getFigure());
 			}
 			LayerManager layerManager = (LayerManager) getCurrentViewer().getEditPartRegistry().get(LayerManager.ID);
@@ -403,8 +416,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	protected boolean handleDragInProgress() {
 		if (isInDragInProgress()) {
 			updateTargetRequest();
-			if (updateTargetUnderMouse())
+			if (updateTargetUnderMouse()) {
 				updateTargetRequest();
+			}
 			showTargetFeedback();
 			showSourceFeedback();
 			setCurrentCommand(getCommand());
@@ -420,8 +434,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	@Override
 	protected boolean handleHover() {
-		if (isInDragInProgress())
+		if (isInDragInProgress()) {
 			updateAutoexposeHelper();
+		}
 		return true;
 	}
 
@@ -447,8 +462,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		setAutoexposeHelper(null);
 		if (acceptArrowKey(e)) {
 			accStepIncrement();
-			if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+			if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 				setStartLocation(getLocation());
+			}
 			switch (e.keyCode) {
 			case SWT.ARROW_DOWN:
 				placeMouseInViewer(getLocation().getTranslated(0, accGetStep()));
@@ -458,23 +474,27 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 				break;
 			case SWT.ARROW_RIGHT:
 				int stepping = accGetStep();
-				if (isCurrentViewerMirrored())
+				if (isCurrentViewerMirrored()) {
 					stepping = -stepping;
+				}
 				placeMouseInViewer(getLocation().getTranslated(stepping, 0));
 				break;
 			case SWT.ARROW_LEFT:
 				int step = -accGetStep();
-				if (isCurrentViewerMirrored())
+				if (isCurrentViewerMirrored()) {
 					step = -step;
+				}
 				placeMouseInViewer(getLocation().getTranslated(step, 0));
 				break;
 			}
 			return true;
-		} else if (acceptClone(e)) {
+		}
+		if (acceptClone(e)) {
 			setCloneActive(true);
 			handleDragInProgress();
 			return true;
-		} else if (acceptSHIFT(e)) {
+		}
+		if (acceptSHIFT(e)) {
 			handleDragInProgress();
 			return true;
 		}
@@ -493,11 +513,13 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		if (acceptArrowKey(e)) {
 			accStepReset();
 			return true;
-		} else if (acceptClone(e)) {
+		}
+		if (acceptClone(e)) {
 			setCloneActive(false);
 			handleDragInProgress();
 			return true;
-		} else if (acceptSHIFT(e)) {
+		}
+		if (acceptSHIFT(e)) {
 			handleDragInProgress();
 			return true;
 		}
@@ -523,8 +545,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	protected boolean isMove() {
 		EditPart part = getSourceEditPart();
 		while (part != getTargetEditPart() && part != null) {
-			if (part.getParent() == getTargetEditPart() && part.getSelected() != EditPart.SELECTED_NONE)
+			if (part.getParent() == getTargetEditPart() && part.getSelected() != EditPart.SELECTED_NONE) {
 				return true;
+			}
 			part = part.getParent();
 		}
 		return false;
@@ -542,8 +565,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * location moves during the scroll. This method updates that location.
 	 */
 	protected void repairStartLocation() {
-		if (sourceRelativeStartPoint == null)
+		if (sourceRelativeStartPoint == null) {
 			return;
+		}
 		IFigure figure = ((GraphicalEditPart) getSourceEditPart()).getFigure();
 		PrecisionPoint newStart = (PrecisionPoint) sourceRelativeStartPoint.getCopy();
 		figure.translateToAbsolute(newStart);
@@ -551,10 +575,12 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		setStartLocation(newStart);
 		// sourceRectangle and compoundSrcRect need to be updated as well when
 		// auto-scrolling
-		if (sourceRectangle != null)
+		if (sourceRectangle != null) {
 			sourceRectangle.translate(delta);
-		if (compoundSrcRect != null)
+		}
+		if (compoundSrcRect != null) {
 			compoundSrcRect.translate(delta);
+		}
 	}
 
 	/**
@@ -576,8 +602,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * @param cloneActive <code>true</code> if cloning should be active
 	 */
 	protected void setCloneActive(boolean cloneActive) {
-		if (this.cloneActive == cloneActive)
+		if (this.cloneActive == cloneActive) {
 			return;
+		}
 		eraseSourceFeedback();
 		eraseTargetFeedback();
 		this.cloneActive = cloneActive;
@@ -590,12 +617,14 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	@Override
 	protected void setTargetEditPart(EditPart editpart) {
-		if (getTargetEditPart() == editpart)
+		if (getTargetEditPart() == editpart) {
 			return;
+		}
 		super.setTargetEditPart(editpart);
 		snapToHelper = null;
-		if (getTargetEditPart() != null && getOperationSet().size() > 0)
+		if (getTargetEditPart() != null && !getOperationSet().isEmpty()) {
 			snapToHelper = getTargetEditPart().getAdapter(SnapToHelper.class);
+		}
 	}
 
 	/**
@@ -604,8 +633,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	protected void showSourceFeedback() {
 		List editParts = getOperationSet();
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart editPart = (EditPart) editParts.get(i);
+		for (Object editPart2 : editParts) {
+			EditPart editPart = (EditPart) editPart2;
 			editPart.showSourceFeedback(getTargetRequest());
 		}
 		setFlag(FLAG_SOURCE_FEEDBACK, true);
@@ -629,8 +658,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 			}
 		}
 
-		if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+		if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			captureSourceDimensions();
+		}
 	}
 
 	/**
@@ -654,27 +684,31 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		if (request.isConstrainedMove()) {
 			float ratio = 0;
 
-			if (delta.width != 0)
+			if (delta.width != 0) {
 				ratio = (float) delta.height / (float) delta.width;
+			}
 
 			ratio = Math.abs(ratio);
 			if (ratio > 0.5 && ratio < 1.5) {
 				if (Math.abs(delta.height) > Math.abs(delta.width)) {
-					if (delta.height > 0)
+					if (delta.height > 0) {
 						delta.height = Math.abs(delta.width);
-					else
+					} else {
 						delta.height = -Math.abs(delta.width);
+					}
 				} else {
-					if (delta.width > 0)
+					if (delta.width > 0) {
 						delta.width = Math.abs(delta.height);
-					else
+					} else {
 						delta.width = -Math.abs(delta.height);
+					}
 				}
 			} else {
-				if (Math.abs(delta.width) > Math.abs(delta.height))
+				if (Math.abs(delta.width) > Math.abs(delta.height)) {
 					delta.height = 0;
-				else
+				} else {
 					delta.width = 0;
+				}
 			}
 		}
 

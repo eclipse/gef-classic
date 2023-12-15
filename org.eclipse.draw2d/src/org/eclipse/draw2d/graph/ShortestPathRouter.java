@@ -69,14 +69,14 @@ public class ShortestPathRouter {
 	private int spacing = 4;
 	private boolean growPassChangedObstacles;
 	private List orderedPaths;
-	private Map pathsToChildPaths;
+	private final Map pathsToChildPaths;
 
 	private PathStack stack;
 	private List subPaths;
 
-	private List userObstacles;
-	private List userPaths;
-	private List workingPaths;
+	private final List userObstacles;
+	private final List userPaths;
+	private final List workingPaths;
 
 	/**
 	 * Creates a new shortest path routing.
@@ -112,8 +112,8 @@ public class ShortestPathRouter {
 	 * Fills the point lists of the Paths to the correct bent points.
 	 */
 	private void bendPaths() {
-		for (int i = 0; i < orderedPaths.size(); i++) {
-			Path path = (Path) orderedPaths.get(i);
+		for (Object orderedPath : orderedPaths) {
+			Path path = (Path) orderedPath;
 			Segment segment = null;
 			path.points.addPoint(new Point(path.start.x, path.start.y));
 			for (int v = 0; v < path.grownSegments.size(); v++) {
@@ -140,44 +140,50 @@ public class ShortestPathRouter {
 	 * @param vertex the vertex to check
 	 */
 	private void checkVertexForIntersections(Vertex vertex) {
-		if (vertex.nearestObstacle != 0 || vertex.nearestObstacleChecked)
+		if (vertex.nearestObstacle != 0 || vertex.nearestObstacleChecked) {
 			return;
+		}
 		int sideLength, x, y;
 
 		sideLength = 2 * (vertex.totalCount * getSpacing()) + 1;
 
-		if ((vertex.positionOnObstacle & PositionConstants.NORTH) > 0)
+		if ((vertex.positionOnObstacle & PositionConstants.NORTH) > 0) {
 			y = vertex.y - sideLength;
-		else
+		} else {
 			y = vertex.y;
-		if ((vertex.positionOnObstacle & PositionConstants.EAST) > 0)
+		}
+		if ((vertex.positionOnObstacle & PositionConstants.EAST) > 0) {
 			x = vertex.x;
-		else
+		} else {
 			x = vertex.x - sideLength;
+		}
 
 		Rectangle r = new Rectangle(x, y, sideLength, sideLength);
 
 		int xDist, yDist;
 
-		for (int o = 0; o < userObstacles.size(); o++) {
-			Obstacle obs = (Obstacle) userObstacles.get(o);
+		for (Object userObstacle : userObstacles) {
+			Obstacle obs = (Obstacle) userObstacle;
 			if (obs != vertex.obs && r.intersects(obs)) {
 				int pos = obs.getPosition(vertex);
-				if (pos == 0)
+				if (pos == 0) {
 					continue;
+				}
 
-				if ((pos & PositionConstants.NORTH) > 0)
+				if ((pos & PositionConstants.NORTH) > 0) {
 					// use top
 					yDist = obs.y - vertex.y;
-				else
+				} else {
 					// use bottom
 					yDist = vertex.y - obs.bottom() + 1;
-				if ((pos & PositionConstants.EAST) > 0)
+				}
+				if ((pos & PositionConstants.EAST) > 0) {
 					// use right
 					xDist = vertex.x - obs.right() + 1;
-				else
+				} else {
 					// use left
 					xDist = obs.x - vertex.x;
+				}
 
 				if (Math.max(xDist, yDist) < vertex.nearestObstacle || vertex.nearestObstacle == 0) {
 					vertex.nearestObstacle = Math.max(xDist, yDist);
@@ -194,8 +200,8 @@ public class ShortestPathRouter {
 	 * Checks all vertices along paths for intersections
 	 */
 	private void checkVertexIntersections() {
-		for (int i = 0; i < workingPaths.size(); i++) {
-			Path path = (Path) workingPaths.get(i);
+		for (Object workingPath : workingPaths) {
+			Path path = (Path) workingPath;
 
 			for (int s = 0; s < path.segments.size() - 1; s++) {
 				Vertex vertex = ((Segment) path.segments.get(s)).end;
@@ -208,8 +214,8 @@ public class ShortestPathRouter {
 	 * Frees up fields which aren't needed between invocations.
 	 */
 	private void cleanup() {
-		for (int i = 0; i < workingPaths.size(); i++) {
-			Path path = (Path) workingPaths.get(i);
+		for (Object workingPath : workingPaths) {
+			Path path = (Path) workingPath;
 			path.cleanup();
 		}
 	}
@@ -219,10 +225,11 @@ public class ShortestPathRouter {
 	 * count.
 	 */
 	private void countVertices() {
-		for (int i = 0; i < workingPaths.size(); i++) {
-			Path path = (Path) workingPaths.get(i);
-			for (int v = 0; v < path.segments.size() - 1; v++)
+		for (Object workingPath : workingPaths) {
+			Path path = (Path) workingPath;
+			for (int v = 0; v < path.segments.size() - 1; v++) {
 				((Segment) path.segments.get(v)).end.totalCount++;
+			}
 		}
 	}
 
@@ -233,9 +240,10 @@ public class ShortestPathRouter {
 	 */
 	private boolean dirtyPathsOn(Vertex vertex) {
 		List paths = vertex.paths;
-		if (paths != null && paths.size() != 0) {
-			for (int i = 0; i < paths.size(); i++)
-				((Path) paths.get(i)).isDirty = true;
+		if (paths != null && !paths.isEmpty()) {
+			for (Object path : paths) {
+				((Path) path).isDirty = true;
+			}
 			return true;
 		}
 		return false;
@@ -271,10 +279,10 @@ public class ShortestPathRouter {
 	 */
 	private Vertex getNearestVertex(Vertex v1, Vertex v2, Segment segment) {
 		if (segment.start.getDistance(v1) + segment.end.getDistance(v1) > segment.start.getDistance(v2)
-				+ segment.end.getDistance(v2))
+				+ segment.end.getDistance(v2)) {
 			return v2;
-		else
-			return v1;
+		}
+		return v1;
 	}
 
 	/**
@@ -308,8 +316,9 @@ public class ShortestPathRouter {
 	private void growObstacles() {
 		growPassChangedObstacles = false;
 		for (int i = 0; i < NUM_GROW_PASSES; i++) {
-			if (i == 0 || growPassChangedObstacles)
+			if (i == 0 || growPassChangedObstacles) {
 				growObstaclesPass();
+			}
 		}
 	}
 
@@ -319,34 +328,40 @@ public class ShortestPathRouter {
 	 */
 	private void growObstaclesPass() {
 		// grow obstacles
-		for (int i = 0; i < userObstacles.size(); i++)
-			((Obstacle) userObstacles.get(i)).growVertices();
+		for (Object userObstacle : userObstacles) {
+			((Obstacle) userObstacle).growVertices();
+		}
 
 		// go through paths and test segments
-		for (int i = 0; i < workingPaths.size(); i++) {
-			Path path = (Path) workingPaths.get(i);
+		for (Object workingPath : workingPaths) {
+			Path path = (Path) workingPath;
 
-			for (int e = 0; e < path.excludedObstacles.size(); e++)
-				((Obstacle) path.excludedObstacles.get(e)).exclude = true;
+			for (Object element : path.excludedObstacles) {
+				((Obstacle) element).exclude = true;
+			}
 
-			if (path.grownSegments.size() == 0) {
-				for (int s = 0; s < path.segments.size(); s++)
-					testOffsetSegmentForIntersections((Segment) path.segments.get(s), -1, path);
+			if (path.grownSegments.isEmpty()) {
+				for (Object element : path.segments) {
+					testOffsetSegmentForIntersections((Segment) element, -1, path);
+				}
 			} else {
 				int counter = 0;
 				List currentSegments = new ArrayList(path.grownSegments);
-				for (int s = 0; s < currentSegments.size(); s++)
+				for (int s = 0; s < currentSegments.size(); s++) {
 					counter += testOffsetSegmentForIntersections((Segment) currentSegments.get(s), s + counter, path);
+				}
 			}
 
-			for (int e = 0; e < path.excludedObstacles.size(); e++)
-				((Obstacle) path.excludedObstacles.get(e)).exclude = false;
+			for (Object element : path.excludedObstacles) {
+				((Obstacle) element).exclude = false;
+			}
 
 		}
 
 		// revert obstacles
-		for (int i = 0; i < userObstacles.size(); i++)
-			((Obstacle) userObstacles.get(i)).shrinkVertices();
+		for (Object userObstacle : userObstacles) {
+			((Obstacle) userObstacle).shrinkVertices();
+		}
 	}
 
 	/**
@@ -384,12 +399,14 @@ public class ShortestPathRouter {
 		result |= dirtyPathsOn(obs.bottomRight);
 		result |= dirtyPathsOn(obs.topRight);
 
-		for (int p = 0; p < workingPaths.size(); p++) {
-			Path path = (Path) workingPaths.get(p);
-			if (path.isDirty)
+		for (Object workingPath : workingPaths) {
+			Path path = (Path) workingPath;
+			if (path.isDirty) {
 				continue;
-			if (path.isObstacleVisible(obs))
+			}
+			if (path.isObstacleVisible(obs)) {
 				path.isDirty = result = true;
+			}
 		}
 
 		return result;
@@ -420,21 +437,21 @@ public class ShortestPathRouter {
 					// split detected.
 					stack.push(getSubpathForSplit(path, segment));
 					return;
-				} else {
-					path.isInverted = true;
-					path.invertPriorVertices(segment);
 				}
+				path.isInverted = true;
+				path.invertPriorVertices(segment);
 			} else if (path.isInverted && ((crossProduct < 0 && vertex.type == Vertex.OUTIE)
 					|| (crossProduct > 0 && vertex.type == Vertex.INNIE))) {
 				// split detected.
 				stack.push(getSubpathForSplit(path, segment));
 				return;
-			} else
+			} else {
 				agree = true;
+			}
 
 			if (vertex.paths != null) {
-				for (int i = 0; i < vertex.paths.size(); i++) {
-					Path nextPath = (Path) vertex.paths.get(i);
+				for (Object element : vertex.paths) {
+					Path nextPath = (Path) element;
 					if (!nextPath.isMarked) {
 						nextPath.isMarked = true;
 						stack.push(nextPath);
@@ -451,8 +468,8 @@ public class ShortestPathRouter {
 	 */
 	private void labelPaths() {
 		Path path = null;
-		for (int i = 0; i < workingPaths.size(); i++) {
-			path = (Path) workingPaths.get(i);
+		for (Object workingPath : workingPaths) {
+			path = (Path) workingPath;
 			stack.push(path);
 		}
 
@@ -465,8 +482,8 @@ public class ShortestPathRouter {
 		}
 
 		// revert is marked so we can use it again in ordering.
-		for (int i = 0; i < workingPaths.size(); i++) {
-			path = (Path) workingPaths.get(i);
+		for (Object workingPath : workingPaths) {
+			path = (Path) workingPath;
 			path.isMarked = false;
 		}
 	}
@@ -482,19 +499,22 @@ public class ShortestPathRouter {
 	private void labelVertex(Segment segment, long crossProduct, Path path) {
 		// assumes vertex in question is segment.end
 		if (crossProduct > 0) {
-			if (path.isInverted)
+			if (path.isInverted) {
 				segment.end.type = Vertex.OUTIE;
-			else
+			} else {
 				segment.end.type = Vertex.INNIE;
+			}
 		} else if (crossProduct < 0) {
-			if (path.isInverted)
+			if (path.isInverted) {
 				segment.end.type = Vertex.INNIE;
-			else
+			} else {
 				segment.end.type = Vertex.OUTIE;
-		} else if (segment.start.type != Vertex.NOT_SET)
+			}
+		} else if (segment.start.type != Vertex.NOT_SET) {
 			segment.end.type = segment.start.type;
-		else
+		} else {
 			segment.end.type = Vertex.INNIE;
+		}
 	}
 
 	/**
@@ -503,8 +523,9 @@ public class ShortestPathRouter {
 	 * @param path the path
 	 */
 	private void orderPath(Path path) {
-		if (path.isMarked)
+		if (path.isMarked) {
 			return;
+		}
 		path.isMarked = true;
 		Segment segment = null;
 		Vertex vertex = null;
@@ -512,19 +533,22 @@ public class ShortestPathRouter {
 			segment = (Segment) path.grownSegments.get(v);
 			vertex = segment.end;
 			double thisAngle = ((Double) vertex.cachedCosines.get(path)).doubleValue();
-			if (path.isInverted)
+			if (path.isInverted) {
 				thisAngle = -thisAngle;
+			}
 
-			for (int i = 0; i < vertex.paths.size(); i++) {
-				Path vPath = (Path) vertex.paths.get(i);
+			for (Object element : vertex.paths) {
+				Path vPath = (Path) element;
 				if (!vPath.isMarked) {
 					double otherAngle = ((Double) vertex.cachedCosines.get(vPath)).doubleValue();
 
-					if (vPath.isInverted)
+					if (vPath.isInverted) {
 						otherAngle = -otherAngle;
+					}
 
-					if (otherAngle < thisAngle)
+					if (otherAngle < thisAngle) {
 						orderPath(vPath);
+					}
 				}
 			}
 		}
@@ -536,8 +560,8 @@ public class ShortestPathRouter {
 	 * Orders all paths in the graph.
 	 */
 	private void orderPaths() {
-		for (int i = 0; i < workingPaths.size(); i++) {
-			Path path = (Path) workingPaths.get(i);
+		for (Object workingPath : workingPaths) {
+			Path path = (Path) workingPath;
 			orderPath(path);
 		}
 	}
@@ -576,8 +600,8 @@ public class ShortestPathRouter {
 	 * Reconnects all subpaths.
 	 */
 	private void recombineSubpaths() {
-		for (int p = 0; p < orderedPaths.size(); p++) {
-			Path path = (Path) orderedPaths.get(p);
+		for (Object orderedPath : orderedPaths) {
+			Path path = (Path) orderedPath;
 			path.reconnectSubPaths();
 		}
 
@@ -606,10 +630,11 @@ public class ShortestPathRouter {
 	public boolean removePath(Path path) {
 		userPaths.remove(path);
 		List children = (List) pathsToChildPaths.get(path);
-		if (children == null)
+		if (children == null) {
 			workingPaths.remove(path);
-		else
+		} else {
 			workingPaths.removeAll(children);
+		}
 		return true;
 	}
 
@@ -617,20 +642,21 @@ public class ShortestPathRouter {
 	 * Resets exclude field on all obstacles
 	 */
 	private void resetObstacleExclusions() {
-		for (int i = 0; i < userObstacles.size(); i++)
-			((Obstacle) userObstacles.get(i)).exclude = false;
+		for (Object userObstacle : userObstacles) {
+			((Obstacle) userObstacle).exclude = false;
+		}
 	}
 
 	/**
 	 * Resets all vertices found on paths and obstacles.
 	 */
 	private void resetVertices() {
-		for (int i = 0; i < userObstacles.size(); i++) {
-			Obstacle obs = (Obstacle) userObstacles.get(i);
+		for (Object userObstacle : userObstacles) {
+			Obstacle obs = (Obstacle) userObstacle;
 			obs.reset();
 		}
-		for (int i = 0; i < workingPaths.size(); i++) {
-			Path path = (Path) workingPaths.get(i);
+		for (Object workingPath : workingPaths) {
+			Path path = (Path) workingPath;
 			path.start.fullReset();
 			path.end.fullReset();
 		}
@@ -690,27 +716,31 @@ public class ShortestPathRouter {
 	private int solveDirtyPaths() {
 		int numSolved = 0;
 
-		for (int i = 0; i < userPaths.size(); i++) {
-			Path path = (Path) userPaths.get(i);
-			if (!path.isDirty)
+		for (Object userPath : userPaths) {
+			Path path = (Path) userPath;
+			if (!path.isDirty) {
 				continue;
+			}
 			List children = (List) pathsToChildPaths.get(path);
 			int prevCount = 1, newCount = 1;
-			if (children == null)
+			if (children == null) {
 				children = Collections.EMPTY_LIST;
-			else
+			} else {
 				prevCount = children.size();
+			}
 
-			if (path.getBendPoints() != null)
+			if (path.getBendPoints() != null) {
 				newCount = path.getBendPoints().size() + 1;
+			}
 
-			if (prevCount != newCount)
+			if (prevCount != newCount) {
 				children = regenerateChildPaths(path, children, prevCount, newCount);
+			}
 			refreshChildrenEndpoints(path, children);
 		}
 
-		for (int i = 0; i < workingPaths.size(); i++) {
-			Path path = (Path) workingPaths.get(i);
+		for (Object workingPath : workingPaths) {
+			Path path = (Path) workingPath;
 			path.refreshExcludedObstacles(userObstacles);
 			if (!path.isDirty) {
 				path.resetPartial();
@@ -734,8 +764,9 @@ public class ShortestPathRouter {
 
 		resetObstacleExclusions();
 
-		if (numSolved == 0)
+		if (numSolved == 0) {
 			resetVertices();
+		}
 
 		return numSolved;
 	}
@@ -752,10 +783,11 @@ public class ShortestPathRouter {
 		Path child;
 
 		for (int i = 0; i < children.size(); i++) {
-			if (i < bendpoints.size())
+			if (i < bendpoints.size()) {
 				next = bendpoints.getPoint(i);
-			else
+			} else {
 				next = path.getEndPoint();
+			}
 			child = (Path) children.get(i);
 			child.setStartPoint(previous);
 			child.setEndPoint(next);
@@ -813,38 +845,43 @@ public class ShortestPathRouter {
 		for (int i = 0; i < userObstacles.size(); i++) {
 			Obstacle obs = (Obstacle) userObstacles.get(i);
 
-			if (segment.end.obs == obs || segment.start.obs == obs || obs.exclude)
+			if (segment.end.obs == obs || segment.start.obs == obs || obs.exclude) {
 				continue;
+			}
 			Vertex vertex = null;
 
 			int offset = getSpacing();
 			if (segment.getSlope() < 0) {
 				if (segment.intersects(obs.topLeft.x - offset, obs.topLeft.y - offset, obs.bottomRight.x + offset,
-						obs.bottomRight.y + offset))
+						obs.bottomRight.y + offset)) {
 					vertex = getNearestVertex(obs.topLeft, obs.bottomRight, segment);
-				else if (segment.intersects(obs.bottomLeft.x - offset, obs.bottomLeft.y + offset,
-						obs.topRight.x + offset, obs.topRight.y - offset))
+				} else if (segment.intersects(obs.bottomLeft.x - offset, obs.bottomLeft.y + offset,
+						obs.topRight.x + offset, obs.topRight.y - offset)) {
 					vertex = getNearestVertex(obs.bottomLeft, obs.topRight, segment);
+				}
 			} else {
 				if (segment.intersects(obs.bottomLeft.x - offset, obs.bottomLeft.y + offset, obs.topRight.x + offset,
-						obs.topRight.y - offset))
+						obs.topRight.y - offset)) {
 					vertex = getNearestVertex(obs.bottomLeft, obs.topRight, segment);
-				else if (segment.intersects(obs.topLeft.x - offset, obs.topLeft.y - offset, obs.bottomRight.x + offset,
-						obs.bottomRight.y + offset))
+				} else if (segment.intersects(obs.topLeft.x - offset, obs.topLeft.y - offset,
+						obs.bottomRight.x + offset, obs.bottomRight.y + offset)) {
 					vertex = getNearestVertex(obs.topLeft, obs.bottomRight, segment);
+				}
 			}
 
 			if (vertex != null) {
 				Rectangle vRect = vertex.getDeformedRectangle(offset);
 				if (segment.end.obs != null) {
 					Rectangle endRect = segment.end.getDeformedRectangle(offset);
-					if (vRect.intersects(endRect))
+					if (vRect.intersects(endRect)) {
 						continue;
+					}
 				}
 				if (segment.start.obs != null) {
 					Rectangle startRect = segment.start.getDeformedRectangle(offset);
-					if (vRect.intersects(startRect))
+					if (vRect.intersects(startRect)) {
 						continue;
+					}
 				}
 
 				Segment newSegmentStart = new Segment(segment.start, vertex);
@@ -857,8 +894,9 @@ public class ShortestPathRouter {
 				checkVertexForIntersections(vertex);
 				vertex.grow();
 
-				if (vertex.nearestObstacle != 0)
+				if (vertex.nearestObstacle != 0) {
 					vertex.updateOffset();
+				}
 
 				growPassChangedObstacles = true;
 
@@ -873,8 +911,9 @@ public class ShortestPathRouter {
 				return 1;
 			}
 		}
-		if (index == -1)
+		if (index == -1) {
 			path.grownSegments.add(segment);
+		}
 		return 0;
 	}
 
@@ -885,8 +924,8 @@ public class ShortestPathRouter {
 	 */
 	private boolean testAndDirtyPaths(Obstacle obs) {
 		boolean result = false;
-		for (int i = 0; i < workingPaths.size(); i++) {
-			Path path = (Path) workingPaths.get(i);
+		for (Object workingPath : workingPaths) {
+			Path path = (Path) workingPath;
 			result |= path.testAndSet(obs);
 		}
 		return result;

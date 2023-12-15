@@ -12,19 +12,16 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.jface;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IFigureProvider;
@@ -33,6 +30,9 @@ import org.eclipse.zest.core.viewers.INestedContentProvider;
 import org.eclipse.zest.examples.uml.UMLClassFigure;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 
 /**
  * This snippet shows how to use the INestedGraphContentProvider to create a
@@ -49,17 +49,24 @@ import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
  */
 public class GraphJFaceSnippet7 {
 
+	private static final String SCISSORS = "scissors"; //$NON-NLS-1$
+	private static final String PAPER = "paper"; //$NON-NLS-1$
+	private static final String ROCK = "rock"; //$NON-NLS-1$
+	private static final String THIRD = "Third"; //$NON-NLS-1$
+	private static final String SECOND = "Second"; //$NON-NLS-1$
+	private static final String FIRST = "First"; //$NON-NLS-1$
+
 	public static IFigure createClassFigure1(Font classFont, Image classImage, Image publicField, Image privateField) {
-		Label classLabel1 = new Label("Table", classImage);
+		Label classLabel1 = new Label("Table", classImage); //$NON-NLS-1$
 		classLabel1.setFont(classFont);
 
 		UMLClassFigure classFigure = new UMLClassFigure(classLabel1);
-		Label attribute1 = new Label("columns: Column[]", privateField);
+		Label attribute1 = new Label("columns: Column[]", privateField); //$NON-NLS-1$
 
-		Label attribute2 = new Label("rows: Row[]", privateField);
+		Label attribute2 = new Label("rows: Row[]", privateField); //$NON-NLS-1$
 
-		Label method1 = new Label("getColumns(): Column[]", publicField);
-		Label method2 = new Label("getRows(): Row[]", publicField);
+		Label method1 = new Label("getColumns(): Column[]", publicField); //$NON-NLS-1$
+		Label method2 = new Label("getRows(): Row[]", publicField); //$NON-NLS-1$
 		classFigure.getAttributesCompartment().add(attribute1);
 		classFigure.getAttributesCompartment().add(attribute2);
 		classFigure.getMethodsCompartment().add(method1);
@@ -73,24 +80,24 @@ public class GraphJFaceSnippet7 {
 
 		@Override
 		public Object[] getConnectedTo(Object entity) {
-			if (entity.equals("First")) {
-				return new Object[] { "Second" };
+			if (entity.equals(FIRST)) {
+				return new Object[] { SECOND };
 			}
-			if (entity.equals("Second")) {
-				return new Object[] { "Third", "rock" };
+			if (entity.equals(SECOND)) {
+				return new Object[] { THIRD, ROCK };
 			}
-			if (entity.equals("Third")) {
-				return new Object[] { "First" };
+			if (entity.equals(THIRD)) {
+				return new Object[] { FIRST };
 			}
-			if (entity.equals("rock")) {
-				return new Object[] { "paper" };
+			if (entity.equals(ROCK)) {
+				return new Object[] { PAPER };
 			}
 			return null;
 		}
 
 		@Override
 		public Object[] getElements(Object inputElement) {
-			return new String[] { "First", "Second", "Third" };
+			return new String[] { FIRST, SECOND, THIRD };
 		}
 
 		public double getWeight(Object entity1, Object entity2) {
@@ -109,16 +116,12 @@ public class GraphJFaceSnippet7 {
 
 		@Override
 		public Object[] getChildren(Object element) {
-			// TODO Auto-generated method stub
-			return new Object[] { "rock", "paper", "scissors" };
+			return new Object[] { ROCK, PAPER, SCISSORS };
 		}
 
 		@Override
 		public boolean hasChildren(Object element) {
-			// TODO Auto-generated method stub
-			if (element.equals("First"))
-				return true;
-			return false;
+			return element.equals(FIRST);
 		}
 
 	}
@@ -128,7 +131,7 @@ public class GraphJFaceSnippet7 {
 
 		@Override
 		public Image getImage(Object element) {
-			if (element.equals("Rock") || element.equals("Paper") || element.equals("Scissors")) {
+			if (ROCK.equals(element) || PAPER.equals(element) || SCISSORS.equals(element)) {
 				return image;
 			}
 			return null;
@@ -136,20 +139,21 @@ public class GraphJFaceSnippet7 {
 
 		@Override
 		public String getText(Object element) {
-			if (element instanceof EntityConnectionData)
-				return "";
+			if (element instanceof EntityConnectionData) {
+				return ""; //$NON-NLS-1$
+			}
 			return element.toString();
 		}
 
 		@Override
 		public IFigure getFigure(Object element) {
-			Font classFont = new Font(null, "Arial", 12, SWT.BOLD);
+			Font classFont = new Font(null, "Arial", 12, SWT.BOLD); //$NON-NLS-1$
 			Image classImage = new Image(Display.getDefault(),
-					UMLClassFigure.class.getResourceAsStream("class_obj.gif"));
+					UMLClassFigure.class.getResourceAsStream("class_obj.gif")); //$NON-NLS-1$
 			Image privateField = new Image(Display.getDefault(),
-					UMLClassFigure.class.getResourceAsStream("field_private_obj.gif"));
+					UMLClassFigure.class.getResourceAsStream("field_private_obj.gif")); //$NON-NLS-1$
 			Image publicField = new Image(Display.getDefault(),
-					UMLClassFigure.class.getResourceAsStream("methpub_obj.gif"));
+					UMLClassFigure.class.getResourceAsStream("methpub_obj.gif")); //$NON-NLS-1$
 			return createClassFigure1(classFont, classImage, publicField, privateField);
 		}
 
@@ -163,7 +167,7 @@ public class GraphJFaceSnippet7 {
 	public static void main(String[] args) {
 		Display d = new Display();
 		Shell shell = new Shell(d);
-		shell.setText("GraphJFaceSnippet2");
+		shell.setText("GraphJFaceSnippet2"); //$NON-NLS-1$
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		shell.setSize(400, 400);
 		viewer = new GraphViewer(shell, SWT.NONE);
@@ -173,19 +177,9 @@ public class GraphJFaceSnippet7 {
 		viewer.setInput(new Object());
 
 		Button button = new Button(shell, SWT.PUSH);
-		button.setText("push");
-		button.addSelectionListener(new SelectionListener() {
+		button.setText("push"); //$NON-NLS-1$
+		button.addListener(SWT.Selection, e -> viewer.setInput(new Object()));
 
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				viewer.setInput(new Object());
-			}
-
-		});
 		shell.open();
 		while (!shell.isDisposed()) {
 			while (!d.readAndDispatch()) {

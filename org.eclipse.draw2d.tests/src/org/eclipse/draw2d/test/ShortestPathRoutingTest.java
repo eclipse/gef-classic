@@ -401,7 +401,7 @@ public class ShortestPathRoutingTest extends Assert {
 
 		routing.addPath(a);
 
-		assertTrue("Should have solved path", routing.solve().size() > 0); //$NON-NLS-1$
+		assertTrue("Should have solved path", !routing.solve().isEmpty()); //$NON-NLS-1$
 
 		pathA = a.getPoints();
 
@@ -501,7 +501,7 @@ public class ShortestPathRoutingTest extends Assert {
 		// only one path should have changed.
 		Path c = new Path(corner2CStart.getCopy(), corner2CEnd.getCopy());
 		routing.addPath(c);
-		assertTrue("Only the new path should have been solved.", routing.solve().size() > 0); //$NON-NLS-1$
+		assertTrue("Only the new path should have been solved.", !routing.solve().isEmpty()); //$NON-NLS-1$
 
 		pathC = c.getPoints();
 		// the new path, however, should have moved the other two paths.
@@ -535,7 +535,7 @@ public class ShortestPathRoutingTest extends Assert {
 
 		routing.removeObstacle(deltaRect.getCopy());
 
-		assertTrue("Both paths should have been solved.", routing.solve().size() > 0); //$NON-NLS-1$
+		assertTrue("Both paths should have been solved.", !routing.solve().isEmpty()); //$NON-NLS-1$
 	}
 
 	@Test

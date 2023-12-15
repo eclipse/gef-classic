@@ -15,16 +15,21 @@ package org.eclipse.gef.examples.flow.parts;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.viewers.TextCellEditor;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Subgraph;
+
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.requests.DirectEditRequest;
+
 import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
@@ -34,8 +39,6 @@ import org.eclipse.gef.examples.flow.policies.ActivityEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityNodeEditPolicy;
 import org.eclipse.gef.examples.flow.policies.StructuredActivityDirectEditPolicy;
 import org.eclipse.gef.examples.flow.policies.StructuredActivityLayoutEditPolicy;
-import org.eclipse.gef.requests.DirectEditRequest;
-import org.eclipse.jface.viewers.TextCellEditor;
 
 /**
  * @author hudsonr Created on Jun 30, 2003
@@ -96,9 +99,7 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	private boolean directEditHitTest(Point requestLoc) {
 		IFigure header = ((SubgraphFigure) getFigure()).getHeader();
 		header.translateToRelative(requestLoc);
-		if (header.containsPoint(requestLoc))
-			return true;
-		return false;
+		return header.containsPoint(requestLoc);
 	}
 
 	/**
@@ -107,8 +108,9 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	@Override
 	public void performRequest(Request request) {
 		if (request.getType() == RequestConstants.REQ_DIRECT_EDIT) {
-			if (request instanceof DirectEditRequest der && !directEditHitTest(der.getLocation().getCopy()))
+			if (request instanceof DirectEditRequest der && !directEditHitTest(der.getLocation().getCopy())) {
 				return;
+			}
 			performDirectEdit();
 		}
 	}
@@ -120,8 +122,9 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 
 	@Override
 	public IFigure getContentPane() {
-		if (getFigure() instanceof SubgraphFigure sgFig)
+		if (getFigure() instanceof SubgraphFigure sgFig) {
 			return sgFig.getContents();
+		}
 		return getFigure();
 	}
 

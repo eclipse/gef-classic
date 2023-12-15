@@ -75,30 +75,35 @@ public class PointTests extends BaseTestCase {
 		assertTrue(new Point().setLocation(new Point(4711, 678)).equals(4711, 678));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructor() throws Exception {
+	public void testConstructor() {
 		assertEquals(0, 0, new Point());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorIntInt() throws Exception {
+	public void testConstructorIntInt() {
 		assertEquals(-1, 2, new Point(-1, 2));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorDoubleDouble() throws Exception {
+	public void testConstructorDoubleDouble() {
 		assertEquals((int) Math.PI, (int) -Math.E, new Point(Math.PI, -Math.E));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorPoint() throws Exception {
+	public void testConstructorPoint() {
 		Point template = new Point(-1, 2);
 		assertEquals(-1, 2, new Point(template));
 		assertEquals(-1, 2, template); // assert read only argument point
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorSwtPoint() throws Exception {
+	public void testConstructorSwtPoint() {
 		org.eclipse.swt.graphics.Point template = new org.eclipse.swt.graphics.Point(-1, 2);
 		assertEquals(-1, 2, new Point(template));
 		// assert read only argument point
@@ -106,8 +111,9 @@ public class PointTests extends BaseTestCase {
 		assertEquals(2, template.y);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorDimension() throws Exception {
+	public void testConstructorDimension() {
 		Dimension dimension = new Dimension(100, 200);
 		assertEquals(100, 200, new Point(dimension));
 		assertEquals(100, 200, dimension);
@@ -115,9 +121,9 @@ public class PointTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testEqualsObject() throws Exception {
+	public void testEqualsObject() {
 		Point testPoint = new Point(-1, 2);
-		assertFalse(testPoint.equals(null));
+		assertNotNull(testPoint);
 		assertFalse(testPoint.equals(new Object()));
 		assertTrue(testPoint.equals(testPoint));
 		assertTrue(testPoint.equals(new Point(testPoint)));
@@ -126,7 +132,7 @@ public class PointTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testHashCodeToString() throws Exception {
+	public void testHashCodeToString() {
 		assertEquals(0, new Point().hashCode());
 		assertEquals((1 * 2) ^ (1 + 2), new Point(1, 2).hashCode());
 		//
@@ -136,7 +142,7 @@ public class PointTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetCopy() throws Exception {
+	public void testGetCopy() {
 		Point template = new Point(-1, 2);
 		Point testPoint = template.getCopy();
 		assertNotNull(testPoint);
@@ -146,15 +152,16 @@ public class PointTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetSwtPoint() throws Exception {
+	public void testGetSwtPoint() {
 		org.eclipse.swt.graphics.Point testPoint = new Point(-1, 2).getSWTPoint();
 		assertNotNull(testPoint);
 		assertEquals(-1, testPoint.x);
 		assertEquals(2, testPoint.y);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSetLocationIntInt() throws Exception {
+	public void testSetLocationIntInt() {
 		Point testPoint = new Point();
 		assertSame(testPoint, testPoint.setLocation(-1, 2));
 		assertEquals(-1, 2, testPoint);
@@ -162,7 +169,7 @@ public class PointTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testSetLocationPoint() throws Exception {
+	public void testSetLocationPoint() {
 		Point template = new Point(-1, 2);
 		Point testPoint = new Point();
 		assertSame(testPoint, testPoint.setLocation(template));
@@ -171,7 +178,7 @@ public class PointTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetDifferencePoint() throws Exception {
+	public void testGetDifferencePoint() {
 		Dimension dimension = new Point(5, -5).getDifference(new Point(4, -4));
 		assertEquals(1, dimension.width);
 		assertEquals(-1, dimension.height);
@@ -179,21 +186,21 @@ public class PointTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetDistance2Point() throws Exception {
+	public void testGetDistance2Point() {
 		assertEquals(25, new Point(4, 7).getDistance2(new Point(1, 3)));
 		assertEquals(25, new Point(-1, -2).getDistance2(new Point(-5, 1)));
 	}
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetDistancePoint() throws Exception {
+	public void testGetDistancePoint() {
 		assertEquals(5, new Point(4, 7).getDistance(new Point(1, 3)), 0);
 		assertEquals(5, new Point(-1, -2).getDistance(new Point(-5, 1)), 0);
 	}
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetDistanceOrthogonal() throws Exception {
+	public void testGetDistanceOrthogonal() {
 		assertEquals(53, new Point(10, 20).getDistanceOrthogonal(new Point(51, 32)));
 		assertEquals(53, new Point(51, 32).getDistanceOrthogonal(new Point(10, 20)));
 		//
@@ -201,8 +208,9 @@ public class PointTests extends BaseTestCase {
 		assertEquals(60, new Point(10, 20).getDistanceOrthogonal(new Point(-10, -20)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testNegate() throws Exception {
+	public void testNegate() {
 		Point testPoint = new Point(1, 2);
 		assertSame(testPoint, testPoint.negate());
 		assertEquals(-1, -2, testPoint);
@@ -211,8 +219,9 @@ public class PointTests extends BaseTestCase {
 		assertEquals(1, 2, testPoint);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testScale() throws Exception {
+	public void testScale() {
 		// check work scal(double)
 		Point testPoint = new Point(10, 20);
 		assertSame(testPoint, testPoint.scale(0.5));
@@ -223,15 +232,17 @@ public class PointTests extends BaseTestCase {
 		assertEquals(100, 100, testPoint);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testTranspose() throws Exception {
+	public void testTranspose() {
 		Point testPoint = new Point(3, 5);
 		assertSame(testPoint, testPoint.transpose());
 		assertEquals(5, 3, testPoint);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetNegated() throws Exception {
+	public void testGetNegated() {
 		Point template = new Point(1, 2);
 		Point testPoint = template.getNegated();
 		assertNotSame(template, testPoint);
@@ -243,16 +254,18 @@ public class PointTests extends BaseTestCase {
 		assertEquals(1, 2, testPoint);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetScaled() throws Exception {
+	public void testGetScaled() {
 		Point template = new Point(10, 20);
 		Point testPoint = template.getScaled(0.5);
 		assertNotSame(template, testPoint);
 		assertEquals(5, 10, testPoint);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetTranslated() throws Exception {
+	public void testGetTranslated() {
 		// check work getTranslated(int, int)
 		Point template = new Point(3, 5);
 		Point testPoint = template.getTranslated(1, -1);
@@ -272,8 +285,9 @@ public class PointTests extends BaseTestCase {
 		assertEquals(0, 0, testPoint);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetTransposed() throws Exception {
+	public void testGetTransposed() {
 		Point template = new Point(3, 5);
 		Point testPoint = template.getTransposed();
 		assertNotSame(template, testPoint);
