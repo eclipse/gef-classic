@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Text;
  *
  * @deprecated in 3.1 This class will be removed in future releases.
  */
+@Deprecated
 public final class GEF {
 
 	static final String TAB = "  ";//$NON-NLS-1$
@@ -34,34 +35,42 @@ public final class GEF {
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	public static boolean DebugTools = false;
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	public static boolean DebugEvents = false;
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	public static boolean DebugEditParts = false;
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	public static boolean DebugPainting = false;
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	public static boolean DebugFeedback = false;
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	public static boolean GlobalDebug = false;
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	public static boolean DebugToolStates = false;
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	public static boolean DebugDND = false;
 
 	/**
@@ -70,8 +79,9 @@ public final class GEF {
 	 * @since 1.0
 	 */
 	public static void clearConsole() {
-		if (text == null)
+		if (text == null) {
 			return;
+		}
 		text.setText("");//$NON-NLS-1$
 	}
 
@@ -115,13 +125,15 @@ public final class GEF {
 	 * @param message a debug message
 	 */
 	public static void debug(String message) {
-		String lineNumber = formatter.format(new Long(msgCount++));
+		String lineNumber = formatter.format(msgCount++);
 		msgCount %= 100;
 		String indent = "";//$NON-NLS-1$
-		for (int i = 0; i < tab; i++)
+		for (int i = 0; i < tab; i++) {
 			indent += TAB;
-		if (text != null)
+		}
+		if (text != null) {
 			text.append('\n' + lineNumber + '\t' + indent + message);
+		}
 	}
 
 }

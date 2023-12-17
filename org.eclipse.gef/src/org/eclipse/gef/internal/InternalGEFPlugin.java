@@ -13,7 +13,6 @@
 
 package org.eclipse.gef.internal;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -40,7 +39,7 @@ public class InternalGEFPlugin extends AbstractUIPlugin {
 		context = bc;
 		// Overloads the basic color provider with customizable one
 		if (ColorProvider.SystemColorFactory.getColorProvider() instanceof BasicColorProvider
-			&& PlatformUI.isWorkbenchRunning() && !PlatformUI.getWorkbench().isClosing()) {
+				&& PlatformUI.isWorkbenchRunning() && !PlatformUI.getWorkbench().isClosing()) {
 			ColorProvider.SystemColorFactory.setColorProvider(new GEFColorProvider());
 		}
 	}

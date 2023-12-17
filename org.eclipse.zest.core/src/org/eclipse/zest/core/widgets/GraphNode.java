@@ -203,7 +203,7 @@ public class GraphNode extends GraphItem {
 		}
 		super.dispose();
 		this.isDisposed = true;
-		while (getSourceConnections().size() > 0) {
+		while (!getSourceConnections().isEmpty()) {
 			GraphConnection connection = (GraphConnection) getSourceConnections().get(0);
 			if (!connection.isDisposed()) {
 				connection.dispose();
@@ -211,7 +211,7 @@ public class GraphNode extends GraphItem {
 				removeSourceConnection(connection);
 			}
 		}
-		while (getTargetConnections().size() > 0) {
+		while (!getTargetConnections().isEmpty()) {
 			GraphConnection connection = (GraphConnection) getTargetConnections().get(0);
 			if (!connection.isDisposed()) {
 				connection.dispose();

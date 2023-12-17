@@ -12,18 +12,19 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.swt;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
-import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+
+import org.eclipse.draw2d.ColorConstants;
 
 /**
  *
@@ -44,13 +45,13 @@ public class GraphSnippet11 {
 	public static void main(String[] args) {
 		Display d = new Display();
 		Shell shell = new Shell(d);
-		shell.setText("GraphSnippet11");
+		shell.setText("GraphSnippet11"); //$NON-NLS-1$
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
 		final Graph g = new Graph(shell, SWT.NONE);
-		GraphNode n = new GraphNode(g, SWT.NONE, "Node 1");
-		GraphNode n2 = new GraphNode(g, SWT.NONE, "Node 2");
+		GraphNode n = new GraphNode(g, SWT.NONE, "Node 1"); //$NON-NLS-1$
+		GraphNode n2 = new GraphNode(g, SWT.NONE, "Node 2"); //$NON-NLS-1$
 		createConnection(g, n, n2, ColorConstants.darkGreen, 20);
 		createConnection(g, n, n2, ColorConstants.darkGreen, -20);
 		createConnection(g, n, n2, ColorConstants.darkBlue, 40);

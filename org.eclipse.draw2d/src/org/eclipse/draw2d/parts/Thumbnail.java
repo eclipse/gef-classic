@@ -42,7 +42,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 	// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=543796
 	// This affects macOS 10.14 and greater but we'll patch it for all macOS
 	// versions
-	private static final boolean isMac = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$
+	private static final boolean IS_MAC = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$
 
 	/**
 	 * This updates the Thumbnail by breaking the thumbnail {@link Image} into
@@ -51,8 +51,10 @@ public class Thumbnail extends Figure implements UpdateListener {
 	class ThumbnailUpdater implements Runnable {
 		private static final int MIN_TILE_SIZE = 256;
 		private static final int MAX_NUMBER_OF_TILES = 16;
-		private int currentHTile, currentVTile;
-		private int hTiles, vTiles;
+		private int currentHTile;
+		private int currentVTile;
+		private int hTiles;
+		private int vTiles;
 		private Dimension tileSize;
 		private Dimension sourceSize; // the source size that was used for the
 										// tileSize computation
@@ -173,7 +175,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 			int sx2 = Math.min((h + 1) * tileSize.width, sourceSize.width);
 
 			// Mac fix - create new Tile Graphics instances
-			if (isMac) {
+			if (IS_MAC) {
 				createTileGraphics();
 			}
 
@@ -399,7 +401,8 @@ public class Thumbnail extends Figure implements UpdateListener {
 		Dimension sourceSize = getSourceRectangle().getSize();
 		Dimension borderSize = new Dimension(getInsets().getWidth(), getInsets().getHeight());
 		size.expand(borderSize.getNegated());
-		int width, height;
+		int width;
+		int height;
 		if (adjustToMaxDimension) {
 			width = Math.max(size.width, (int) (size.height * sourceSize.width / (float) sourceSize.height + 0.5));
 			height = Math.max(size.height, (int) (size.width * sourceSize.height / (float) sourceSize.width + 0.5));

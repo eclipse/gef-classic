@@ -12,13 +12,10 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.rulers;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Font;
@@ -27,7 +24,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import org.eclipse.core.runtime.Assert;
@@ -85,12 +81,7 @@ public class RulerComposite extends Composite {
 	private boolean layingOut = false;
 	private boolean isRulerVisible = true;
 	private boolean needToLayout = false;
-	private Runnable runnable = new Runnable() {
-		@Override
-		public void run() {
-			layout(false);
-		}
-	};
+	private final Runnable runnable = () -> layout(false);
 
 	/**
 	 * Constructor
@@ -102,12 +93,7 @@ public class RulerComposite extends Composite {
 	 */
 	public RulerComposite(Composite parent, int style) {
 		super(parent, style);
-		addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				disposeResources();
-			}
-		});
+		addDisposeListener(e -> disposeResources());
 	}
 
 	/**
@@ -166,8 +152,8 @@ public class RulerComposite extends Composite {
 		canvas.setScrollBarVisibility(FigureCanvas.NEVER);
 		if (font == null) {
 			FontData[] data = canvas.getFont().getFontData();
-			for (int i = 0; i < data.length; i++) {
-				data[i].setHeight(data[i].getHeight() - 1);
+			for (FontData element : data) {
+				element.setHeight(element.getHeight() - 1);
 			}
 			font = new Font(Display.getCurrent(), data);
 		}
@@ -189,18 +175,21 @@ public class RulerComposite extends Composite {
 	}
 
 	private void disposeResources() {
-		if (diagramViewer != null)
+		if (diagramViewer != null) {
 			diagramViewer.removePropertyChangeListener(propertyListener);
-		if (font != null)
+		}
+		if (font != null) {
 			font.dispose();
-		// layoutListener is not being removed from the scroll bars because they
-		// are already
-		// disposed at this point.
+			// layoutListener is not being removed from the scroll bars because they
+			// are already
+			// disposed at this point.
+		}
 	}
 
 	private void disposeRulerViewer(GraphicalViewer viewer) {
-		if (viewer == null)
+		if (viewer == null) {
 			return;
+		}
 		/*
 		 * There's a tie from the editor's range model to the RulerViewport (via a
 		 * listener) to the RulerRootEditPart to the RulerViewer. Break this tie so that
@@ -222,8 +211,9 @@ public class RulerComposite extends Composite {
 	public void doLayout() {
 		if (left == null && top == null) {
 			Rectangle area = getClientArea();
-			if (editor != null && !editor.isDisposed() && !editor.getBounds().equals(area))
+			if (editor != null && !editor.isDisposed() && !editor.getBounds().equals(area)) {
 				editor.setBounds(area);
+			}
 			return;
 		}
 
@@ -319,42 +309,31 @@ public class RulerComposite extends Composite {
 		// layout whenever the scrollbars are shown or hidden, and whenever the
 		// RulerComposite
 		// is resized
-		layoutListener = new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				// @TODO:Pratik If you use Display.asyncExec(runnable) here,
-				// some flashing
-				// occurs. You can see it when the palette is in the editor, and
-				// you hit
-				// the button to show/hide it.
-				layout(true);
-			}
-		};
+		layoutListener = event -> layout(true);
 		addListener(SWT.Resize, layoutListener);
 		editor.getHorizontalBar().addListener(SWT.Show, layoutListener);
 		editor.getHorizontalBar().addListener(SWT.Hide, layoutListener);
 		editor.getVerticalBar().addListener(SWT.Show, layoutListener);
 		editor.getVerticalBar().addListener(SWT.Hide, layoutListener);
 
-		propertyListener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				String property = evt.getPropertyName();
-				if (RulerProvider.PROPERTY_HORIZONTAL_RULER.equals(property)) {
-					setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER),
-							PositionConstants.NORTH);
-				} else if (RulerProvider.PROPERTY_VERTICAL_RULER.equals(property)) {
-					setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
-							PositionConstants.WEST);
-				} else if (RulerProvider.PROPERTY_RULER_VISIBILITY.equals(property))
-					setRulerVisibility(((Boolean) diagramViewer.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY))
-							.booleanValue());
+		propertyListener = evt -> {
+			String property = evt.getPropertyName();
+			if (RulerProvider.PROPERTY_HORIZONTAL_RULER.equals(property)) {
+				setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER),
+						PositionConstants.NORTH);
+			} else if (RulerProvider.PROPERTY_VERTICAL_RULER.equals(property)) {
+				setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
+						PositionConstants.WEST);
+			} else if (RulerProvider.PROPERTY_RULER_VISIBILITY.equals(property)) {
+				setRulerVisibility(((Boolean) diagramViewer.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY))
+						.booleanValue());
 			}
 		};
 		diagramViewer.addPropertyChangeListener(propertyListener);
 		Boolean rulerVisibility = (Boolean) diagramViewer.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
-		if (rulerVisibility != null)
+		if (rulerVisibility != null) {
 			setRulerVisibility(rulerVisibility.booleanValue());
+		}
 		setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER),
 				PositionConstants.NORTH);
 		setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
@@ -363,10 +342,11 @@ public class RulerComposite extends Composite {
 
 	private void setRuler(RulerProvider provider, int orientation) {
 		Object ruler = null;
-		if (isRulerVisible && provider != null)
+		if (isRulerVisible && provider != null) {
 			// provider.getRuler() might return null (at least the API does not
 			// prevent that)
 			ruler = provider.getRuler();
+		}
 
 		if (ruler == null) {
 			// Ruler is not visible or is not present
@@ -390,13 +370,15 @@ public class RulerComposite extends Composite {
 
 	private void setRulerContainer(GraphicalViewer container, int orientation) {
 		if (orientation == PositionConstants.NORTH) {
-			if (top == container)
+			if (top == container) {
 				return;
+			}
 			disposeRulerViewer(top);
 			top = container;
 		} else if (orientation == PositionConstants.WEST) {
-			if (left == container)
+			if (left == container) {
 				return;
+			}
 			disposeRulerViewer(left);
 			left = container;
 		}
@@ -417,7 +399,7 @@ public class RulerComposite extends Composite {
 	private static class RulerBorder extends AbstractBorder {
 		private static final Insets H_INSETS = new Insets(0, 1, 0, 0);
 		private static final Insets V_INSETS = new Insets(1, 0, 0, 0);
-		private boolean horizontal;
+		private final boolean horizontal;
 
 		/**
 		 * Constructor
@@ -465,7 +447,6 @@ public class RulerComposite extends Composite {
 		 * Constructor
 		 */
 		public RulerViewer() {
-			super();
 			init();
 		}
 
@@ -474,8 +455,9 @@ public class RulerComposite extends Composite {
 		 */
 		@Override
 		public void appendSelection(EditPart editpart) {
-			if (editpart instanceof RootEditPart)
-				editpart = ((RootEditPart) editpart).getContents();
+			if (editpart instanceof RootEditPart rootEP) {
+				editpart = rootEP.getContents();
+			}
 			setFocus(editpart);
 			super.appendSelection(editpart);
 		}
@@ -486,8 +468,9 @@ public class RulerComposite extends Composite {
 		@Override
 		public Handle findHandleAt(org.eclipse.draw2d.geometry.Point p) {
 			final GraphicalEditPart gep = (GraphicalEditPart) findObjectAtExcluding(p, Collections.emptyList());
-			if (gep == null || !(gep instanceof GuideEditPart))
+			if (gep == null || !(gep instanceof GuideEditPart)) {
 				return null;
+			}
 			return new Handle() {
 				@Override
 				public DragTracker getDragTracker() {
@@ -518,8 +501,9 @@ public class RulerComposite extends Composite {
 		 */
 		@Override
 		public void reveal(EditPart part) {
-			if (part != getContents())
+			if (part != getContents()) {
 				super.reveal(part);
+			}
 		}
 
 		/**
@@ -577,12 +561,14 @@ public class RulerComposite extends Composite {
 						return true;
 					}
 					return false;
-				} else if (((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_UP)) {
+				}
+				if (((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_UP)) {
 					// ALT + UP_ARROW pressed
 					// If a guide has focus, give focus to the ruler
 					EditPart parent = getFocusEditPart().getParent();
-					if (parent instanceof RulerEditPart)
+					if (parent instanceof RulerEditPart) {
 						navigateTo(getFocusEditPart().getParent(), event);
+					}
 					return true;
 				}
 				return super.keyPressed(event);

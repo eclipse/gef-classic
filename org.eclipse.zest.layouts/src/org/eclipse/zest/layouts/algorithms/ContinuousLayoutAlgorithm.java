@@ -47,13 +47,11 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 	private boolean continueRunning() {
 		if (layoutStopped) {
 			return false;
-		} else if (this.internalContinuous && !layoutStopped) {
-			return true;
-		} else if (performAnotherNonContinuousIteration()) {
-			return true;
-		} else {
-			return false;
 		}
+		if (this.internalContinuous) {
+			return true;
+		}
+		return performAnotherNonContinuousIteration();
 	}
 
 	@Override

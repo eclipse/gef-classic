@@ -99,13 +99,15 @@ public class RectangleTest extends BaseTestCase {
 		assertTrue(r.contains(6.9, 7.9));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructor() throws Exception {
+	public void testConstructor() {
 		assertEquals(0, 0, 0, 0, new Rectangle());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorPointDimension() throws Exception {
+	public void testConstructorPointDimension() {
 		Point location = new Point(1, 2);
 		Dimension size = new Dimension(3, 4);
 		assertEquals(1, 2, 3, 4, new Rectangle(location, size));
@@ -113,15 +115,17 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(3, 4, size);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorRectangle() throws Exception {
+	public void testConstructorRectangle() {
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		assertEquals(1, 2, 3, 4, new Rectangle(template));
 		assertEquals(1, 2, 3, 4, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorSwtRectangle() throws Exception {
+	public void testConstructorSwtRectangle() {
 		org.eclipse.swt.graphics.Rectangle template = new org.eclipse.swt.graphics.Rectangle(1, 2, 3, 4);
 		assertEquals(1, 2, 3, 4, new Rectangle(template));
 		assertEquals(1, template.x);
@@ -130,13 +134,15 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(4, template.height);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorInts() throws Exception {
+	public void testConstructorInts() {
 		assertEquals(1, 2, 3, 4, new Rectangle(1, 2, 3, 4));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testConstructorPointPoint() throws Exception {
+	public void testConstructorPointPoint() {
 		Point point1 = new Point(10, 5);
 		Point point2 = new Point(40, 30);
 		Rectangle testRectangle = new Rectangle(point1, point2);
@@ -154,9 +160,9 @@ public class RectangleTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testEqualsObject() throws Exception {
+	public void testEqualsObject() {
 		Rectangle testRectangle = new Rectangle(10, 15, 70, 30);
-		assertFalse(testRectangle.equals(null));
+		assertNotNull(testRectangle);
 		assertFalse(testRectangle.equals(new Object()));
 		assertTrue(testRectangle.equals(testRectangle));
 		assertTrue(testRectangle.equals(new Rectangle(testRectangle)));
@@ -165,34 +171,38 @@ public class RectangleTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testToString() throws Exception {
+	public void testToString() {
 		assertNotNull(new Rectangle().toString());
 		assertNotNull(new Rectangle(1, 2, 3, 4).toString());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetLocation() throws Exception {
+	public void testGetLocation() {
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		assertEquals(10, 15, template.getLocation());
 		assertEquals(10, 15, 70, 30, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetSize() throws Exception {
+	public void testGetSize() {
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		assertEquals(70, 30, template.getSize());
 		assertEquals(10, 15, 70, 30, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testBottom() throws Exception {
+	public void testBottom() {
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		assertEquals(45, template.bottom());
 		assertEquals(10, 15, 70, 30, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testRight() throws Exception {
+	public void testRight() {
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		assertEquals(80, template.right());
 		assertEquals(10, 15, 70, 30, template);
@@ -200,20 +210,21 @@ public class RectangleTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testLeft() throws Exception {
+	public void testLeft() {
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		assertEquals(10, template.left());
 	}
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testTop() throws Exception {
+	public void testTop() {
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		assertEquals(15, template.top());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testContainsIntInt() throws Exception {
+	public void testContainsIntInt() {
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		//
 		assertTrue(template.contains(10, 15));
@@ -226,8 +237,9 @@ public class RectangleTest extends BaseTestCase {
 		assertFalse(template.contains(80, 45));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testContainsPoint() throws Exception {
+	public void testContainsPoint() {
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		Point point = new Point(10, 15);
 		//
@@ -242,8 +254,9 @@ public class RectangleTest extends BaseTestCase {
 		assertFalse(template.contains(new Point(80, 45)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testIntersects() throws Exception {
+	public void testIntersects() {
 		Rectangle rectangle1 = new Rectangle(10, 15, 70, 30);
 		//
 		assertTrue(rectangle1.intersects(rectangle1));
@@ -272,14 +285,15 @@ public class RectangleTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testIsEmpty() throws Exception {
+	public void testIsEmpty() {
 		assertTrue(new Rectangle().isEmpty());
 		assertTrue(new Rectangle(10, 10, -3, 7).isEmpty());
 		assertFalse(new Rectangle(-10, -10, 1, 2).isEmpty());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testTouches() throws Exception {
+	public void testTouches() {
 		Rectangle rectangle1 = new Rectangle(10, 15, 70, 30);
 		//
 		assertTrue(rectangle1.touches(rectangle1));
@@ -298,8 +312,9 @@ public class RectangleTest extends BaseTestCase {
 		assertFalse(rectangle1.touches(new Rectangle(0, 0, 5, 10)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSetBoundsRectangle() throws Exception {
+	public void testSetBoundsRectangle() {
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		Rectangle testRectangle = new Rectangle();
 		assertSame(testRectangle, testRectangle.setBounds(template));
@@ -307,15 +322,17 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(10, 15, 70, 30, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSetBoundsInts() throws Exception {
+	public void testSetBoundsInts() {
 		Rectangle testRectangle = new Rectangle(10, 15, 70, 30);
 		assertSame(testRectangle, testRectangle.setBounds(-100, 200, 700, 800));
 		assertEquals(-100, 200, 700, 800, testRectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSetLocation() throws Exception {
+	public void testSetLocation() {
 		// check work setLocation(Point)
 		Point location = new Point(10, 30);
 		Rectangle testRectangle = new Rectangle(-100, 200, 700, 800);
@@ -328,8 +345,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(-100, 200, 700, 800, testRectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSetSize() throws Exception {
+	public void testSetSize() {
 		// check work setSize(Dimension)
 		Dimension size = new Dimension(110, 15);
 		Rectangle testRectangle = new Rectangle(-100, 200, 700, 800);
@@ -342,8 +360,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(-100, 200, 1024, 768, testRectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testCrop() throws Exception {
+	public void testCrop() {
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		assertSame(template, template.crop(null));
 		assertEquals(10, 15, 70, 30, template);
@@ -366,15 +385,17 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(55, 40, 0, 0, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testExpandIntInt() throws Exception {
+	public void testExpandIntInt() {
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		assertSame(template, template.expand(2, 3));
 		assertEquals(-1, -1, 7, 10, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testExpandInsets() throws Exception {
+	public void testExpandInsets() {
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		Insets insets = new Insets(5, 4, 3, 2);
 		assertSame(template, template.expand(insets));
@@ -382,8 +403,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(5, 4, 3, 2, insets);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testIntersect() throws Exception {
+	public void testIntersect() {
 		Rectangle rectangle1 = new Rectangle(10, 15, 70, 30);
 		//
 		assertSame(rectangle1, rectangle1.intersect(rectangle1));
@@ -407,8 +429,9 @@ public class RectangleTest extends BaseTestCase {
 		assertTrue(rectangle1.isEmpty());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testResize() throws Exception {
+	public void testResize() {
 		// check work resize(Dimension)
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		Dimension size = new Dimension(11, -17);
@@ -421,8 +444,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(1, 2, 1, 1, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testScale() throws Exception {
+	public void testScale() {
 		// check work scale(double)
 		Rectangle template = new Rectangle(10, 10, 20, 20);
 		assertSame(template, template.scale(0.5));
@@ -434,8 +458,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(5, 5, 10, 10, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testShrink() throws Exception {
+	public void testShrink() {
 		Rectangle template = new Rectangle(1, 2, 30, 40);
 		Point center = new Point(16, 22);
 		assertSame(template, template.shrink(5, 7));
@@ -455,8 +480,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(center, template.getCenter());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testTranslate() throws Exception {
+	public void testTranslate() {
 		// check work translate(int, int)
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		template.translate(15, 17);
@@ -470,15 +496,17 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(-3, -4, point);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testTranspose() throws Exception {
+	public void testTranspose() {
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		assertSame(template, template.transpose());
 		assertEquals(2, 1, 4, 3, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testUnionDimension() throws Exception {
+	public void testUnionDimension() {
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		Dimension dimension = new Dimension(-1, 7);
 		//
@@ -487,8 +515,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(-1, 7, dimension);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testUnionIntInt() throws Exception {
+	public void testUnionIntInt() {
 		Rectangle template = new Rectangle(10, 20, 30, 40);
 		//
 		assertSame(template, template.union(15, 25));
@@ -513,8 +542,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(0, 0, 56, 78, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testUnionPoint() throws Exception {
+	public void testUnionPoint() {
 		Rectangle template = new Rectangle(10, 20, 30, 40);
 		Point point = new Point(15, 25);
 		//
@@ -547,8 +577,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(0, 0, point);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testUnion4int() throws Exception {
+	public void testUnion4int() {
 		Rectangle template = new Rectangle(10, 20, 30, 40);
 		//
 		assertSame(template, template.union(10, 20, 30, 40));
@@ -561,8 +592,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(5, 7, 105, 213, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testUnionRectangle() throws Exception {
+	public void testUnionRectangle() {
 		Rectangle template = new Rectangle(10, 20, 30, 40);
 		//
 		assertSame(template, template.union(template));
@@ -582,8 +614,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(10, 20, 100, 200, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSetX() throws Exception {
+	public void testSetX() {
 		Rectangle rectangle = new Rectangle(1, 2, 4, 3);
 		rectangle.setX(0);
 		assertEquals(0, 2, 4, 3, rectangle);
@@ -591,8 +624,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(1, 2, 4, 3, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSetY() throws Exception {
+	public void testSetY() {
 		Rectangle rectangle = new Rectangle(1, 2, 3, 4);
 		rectangle.setY(1);
 		assertEquals(1, 1, 3, 4, rectangle);
@@ -600,8 +634,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(1, 3, 3, 4, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSetRight() throws Exception {
+	public void testSetRight() {
 		Rectangle rectangle = new Rectangle(1, 2, 3, 4);
 		rectangle.setRight(5);
 		assertEquals(1, 2, 4, 4, rectangle);
@@ -613,8 +648,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(1, 2, 0, 4, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testSetBottom() throws Exception {
+	public void testSetBottom() {
 		Rectangle rectangle = new Rectangle(1, 2, 3, 4);
 		rectangle.setBottom(7);
 		assertEquals(1, 2, 3, 5, rectangle);
@@ -626,8 +662,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(1, 2, 3, 0, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testShrinkLeft() throws Exception {
+	public void testShrinkLeft() {
 		Rectangle rectangle = new Rectangle(1, 2, 10, 4);
 		rectangle.shrinkLeft(5);
 		assertEquals(6, 2, 5, 4, rectangle);
@@ -637,8 +674,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(11, 2, 0, 4, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testShrinkTop() throws Exception {
+	public void testShrinkTop() {
 		Rectangle rectangle = new Rectangle(1, 2, 3, 11);
 		rectangle.shrinkTop(5);
 		assertEquals(1, 7, 3, 6, rectangle);
@@ -650,7 +688,7 @@ public class RectangleTest extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetCopy() throws Exception {
+	public void testGetCopy() {
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		Rectangle testRectangle = template.getCopy();
 		assertNotNull(testRectangle);
@@ -658,71 +696,81 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(template, testRectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetBottom() throws Exception {
+	public void testGetBottom() {
 		Rectangle rectangle = new Rectangle(10, 10, 20, 30);
 		assertEquals(20, 40, rectangle.getBottom());
 		assertEquals(10, 10, 20, 30, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetBottomLeft() throws Exception {
+	public void testGetBottomLeft() {
 		Rectangle rectangle = new Rectangle(10, 10, 20, 30);
 		assertEquals(10, 40, rectangle.getBottomLeft());
 		assertEquals(10, 10, 20, 30, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetBottomRight() throws Exception {
+	public void testGetBottomRight() {
 		Rectangle rectangle = new Rectangle(10, 10, 20, 30);
 		assertEquals(30, 40, rectangle.getBottomRight());
 		assertEquals(10, 10, 20, 30, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetCenter() throws Exception {
+	public void testGetCenter() {
 		Rectangle rectangle = new Rectangle(10, 10, 20, 30);
 		assertEquals(20, 25, rectangle.getCenter());
 		assertEquals(10, 10, 20, 30, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetLeft() throws Exception {
+	public void testGetLeft() {
 		Rectangle rectangle = new Rectangle(10, 10, 20, 30);
 		assertEquals(10, 25, rectangle.getLeft());
 		assertEquals(10, 10, 20, 30, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetRight() throws Exception {
+	public void testGetRight() {
 		Rectangle rectangle = new Rectangle(10, 10, 20, 30);
 		assertEquals(30, 25, rectangle.getRight());
 		assertEquals(10, 10, 20, 30, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetTop() throws Exception {
+	public void testGetTop() {
 		Rectangle rectangle = new Rectangle(10, 10, 20, 30);
 		assertEquals(20, 10, rectangle.getTop());
 		assertEquals(10, 10, 20, 30, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetTopLeft() throws Exception {
+	public void testGetTopLeft() {
 		Rectangle rectangle = new Rectangle(10, 10, 20, 30);
 		assertEquals(10, 10, rectangle.getTopLeft());
 		assertEquals(10, 10, 20, 30, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetTopRight() throws Exception {
+	public void testGetTopRight() {
 		Rectangle rectangle = new Rectangle(10, 10, 20, 30);
 		assertEquals(30, 10, rectangle.getTopRight());
 		assertEquals(10, 10, 20, 30, rectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetCropped() throws Exception {
+	public void testGetCropped() {
 		// check work getCropped() with null Insets
 		Rectangle template = new Rectangle(10, 15, 70, 30);
 		Rectangle testRectangle = template.getCropped(null);
@@ -739,8 +787,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(1, 2, 3, 4, insets);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetExpandedIntInt() throws Exception {
+	public void testGetExpandedIntInt() {
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		Rectangle testRectangle = template.getExpanded(2, 3);
 		assertNotSame(template, testRectangle);
@@ -748,8 +797,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(-1, -1, 7, 10, testRectangle);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetExpandedInsets() throws Exception {
+	public void testGetExpandedInsets() {
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		Insets insets = new Insets(5, 4, 3, 2);
 		Rectangle testRectangle = template.getExpanded(insets);
@@ -759,8 +809,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(5, 4, 3, 2, insets);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetIntersection() throws Exception {
+	public void testGetIntersection() {
 		Rectangle rectangle1 = new Rectangle(10, 15, 70, 30);
 		//
 		// check work getIntersection(Rectangle) with itself
@@ -797,8 +848,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(10, 15, 70, 30, rectangle1);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetResized() throws Exception {
+	public void testGetResized() {
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		//
 		// check work getResized(int, int)
@@ -818,8 +870,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(11, 12, size);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetTransposed() throws Exception {
+	public void testGetTransposed() {
 		Rectangle template = new Rectangle(1, 2, 3, 4);
 		Rectangle testRectangle = template.getTransposed();
 		assertNotNull(testRectangle);
@@ -828,8 +881,9 @@ public class RectangleTest extends BaseTestCase {
 		assertEquals(1, 2, 3, 4, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetUnion() throws Exception {
+	public void testGetUnion() {
 		Rectangle template = new Rectangle(10, 20, 30, 40);
 		//
 		// check work getUnion() with itself

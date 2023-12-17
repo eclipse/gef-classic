@@ -53,8 +53,9 @@ public class MarqueeToolEntry extends ToolEntry {
 	 */
 	public MarqueeToolEntry(String label, String description) {
 		super(label, description, null, null, MarqueeSelectionTool.class);
-		if (label == null || label.length() == 0)
+		if (label == null || label.length() == 0) {
 			setLabel(GEFMessages.MarqueeTool_Label);
+		}
 		setUserModificationPermission(PERMISSION_NO_MODIFICATION);
 	}
 
@@ -64,27 +65,26 @@ public class MarqueeToolEntry extends ToolEntry {
 	@Override
 	public String getDescription() {
 		String description = super.getDescription();
-		if (description != null)
+		if (description != null) {
 			return description;
+		}
 
 		int marqueeBehavior = getMarqueeBehavior();
-		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED) {
+		switch (marqueeBehavior) {
+		case MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED:
 			return GEFMessages.MarqueeTool_Connections_Touched_Desc;
-		}
-		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED) {
+		case MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED:
 			return GEFMessages.MarqueeTool_Connections_Contained_Desc;
-		}
-		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED) {
+		case MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED:
 			return GEFMessages.MarqueeTool_Nodes_Touched_Desc;
-		}
-		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED) {
+		case MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED:
 			return GEFMessages.MarqueeTool_Nodes_Contained_Desc;
-		}
-		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS) {
+		case MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS:
 			return GEFMessages.MarqueeTool_Nodes_Touched_And_Related_Connections_Desc;
-		}
-		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS) {
+		case MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS:
 			return GEFMessages.MarqueeTool_Nodes_Contained_And_Related_Connections_Desc;
+		default:
+			break;
 		}
 		throw new IllegalArgumentException("Unknown marquee behavior"); //$NON-NLS-1$
 	}
@@ -103,7 +103,8 @@ public class MarqueeToolEntry extends ToolEntry {
 		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED
 				|| marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED) {
 			return SharedImages.DESC_MARQUEE_TOOL_CONNECTIONS_24;
-		} else if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED
+		}
+		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED
 				|| marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED) {
 			return SharedImages.DESC_MARQUEE_TOOL_NODES_24;
 		} else {
@@ -114,8 +115,8 @@ public class MarqueeToolEntry extends ToolEntry {
 	private int getMarqueeBehavior() {
 		// retrieve marquee behavior from tool property
 		Object value = getToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR);
-		if (value != null && value instanceof Integer) {
-			return ((Integer) value).intValue();
+		if (value instanceof Integer intVal) {
+			return intVal.intValue();
 		}
 		// return default behavior
 		return MarqueeSelectionTool.DEFAULT_MARQUEE_BEHAVIOR;
@@ -135,7 +136,8 @@ public class MarqueeToolEntry extends ToolEntry {
 		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED
 				|| marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED) {
 			return SharedImages.DESC_MARQUEE_TOOL_CONNECTIONS_16;
-		} else if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED
+		}
+		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED
 				|| marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED) {
 			return SharedImages.DESC_MARQUEE_TOOL_NODES_16;
 		} else {

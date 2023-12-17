@@ -28,7 +28,7 @@ public class AndGate extends Gate {
 
 	@Override
 	public boolean getResult() {
-		return getInput(TERMINAL_A) & getInput(TERMINAL_B);
+		return getInput(TERMINAL_A) && getInput(TERMINAL_B);
 	}
 
 	@Override

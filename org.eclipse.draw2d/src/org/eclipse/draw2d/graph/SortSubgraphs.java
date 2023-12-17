@@ -50,7 +50,7 @@ class SortSubgraphs extends GraphVisitor {
 		Node cycleRoot;
 		do {
 			// Remove all leftmost nodes, updating the nodes to their right
-			while (noLefts.size() > 0) {
+			while (!noLefts.isEmpty()) {
 				Node node = noLefts.remove(noLefts.size() - 1);
 				node.sortValue = index;
 				index++;

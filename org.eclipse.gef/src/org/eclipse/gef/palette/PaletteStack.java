@@ -12,11 +12,9 @@
  *******************************************************************************/
 package org.eclipse.gef.palette;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -35,13 +33,10 @@ public class PaletteStack extends PaletteContainer {
 	 * Listens to visibility changes of the children palette entries so that the
 	 * active entry can be updated if the current active entry is hidden.
 	 */
-	private PropertyChangeListener childListener = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals(PaletteEntry.PROPERTY_VISIBLE) && evt.getNewValue() == Boolean.FALSE
-					&& activeEntry == evt.getSource()) {
-				checkActiveEntry();
-			}
+	private final PropertyChangeListener childListener = evt -> {
+		if (evt.getPropertyName().equals(PaletteEntry.PROPERTY_VISIBLE) && evt.getNewValue() == Boolean.FALSE
+				&& this.activeEntry == evt.getSource()) {
+			checkActiveEntry();
 		}
 	};
 
@@ -78,8 +73,9 @@ public class PaletteStack extends PaletteContainer {
 	 */
 	@Override
 	public boolean acceptsType(Object type) {
-		if (!type.equals(ToolEntry.PALETTE_TYPE_TOOL))
+		if (!type.equals(ToolEntry.PALETTE_TYPE_TOOL)) {
 			return false;
+		}
 		return super.acceptsType(type);
 	}
 
@@ -109,13 +105,15 @@ public class PaletteStack extends PaletteContainer {
 	 */
 	private void checkActiveEntry() {
 		PaletteEntry currEntry = activeEntry;
-		if (!getChildren().contains(activeEntry))
+		if (!getChildren().contains(activeEntry)) {
 			activeEntry = null;
-		if (activeEntry == null && getChildren().size() > 0)
+		}
+		if (activeEntry == null && !getChildren().isEmpty()) {
 			activeEntry = (PaletteEntry) getChildren().get(0);
+		}
 		if (activeEntry != null && !activeEntry.isVisible()) {
-			for (Iterator iterator = getChildren().iterator(); iterator.hasNext();) {
-				PaletteEntry child = (PaletteEntry) iterator.next();
+			for (Object element : getChildren()) {
+				PaletteEntry child = (PaletteEntry) element;
 				if (child.isVisible()) {
 					activeEntry = child;
 					break;
@@ -155,8 +153,9 @@ public class PaletteStack extends PaletteContainer {
 	 */
 	public void setActiveEntry(PaletteEntry entry) {
 		PaletteEntry oldEntry = activeEntry;
-		if (activeEntry != null && (activeEntry.equals(entry) || !getChildren().contains(entry)))
+		if (activeEntry != null && (activeEntry.equals(entry) || !getChildren().contains(entry))) {
 			return;
+		}
 		activeEntry = entry;
 		listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, oldEntry, activeEntry);
 	}
@@ -184,8 +183,8 @@ public class PaletteStack extends PaletteContainer {
 	 *                removed
 	 */
 	private void updateListeners(Collection entries, boolean add) {
-		for (Iterator iterator = entries.iterator(); iterator.hasNext();) {
-			PaletteEntry child = (PaletteEntry) iterator.next();
+		for (Object entry : entries) {
+			PaletteEntry child = (PaletteEntry) entry;
 			if (add) {
 				child.addPropertyChangeListener(childListener);
 			} else {

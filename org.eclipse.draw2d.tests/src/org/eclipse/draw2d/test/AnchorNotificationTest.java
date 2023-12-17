@@ -88,7 +88,7 @@ public class AnchorNotificationTest extends Assert {
 	 * @since 3.1
 	 */
 	@Before
-	protected void setUp() {
+	public void setUp() {
 		Figure contents = new Figure();
 		contents.addNotify();
 		contents.setBounds(new Rectangle(0, 0, 100, 100));

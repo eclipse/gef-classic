@@ -100,7 +100,7 @@ public class DimensionPropertySource implements IPropertySource {
 
 	@Override
 	public String toString() {
-		return new String("(" + dimension.width + "," + dimension.height + ")");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+		return "(" + dimension.width + "," + dimension.height + ")"; //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 	}
 
 }

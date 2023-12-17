@@ -50,8 +50,9 @@ public class InlineFlow extends FlowFigure {
 	@Override
 	public boolean addLeadingWordRequirements(int[] width) {
 		for (IFigure fig : getChildren()) {
-			if (((FlowFigure) fig).addLeadingWordRequirements(width))
+			if (((FlowFigure) fig).addLeadingWordRequirements(width)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -68,9 +69,11 @@ public class InlineFlow extends FlowFigure {
 	public boolean containsPoint(int x, int y) {
 		if (super.containsPoint(x, y)) {
 			List frags = getFragments();
-			for (int i = 0; i < frags.size(); i++)
-				if (((FlowBox) frags.get(i)).containsPoint(x, y))
+			for (Object frag : frags) {
+				if (((FlowBox) frag).containsPoint(x, y)) {
 					return true;
+				}
+			}
 		}
 
 		return false;
@@ -117,16 +120,19 @@ public class InlineFlow extends FlowFigure {
 				where.height = box.getDescentWithBorder() - where.y;
 				where.y += box.getBaseline();
 				sides = 0;
-				if (i == 0)
+				if (i == 0) {
 					sides = SWT.LEAD;
-				if (i == frags.size() - 1)
+				}
+				if (i == frags.size() - 1) {
 					sides |= SWT.TRAIL;
+				}
 				fb.paint(this, graphics, where, sides);
 			}
 			graphics.restoreState();
 		}
-		if (selectionStart != -1)
+		if (selectionStart != -1) {
 			paintSelection(graphics);
+		}
 	}
 
 	/**
@@ -141,8 +147,8 @@ public class InlineFlow extends FlowFigure {
 		graphics.setBackgroundColor(ColorConstants.white);
 		List list = getFragments();
 		FlowBox box;
-		for (int i = 0; i < list.size(); i++) {
-			box = (FlowBox) list.get(i);
+		for (Object element : list) {
+			box = (FlowBox) element;
 			int top = box.getLineRoot().getVisibleTop();
 			int bottom = box.getLineRoot().getVisibleBottom();
 			graphics.fillRectangle(box.getX(), top, box.getWidth(), bottom - top);
@@ -156,11 +162,13 @@ public class InlineFlow extends FlowFigure {
 	public void postValidate() {
 		List list = getFragments();
 		FlowBox box;
-		int left = Integer.MAX_VALUE, top = left;
-		int right = Integer.MIN_VALUE, bottom = right;
+		int left = Integer.MAX_VALUE;
+		int top = left;
+		int right = Integer.MIN_VALUE;
+		int bottom = right;
 
-		for (int i = 0; i < list.size(); i++) {
-			box = (FlowBox) list.get(i);
+		for (Object element : list) {
+			box = (FlowBox) element;
 			left = Math.min(left, box.getX());
 			right = Math.max(right, box.getX() + box.getWidth());
 			top = Math.min(top, box.getLineRoot().getVisibleTop());
@@ -180,10 +188,10 @@ public class InlineFlow extends FlowFigure {
 	 */
 	@Override
 	public void setBorder(Border border) {
-		if (border == null || border instanceof FlowBorder)
-			super.setBorder(border);
-		else
+		if ((border != null) && !(border instanceof FlowBorder)) {
 			throw new RuntimeException("Border must be an instance of FlowBorder"); //$NON-NLS-1$
+		}
+		super.setBorder(border);
 	}
 
 }

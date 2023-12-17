@@ -21,8 +21,9 @@ import org.junit.Test;
 
 public class DimensionTests extends BaseTestCase {
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetExpanded() throws Exception {
+	public void testGetExpanded() {
 		Dimension d = new Dimension(3, 5);
 		assertEquals(new Dimension(6, 7), d.getExpanded(3, 2));
 		assertEquals(new Dimension(6, 7), d.getExpanded(3.4, 2.7));
@@ -55,7 +56,7 @@ public class DimensionTests extends BaseTestCase {
 	}
 
 	@Test
-	public void testConstructors() throws Exception {
+	public void testConstructors() {
 		Image image = new Image(null, getClass().getResourceAsStream("icons/recorder.gif")); //$NON-NLS-1$
 
 		assertEquals(0, 0, new Dimension());
@@ -73,9 +74,9 @@ public class DimensionTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testEqualsObject() throws Exception {
+	public void testEqualsObject() {
 		Dimension testDimension = new Dimension(-7, 8);
-		assertFalse(testDimension.equals(null));
+		assertNotNull(testDimension);
 		assertFalse(testDimension.equals(new Object()));
 		assertTrue(testDimension.equals(testDimension));
 		assertTrue(testDimension.equals(new Dimension(testDimension)));
@@ -84,14 +85,14 @@ public class DimensionTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testToString() throws Exception {
+	public void testToString() {
 		assertNotNull(new Dimension().toString());
 		assertNotNull(new Dimension(1, 2).toString());
 	}
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testContains() throws Exception {
+	public void testContains() {
 		Dimension template = new Dimension(-7, 8);
 		assertTrue(template.contains(template));
 		assertTrue(template.contains(new Dimension(-7, 8)));
@@ -103,7 +104,7 @@ public class DimensionTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testContainsProper() throws Exception {
+	public void testContainsProper() {
 		Dimension template = new Dimension(-7, 8);
 		assertFalse(template.containsProper(template));
 		assertTrue(template.containsProper(new Dimension(-8, -8)));
@@ -111,13 +112,13 @@ public class DimensionTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetArea() throws Exception {
+	public void testGetArea() {
 		assertEquals(6, new Dimension(2, 3).getArea());
 	}
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testEqualsIntInt() throws Exception {
+	public void testEqualsIntInt() {
 		assertTrue(new Dimension().equals(0, 0));
 		assertTrue(new Dimension(1, -2).equals(1, -2));
 		assertFalse(new Dimension(1, -2).equals(7, -7));
@@ -125,7 +126,7 @@ public class DimensionTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testIsEmpty() throws Exception {
+	public void testIsEmpty() {
 		assertTrue(new Dimension().isEmpty());
 		assertTrue(new Dimension(1, -2).isEmpty());
 		assertFalse(new Dimension(3, 3).isEmpty());
@@ -133,15 +134,16 @@ public class DimensionTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testSetSize() throws Exception {
+	public void testSetSize() {
 		Dimension template = new Dimension(-7, 8);
 		Dimension testDimension = new Dimension();
 		testDimension.setSize(template);
 		assertEquals(template, testDimension);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testExpand() throws Exception {
+	public void testExpand() {
 		// check work expand(Dimension)
 		Dimension template = new Dimension(-1, 1);
 		Dimension testDimension = new Dimension(2, 3);
@@ -160,8 +162,9 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(3, 10, testDimension);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testIntersect() throws Exception {
+	public void testIntersect() {
 		Dimension template = new Dimension(-7, 8);
 		Dimension testDimension = new Dimension(0, 5);
 		assertSame(testDimension, testDimension.intersect(template));
@@ -169,8 +172,9 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(-7, 8, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testNegate() throws Exception {
+	public void testNegate() {
 		Dimension testDimension = new Dimension(1, 2);
 		assertSame(testDimension, testDimension.negate());
 		assertEquals(-1, -2, testDimension);
@@ -178,8 +182,9 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(1, 2, testDimension);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testScale() throws Exception {
+	public void testScale() {
 		// check work scale(double)
 		Dimension testDimension = new Dimension(10, 20);
 		assertSame(testDimension, testDimension.scale(0.5));
@@ -190,8 +195,9 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(100, 100, testDimension);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testShrink() throws Exception {
+	public void testShrink() {
 		Dimension testDimension = new Dimension(3, 5);
 		assertSame(testDimension, testDimension.shrink(1, 2));
 		assertEquals(2, 3, testDimension);
@@ -199,15 +205,17 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(3, 3, testDimension);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testTranspose() throws Exception {
+	public void testTranspose() {
 		Dimension testDimension = new Dimension(3, 5);
 		assertSame(testDimension, testDimension.transpose());
 		assertEquals(5, 3, testDimension);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testUnion() throws Exception {
+	public void testUnion() {
 		// check work union(Dimension)
 		Dimension template = new Dimension(-7, 8);
 		Dimension testDimension = new Dimension(3, 5);
@@ -222,7 +230,7 @@ public class DimensionTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetCopy() throws Exception {
+	public void testGetCopy() {
 		Dimension template = new Dimension(-7, 8);
 		Dimension testDimension = template.getCopy();
 		assertNotNull(testDimension);
@@ -230,8 +238,9 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(template, testDimension);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetDifference() throws Exception {
+	public void testGetDifference() {
 		Dimension template1 = new Dimension(17, 18);
 		Dimension template2 = new Dimension(11, 10);
 		Dimension testDimension = template1.getDifference(template2);
@@ -243,8 +252,9 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(11, 10, template2);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetIntersected() throws Exception {
+	public void testGetIntersected() {
 		Dimension template1 = new Dimension(-7, 8);
 		Dimension template2 = new Dimension(0, 5);
 		Dimension testDimension = template1.getIntersected(template2);
@@ -256,8 +266,9 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(0, 5, template2);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetNegated() throws Exception {
+	public void testGetNegated() {
 		Dimension template = new Dimension(-7, 8);
 		Dimension testDimension = template.getNegated();
 		assertNotNull(testDimension);
@@ -266,8 +277,9 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(-7, 8, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetScaled() throws Exception {
+	public void testGetScaled() {
 		Dimension template = new Dimension(10, 20);
 		Dimension testDimension = template.getScaled(0.5);
 		assertNotNull(testDimension);
@@ -276,8 +288,9 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(10, 20, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetTransposed() throws Exception {
+	public void testGetTransposed() {
 		Dimension template = new Dimension(3, 5);
 		Dimension testDimension = template.getTransposed();
 		assertNotNull(testDimension);
@@ -286,8 +299,9 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(3, 5, template);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void testGetUnioned() throws Exception {
+	public void testGetUnioned() {
 		// check work getUnioned(Dimension)
 		Dimension template1 = new Dimension(-7, 8);
 		Dimension template2 = new Dimension(0, 5);

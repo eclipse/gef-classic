@@ -37,7 +37,7 @@ import org.eclipse.gef.EditPartViewer;
  */
 public class SelectionSynchronizer implements ISelectionChangedListener {
 
-	private List viewers = new ArrayList();
+	private final List<EditPartViewer> viewers = new ArrayList<>();
 	private boolean isDispatching = false;
 	private int disabled = 0;
 	private EditPartViewer pendingSelection;
@@ -78,8 +78,9 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	public void removeViewer(EditPartViewer viewer) {
 		viewer.removeSelectionChangedListener(this);
 		viewers.remove(viewer);
-		if (pendingSelection == viewer)
+		if (pendingSelection == viewer) {
 			pendingSelection = null;
+		}
 	}
 
 	/**
@@ -90,8 +91,9 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 */
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		if (isDispatching)
+		if (isDispatching) {
 			return;
+		}
 		EditPartViewer source = (EditPartViewer) event.getSelectionProvider();
 		if (disabled > 0) {
 			pendingSelection = source;
@@ -112,9 +114,8 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 */
 	protected void syncSelection(EditPartViewer selectionSource, ISelection selection) {
 		isDispatching = true;
-		for (int i = 0; i < viewers.size(); i++) {
-			if (viewers.get(i) != selectionSource) {
-				EditPartViewer viewer = (EditPartViewer) viewers.get(i);
+		for (EditPartViewer viewer : viewers) {
+			if (viewer != selectionSource) {
 				applySelection(viewer, selection);
 			}
 		}
@@ -128,9 +129,9 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 * @param value <code>true</code> if synchronization should occur
 	 */
 	public void setEnabled(boolean value) {
-		if (!value)
+		if (!value) {
 			disabled++;
-		else if (--disabled == 0 && pendingSelection != null) {
+		} else if (--disabled == 0 && pendingSelection != null) {
 			syncSelection(pendingSelection, pendingSelection.getSelection());
 			pendingSelection = null;
 		}
@@ -151,16 +152,18 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 * @since 3.10
 	 */
 	protected void applySelection(EditPartViewer viewer, ISelection selection) {
-		ArrayList result = new ArrayList();
+		List<EditPart> result = new ArrayList<>();
 		Iterator iter = ((IStructuredSelection) selection).iterator();
 		while (iter.hasNext()) {
 			EditPart part = convert(viewer, (EditPart) iter.next());
-			if (part != null && part.isSelectable())
+			if (part != null && part.isSelectable()) {
 				result.add(part);
+			}
 		}
 		viewer.setSelection(new StructuredSelection(result));
-		if (result.size() > 0)
-			viewer.reveal((EditPart) result.get(result.size() - 1));
+		if (!result.isEmpty()) {
+			viewer.reveal(result.get(result.size() - 1));
+		}
 	}
 
 }

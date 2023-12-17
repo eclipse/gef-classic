@@ -25,7 +25,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class Label extends Figure implements PositionConstants {
 
-	private static String ELLIPSIS = "..."; //$NON-NLS-1$
+	private static final String ELLIPSIS = "..."; //$NON-NLS-1$
 
 	private Image icon;
 	private String text = "";//$NON-NLS-1$
@@ -83,43 +83,33 @@ public class Label extends Figure implements PositionConstants {
 
 	private void alignOnHeight(Point loc, Dimension size, int alignment) {
 		Insets insets = getInsets();
-		switch (alignment) {
-		case TOP:
-			loc.y = insets.top;
-			break;
-		case BOTTOM:
-			loc.y = bounds.height - size.height - insets.bottom;
-			break;
-		default:
-			loc.y = (bounds.height - size.height) / 2;
-		}
+		loc.y = switch (alignment) {
+		case TOP -> insets.top;
+		case BOTTOM -> bounds.height - size.height - insets.bottom;
+		default -> (bounds.height - size.height) / 2;
+		};
 	}
 
 	private void alignOnWidth(Point loc, Dimension size, int alignment) {
 		Insets insets = getInsets();
-		switch (alignment) {
-		case LEFT:
-			loc.x = insets.left;
-			break;
-		case RIGHT:
-			loc.x = bounds.width - size.width - insets.right;
-			break;
-		default:
-			loc.x = (bounds.width - size.width) / 2;
-		}
+		loc.x = switch (alignment) {
+		case LEFT -> insets.left;
+		case RIGHT -> bounds.width - size.width - insets.right;
+		default -> (bounds.width - size.width) / 2;
+		};
 	}
 
 	private void calculateAlignment() {
 		switch (textPlacement) {
-		case EAST:
-		case WEST:
+		case EAST, WEST:
 			alignOnHeight(textLocation, getTextSize(), textAlignment);
 			alignOnHeight(iconLocation, getIconSize(), iconAlignment);
 			break;
-		case NORTH:
-		case SOUTH:
+		case NORTH, SOUTH:
 			alignOnWidth(textLocation, getSubStringTextSize(), textAlignment);
 			alignOnWidth(iconLocation, getIconSize(), iconAlignment);
+			break;
+		default:
 			break;
 		}
 	}
@@ -134,8 +124,9 @@ public class Label extends Figure implements PositionConstants {
 	 */
 	protected Dimension calculateLabelSize(Dimension txtSize) {
 		int gap = getIconTextGap();
-		if (getIcon() == null || getText().equals("")) //$NON-NLS-1$
+		if (getIcon() == null || getText().equals("")) { //$NON-NLS-1$
 			gap = 0;
+		}
 		Dimension d = new Dimension(0, 0);
 		if (textPlacement == WEST || textPlacement == EAST) {
 			d.width = getIconSize().width + gap + txtSize.width;
@@ -179,13 +170,13 @@ public class Label extends Figure implements PositionConstants {
 		}
 
 		switch (textPlacement) {
-		case EAST:
-		case WEST:
+		case EAST, WEST:
 			offset.height = 0;
 			break;
-		case NORTH:
-		case SOUTH:
+		case NORTH, SOUTH:
 			offset.width = 0;
+			break;
+		default:
 			break;
 		}
 
@@ -195,8 +186,9 @@ public class Label extends Figure implements PositionConstants {
 
 	private void calculatePlacement() {
 		int gap = getIconTextGap();
-		if (icon == null || text.equals("")) //$NON-NLS-1$
+		if (icon == null || text.equals("")) { //$NON-NLS-1$
 			gap = 0;
+		}
 		Insets insets = getInsets();
 
 		switch (textPlacement) {
@@ -215,6 +207,9 @@ public class Label extends Figure implements PositionConstants {
 		case SOUTH:
 			textLocation.y = getIconSize().height + gap + insets.top;
 			iconLocation.y = insets.top;
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -287,8 +282,9 @@ public class Label extends Figure implements PositionConstants {
 	 * @since 2.0
 	 */
 	protected Point getIconLocation() {
-		if (iconLocation == null)
+		if (iconLocation == null) {
 			calculateLocations();
+		}
 		return iconLocation;
 	}
 
@@ -307,11 +303,13 @@ public class Label extends Figure implements PositionConstants {
 	 */
 	@Override
 	public Dimension getMinimumSize(int w, int h) {
-		if (minSize != null)
+		if (minSize != null) {
 			return minSize;
+		}
 		minSize = new Dimension();
-		if (getLayoutManager() != null)
+		if (getLayoutManager() != null) {
 			minSize.setSize(getLayoutManager().getMinimumSize(this, w, h));
+		}
 
 		Dimension labelSize = calculateLabelSize(getTextUtilities().getTextExtents(getTruncationString(), getFont())
 				.intersect(getTextUtilities().getTextExtents(getText(), getFont())));
@@ -330,8 +328,9 @@ public class Label extends Figure implements PositionConstants {
 			prefSize = calculateLabelSize(getTextSize());
 			Insets insets = getInsets();
 			prefSize.expand(insets.getWidth(), insets.getHeight());
-			if (getLayoutManager() != null)
+			if (getLayoutManager() != null) {
 				prefSize.union(getLayoutManager().getPreferredSize(this, wHint, hHint));
+			}
 		}
 		if (wHint >= 0 && wHint < prefSize.width) {
 			Dimension minSize = getMinimumSize(wHint, hHint);
@@ -351,24 +350,27 @@ public class Label extends Figure implements PositionConstants {
 	 * @since 2.0
 	 */
 	public String getSubStringText() {
-		if (subStringText != null)
+		if (subStringText != null) {
 			return subStringText;
+		}
 
 		subStringText = text;
 		int widthShrink = getPreferredSize().width - getSize().width;
-		if (widthShrink <= 0)
+		if (widthShrink <= 0) {
 			return subStringText;
+		}
 
 		Dimension effectiveSize = getTextSize().getExpanded(-widthShrink, 0);
 		Font currentFont = getFont();
 		int dotsWidth = getTextUtilities().getTextExtents(getTruncationString(), currentFont).width;
 
-		if (effectiveSize.width < dotsWidth)
+		if (effectiveSize.width < dotsWidth) {
 			effectiveSize.width = dotsWidth;
+		}
 
 		int subStringLength = getTextUtilities().getLargestSubstringConfinedTo(text, currentFont,
 				effectiveSize.width - dotsWidth);
-		subStringText = new String(text.substring(0, subStringLength) + getTruncationString());
+		subStringText = text.substring(0, subStringLength) + getTruncationString();
 		return subStringText;
 	}
 
@@ -381,8 +383,9 @@ public class Label extends Figure implements PositionConstants {
 	 * @since 2.0
 	 */
 	protected Dimension getSubStringTextSize() {
-		if (subStringTextSize == null)
+		if (subStringTextSize == null) {
 			subStringTextSize = calculateSubStringTextSize();
+		}
 		return subStringTextSize;
 	}
 
@@ -429,8 +432,9 @@ public class Label extends Figure implements PositionConstants {
 	 * @since 2.0
 	 */
 	protected Point getTextLocation() {
-		if (textLocation != null)
+		if (textLocation != null) {
 			return textLocation;
+		}
 		calculateLocations();
 		return textLocation;
 	}
@@ -457,8 +461,9 @@ public class Label extends Figure implements PositionConstants {
 	 * @since 2.0
 	 */
 	protected Dimension getTextSize() {
-		if (textSize == null)
+		if (textSize == null) {
 			textSize = calculateTextSize();
+		}
 		return textSize;
 	}
 
@@ -492,12 +497,14 @@ public class Label extends Figure implements PositionConstants {
 	 */
 	@Override
 	protected void paintFigure(Graphics graphics) {
-		if (isOpaque())
+		if (isOpaque()) {
 			super.paintFigure(graphics);
+		}
 		Rectangle bounds = getBounds();
 		graphics.translate(bounds.x, bounds.y);
-		if (icon != null)
+		if (icon != null) {
 			graphics.drawImage(icon, getIconLocation());
+		}
 		if (!isEnabled()) {
 			graphics.translate(1, 1);
 			graphics.setForegroundColor(ColorConstants.buttonLightest);
@@ -516,15 +523,17 @@ public class Label extends Figure implements PositionConstants {
 	 * @since 2.0
 	 */
 	public void setIcon(Image image) {
-		if (icon == image)
+		if (icon == image) {
 			return;
+		}
 		icon = image;
 		// Call repaint, in case the image dimensions are the same.
 		repaint();
-		if (icon == null)
+		if (icon == null) {
 			setIconDimension(new Dimension());
-		else
+		} else {
 			setIconDimension(new Dimension(image));
+		}
 	}
 
 	/**
@@ -543,8 +552,9 @@ public class Label extends Figure implements PositionConstants {
 	 * @since 2.0
 	 */
 	public void setIconAlignment(int align) {
-		if (iconAlignment == align)
+		if (iconAlignment == align) {
 			return;
+		}
 		iconAlignment = align;
 		clearLocations();
 		repaint();
@@ -557,9 +567,11 @@ public class Label extends Figure implements PositionConstants {
 	 * @deprecated the icon is automatically displayed at 1:1
 	 * @since 2.0
 	 */
+	@Deprecated
 	public void setIconDimension(Dimension d) {
-		if (d.equals(getIconSize()))
+		if (d.equals(getIconSize())) {
 			return;
+		}
 		iconSize = d;
 		revalidate();
 	}
@@ -572,8 +584,9 @@ public class Label extends Figure implements PositionConstants {
 	 * @since 2.0
 	 */
 	public void setIconTextGap(int gap) {
-		if (iconTextGap == gap)
+		if (iconTextGap == gap) {
 			return;
+		}
 		iconTextGap = gap;
 		repaint();
 		revalidate();
@@ -594,8 +607,9 @@ public class Label extends Figure implements PositionConstants {
 	 * @param align label alignment
 	 */
 	public void setLabelAlignment(int align) {
-		if (labelAlignment == align)
+		if (labelAlignment == align) {
 			return;
+		}
 		labelAlignment = align;
 		clearLocations();
 		repaint();
@@ -609,10 +623,12 @@ public class Label extends Figure implements PositionConstants {
 	 */
 	public void setText(String s) {
 		// "text" will never be null.
-		if (s == null)
+		if (s == null) {
 			s = "";//$NON-NLS-1$
-		if (text.equals(s))
+		}
+		if (text.equals(s)) {
 			return;
+		}
 		text = s;
 		revalidate();
 		repaint();
@@ -636,8 +652,9 @@ public class Label extends Figure implements PositionConstants {
 	 * @since 2.0
 	 */
 	public void setTextAlignment(int align) {
-		if (textAlignment == align)
+		if (textAlignment == align) {
 			return;
+		}
 		textAlignment = align;
 		clearLocations();
 		repaint();
@@ -657,8 +674,9 @@ public class Label extends Figure implements PositionConstants {
 	 * @since 2.0
 	 */
 	public void setTextPlacement(int where) {
-		if (textPlacement == where)
+		if (textPlacement == where) {
 			return;
+		}
 		textPlacement = where;
 		revalidate();
 		repaint();

@@ -29,12 +29,12 @@ public abstract class SimpleOutput extends LogicSubpart {
 	@Override
 	public Object getPropertyValue(Object propName) {
 		if (ID_SIZE.equals(propName)) {
-			return new String("(" + getSize().width + "," + getSize().height + ")");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+			return "(" + getSize().width + "," + getSize().height + ")";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 		}
 		return super.getPropertyValue(propName);
 	}
 
-	abstract public boolean getResult();
+	public abstract boolean getResult();
 
 	@Override
 	public Dimension getSize() {
@@ -50,10 +50,11 @@ public abstract class SimpleOutput extends LogicSubpart {
 	 */
 	@Override
 	public void setPropertyValue(Object id, Object value) {
-		if (ID_SIZE.equals(id))
+		if (ID_SIZE.equals(id)) {
 			super.setPropertyValue(id, new Dimension(getSize()));
-		else
+		} else {
 			super.setPropertyValue(id, value);
+		}
 	}
 
 	@Override

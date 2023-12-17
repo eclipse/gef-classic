@@ -23,6 +23,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Subgraph;
+
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
@@ -30,6 +31,8 @@ import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.tools.DirectEditManager;
+
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.FlowElement;
 import org.eclipse.gef.examples.flow.model.Transition;
@@ -37,7 +40,6 @@ import org.eclipse.gef.examples.flow.policies.ActivityDirectEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityNodeEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivitySourceEditPolicy;
-import org.eclipse.gef.tools.DirectEditManager;
 
 /**
  * @author hudsonr Created on Jun 30, 2003
@@ -59,8 +61,8 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements 
 		Node n = (Node) map.get(this);
 		getFigure().setBounds(new Rectangle(n.x, n.y, n.width, n.height));
 
-		for (int i = 0; i < getSourceConnections().size(); i++) {
-			TransitionPart trans = (TransitionPart) getSourceConnections().get(i);
+		for (Object element : getSourceConnections()) {
+			TransitionPart trans = (TransitionPart) element;
 			trans.applyGraphResults(graph, map);
 		}
 	}
@@ -170,8 +172,9 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements 
 	 */
 	@Override
 	public void performRequest(Request request) {
-		if (request.getType() == RequestConstants.REQ_DIRECT_EDIT)
+		if (request.getType() == RequestConstants.REQ_DIRECT_EDIT) {
 			performDirectEdit();
+		}
 	}
 
 	/**
@@ -180,14 +183,15 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
-		if (FlowElement.CHILDREN.equals(prop))
+		if (FlowElement.CHILDREN.equals(prop)) {
 			refreshChildren();
-		else if (FlowElement.INPUTS.equals(prop))
+		} else if (FlowElement.INPUTS.equals(prop)) {
 			refreshTargetConnections();
-		else if (FlowElement.OUTPUTS.equals(prop))
+		} else if (FlowElement.OUTPUTS.equals(prop)) {
 			refreshSourceConnections();
-		else if (Activity.NAME.equals(prop))
+		} else if (Activity.NAME.equals(prop)) {
 			refreshVisuals();
+		}
 
 		// Causes Graph to re-layout
 		((GraphicalEditPart) (getViewer().getContents())).getFigure().revalidate();

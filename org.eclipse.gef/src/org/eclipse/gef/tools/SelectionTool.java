@@ -59,12 +59,6 @@ public class SelectionTool extends TargetingTool {
 
 	private WeakReference<EditPart> cachedHandlePart;
 
-	/**
-	 * Default constructor.
-	 */
-	public SelectionTool() {
-	}
-
 	private boolean acceptTraverseHandle(KeyEvent e) {
 		return (e.character == '.' || e.character == '>')
 				&& isInState(STATE_INITIAL | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
@@ -108,10 +102,12 @@ public class SelectionTool extends TargetingTool {
 	 * {@link EditPart#eraseTargetFeedback(Request)}.
 	 */
 	protected void eraseHoverFeedback() {
-		if (getTargetEditPart() == null)
+		if (getTargetEditPart() == null) {
 			return;
-		if (getTargetHoverRequest() == null)
+		}
+		if (getTargetHoverRequest() == null) {
 			return;
+		}
 		getTargetEditPart().eraseTargetFeedback(getTargetHoverRequest());
 	}
 
@@ -141,8 +137,9 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	private EditPart getLastHandleProvider() {
-		if (cachedHandlePart == null)
+		if (cachedHandlePart == null) {
 			return null;
+		}
 		return cachedHandlePart.get();
 	}
 
@@ -154,12 +151,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	protected EditPartViewer.Conditional getTargetingConditional() {
-		return new EditPartViewer.Conditional() {
-			@Override
-			public boolean evaluate(EditPart editpart) {
-				EditPart targetEditPart = editpart.getTargetEditPart(getTargetRequest());
-				return targetEditPart != null && targetEditPart.isSelectable();
-			}
+		return editpart -> {
+			EditPart targetEditPart = editpart.getTargetEditPart(getTargetRequest());
+			return targetEditPart != null && targetEditPart.isSelectable();
 		};
 	}
 
@@ -170,8 +164,9 @@ public class SelectionTool extends TargetingTool {
 	 * @return the hover request
 	 */
 	protected Request getTargetHoverRequest() {
-		if (hoverRequest == null)
+		if (hoverRequest == null) {
 			createHoverRequest();
+		}
 		return hoverRequest;
 	}
 
@@ -192,11 +187,12 @@ public class SelectionTool extends TargetingTool {
 		EditPartViewer viewer = getCurrentViewer();
 		Point p = getLocation();
 
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().deactivate();
+		}
 
-		if (viewer instanceof GraphicalViewer) {
-			Handle handle = ((GraphicalViewer) viewer).findHandleAt(p);
+		if (viewer instanceof GraphicalViewer gv) {
+			Handle handle = gv.findHandleAt(p);
 			if (handle != null) {
 				setDragTracker(handle.getDragTracker());
 				return true;
@@ -221,8 +217,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	protected boolean handleButtonUp(int button) {
-		if (getCurrentInput().isAnyButtonDown())
+		if (getCurrentInput().isAnyButtonDown()) {
 			return false;
+		}
 		((SelectionRequest) getTargetRequest()).setLastButtonPressed(0);
 		setDragTracker(null);
 		setState(STATE_INITIAL);
@@ -235,8 +232,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	protected boolean handleCommandStackChanged() {
-		if (getDragTracker() == null)
+		if (getDragTracker() == null) {
 			return super.handleCommandStackChanged();
+		}
 		return false;
 	}
 
@@ -250,8 +248,9 @@ public class SelectionTool extends TargetingTool {
 	protected boolean handleFocusLost() {
 		if (isInState(
 				STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS | STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
-			if (getDragTracker() != null)
+			if (getDragTracker() != null) {
 				setDragTracker(null);
+			}
 			setState(STATE_INITIAL);
 			return true;
 		}
@@ -295,36 +294,40 @@ public class SelectionTool extends TargetingTool {
 	protected boolean handleKeyDown(KeyEvent e) {
 		resetHover();
 
-		if (acceptArrowKey(e))
-			if (stateTransition(STATE_ACCESSIBLE_DRAG, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
-				return true;
+		if (acceptArrowKey(e) && stateTransition(STATE_ACCESSIBLE_DRAG, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
+			return true;
+		}
 
 		if (acceptAbort(e)) {
-			if (getDragTracker() != null)
+			if (getDragTracker() != null) {
 				setDragTracker(null);
-			if (isInState(STATE_TRAVERSE_HANDLE | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+			}
+			if (isInState(STATE_TRAVERSE_HANDLE | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 				placeMouseInViewer(getStartLocation().getTranslated(6, 6));
+			}
 			setState(STATE_INITIAL);
 			setLastHandleProvider(null);
 			return true;
 		}
 
 		if (acceptTraverseHandle(e)) {
-			if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
-				if (getDragTracker() != null)
-					getDragTracker().commitDrag();
+			if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS) && getDragTracker() != null) {
+				getDragTracker().commitDrag();
+			}
 			if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 				setDragTracker(null);
 				getCurrentViewer().flush();
 			}
-			if (!handleTraverseHandle(e))
+			if (!handleTraverseHandle(e)) {
 				setState(STATE_INITIAL);
+			}
 			return true;
 		}
 
 		if (acceptDragCommit(e)) {
-			if (getDragTracker() != null)
+			if (getDragTracker() != null) {
 				getDragTracker().commitDrag();
+			}
 			setDragTracker(null);
 			setState(STATE_INITIAL);
 			handleIndex--;
@@ -332,9 +335,8 @@ public class SelectionTool extends TargetingTool {
 			return true;
 		}
 
-		if (isInState(STATE_INITIAL)) {
-			if (getCurrentViewer().getKeyHandler() != null)
-				return getCurrentViewer().getKeyHandler().keyPressed(e);
+		if (isInState(STATE_INITIAL) && getCurrentViewer().getKeyHandler() != null) {
+			return getCurrentViewer().getKeyHandler().keyPressed(e);
 		}
 
 		return false;
@@ -348,11 +350,8 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	protected boolean handleKeyUp(KeyEvent e) {
-		if (isInState(STATE_INITIAL) && getCurrentViewer().getKeyHandler() != null
-				&& getCurrentViewer().getKeyHandler().keyReleased(e))
-			return true;
-
-		return false;
+		return (isInState(STATE_INITIAL) && getCurrentViewer().getKeyHandler() != null
+				&& getCurrentViewer().getKeyHandler().keyReleased(e));
 	}
 
 	/**
@@ -365,25 +364,26 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	protected boolean handleMove() {
-		if (stateTransition(STATE_ACCESSIBLE_DRAG, STATE_INITIAL))
+		if (stateTransition(STATE_ACCESSIBLE_DRAG, STATE_INITIAL)) {
 			setDragTracker(null);
+		}
 		if (isInState(STATE_INITIAL)) {
 			updateTargetRequest();
 			updateTargetUnderMouse();
 			showTargetFeedback();
 			return true;
-		} else if (isInState(STATE_TRAVERSE_HANDLE)) {
+		}
+		if (isInState(STATE_TRAVERSE_HANDLE)) {
 			EditPartViewer viewer = getCurrentViewer();
-			if (viewer instanceof GraphicalViewer) {
-				Handle handle = ((GraphicalViewer) viewer).findHandleAt(getLocation());
+			if (viewer instanceof GraphicalViewer gv) {
+				Handle handle = gv.findHandleAt(getLocation());
 				if (handle != null) {
 					setState(STATE_ACCESSIBLE_DRAG);
 					setStartLocation(getLocation());
 					setDragTracker(handle.getDragTracker());
 					return true;
-				} else {
-					setState(STATE_INITIAL);
 				}
+				setState(STATE_INITIAL);
 			}
 		}
 		return false;
@@ -397,8 +397,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	public boolean handleNativeDragFinished(DragSourceEvent event) {
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().nativeDragFinished(event, getCurrentViewer());
+		}
 		setDragTracker(null);
 		unlockTargetEditPart();
 		return true;
@@ -411,22 +412,25 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	public boolean handleNativeDragStarted(DragSourceEvent event) {
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().nativeDragStarted(event, getCurrentViewer());
+		}
 		setState(STATE_INITIAL);
 		return true;
 	}
 
 	private boolean handleTraverseHandle(KeyEvent e) {
 		EditPart focus = getCurrentViewer().getFocusEditPart();
-		if (focus.getSelected() == EditPart.SELECTED_NONE)
+		if (focus.getSelected() == EditPart.SELECTED_NONE) {
 			return false;
+		}
 		getCurrentViewer().reveal(focus);
 
 		AccessibleHandleProvider provider;
 		provider = focus.getAdapter(AccessibleHandleProvider.class);
-		if (provider == null || provider.getAccessibleHandleLocations().isEmpty())
+		if (provider == null || provider.getAccessibleHandleLocations().isEmpty()) {
 			return false;
+		}
 
 		/*
 		 * At this point, a handle provider with 1 or more handles has been obtained
@@ -434,10 +438,11 @@ public class SelectionTool extends TargetingTool {
 		setState(STATE_TRAVERSE_HANDLE);
 		List locations = provider.getAccessibleHandleLocations();
 		// Goto next index, wrapping if necessary
-		if (e.character == '.')
+		if (e.character == '.') {
 			handleIndex = (++handleIndex) % locations.size();
-		else
+		} else {
 			handleIndex = (--handleIndex + locations.size()) % locations.size();
+		}
 		if (getLastHandleProvider() != focus) {
 			handleIndex = 0;
 			setLastHandleProvider(focus);
@@ -452,14 +457,14 @@ public class SelectionTool extends TargetingTool {
 			// move to the next handle instead. If there are no more handles,
 			// then we
 			// cancel the drag.
-			if (locations.size() > 1)
-				if (e.character == '.')
-					handleIndex = (++handleIndex) % locations.size();
-				else
-					handleIndex = (--handleIndex + locations.size()) % locations.size();
-			else {
+			if (locations.size() <= 1) {
 				placeMouseInViewer(loc.getTranslated(6, 6));
 				return false;
+			}
+			if (e.character == '.') {
+				handleIndex = (++handleIndex) % locations.size();
+			} else {
+				handleIndex = (--handleIndex + locations.size()) % locations.size();
 			}
 		}
 		placeMouseInViewer((Point) locations.get(handleIndex));
@@ -476,8 +481,9 @@ public class SelectionTool extends TargetingTool {
 	protected boolean handleViewerExited() {
 		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS | STATE_TRAVERSE_HANDLE | STATE_DRAG
 				| STATE_DRAG_IN_PROGRESS)) {
-			if (getDragTracker() != null)
+			if (getDragTracker() != null) {
 				setDragTracker(null);
+			}
 			setState(STATE_INITIAL);
 		}
 		return super.handleViewerExited();
@@ -490,8 +496,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	public void keyDown(KeyEvent evt, EditPartViewer viewer) {
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().keyDown(evt, viewer);
+		}
 		super.keyDown(evt, viewer);
 	}
 
@@ -502,8 +509,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	public void keyUp(KeyEvent evt, EditPartViewer viewer) {
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().keyUp(evt, viewer);
+		}
 		super.keyUp(evt, viewer);
 	}
 
@@ -516,8 +524,9 @@ public class SelectionTool extends TargetingTool {
 	@Override
 	public void mouseDown(MouseEvent e, EditPartViewer viewer) {
 		super.mouseDown(e, viewer);
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().mouseDown(e, viewer);
+		}
 	}
 
 	/**
@@ -529,8 +538,9 @@ public class SelectionTool extends TargetingTool {
 	@Override
 	public void mouseDoubleClick(MouseEvent e, EditPartViewer viewer) {
 		super.mouseDoubleClick(e, viewer);
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().mouseDoubleClick(e, viewer);
+		}
 	}
 
 	/**
@@ -541,8 +551,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	public void mouseDrag(MouseEvent e, EditPartViewer viewer) {
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().mouseDrag(e, viewer);
+		}
 		super.mouseDrag(e, viewer);
 	}
 
@@ -554,8 +565,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	public void mouseHover(MouseEvent me, EditPartViewer viewer) {
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().mouseHover(me, viewer);
+		}
 		super.mouseHover(me, viewer);
 	}
 
@@ -567,8 +579,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	public void mouseMove(MouseEvent me, EditPartViewer viewer) {
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().mouseMove(me, viewer);
+		}
 		super.mouseMove(me, viewer);
 	}
 
@@ -579,8 +592,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	public void mouseUp(MouseEvent e, EditPartViewer viewer) {
-		if (getDragTracker() != null)
+		if (getDragTracker() != null) {
 			getDragTracker().mouseUp(e, viewer);
+		}
 		super.mouseUp(e, viewer);
 	}
 
@@ -596,8 +610,9 @@ public class SelectionTool extends TargetingTool {
 		if (getDragTracker() != null) {
 			getDragTracker().mouseWheelScrolled(event, viewer);
 			event.doit = false;
-		} else
+		} else {
 			super.mouseWheelScrolled(event, viewer);
+		}
 	}
 
 	/**
@@ -609,8 +624,9 @@ public class SelectionTool extends TargetingTool {
 	@Override
 	protected void refreshCursor() {
 		// If we have a DragTracker, let it control the Cursor
-		if (getDragTracker() == null)
+		if (getDragTracker() == null) {
 			super.refreshCursor();
+		}
 	}
 
 	/**
@@ -622,10 +638,12 @@ public class SelectionTool extends TargetingTool {
 	 * @param newDragTracker the new drag tracker
 	 */
 	public void setDragTracker(DragTracker newDragTracker) {
-		if (newDragTracker == dragTracker)
+		if (newDragTracker == dragTracker) {
 			return;
-		if (dragTracker != null)
+		}
+		if (dragTracker != null) {
 			dragTracker.deactivate();
+		}
 		dragTracker = newDragTracker;
 
 		// if (!getCurrentInput().isMouseButtonDown(3))
@@ -640,10 +658,11 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	private void setLastHandleProvider(EditPart part) {
-		if (part == null)
+		if (part == null) {
 			cachedHandlePart = null;
-		else
+		} else {
 			cachedHandlePart = new WeakReference<>(part);
+		}
 	}
 
 	/**
@@ -651,10 +670,12 @@ public class SelectionTool extends TargetingTool {
 	 * {@link EditPart#showTargetFeedback(Request)} with a hover request.
 	 */
 	protected void showHoverFeedback() {
-		if (getTargetEditPart() == null)
+		if (getTargetEditPart() == null) {
 			return;
-		if (getTargetHoverRequest() == null)
+		}
+		if (getTargetHoverRequest() == null) {
 			return;
+		}
 		getTargetEditPart().showTargetFeedback(getTargetHoverRequest());
 	}
 
@@ -686,8 +707,9 @@ public class SelectionTool extends TargetingTool {
 	 */
 	@Override
 	protected String getDebugNameForState(int state) {
-		if (state == STATE_TRAVERSE_HANDLE)
+		if (state == STATE_TRAVERSE_HANDLE) {
 			return "Traverse Handle"; //$NON-NLS-1$
+		}
 		return super.getDebugNameForState(state);
 	}
 

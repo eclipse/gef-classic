@@ -55,9 +55,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class GraphContainer extends GraphNode implements IContainer {
 
-	// private static final double CONTAINER_SCALE = 0.75;
-	private static final double scaledWidth = 300;
-	private static final double scaledHeight = 200;
+	private static final double SCALED_WIDTH = 300;
+	private static final double SCALED_HEIGHT = 200;
 	private static final int CONTAINER_HEIGHT = 200;
 	private static final int MIN_WIDTH = 250;
 	private static final int ANIMATION_TIME = 100;
@@ -65,16 +64,13 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	private ExpandGraphLabel expandGraphLabel;
 
-	// private FreeformLayer container;
-	// private FreeformLayer edgeLayer;
-	private List childNodes = null;
+	private List<GraphNode> childNodes = null;
 	private int childAreaHeight = CONTAINER_HEIGHT;
 
 	public ZestRootLayer zestLayer;
 	private ScrollPane scrollPane;
 	private LayoutAlgorithm layoutAlgorithm;
 	private boolean isExpanded = false;
-	// private ScalableFreeformLayeredPane scalledLayer;
 	private AspectRatioFreeformLayer scalledLayer;
 
 	/**
@@ -98,21 +94,20 @@ public class GraphContainer extends GraphNode implements IContainer {
 		super(graph, style, text, image);
 		initModel(graph, text, image);
 		close(false);
-		childNodes = new ArrayList();
+		childNodes = new ArrayList<>();
 	}
 
 	/**
 	 * Custom figures cannot be set on a GraphContainer.
 	 */
 	public void setCustomFigure(IFigure nodeFigure) {
-		throw new RuntimeException("Operation not supported:  Containers cannot have custom figures");
+		throw new RuntimeException("Operation not supported:  Containers cannot have custom figures"); //$NON-NLS-1$
 	}
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#getItemType() public int
-	 * getItemType() { return GraphItem.CONTAINER; }
+	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#getItemType()
 	 *
 	 * /** Gets the figure for this container.
 	 */
@@ -136,18 +131,15 @@ public class GraphContainer extends GraphNode implements IContainer {
 		Rectangle newBounds = scrollPane.getBounds().getCopy();
 		newBounds.height = 0;
 
-		// this.nodeFigure.setConstraint(scrollPane, newBounds);
-		// this.nodeFigure.revalidate();
 		scrollPane.setSize(scrollPane.getSize().width, 0);
 		updateFigureForModel(this.zestLayer);
 		scrollPane.setVisible(false);
-		// setSize(expandGraphLabel.getSize().width,
-		// expandGraphLabel.getSize().height);
+
 		for (IFigure child : zestLayer.getChildren()) {
 			GraphItem item = getGraph().getGraphItem(child);
 			item.setVisible(false);
-			if (item instanceof GraphNode) { // refresh nodes in container if closed
-				HideNodeHelper hideNodeHelper = ((GraphNode) item).getHideNodeHelper();
+			if (item instanceof GraphNode gn) { // refresh nodes in container if closed
+				HideNodeHelper hideNodeHelper = gn.getHideNodeHelper();
 				if (hideNodeHelper != null) {
 					hideNodeHelper.resetCounter();
 				}
@@ -258,7 +250,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		List nodesToConsider = new LinkedList(orderedNodesBelowY);
 		addNodeToOrderedList(orderedNodesBelowY, graphContainer);
 
-		while (nodesToConsider.size() > 0) {
+		while (!nodesToConsider.isEmpty()) {
 			GraphNode node = (GraphNode) nodesToConsider.get(0);
 			if (nodeInStripe(leftSide, rightSide, node)) {
 				leftSide = Math.min(leftSide, node.getBounds().x);
@@ -568,8 +560,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 		// calculate the size for the layout algorithm
 		// Dimension d = this.scalledLayer.getSize();
 		Dimension d = new Dimension();
-		d.width = (int) scaledWidth;
-		d.height = (int) scaledHeight;
+		d.width = (int) SCALED_WIDTH;
+		d.height = (int) SCALED_HEIGHT;
 
 		d.width = d.width - 10;
 		d.height = d.height - 10;
@@ -699,12 +691,12 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 */
 	private double computeHeightScale() {
 		Dimension childArea = computeChildArea();
-		return childArea.height / scaledHeight;
+		return childArea.height / SCALED_HEIGHT;
 	}
 
 	private double computeWidthScale() {
 		Dimension childArea = computeChildArea();
-		return childArea.width / scaledWidth;
+		return childArea.width / SCALED_WIDTH;
 	}
 
 	private IFigure createContainerFigure() {

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import java.util.Arrays;
+
 import org.eclipse.swt.graphics.LineAttributes;
 
 /**
@@ -28,6 +30,7 @@ public abstract class Shape extends Figure {
 	 * @deprecated Use {@link #setLineWidth(int)} or
 	 *             {@link #setLineWidthFloat(float)} instead.
 	 */
+	@Deprecated
 	protected int lineWidth;
 
 	/**
@@ -46,6 +49,7 @@ public abstract class Shape extends Figure {
 	 *
 	 * @deprecated Use {@link #setLineStyle(int)} instead.
 	 */
+	@Deprecated
 	protected int lineStyle;
 
 	/**
@@ -53,7 +57,7 @@ public abstract class Shape extends Figure {
 	 */
 	private int lastLineStyle;
 
-	private LineAttributes lineAttributes;
+	private final LineAttributes lineAttributes;
 
 	private boolean fill;
 	private boolean outline;
@@ -369,9 +373,8 @@ public abstract class Shape extends Figure {
 	public float[] getLineDash() {
 		if (lineAttributes.dash != null) {
 			return lineAttributes.dash.clone();
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -575,7 +578,7 @@ public abstract class Shape extends Figure {
 	 * @since 3.5
 	 */
 	public void setLineDash(float[] dash) {
-		if ((dash != null) && !dash.equals(lineAttributes.dash)) {
+		if ((dash != null) && !Arrays.equals(dash, lineAttributes.dash)) {
 			lineAttributes.dash = dash.clone();
 			repaint();
 		} else if ((dash == null) && (lineAttributes.dash != null)) {

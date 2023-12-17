@@ -19,15 +19,13 @@ package org.eclipse.zest.layouts.dataStructures;
  * @author Casey Best
  */
 public class DisplayIndependentPoint {
-	public double x, y;
+	public double x;
+	public double y;
 
 	@Override
 	public boolean equals(Object o) {
 		DisplayIndependentPoint that = (DisplayIndependentPoint) o;
-		if (this.x == that.x && this.y == that.y)
-			return true;
-		else
-			return false;
+		return (this.x == that.x && this.y == that.y);
 	}
 
 	public DisplayIndependentPoint(double x, double y) {
@@ -42,7 +40,7 @@ public class DisplayIndependentPoint {
 
 	@Override
 	public String toString() {
-		return "(" + x + ", " + y + ")";
+		return "(" + x + ", " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/**
@@ -70,8 +68,8 @@ public class DisplayIndependentPoint {
 	 * @return
 	 */
 	public DisplayIndependentPoint convertToPercent(DisplayIndependentRectangle bounds) {
-		double newX = (bounds.width == 0) ? 0 : ((double) (x - bounds.x)) / bounds.width;
-		double newY = (bounds.height == 0) ? 0 : ((double) (y - bounds.y)) / bounds.height;
+		double newX = (bounds.width == 0) ? 0 : (x - bounds.x) / bounds.width;
+		double newY = (bounds.height == 0) ? 0 : (y - bounds.y) / bounds.height;
 		return new DisplayIndependentPoint(newX, newY);
 	}
 

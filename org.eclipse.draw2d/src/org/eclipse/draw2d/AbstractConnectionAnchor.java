@@ -51,10 +51,12 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	 */
 	@Override
 	public void addAnchorListener(AnchorListener listener) {
-		if (listener == null)
+		if (listener == null) {
 			return;
-		if (listeners.size() == 0)
+		}
+		if (listeners.isEmpty()) {
 			getOwner().addAncestorListener(this);
+		}
 		super.addAnchorListener(listener);
 	}
 
@@ -107,13 +109,12 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	 */
 	@Override
 	public Point getReferencePoint() {
-		if (getOwner() == null)
+		if (getOwner() == null) {
 			return null;
-		else {
-			Point ref = getOwner().getBounds().getCenter();
-			getOwner().translateToAbsolute(ref);
-			return ref;
 		}
+		Point ref = getOwner().getBounds().getCenter();
+		getOwner().translateToAbsolute(ref);
+		return ref;
 	}
 
 	/**
@@ -127,8 +128,9 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	@Override
 	public void removeAnchorListener(AnchorListener listener) {
 		super.removeAnchorListener(listener);
-		if (listeners.size() == 0)
+		if (listeners.isEmpty()) {
 			getOwner().removeAncestorListener(this);
+		}
 	}
 
 	/**
