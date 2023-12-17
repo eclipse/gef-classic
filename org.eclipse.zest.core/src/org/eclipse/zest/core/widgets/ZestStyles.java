@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005-2010, 2023, CHISEL Group, University of Victoria, Victoria, BC,
  * 						Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -102,6 +102,11 @@ public final class ZestStyles {
 	 * lines.
 	 */
 	public static final int CONNECTIONS_DASH_DOT = 1 << 5;
+	/**
+	 * Disallows the default multitouch gestures
+	 * @since 2.0
+	 */
+	public static final int GESTURES_DISABLED = 1 << 6;
 
 	/**
 	 * Bitwise ANDs the styleToCheck integer with the given style.

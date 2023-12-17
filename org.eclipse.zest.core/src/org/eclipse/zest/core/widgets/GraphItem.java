@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005-2010, 2023 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -9,6 +9,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors: The Chisel Group, University of Victoria
+ *               Mateusz Matela
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
@@ -39,9 +40,10 @@ public abstract class GraphItem extends Item {
 	}
 
 	/**
-	 * @param parent
-	 * @param style
+	 * @deprecated Since Zest 2.0, use {@link #GraphItem(Graph, int)} and
+	 *             {@link #setData(Object)}
 	 */
+	@Deprecated(forRemoval = true)
 	public GraphItem(Widget parent, int style, Object data) {
 		super(parent, style | SWT.NO_BACKGROUND);
 		if (data != null) {

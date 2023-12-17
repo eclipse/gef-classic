@@ -8,7 +8,10 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria, Alois Zoitl
+ * Contributors: The Chisel Group, University of Victoria
+ *               Alois Zoitl
+ *               Mateusz Matela
+ *               Ian Bull
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
@@ -19,6 +22,8 @@ import org.eclipse.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.interfaces.EntityLayout;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
 
 /**
  * This layout will take the given entities, apply a tree layout to them, and
@@ -33,6 +38,8 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	private double endDegree;
 	private final TreeLayoutAlgorithm treeLayout;
 	private List roots;
+	private LayoutContext context;
+	private boolean resize = false;
 
 	/**
 	 * Creates a radial layout with no style.
@@ -41,10 +48,15 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 		this(LayoutStyles.NONE);
 	}
 
+	/**
+	 * @deprecated Since Zest 2.0, use {@link #RadialLayoutAlgorithm()}.
+	 */
 	// TODO: This is a really strange pattern. It extends tree layout and it
 	// contains a tree layout ?
+	@Deprecated
 	public RadialLayoutAlgorithm(int styles) {
 		super(styles);
+		setResizing(styles != LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 		treeLayout = new TreeLayoutAlgorithm(styles);
 		startDegree = 0;
 		endDegree = MAX_DEGREES;
@@ -143,5 +155,66 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 			totalY += entity.getInternalY();
 		}
 		return new DisplayIndependentPoint(totalX / roots.size(), totalY / roots.size());
+	}
+
+	@Override
+	public void applyLayout(boolean clean) {
+		if (!clean) {
+			return;
+		}
+		treeLayout.internalApplyLayout();
+		EntityLayout[] entities = context.getEntities();
+		DisplayIndependentRectangle bounds = context.getBounds();
+		computeRadialPositions(entities, bounds);
+		if (resize) {
+			AlgorithmHelper.maximizeSizes(entities);
+		}
+		int insets = 4;
+		bounds.x += insets;
+		bounds.y += insets;
+		bounds.width -= 2 * insets;
+		bounds.height -= 2 * insets;
+		AlgorithmHelper.fitWithinBounds(entities, bounds, resize);
+	}
+
+	private void computeRadialPositions(EntityLayout[] entities, DisplayIndependentRectangle bounds) {
+		DisplayIndependentRectangle layoutBounds = AlgorithmHelper.getLayoutBounds(entities, false);
+		layoutBounds.x = bounds.x;
+		layoutBounds.width = bounds.width;
+		for (EntityLayout element : entities) {
+			DisplayIndependentPoint location = element.getLocation();
+			double percenttheta = (location.x - layoutBounds.x) / layoutBounds.width;
+			double distance = (location.y - layoutBounds.y) / layoutBounds.height;
+			double theta = startDegree + Math.abs(endDegree - startDegree) * percenttheta;
+			location.x = distance * Math.cos(theta);
+			location.y = distance * Math.sin(theta);
+			element.setLocation(location.x, location.y);
+		}
+	}
+
+	@Override
+	public void setLayoutContext(LayoutContext context) {
+		this.context = context;
+		treeLayout.setLayoutContext(context);
+	}
+
+	/**
+	 *
+	 * @return true if this algorithm is set to resize elements
+	 */
+	@Override
+	public boolean isResizing() {
+		return resize;
+	}
+
+	/**
+	 *
+	 * @param resizing true if this algorithm should resize elements (default is
+	 *                 false)
+	 */
+	@Override
+	public void setResizing(boolean resizing) {
+		resize = resizing;
+		treeLayout.setResizing(resize);
 	}
 }

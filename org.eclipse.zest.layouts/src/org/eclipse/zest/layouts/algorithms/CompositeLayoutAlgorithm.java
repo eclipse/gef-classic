@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2006, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2006, 2023 CHISEL Group, University of Victoria, Victoria, BC, Canada.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -7,26 +7,54 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria
- *******************************************************************************/
+ * Contributors: The Chisel Group - initial API and implementation
+ *               Mateusz Matela
+ *               Ian Bull
+ ******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
 import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
 
 public class CompositeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
-	LayoutAlgorithm[] algorithms = null;
+	private LayoutAlgorithm[] algorithms = null;
 
 	public CompositeLayoutAlgorithm(int styles, LayoutAlgorithm[] algoirthms) {
 		super(styles);
 		this.algorithms = algoirthms;
 	}
 
+	/**
+	 * @deprecated Since Zest 2.0, use
+	 *             {@link #CompositeLayoutAlgorithm(LayoutAlgorithm[])}
+	 */
+	@Deprecated(forRemoval = true)
 	public CompositeLayoutAlgorithm(LayoutAlgorithm[] algoirthms) {
 		this(0, algoirthms);
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void applyLayout(boolean clean) {
+		for (LayoutAlgorithm algorithm : algorithms) {
+			algorithm.applyLayout(clean);
+		}
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void setLayoutContext(LayoutContext context) {
+		for (LayoutAlgorithm algorithm : algorithms) {
+			algorithm.setLayoutContext(context);
+		}
 	}
 
 	@Override

@@ -39,6 +39,12 @@
    <bundle id="org.eclipse.zest.examples.source">
       <category name="zest"/>
    </bundle>
+   <bundle id="org.eclipse.zest.examples.cloudio">
+      <category name="zest"/>
+   </bundle>
+   <bundle id="org.eclipse.zest.examples.cloudio.source">
+      <category name="zest"/>
+   </bundle>
    <bundle id="org.eclipse.draw2d.examples">
       <category name="draw2d"/>
    </bundle>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005, 2023, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2005-2010, 2023, CHISEL Group, University of Victoria, Victoria, BC, Canada.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -7,7 +7,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria, Sebastian Hollersbacher
+ * Contributors: The Chisel Group, University of Victoria
+ *               Sebastian Hollersbacher
+ *               Mateusz Matela
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
@@ -23,10 +25,13 @@ import org.eclipse.zest.layouts.LayoutBendPoint;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.layouts.interfaces.ConnectionLayout;
+import org.eclipse.zest.layouts.interfaces.NodeLayout;
 
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.ConnectionRouter;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
@@ -82,6 +87,9 @@ public class GraphConnection extends GraphItem {
 	private GraphLayoutConnection layoutConnection = null;
 	private boolean hasCustomTooltip;
 
+	private ConnectionRouter router = null;
+	private InternalConnectionLayout layout;
+
 	public GraphConnection(Graph graphModel, int style, GraphNode source, GraphNode destination) {
 		super(graphModel, style);
 
@@ -95,7 +103,7 @@ public class GraphConnection extends GraphItem {
 		this.highlightColor = graphModel.DARK_BLUE;
 		this.lineWidth = 1;
 		this.lineStyle = Graphics.LINE_SOLID;
-		setWeight(weight);
+		setWeight(1.0);
 		this.graphModel = graphModel;
 		this.curveDepth = 0;
 		this.layoutConnection = new GraphLayoutConnection();
@@ -156,7 +164,7 @@ public class GraphConnection extends GraphItem {
 	void removeFigure() {
 		if (connectionFigure.getParent() != null) {
 			if (connectionFigure.getParent() instanceof ZestRootLayer) {
-				((ZestRootLayer) connectionFigure.getParent()).removeConnection(connectionFigure);
+				((ZestRootLayer) connectionFigure.getParent()).remove(connectionFigure);
 			} else {
 				connectionFigure.getParent().remove(connectionFigure);
 			}
@@ -213,7 +221,9 @@ public class GraphConnection extends GraphItem {
 	 * Gets the external connection object.
 	 *
 	 * @return Object
+	 * @deprecated Use {@link #getData()} instead
 	 */
+	@Deprecated(forRemoval = true)
 	public Object getExternalConnection() {
 		return this.getData();
 	}
@@ -435,6 +445,10 @@ public class GraphConnection extends GraphItem {
 		if (highlighted) {
 			return;
 		}
+		IFigure parentFigure = connectionFigure.getParent();
+		if (parentFigure instanceof ZestRootLayer) {
+			((ZestRootLayer) parentFigure).highlightConnection(connectionFigure);
+		}
 		highlighted = true;
 		updateFigure(connectionFigure);
 		graphModel.highlightEdge(this);
@@ -447,6 +461,10 @@ public class GraphConnection extends GraphItem {
 	public void unhighlight() {
 		if (!highlighted) {
 			return;
+		}
+		IFigure parentFigure = connectionFigure.getParent();
+		if (parentFigure instanceof ZestRootLayer) {
+			((ZestRootLayer) parentFigure).unHighlightConnection(connectionFigure);
 		}
 		highlighted = false;
 		updateFigure(connectionFigure);
@@ -613,6 +631,9 @@ public class GraphConnection extends GraphItem {
 		if (connection instanceof PolylineArcConnection arcConnection) {
 			arcConnection.setDepth(curveDepth);
 		}
+		if (connectionFigure != null) {
+			applyConnectionRouter(connectionFigure);
+		}
 		if ((connectionStyle & ZestStyles.CONNECTIONS_DIRECTED) > 0) {
 			PolygonDecoration decoration = new PolygonDecoration();
 			if (getLineWidth() < 3) {
@@ -684,6 +705,7 @@ public class GraphConnection extends GraphItem {
 			if (connectionFigure instanceof PolylineArcConnection && curveDepth != 0) {
 				((PolylineArcConnection) connectionFigure).setDepth(this.curveDepth);
 			}
+			applyConnectionRouter(connectionFigure);
 			sourceAnchor = new RoundedChopboxAnchor(getSource().getFigure(), 8);
 			targetAnchor = new RoundedChopboxAnchor(getDestination().getFigure(), 8);
 			labelLocator = new MidpointLocator(connectionFigure, 0);
@@ -785,5 +807,102 @@ public class GraphConnection extends GraphItem {
 	@Override
 	IFigure getFigure() {
 		return this.getConnectionFigure();
+	}
+
+	InternalConnectionLayout getLayout() {
+		if (layout == null) {
+			layout = new InternalConnectionLayout();
+		}
+		return layout;
+	}
+
+	class InternalConnectionLayout implements ConnectionLayout {
+		private boolean visible = GraphConnection.this.isVisible();
+
+		@Override
+		public NodeLayout getSource() {
+			return sourceNode.getLayout();
+		}
+
+		@Override
+		public NodeLayout getTarget() {
+			return destinationNode.getLayout();
+		}
+
+		@Override
+		public double getWeight() {
+			return GraphConnection.this.getWeightInLayout();
+		}
+
+		@Override
+		public boolean isDirected() {
+			return !ZestStyles.checkStyle(getConnectionStyle(), ZestStyles.CONNECTIONS_DIRECTED);
+		}
+
+		@Override
+		public boolean isVisible() {
+			return visible;
+		}
+
+		@Override
+		public void setVisible(boolean visible) {
+			graphModel.getLayoutContext().checkChangesAllowed();
+			this.visible = visible;
+		}
+
+		void applyLayout() {
+			if (GraphConnection.this.isVisible() != this.visible) {
+				GraphConnection.this.setVisible(this.visible);
+			}
+		}
+	}
+
+	void applyLayoutChanges() {
+		if (layout != null) {
+			layout.applyLayout();
+		}
+	}
+
+	/**
+	 * Applies the connection router with a possible fallback to the default
+	 * connection router to the graphModel
+	 *
+	 * @param conn
+	 * @since 2.0
+	 */
+	void applyConnectionRouter(Connection conn) {
+		if (router != null) {
+			conn.setConnectionRouter(router);
+		} else if (graphModel.getDefaultConnectionRouter() != null) {
+			conn.setConnectionRouter(graphModel.getDefaultConnectionRouter());
+		}
+	}
+
+	/**
+	 * Sets the connection router of the connection
+	 *
+	 * @param router
+	 * @since 2.0
+	 */
+	public void setRouter(ConnectionRouter router) {
+		this.router = router;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public boolean isDirected() {
+		return ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED);
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public void setDirected(boolean directed) {
+		if (directed) {
+			setConnectionStyle(connectionStyle | ZestStyles.CONNECTIONS_DIRECTED);
+		} else {
+			setConnectionStyle(connectionStyle & (-1 - ZestStyles.CONNECTIONS_DIRECTED));
+		}
 	}
 }

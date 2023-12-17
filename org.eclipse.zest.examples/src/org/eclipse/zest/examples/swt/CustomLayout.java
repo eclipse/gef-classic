@@ -1,9 +1,22 @@
+/*******************************************************************************
+ * Copyright 2005-2007, 2023 CHISEL Group, University of Victoria, Victoria, BC,
+ * Canada.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors: The Chisel Group, University of Victoria
+ ******************************************************************************/
 package org.eclipse.zest.examples.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
@@ -11,6 +24,7 @@ import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.algorithms.AbstractLayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
 
 /**
  * This snippet shows how to create a custom layout. This layout simply lays the
@@ -92,6 +106,14 @@ public class CustomLayout {
 			@Override
 			public void setLayoutArea(double x, double y, double width, double height) {
 				// do nothing
+			}
+
+			@Override
+			public void setLayoutContext(LayoutContext context) {
+			}
+
+			@Override
+			public void applyLayout(boolean clean) {
 			}
 
 		}, true);

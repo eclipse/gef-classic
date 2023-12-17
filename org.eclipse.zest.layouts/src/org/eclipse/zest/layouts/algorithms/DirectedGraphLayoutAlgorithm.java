@@ -7,7 +7,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria
+ * Contributors: The Chisel Group, University of Victoria - initial API and implementation
+ *               Mateusz Matela
+ *               Ian Bull
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
@@ -18,8 +20,14 @@ import java.util.Map;
 
 import org.eclipse.swt.SWT;
 
+import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.interfaces.ConnectionLayout;
+import org.eclipse.zest.layouts.interfaces.EntityLayout;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
+import org.eclipse.zest.layouts.interfaces.NodeLayout;
+import org.eclipse.zest.layouts.interfaces.SubgraphLayout;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.graph.DirectedGraph;
@@ -39,10 +47,10 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 				field.setAccessible(true);
 				Object object = field.get(this);
 				Deque<?> steps = (Deque<?>) object;
-				steps.remove(10);
-				steps.remove(9);
-				steps.remove(8);
-				steps.remove(2);
+				// steps.remove(10);
+				// steps.remove(9);
+				// steps.remove(8);
+				// steps.remove(2);
 				field.setAccessible(false);
 				super.visit(graph);
 			} catch (SecurityException | ReflectiveOperationException | IllegalArgumentException e) {
@@ -52,8 +60,32 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	}
 
-	public DirectedGraphLayoutAlgorithm(int styles) {
-		super(styles);
+	/**
+	 * @since 2.0
+	 */
+	public static final int HORIZONTAL = 1;
+
+	/**
+	 * @since 2.0
+	 */
+	public static final int VERTICAL = 2;
+
+	private int orientation = VERTICAL;
+
+	private LayoutContext context;
+
+	/**
+	 * @since 2.0
+	 */
+	public DirectedGraphLayoutAlgorithm() {
+		super(LayoutStyles.NONE);
+	}
+
+	public DirectedGraphLayoutAlgorithm(int orientation) {
+		super(LayoutStyles.NONE);
+		if (orientation == VERTICAL) {
+			this.orientation = orientation;
+		}
 	}
 
 	@Override
@@ -125,6 +157,81 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	public void setLayoutArea(double x, double y, double width, double height) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public int getOrientation() {
+		return orientation;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public void setOrientation(int orientation) {
+		if (orientation == HORIZONTAL || orientation == VERTICAL) {
+			this.orientation = orientation;
+		}
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void applyLayout(boolean clean) {
+		if (!clean) {
+			return;
+		}
+		HashMap mapping = new HashMap();
+		DirectedGraph graph = new DirectedGraph();
+		EntityLayout[] entities = context.getEntities();
+		for (EntityLayout element : entities) {
+			Node node = new Node(element);
+			node.setSize(new Dimension(10, 10));
+			mapping.put(element, node);
+			graph.nodes.add(node);
+		}
+		ConnectionLayout[] connections = context.getConnections();
+		for (ConnectionLayout connection : connections) {
+			Node source = (Node) mapping.get(getEntity(connection.getSource()));
+			Node dest = (Node) mapping.get(getEntity(connection.getTarget()));
+			if (source != null && dest != null) {
+				Edge edge = new Edge(connection, source, dest);
+				graph.edges.add(edge);
+			}
+		}
+		DirectedGraphLayout directedGraphLayout = new ExtendedDirectedGraphLayout();
+		directedGraphLayout.visit(graph);
+
+		for (Object node2 : graph.nodes) {
+			Node node = (Node) node2;
+			EntityLayout entity = (EntityLayout) node.data;
+			if (orientation == VERTICAL) {
+				entity.setLocation(node.x, node.y);
+			} else {
+				entity.setLocation(node.y, node.x);
+			}
+		}
+	}
+
+	private EntityLayout getEntity(NodeLayout node) {
+		if (!node.isPruned()) {
+			return node;
+		}
+		SubgraphLayout subgraph = node.getSubgraph();
+		if (subgraph.isGraphEntity()) {
+			return subgraph;
+		}
+		return null;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void setLayoutContext(LayoutContext context) {
+		this.context = context;
 	}
 
 }

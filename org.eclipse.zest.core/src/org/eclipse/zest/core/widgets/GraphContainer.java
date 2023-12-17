@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005-2007, 2023, CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005-2010, 2023, CHISEL Group, University of Victoria, Victoria, BC,
  *                            Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -8,7 +8,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria, Sebastian Hollersbacher
+ * Contributors: The Chisel Group, University of Victoria
+ *               Sebastian Hollersbacher
+ *               Mateusz Matela
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
@@ -17,11 +19,16 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.zest.core.widgets.internal.AspectRatioFreeformLayer;
 import org.eclipse.zest.core.widgets.internal.ContainerFigure;
-import org.eclipse.zest.core.widgets.internal.ExpandGraphLabel;
 import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
@@ -29,16 +36,25 @@ import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 
+import org.eclipse.draw2d.ActionEvent;
+import org.eclipse.draw2d.ActionListener;
 import org.eclipse.draw2d.Animation;
+import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.FreeformViewport;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.ScrollPane;
+import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.draw2d.Triangle;
 import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -58,10 +74,214 @@ public class GraphContainer extends GraphNode implements IContainer {
 	// private static final double CONTAINER_SCALE = 0.75;
 	private static final double scaledWidth = 300;
 	private static final double scaledHeight = 200;
+
+	static class ExpandGraphLabel extends Figure implements ActionListener {
+
+		private boolean isExpanded;
+		private final Expander expander = new Expander();
+		private Color darkerBackground;
+
+		class Expander extends Clickable {
+			private final Triangle triangle;
+
+			public Expander() {
+				setStyle(Clickable.STYLE_TOGGLE);
+				triangle = new Triangle();
+				triangle.setSize(10, 10);
+				triangle.setBackgroundColor(ColorConstants.black);
+				triangle.setForegroundColor(ColorConstants.black);
+				triangle.setFill(true);
+				triangle.setDirection(Triangle.EAST);
+				triangle.setLocation(new Point(5, 3));
+				this.setLayoutManager(new FreeformLayout());
+				this.add(triangle);
+				this.setPreferredSize(15, 15);
+				this.addActionListener(ExpandGraphLabel.this);
+			}
+
+			public void open() {
+				triangle.setDirection(Triangle.SOUTH);
+			}
+
+			public void close() {
+				triangle.setDirection(Triangle.EAST);
+			}
+
+		}
+
+		/**
+		 * Sets the expander state (the little triangle) to ExpanderGraphLabel.OPEN or
+		 * ExpanderGraphLabel.CLOSED
+		 *
+		 * @param state
+		 */
+		public void setExpandedState(boolean expanded) {
+			if (expanded) {
+				expander.open();
+			} else {
+				expander.close();
+			}
+			this.isExpanded = expanded;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 *
+		 * @see org.eclipse.draw2d.ActionListener#actionPerformed(org.eclipse.draw2d
+		 * .ActionEvent)
+		 */
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if (isExpanded) {
+				container.close(true);
+			} else {
+				container.open(true);
+			}
+		}
+
+		private final int arcWidth = 8;
+		private final Label label;
+		private final GraphContainer container;
+		private final ToolbarLayout layout;
+
+		public ExpandGraphLabel(GraphContainer container, String text, Image image, boolean cacheLabel) {
+			this.label = new Label(text) {
+
+				/**
+				 * <b>This method is overwritten so that the text is not truncated.</b><br>
+				 *
+				 * {@inheritDoc}
+				 *
+				 */
+				@Override
+				protected void paintFigure(Graphics graphics) {
+					if (isOpaque()) {
+						super.paintFigure(graphics);
+					}
+					Rectangle bounds = getBounds();
+					graphics.translate(bounds.x, bounds.y);
+					if (getIcon() != null) {
+						graphics.drawImage(getIcon(), getIconLocation());
+					}
+					if (!isEnabled()) {
+						graphics.translate(1, 1);
+						graphics.setForegroundColor(ColorConstants.buttonLightest);
+						graphics.drawText(getSubStringText(), getTextLocation());
+						graphics.translate(-1, -1);
+						graphics.setForegroundColor(ColorConstants.buttonDarker);
+					}
+					graphics.drawText(getText(), getTextLocation());
+					graphics.translate(-bounds.x, -bounds.y);
+				}
+			};
+			this.setText(text);
+			this.setImage(image);
+			this.container = container;
+			this.setFont(Display.getDefault().getSystemFont());
+			layout = new ToolbarLayout(true);
+			layout.setSpacing(5);
+			layout.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
+			this.setLayoutManager(layout);
+			this.add(this.expander);
+			this.add(this.label);
+		}
+
+		private Color getDarkerBackgroundColor() {
+			if (darkerBackground == null) {
+				Color baseColor = getBackgroundColor();
+				int blue = (int) (baseColor.getBlue() * 0.8 + 0.5);
+				int red = (int) (baseColor.getRed() * 0.8 + 0.5);
+				int green = (int) (baseColor.getGreen() * 0.8 + 0.5);
+				darkerBackground = new Color(Display.getCurrent(), new RGB(red, green, blue));
+			}
+			return darkerBackground;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 *
+		 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
+		 */
+		@Override
+		public void paint(Graphics graphics) {
+
+			graphics.setForegroundColor(getDarkerBackgroundColor());
+			graphics.setBackgroundColor(getBackgroundColor());
+
+			graphics.pushState();
+
+			// fill in the background
+			Rectangle bounds = getBounds().getCopy();
+			Rectangle r = bounds.getCopy();
+			r.y += arcWidth / 2;
+			r.height -= arcWidth;
+
+			Rectangle top = bounds.getCopy();
+			top.height /= 2;
+			graphics.setForegroundColor(getBackgroundColor());
+			graphics.setBackgroundColor(getBackgroundColor());
+			graphics.fillRoundRectangle(top, arcWidth, arcWidth);
+
+			top.y = top.y + top.height;
+			graphics.setForegroundColor(darkerBackground);
+			graphics.setBackgroundColor(darkerBackground);
+			graphics.fillRoundRectangle(top, arcWidth, arcWidth);
+
+			graphics.setBackgroundColor(darkerBackground);
+			graphics.setForegroundColor(getBackgroundColor());
+			graphics.fillGradient(r, true);
+
+			super.paint(graphics);
+			graphics.popState();
+			graphics.setForegroundColor(darkerBackground);
+			graphics.setBackgroundColor(darkerBackground);
+			// paint the border
+			bounds.setSize(bounds.width - 1, bounds.height - 1);
+			graphics.drawRoundRectangle(bounds, arcWidth, arcWidth);
+		}
+
+		@Override
+		public void setBackgroundColor(Color bg) {
+			super.setBackgroundColor(bg);
+			if (darkerBackground != null) {
+				darkerBackground.dispose();
+			}
+			darkerBackground = null;
+		}
+
+		public void setTextT(String string) {
+			this.setPreferredSize(null);
+			this.label.setText(string);
+			this.add(label);
+			this.layout.layout(this);
+			this.invalidate();
+			this.revalidate();
+			this.validate();
+		}
+
+		public void setText(String string) {
+			this.label.setText(string);
+		}
+
+		public void setImage(Image image) {
+			this.label.setIcon(image);
+		}
+
+		public void setFocus() {
+			expander.requestFocus();
+		}
+
+	}
+
+	static final double SCALED_WIDTH = 300;
+	static final double SCALED_HEIGHT = 200;
 	private static final int CONTAINER_HEIGHT = 200;
 	private static final int MIN_WIDTH = 250;
+	private static final int MIN_HEIGHT = 30;
 	private static final int ANIMATION_TIME = 100;
 	private static final int SUBLAYER_OFFSET = 2;
+
+	private static SelectionListener selectionListener;
 
 	private ExpandGraphLabel expandGraphLabel;
 
@@ -76,6 +296,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	private boolean isExpanded = false;
 	// private ScalableFreeformLayeredPane scalledLayer;
 	private AspectRatioFreeformLayer scalledLayer;
+	private InternalLayoutContext layoutContext;
 
 	/**
 	 * Creates a new GraphContainer. A GraphContainer may contain nodes, and has
@@ -94,11 +315,18 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	}
 
+	/**
+	 * @deprecated Since Zest 2.0, use {@link #GraphContainer(Graph, int)},
+	 *             {@link #setText(String)}, and {@link #setImage(Image)}
+	 * @since 2.0
+	 */
+	@Deprecated(forRemoval = true)
 	public GraphContainer(IContainer graph, int style, String text, Image image) {
 		super(graph, style, text, image);
 		initModel(graph, text, image);
 		close(false);
 		childNodes = new ArrayList();
+		registerToParent(graph);
 	}
 
 	/**
@@ -132,7 +360,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		}
 		isExpanded = false;
 
-		expandGraphLabel.setExpandedState(ExpandGraphLabel.CLOSED);
+		expandGraphLabel.setExpandedState(false);
 		Rectangle newBounds = scrollPane.getBounds().getCopy();
 		newBounds.height = 0;
 
@@ -306,7 +534,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		}
 		isExpanded = true;
 
-		expandGraphLabel.setExpandedState(ExpandGraphLabel.OPEN);
+		expandGraphLabel.setExpandedState(true);
 
 		scrollPane.setSize(computeChildArea());
 		scrollPane.setVisible(true);
@@ -534,6 +762,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	@Override
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
 		this.layoutAlgorithm = algorithm;
+		this.layoutAlgorithm.setLayoutContext(getLayoutContext());
 		if (applyLayout) {
 			applyLayout();
 		}
@@ -560,7 +789,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		}
 
 		if (layoutAlgorithm == null) {
-			layoutAlgorithm = new TreeLayoutAlgorithm(layoutStyle);
+			setLayoutAlgorithm(new TreeLayoutAlgorithm(), false);
 		}
 
 		layoutAlgorithm.setStyle(layoutAlgorithm.getStyle() | layoutStyle);
@@ -588,6 +817,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 			Animation.markBegin();
 			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 25, 25, d.width - 50, d.height - 50, false,
 					false);
+			layoutContext.flushChanges(false);
 			Animation.run(ANIMATION_TIME);
 			getFigure().getUpdateManager().performUpdate();
 
@@ -776,9 +1006,41 @@ public class GraphContainer extends GraphNode implements IContainer {
 		return containerFigure;
 	}
 
+	private void registerToParent(IContainer parent) {
+		if (parent.getItemType() == GRAPH) {
+			createSelectionListener();
+			parent.getGraph().addSelectionListener(selectionListener);
+		}
+	}
+
+	private void createSelectionListener() {
+		if (selectionListener == null) {
+			selectionListener = new SelectionListener() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (e.item instanceof GraphContainer) {
+						// set focus to expand label so that pressing space
+						// opens/closes
+						// the last selected container
+						((GraphContainer) e.item).expandGraphLabel.setFocus();
+					}
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+					// ignore
+				}
+			};
+
+		}
+	}
+
 	@Override
 	protected void updateFigureForModel(IFigure currentFigure) {
 
+		if (expandGraphLabel == null) {
+			initFigure();
+		}
 		expandGraphLabel.setTextT(getText());
 		expandGraphLabel.setImage(getImage());
 		expandGraphLabel.setFont(getFont());
@@ -862,13 +1124,31 @@ public class GraphContainer extends GraphNode implements IContainer {
 		// zestLayer.addConnection(connection);
 	}
 
-	void addNode(GraphNode node) {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	@Override
+	public void addSubgraphFigure(IFigure figure) {
+		zestLayer.addSubgraph(figure);
+		graph.subgraphFigures.add(figure);
+	}
+
+	void addConnectionFigure(IFigure figure) {
+		nodeFigure.add(figure);
+	}
+
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	@Override
+	public void addNode(GraphNode node) {
 		zestLayer.addNode(node.getNodeFigure());
 		if (!childNodes.contains(node)) {
 			childNodes.add(node);
 		}
 		// container.add(node.getNodeFigure());
 		// graph.registerItem(node);
+		node.setVisible(isExpanded);
 	}
 
 	void addNode(GraphContainer container) {
@@ -887,4 +1167,52 @@ public class GraphContainer extends GraphNode implements IContainer {
 		}
 	}
 
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	@Override
+	public InternalLayoutContext getLayoutContext() {
+		if (layoutContext == null) {
+			layoutContext = new InternalLayoutContext(this);
+		}
+		return layoutContext;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public DisplayIndependentRectangle getLayoutBounds() {
+		double width = GraphContainer.SCALED_WIDTH - 10;
+		double height = GraphContainer.SCALED_HEIGHT - 10;
+		return new DisplayIndependentRectangle(25, 25, width - 50, height - 50);
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public Widget getItem() {
+		return this;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public List getConnections() {
+		return filterConnections(getGraph().getConnections());
+
+	}
+
+	private List filterConnections(List connections) {
+		List result = new ArrayList();
+		for (Object connection2 : connections) {
+			GraphConnection connection = (GraphConnection) connection2;
+			if (connection.getSource().getParent() == this && connection.getDestination().getParent() == this) {
+				result.add(connection);
+			}
+		}
+		return result;
+	}
 }

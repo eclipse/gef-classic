@@ -346,6 +346,8 @@
 		<module>org.eclipse.draw2d</module>
 		<module>org.eclipse.gef</module>
 		<module>org.eclipse.zest.core</module>
+		<module>org.eclipse.zest.cloudio</module>
+		<module>org.eclipse.zest.jface</module>
 		<module>org.eclipse.zest.layouts</module>
 		
 		<!--docs-->
@@ -368,6 +370,7 @@
 		<module>org.eclipse.gef.examples.ui.capabilities</module>
 		<module>org.eclipse.gef.examples.ui.pde</module>
 		<module>org.eclipse.zest.examples</module>
+		<module>org.eclipse.zest.examples.cloudio</module>
 		
 	
 	<!--features-->

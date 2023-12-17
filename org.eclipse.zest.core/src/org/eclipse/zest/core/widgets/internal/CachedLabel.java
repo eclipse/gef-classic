@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005-2010, 2023 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -12,6 +12,14 @@
  ******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.zest.core.widgets.ILabeledFigure;
+
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
@@ -20,11 +28,6 @@ import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.ScaledGraphics;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * A cached label to improve performance of text drawing under linux
@@ -32,7 +35,7 @@ import org.eclipse.swt.widgets.Display;
  * @author Ian Bull
  *
  */
-public abstract class CachedLabel extends Label {
+public abstract class CachedLabel extends Label implements ILabeledFigure {
 
 	/*
 	 * (non-Javadoc)

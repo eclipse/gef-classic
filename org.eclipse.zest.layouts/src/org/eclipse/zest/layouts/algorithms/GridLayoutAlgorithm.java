@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -8,24 +8,32 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria
+ * Contributors: The Chisel Group, University of Victoria - initial API and implementation
+ *               Mateusz Matela
+ *               Ian Bull
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
 import java.util.Arrays;
 
 import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentDimension;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.interfaces.EntityLayout;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
 
 /**
  * @version 2.0
  * @author Ian Bull
  * @author Casey Best and Rob Lintern
+ * @since 2.0
  */
 public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	private static final double PADDING_PERCENTAGE = 0.95;
+	private static final int MIN_ENTITY_SIZE = 5;
 
 	protected int rowPadding = 0;
 
@@ -34,19 +42,58 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		throw new RuntimeException("Operation not implemented");
 	}
 
-	int rows, cols, numChildren;
-	double colWidth, rowHeight, offsetX, offsetY;
-	int totalProgress;
-	double h, w;
+	/**
+	 * @since 2.0
+	 */
+	protected int rows;
+	/**
+	 * @since 2.0
+	 */
+	protected int cols;
+	/**
+	 * @since 2.0
+	 */
+	protected int numChildren;
+	/**
+	 * @since 2.0
+	 */
+	protected double colWidth;
+	/**
+	 * @since 2.0
+	 */
+	protected double rowHeight;
+	/**
+	 * @since 2.0
+	 */
+	protected double offsetX;
+	/**
+	 * @since 2.0
+	 */
+	protected double offsetY;
+	/**
+	 * @since 2.0
+	 */
+	protected double h;
+	/**
+	 * @since 2.0
+	 */
+
+	protected double w;
+	private boolean resize = false;
+	private int totalProgress;
+	private LayoutContext context;
 
 	/**
 	 * Initializes the grid layout.
 	 *
 	 * @param styles
 	 * @see LayoutStyles
+	 * @deprecated Since Zest 2.0, use {@link #GridLayoutAlgorithm()}.
 	 */
+	@Deprecated(forRemoval = true)
 	public GridLayoutAlgorithm(int styles) {
 		super(styles);
+		setResizing(styles != LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 	}
 
 	/**
@@ -256,6 +303,106 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			return true;
 
 		return false;
+	}
+
+	/**
+	 *
+	 * @return true if this algorithm is set to resize elements
+	 * @since 2.0
+	 */
+	public boolean isResizing() {
+		return resize;
+	}
+
+	/**
+	 *
+	 * @param resizing true if this algorithm should resize elements (default is
+	 *                 false)
+	 * @since 2.0
+	 */
+	public void setResizing(boolean resizing) {
+		resize = resizing;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void setLayoutContext(LayoutContext context) {
+		this.context = context;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void applyLayout(boolean clean) {
+		if (!clean) {
+			return;
+		}
+		DisplayIndependentRectangle bounds = context.getBounds();
+		calculateGrid(bounds);
+		applyLayoutInternal(context.getEntities(), bounds);
+	}
+
+	/**
+	 * Calculates all the dimensions of grid that layout entities will be fit in.
+	 * The following fields are set by this method: {@link #numChildren},
+	 * {@link #rows}, {@link #cols}, {@link #colWidth}, {@link #rowHeight},
+	 * {@link #offsetX}, {@link #offsetY}
+	 *
+	 * @param bounds
+	 * @since 2.0
+	 */
+	protected void calculateGrid(DisplayIndependentRectangle bounds) {
+		numChildren = context.getNodes().length;
+		int[] result = calculateNumberOfRowsAndCols(numChildren, bounds.x, bounds.y, bounds.width, bounds.height);
+		cols = result[0];
+		rows = result[1];
+
+		colWidth = bounds.width / cols;
+		rowHeight = bounds.height / rows;
+
+		double[] nodeSize = calculateNodeSize(colWidth, rowHeight);
+		w = nodeSize[0];
+		h = nodeSize[1];
+		offsetX = (colWidth - w) / 2.0; // half of the space between
+										// columns
+		offsetY = (rowHeight - h) / 2.0; // half of the space
+											// between rows
+	}
+
+	/**
+	 * Use this algorithm to layout the given entities and bounds. The entities will
+	 * be placed in the same order as they are passed in, unless a comparator is
+	 * supplied.
+	 *
+	 * @param entitiesToLayout apply the algorithm to these entities
+	 * @param bounds           the bounds in which the layout can place the
+	 *                         entities.
+	 * @since 2.0
+	 */
+	protected synchronized void applyLayoutInternal(EntityLayout[] entitiesToLayout,
+			DisplayIndependentRectangle bounds) {
+
+		int index = 0;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if ((i * cols + j) < numChildren) {
+					EntityLayout node = entitiesToLayout[index];
+					index++;
+					if (resize && node.isResizable()) {
+						node.setSize(Math.max(w, MIN_ENTITY_SIZE), Math.max(h, MIN_ENTITY_SIZE));
+					}
+					DisplayIndependentDimension size = node.getSize();
+					double xmove = bounds.x + j * colWidth + offsetX + size.width / 2;
+					double ymove = bounds.y + i * rowHeight + offsetY + size.height / 2;
+					if (node.isMovable()) {
+						node.setLocation(xmove, ymove);
+					}
+				}
+			}
+		}
 	}
 
 }

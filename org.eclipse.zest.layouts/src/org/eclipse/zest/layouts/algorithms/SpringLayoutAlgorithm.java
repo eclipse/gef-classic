@@ -8,8 +8,11 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria, Alois Zoitl
- *******************************************************************************/
+ * Contributors: The Chisel Group, University of Victoria - initial API and implementation
+ *               Alois Zoitl
+ *               Mateusz Matela
+ *               Ian Bull
+ ******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
 import java.util.Date;
@@ -17,9 +20,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentDimension;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.interfaces.ConnectionLayout;
+import org.eclipse.zest.layouts.interfaces.EntityLayout;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
+import org.eclipse.zest.layouts.interfaces.LayoutListener;
+import org.eclipse.zest.layouts.interfaces.NodeLayout;
+import org.eclipse.zest.layouts.interfaces.SubgraphLayout;
 
 /**
  * The SpringLayoutAlgorithm has its own data repository and relation
@@ -81,12 +92,12 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * The default value for the spring layout length-control.
 	 */
-	public static final double DEFAULT_SPRING_LENGTH = 1.0f;
+	public static final double DEFAULT_SPRING_LENGTH = 3.0f;
 
 	/**
 	 * The default value for the spring layout gravitation-control.
 	 */
-	public static final double DEFAULT_SPRING_GRAVITATION = 1.0f;
+	public static final double DEFAULT_SPRING_GRAVITATION = 2.0f;
 
 	/**
 	 * The variable can be customized to set the number of iterations used.
@@ -108,7 +119,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Minimum distance considered between nodes
 	 */
-	protected static final double MIN_DISTANCE = 0.001d;
+	protected static final double MIN_DISTANCE = 1.0d;
 
 	/**
 	 * An arbitrarily small value in mathematics.
@@ -141,6 +152,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	 */
 	private double largestMovement = 0;
 
+	private boolean resize = false;
+
 	/**
 	 * Maps a src and dest object to the number of relations between them. Key is
 	 * src.toString() + dest.toString(), value is an Integer
@@ -159,6 +172,29 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	private static Map<String, Double> relTypeToWeightMap = new HashMap<>();
 
 	private int iteration;
+
+	private double[][] srcDestToSumOfWeights;
+
+	private EntityLayout[] entities;
+
+	private double[] locationsX;
+
+	private double[] locationsY;
+
+	private double[] sizeW;
+
+	private double[] sizeH;
+
+	// private double boundsScale = 0.2;
+	private double boundsScaleX = 0.2;
+	private double boundsScaleY = 0.2;
+
+	/**
+	 * @since 2.0
+	 */
+	public boolean fitWithinBounds = true;
+
+	private LayoutContext context;
 
 	private int[][] srcDestToNumRels;
 
@@ -179,13 +215,15 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	Date date = null;
 
 	/**
-	 * Constructor.
+	 * @deprecated Since Zest 2.0, use {@link #SpringLayoutAlgorithm()}.
 	 */
+	@Deprecated(forRemoval = true)
 	public SpringLayoutAlgorithm(int styles) {
 		super(styles);
 		srcDestToNumRelsMap = new HashMap<>();
 		srcDestToRelsAvgWeightMap = new HashMap<>();
 		date = new Date();
+		setResizing(styles != LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 	}
 
 	/**
@@ -538,7 +576,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			return;
 		}
 
-		long currentTime = date.getTime();
+		long currentTime = System.currentTimeMillis();
 		double fractionComplete = (double) (currentTime - startTime) / ((double) maxTimeMS);
 		int currentIteration = (int) (fractionComplete * sprIterations);
 		if (currentIteration > iteration) {
@@ -550,7 +588,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	@Override
 	protected boolean performAnotherNonContinuousIteration() {
 		setSprIterationsBasedOnTime();
-		return iteration <= sprIterations && largestMovement >= sprMove;
+		return (iteration <= sprIterations);
 	}
 
 	@Override
@@ -607,6 +645,245 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 				}
 			}
 		}
+	}
+
+	/**
+	 *
+	 * @param resizing true if this algorithm should resize elements (default is
+	 *                 false)
+	 * @since 2.0
+	 */
+	public void setResizing(boolean resizing) {
+		resize = resizing;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void applyLayout(boolean clean) {
+		initLayout();
+		if (!clean) {
+			return;
+		}
+		while (performAnotherNonContinuousIteration()) {
+			computeOneIteration();
+		}
+		saveLocations();
+		if (resize) {
+			AlgorithmHelper.maximizeSizes(entities);
+		}
+
+		if (fitWithinBounds) {
+			DisplayIndependentRectangle bounds2 = new DisplayIndependentRectangle(bounds);
+			int insets = 4;
+			bounds2.x += insets;
+			bounds2.y += insets;
+			bounds2.width -= 2 * insets;
+			bounds2.height -= 2 * insets;
+			AlgorithmHelper.fitWithinBounds(entities, bounds2, resize);
+		}
+
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void setLayoutContext(LayoutContext context) {
+		this.context = context;
+		this.context.addLayoutListener(new SpringLayoutListener());
+		initLayout();
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public void performNIteration(int n) {
+		if (iteration == 0) {
+			entities = context.getEntities();
+			loadLocations();
+			initLayout();
+		}
+		bounds = context.getBounds();
+		for (int i = 0; i < n; i++) {
+			computeOneIteration();
+			saveLocations();
+		}
+		context.flushChanges(false);
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public void performOneIteration() {
+		if (iteration == 0) {
+			entities = context.getEntities();
+			loadLocations();
+			initLayout();
+		}
+		bounds = context.getBounds();
+		computeOneIteration();
+		saveLocations();
+		context.flushChanges(false);
+	}
+
+	/**
+	 *
+	 * @return true if this algorithm is set to resize elements
+	 * @since 2.0
+	 */
+	public boolean isResizing() {
+		return resize;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	protected void computeOneIteration() {
+		computeForces();
+		computePositions();
+		DisplayIndependentRectangle currentBounds = getLayoutBounds();
+		improveBoundScaleX(currentBounds);
+		improveBoundScaleY(currentBounds);
+		moveToCenter(currentBounds);
+		iteration++;
+	}
+
+	/**
+	 * Puts vertices in random places, all between (0,0) and (1,1).
+	 *
+	 * @since 2.0
+	 */
+	public void placeRandomly() {
+		if (locationsX.length == 0) {
+			return;
+		}
+		// If only one node in the data repository, put it in the middle
+		if (locationsX.length == 1) {
+			// If only one node in the data repository, put it in the middle
+			locationsX[0] = bounds.x + 0.5 * bounds.width;
+			locationsY[0] = bounds.y + 0.5 * bounds.height;
+		} else {
+			locationsX[0] = bounds.x;
+			locationsY[0] = bounds.y;
+			locationsX[1] = bounds.x + bounds.width;
+			locationsY[1] = bounds.y + bounds.height;
+			for (int i = 2; i < locationsX.length; i++) {
+				locationsX[i] = bounds.x + Math.random() * bounds.width;
+				locationsY[i] = bounds.y + Math.random() * bounds.height;
+			}
+		}
+	}
+
+	/**
+	 * Computes the force for each node in this SpringLayoutAlgorithm. The computed
+	 * force will be stored in the data repository
+	 *
+	 * @since 2.0
+	 */
+	protected void computeForces() {
+
+		double forcesX[][] = new double[2][this.forcesX.length];
+		double forcesY[][] = new double[2][this.forcesX.length];
+		double locationsX[] = new double[this.forcesX.length];
+		double locationsY[] = new double[this.forcesX.length];
+
+		// // initialize all forces to zero
+		for (int j = 0; j < 2; j++) {
+			for (int i = 0; i < this.forcesX.length; i++) {
+				forcesX[j][i] = 0;
+				forcesY[j][i] = 0;
+				locationsX[i] = this.locationsX[i];
+				locationsY[i] = this.locationsY[i];
+			}
+		}
+		// TODO: Again really really slow!
+
+		for (int k = 0; k < 2; k++) {
+			for (int i = 0; i < this.locationsX.length; i++) {
+
+				for (int j = i + 1; j < locationsX.length; j++) {
+					double dx = (locationsX[i] - locationsX[j]) / bounds.width / boundsScaleX;
+					double dy = (locationsY[i] - locationsY[j]) / bounds.height / boundsScaleY;
+					double distance_sq = dx * dx + dy * dy;
+					// make sure distance and distance squared not too small
+					distance_sq = Math.max(MIN_DISTANCE * MIN_DISTANCE, distance_sq);
+					double distance = Math.sqrt(distance_sq);
+
+					// If there are relationships between srcObj and destObj
+					// then decrease force on srcObj (a pull) in direction of
+					// destObj
+					// If no relation between srcObj and destObj then increase
+					// force on srcObj (a push) from direction of destObj.
+					double sumOfWeights = srcDestToSumOfWeights[i][j];
+
+					double f;
+					if (sumOfWeights > 0) {
+						// nodes are pulled towards each other
+						f = -sprStrain * Math.log(distance / sprLength) * sumOfWeights;
+					} else {
+						// nodes are repelled from each other
+						f = sprGravitation / (distance_sq);
+					}
+					double dfx = f * dx / distance;
+					double dfy = f * dy / distance;
+
+					forcesX[k][i] += dfx;
+					forcesY[k][i] += dfy;
+
+					forcesX[k][j] -= dfx;
+					forcesY[k][j] -= dfy;
+				}
+			}
+
+			for (int i = 0; i < entities.length; i++) {
+				if (entities[i].isMovable()) {
+					double deltaX = sprMove * forcesX[k][i];
+					double deltaY = sprMove * forcesY[k][i];
+
+					// constrain movement, so that nodes don't shoot way off to
+					// the
+					// edge
+					double dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+					double maxMovement = 0.2d * sprMove;
+					if (dist > maxMovement) {
+						deltaX *= maxMovement / dist;
+						deltaY *= maxMovement / dist;
+					}
+
+					locationsX[i] += deltaX * bounds.width * boundsScaleX;
+					locationsY[i] += deltaY * bounds.height * boundsScaleY;
+				}
+			}
+
+		}
+		// // initialize all forces to zero
+		for (int i = 0; i < this.entities.length; i++) {
+			if (forcesX[0][i] * forcesX[1][i] < 0) {
+				this.forcesX[i] = 0;
+				// } else if ( this.locationsX[i] < 0 ) {
+				// this.forcesX[i] = forcesX[1][i] / 10;
+				// } else if ( this.locationsX[i] > boundsScale * bounds.width)
+				// {
+				// this.forcesX[i] = forcesX[1][i] / 10;
+			} else {
+				this.forcesX[i] = forcesX[1][i];
+			}
+
+			if (forcesY[0][i] * forcesY[1][i] < 0) {
+				this.forcesY[i] = 0;
+				// } else if ( this.locationsY[i] < 0 ) {
+				// this.forcesY[i] = forcesY[1][i] / 10;
+				// } else if ( this.locationsY[i] > boundsScale * bounds.height)
+				// {
+				// this.forcesY[i] = forcesY[1][i] / 10;
+			} else {
+				this.forcesY[i] = forcesY[1][i];
+			}
+
+		}
+
 	}
 
 	// /////////////////////////////////////////////////////////////////
@@ -796,6 +1073,248 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		return asynchronous || !continueous;
+	}
+
+	private DisplayIndependentRectangle getLayoutBounds() {
+		double minX, maxX, minY, maxY;
+		minX = minY = Double.POSITIVE_INFINITY;
+		maxX = maxY = Double.NEGATIVE_INFINITY;
+
+		for (int i = 0; i < locationsX.length; i++) {
+			maxX = Math.max(maxX, locationsX[i] + sizeW[i] / 2);
+			minX = Math.min(minX, locationsX[i] - sizeW[i] / 2);
+			maxY = Math.max(maxY, locationsY[i] + sizeH[i] / 2);
+			minY = Math.min(minY, locationsY[i] - sizeH[i] / 2);
+		}
+		return new DisplayIndependentRectangle(minX, minY, maxX - minX, maxY - minY);
+	}
+
+	private void improveBoundScaleX(DisplayIndependentRectangle currentBounds) {
+		double boundaryProportionX = currentBounds.width / bounds.width;
+		// double boundaryProportion = Math.max(currentBounds.width /
+		// bounds.width, currentBounds.height / bounds.height);
+
+		// if (boundaryProportionX < 0.1)
+		// boundsScaleX *= 2;
+		// else if (boundaryProportionX < 0.5)
+		// boundsScaleX *= 1.4;
+		// else if (boundaryProportionX < 0.8)
+		// boundsScaleX *= 1.1;
+		if (boundaryProportionX < 0.9) {
+			boundsScaleX *= 1.01;
+
+			//
+			// else if (boundaryProportionX > 1.8) {
+			// if (boundsScaleX < 0.01)
+			// return;
+			// boundsScaleX /= 1.05;
+		} else if (boundaryProportionX > 1) {
+			if (boundsScaleX < 0.01) {
+				return;
+			}
+			boundsScaleX /= 1.01;
+		}
+	}
+
+	private void improveBoundScaleY(DisplayIndependentRectangle currentBounds) {
+		double boundaryProportionY = currentBounds.height / bounds.height;
+		// double boundaryProportion = Math.max(currentBounds.width /
+		// bounds.width, currentBounds.height / bounds.height);
+
+		// if (boundaryProportionY < 0.1)
+		// boundsScaleY *= 2;
+		// else if (boundaryProportionY < 0.5)
+		// boundsScaleY *= 1.4;
+		// else if (boundaryProportionY < 0.8)
+		// boundsScaleY *= 1.1;
+		if (boundaryProportionY < 0.9) {
+			boundsScaleY *= 1.01;
+
+			// else if (boundaryProportionY > 1.8) {
+			// if (boundsScaleY < 0.01)
+			// return;
+			// boundsScaleY /= 1.05;
+		} else if (boundaryProportionY > 1) {
+			if (boundsScaleY < 0.01) {
+				return;
+			}
+			boundsScaleY /= 1.01;
+		}
+	}
+
+	// private void improveBoundsScale(DisplayIndependentRectangle
+	// currentBounds) {
+	// double boundaryProportionX = currentBounds.width / bounds.width;
+	// double boundaryProportionY = currentBounds.height / bounds.height;
+	// // double boundaryProportion = Math.max(currentBounds.width /
+	// // bounds.width, currentBounds.height / bounds.height);
+	//
+	// if (boundaryProportion < 0.1)
+	// boundsScale *= 2;
+	// else if (boundaryProportion < 0.5)
+	// boundsScale *= 1.4;
+	// else if (boundaryProportion < 0.8)
+	// boundsScale *= 1.1;
+	// else if (boundaryProportion < 0.99)
+	// boundsScale *= 1.05;
+	//
+	// else if (boundaryProportion > 1.8) {
+	// if (boundsScale < 0.01)
+	// return;
+	// boundsScale /= 1.05;
+	// }
+	// else if (boundaryProportion > 1) {
+	// if (boundsScale < 0.01)
+	// return;
+	// boundsScale /= 1.01;
+	// }
+	//
+	// }
+
+	private void moveToCenter(DisplayIndependentRectangle currentBounds) {
+		double moveX = (currentBounds.x + currentBounds.width / 2) - (bounds.x + bounds.width / 2);
+		double moveY = (currentBounds.y + currentBounds.height / 2) - (bounds.y + bounds.height / 2);
+		for (int i = 0; i < locationsX.length; i++) {
+			locationsX[i] -= moveX;
+			locationsY[i] -= moveY;
+		}
+	}
+
+	class SpringLayoutListener implements LayoutListener {
+
+		@Override
+		public boolean nodeMoved(LayoutContext context, NodeLayout node) {
+			// TODO Auto-generated method stub
+			for (int i = 0; i < entities.length; i++) {
+				if (entities[i] == node) {
+					locationsX[i] = entities[i].getLocation().x;
+					locationsY[i] = entities[i].getLocation().y;
+
+				}
+
+			}
+			return false;
+		}
+
+		@Override
+		public boolean nodeResized(LayoutContext context, NodeLayout node) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean subgraphMoved(LayoutContext context, SubgraphLayout subgraph) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean subgraphResized(LayoutContext context, SubgraphLayout subgraph) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+	}
+
+	private void initLayout() {
+		entities = context.getEntities();
+		bounds = context.getBounds();
+		loadLocations();
+
+		srcDestToSumOfWeights = new double[entities.length][entities.length];
+		HashMap entityToPosition = new HashMap();
+		for (int i = 0; i < entities.length; i++) {
+			entityToPosition.put(entities[i], Integer.valueOf(i));
+		}
+
+		ConnectionLayout[] connections = context.getConnections();
+		for (ConnectionLayout connection : connections) {
+			Integer source = (Integer) entityToPosition.get(getEntity(connection.getSource()));
+			Integer target = (Integer) entityToPosition.get(getEntity(connection.getTarget()));
+			if (source == null || target == null) {
+				continue;
+			}
+			double weight = connection.getWeight();
+			weight = (weight <= 0 ? 0.1 : weight);
+			srcDestToSumOfWeights[source.intValue()][target.intValue()] += weight;
+			srcDestToSumOfWeights[target.intValue()][source.intValue()] += weight;
+		}
+
+		if (sprRandom) {
+			placeRandomly(); // put vertices in random places
+		}
+
+		iteration = 1;
+
+		startTime = System.currentTimeMillis();
+	}
+
+	private EntityLayout getEntity(NodeLayout node) {
+		if (!node.isPruned()) {
+			return node;
+		}
+		SubgraphLayout subgraph = node.getSubgraph();
+		if (subgraph.isGraphEntity()) {
+			return subgraph;
+		}
+		return null;
+	}
+
+	private void loadLocations() {
+		if (locationsX == null || locationsX.length != entities.length) {
+			int length = entities.length;
+			locationsX = new double[length];
+			locationsY = new double[length];
+			sizeW = new double[length];
+			sizeH = new double[length];
+			forcesX = new double[length];
+			forcesY = new double[length];
+		}
+		for (int i = 0; i < entities.length; i++) {
+			DisplayIndependentPoint location = entities[i].getLocation();
+			locationsX[i] = location.x;
+			locationsY[i] = location.y;
+			DisplayIndependentDimension size = entities[i].getSize();
+			sizeW[i] = size.width;
+			sizeH[i] = size.height;
+		}
+	}
+
+	private void saveLocations() {
+		if (entities == null) {
+			return;
+		}
+		for (int i = 0; i < entities.length; i++) {
+			entities[i].setLocation(locationsX[i], locationsY[i]);
+		}
+	}
+
+	/**
+	 * Computes the position for each node in this SpringLayoutAlgorithm. The
+	 * computed position will be stored in the data repository. position = position
+	 * + sprMove * force
+	 *
+	 * @since 2.0
+	 */
+	protected void computePositions() {
+		for (int i = 0; i < entities.length; i++) {
+			if (entities[i].isMovable()) {
+				double deltaX = sprMove * forcesX[i];
+				double deltaY = sprMove * forcesY[i];
+
+				// constrain movement, so that nodes don't shoot way off to the
+				// edge
+				double dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+				double maxMovement = 0.2d * sprMove;
+				if (dist > maxMovement) {
+					deltaX *= maxMovement / dist;
+					deltaY *= maxMovement / dist;
+				}
+
+				locationsX[i] += deltaX * bounds.width * boundsScaleX;
+				locationsY[i] += deltaY * bounds.height * boundsScaleY;
+			}
+		}
 	}
 
 }

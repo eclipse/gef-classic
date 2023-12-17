@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -12,9 +12,14 @@
  *******************************************************************************/
 package org.eclipse.zest.layouts;
 
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
+
 /**
  * @author Ian Bull
+ * @deprecated Since Zest 2.0, layout styles are set on the individual layout
+ *             algorithms (e.g. {@link TreeLayoutAlgorithm#isResizing()})
  */
+@Deprecated(forRemoval = true)
 public interface LayoutStyles {
 
 	/** Default layout style constant. */
