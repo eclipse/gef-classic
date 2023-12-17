@@ -60,7 +60,7 @@ class CompoundRankSorter extends RankSorter {
 	boolean init;
 	RowKey key = new RowKey();
 
-	Map map = new HashMap();
+	Map<RowKey, RowEntry> map = new HashMap<>();
 
 	void addRowEntry(Subgraph s, int row) {
 		key.s = s;
@@ -128,7 +128,7 @@ class CompoundRankSorter extends RankSorter {
 	RowEntry getRowEntry(Subgraph s, int row) {
 		key.s = s;
 		key.rank = row;
-		return (RowEntry) map.get(key);
+		return map.get(key);
 	}
 
 	void copyConstraints(NestingTree tree) {

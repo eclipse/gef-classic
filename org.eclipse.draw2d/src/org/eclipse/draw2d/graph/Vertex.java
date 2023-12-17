@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -39,7 +39,7 @@ class Vertex extends Point {
 	static final int OUTIE = 2;
 
 	// for shortest path
-	List neighbors;
+	List<Vertex> neighbors;
 	boolean isPermanent = false;
 	Vertex label;
 	double cost = 0;
@@ -51,9 +51,9 @@ class Vertex extends Point {
 	int count = 0;
 	int totalCount = 0;
 	Obstacle obs;
-	List paths;
+	List<Path> paths;
 	boolean nearestObstacleChecked = false;
-	Map cachedCosines;
+	Map<Path, Double> cachedCosines;
 	int positionOnObstacle = -1;
 
 	private int origX, origY;
@@ -92,12 +92,12 @@ class Vertex extends Point {
 	 */
 	void addPath(Path path, Segment start, Segment end) {
 		if (paths == null) {
-			paths = new ArrayList();
-			cachedCosines = new HashMap();
+			paths = new ArrayList<>();
+			cachedCosines = new HashMap<>();
 		}
 		if (!paths.contains(path))
 			paths.add(path);
-		cachedCosines.put(path, Double.valueOf(start.cosine(end)));
+		cachedCosines.put(path, start.cosine(end));
 	}
 
 	/**

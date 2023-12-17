@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -30,8 +30,8 @@ class SortSubgraphs extends GraphVisitor {
 
 	NestingTree nestingTrees[];
 
-	Set orderingGraphEdges = new HashSet();
-	Set orderingGraphNodes = new HashSet();
+	Set<NodePair> orderingGraphEdges = new HashSet<>();
+	Set<Node> orderingGraphNodes = new HashSet<>();
 	NodePair pair = new NodePair();
 
 	private void breakSubgraphCycles() {
