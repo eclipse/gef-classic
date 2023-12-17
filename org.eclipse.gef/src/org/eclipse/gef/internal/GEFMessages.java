@@ -20,6 +20,7 @@ import org.eclipse.osgi.util.NLS;
  * @author hudsonr
  * @since 2.0
  */
+@SuppressWarnings("squid:S3008") // tell sonar the java naming convention does not make sense for this class
 public class GEFMessages extends NLS {
 
 	public static String AlignBottomAction_Label;

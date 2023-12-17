@@ -17,6 +17,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * @author Pratik Shah
  */
+@SuppressWarnings("squid:S3008") // tell sonar the java naming convention does not make sense for this class
 public class PaletteMessages extends NLS {
 
 	/**
