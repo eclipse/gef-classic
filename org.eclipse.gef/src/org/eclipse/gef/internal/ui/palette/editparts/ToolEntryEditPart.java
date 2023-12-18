@@ -194,13 +194,13 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			disableTimer();
 
 			// win hack because button down is delayed
-			if (getParent() instanceof IPaletteStackEditPart && SWT.getPlatform().equals("win32")) { //$NON-NLS-1$
+			if (getParent() instanceof IPaletteStackEditPart psEP && SWT.getPlatform().equals("win32")) { //$NON-NLS-1$
 				Point nds = getPaletteViewer().getControl().toControl(event.display.getCursorLocation());
 				if (mouseDownLoc != null
 						&& (Math.abs(nds.x - mouseDownLoc.x) + Math.abs(nds.y - mouseDownLoc.y)) < WIN_THRESHOLD) {
 					getButtonModel().setArmed(false);
 					getButtonModel().setPressed(false);
-					((IPaletteStackEditPart) getParent()).openMenu();
+					psEP.openMenu();
 					getViewer().getEditDomain().loadDefaultTool();
 					event.doit = false;
 					return false;
@@ -334,8 +334,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
 		if (key == IPinnableEditPart.class) {
-			if ((getParent() instanceof PinnablePaletteStackEditPart)
-					&& ((PinnablePaletteStackEditPart) getParent()).canBePinned()
+			if ((getParent() instanceof PinnablePaletteStackEditPart pinPSEP) && pinPSEP.canBePinned()
 					&& ((PaletteStack) getParent().getModel()).getActiveEntry().equals(getModel())) {
 				return key.cast(getParent());
 			}
@@ -358,8 +357,8 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 			@Override
 			public void getRole(AccessibleControlEvent e) {
-				if (getParent() instanceof IPaletteStackEditPart
-						&& (ToolEntryEditPart.this == ((IPaletteStackEditPart) getParent()).getActiveEntry())) {
+				if (getParent() instanceof IPaletteStackEditPart psEP
+						&& (ToolEntryEditPart.this == psEP.getActiveEntry())) {
 					e.detail = ACC.ROLE_COMBOBOX;
 				} else {
 					e.detail = ACC.ROLE_PUSHBUTTON;
@@ -430,9 +429,8 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	public DragTracker getDragTracker(Request request) {
 		if (SWT.getPlatform().equals("gtk")) { //$NON-NLS-1$
 			return new GTKToggleButtonTracker();
-		} else { //$NON-NLS-1$
-			return new OtherToggleButtonTracker();
 		}
+		return new OtherToggleButtonTracker();
 	}
 
 	@Override
@@ -511,7 +509,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 	@Override
 	public void restoreState(IMemento memento) {
-		if (Boolean.valueOf(memento.getString(ACTIVE_STATE)).booleanValue()) {
+		if (Boolean.parseBoolean(memento.getString(ACTIVE_STATE))) {
 			getPaletteViewer().setActiveTool(getModel());
 		}
 		super.restoreState(memento);
@@ -519,7 +517,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 	@Override
 	public void saveState(IMemento memento) {
-		memento.putString(ACTIVE_STATE, Boolean.valueOf(getPaletteViewer().getActiveTool() == getModel()).toString());
+		memento.putString(ACTIVE_STATE, Boolean.toString(getPaletteViewer().getActiveTool() == getModel()));
 		super.saveState(memento);
 	}
 

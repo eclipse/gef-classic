@@ -17,7 +17,6 @@ import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleControlListener;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.accessibility.AccessibleListener;
-import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Control;
@@ -35,6 +34,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 *
 	 * @deprecated Use {@link SWT#BUTTON_MASK} instead.
 	 */
+	@Deprecated
 	protected static final int ANY_BUTTON = SWT.BUTTON_MASK;
 
 	private boolean figureTraverse = true;
@@ -317,9 +317,8 @@ public class SWTEventDispatcher extends EventDispatcher {
 	private IFigure getCurrentToolTip() {
 		if (hoverSource != null) {
 			return hoverSource.getToolTip();
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -473,17 +472,13 @@ public class SWTEventDispatcher extends EventDispatcher {
 		if (c == control) {
 			return;
 		}
-		if (control != null && !control.isDisposed())
-		 {
+		if (control != null && !control.isDisposed()) {
 			throw new RuntimeException("Can not set control again once it has been set"); //$NON-NLS-1$
 		}
 		if (c != null) {
-			c.addDisposeListener(new org.eclipse.swt.events.DisposeListener() {
-				@Override
-				public void widgetDisposed(DisposeEvent e) {
-					if (toolTipHelper != null) {
-						toolTipHelper.dispose();
-					}
+			c.addDisposeListener(e -> {
+				if (toolTipHelper != null) {
+					toolTipHelper.dispose();
 				}
 			});
 		}
@@ -497,7 +492,6 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 */
 	protected void setCursor(Cursor c) {
 		if (c == null && cursor == null) {
-			return;
 		} else if ((c != cursor) || (!c.equals(cursor))) {
 			cursor = c;
 			if (control != null && !control.isDisposed()) {

@@ -32,7 +32,8 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 public abstract class LogicSubpart extends LogicElement {
 
 	private String id;
-	private LogicGuide verticalGuide, horizontalGuide;
+	private LogicGuide verticalGuide;
+	private LogicGuide horizontalGuide;
 	protected Map<String, Wire> inputs = new HashMap<>(7);
 	protected Point location = new Point(0, 0);
 	protected List<Wire> outputs = new ArrayList<>(4);
@@ -144,7 +145,8 @@ public abstract class LogicSubpart extends LogicElement {
 	public Object getPropertyValue(Object propName) {
 		if (ID_SIZE.equals(propName)) {
 			return new DimensionPropertySource(getSize());
-		} else if (ID_LOCATION.equals(propName)) {
+		}
+		if (ID_LOCATION.equals(propName)) {
 			return new LocationPropertySource(getLocation());
 		}
 		return null;

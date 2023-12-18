@@ -25,7 +25,8 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 
 	class LeftRight {
 		// $TODO Delete and use NodePair class, equivalent
-		Object left, right;
+		Object left;
+		Object right;
 
 		LeftRight(Object l, Object r) {
 			left = l;
@@ -34,6 +35,13 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 
 		@Override
 		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (obj == null || getClass() != obj.getClass()) {
+				return false;
+			}
 			LeftRight entry = (LeftRight) obj;
 			return entry.left.equals(left) && entry.right.equals(right);
 		}

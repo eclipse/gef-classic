@@ -26,8 +26,8 @@ public final class CheckBox extends Toggle {
 
 	private Label label = null;
 
-	static final Image UNCHECKED = createImage("images/checkboxenabledoff.gif"), //$NON-NLS-1$
-			CHECKED = createImage("images/checkboxenabledon.gif"); //$NON-NLS-1$
+	static final Image UNCHECKED = createImage("images/checkboxenabledoff.gif"); //$NON-NLS-1$
+	static final Image CHECKED = createImage("images/checkboxenabledon.gif"); //$NON-NLS-1$
 
 	private static Image createImage(String name) {
 		InputStream stream = CheckBox.class.getResourceAsStream(name);
@@ -55,7 +55,8 @@ public final class CheckBox extends Toggle {
 	 * @since 2.0
 	 */
 	public CheckBox(String text) {
-		setContents(label = new Label(text, UNCHECKED));
+		label = new Label(text, UNCHECKED);
+		setContents(label);
 	}
 
 	/**

@@ -61,7 +61,16 @@ public class ScaledGraphics extends Graphics {
 
 		@Override
 		public boolean equals(Object obj) {
-			return (((FontKey) obj).font.equals(font) && ((FontKey) obj).height == height);
+			if (this == obj) {
+				return true;
+			}
+
+			if (obj == null || getClass() != obj.getClass()) {
+				return false;
+			}
+
+			FontKey fontKey = (FontKey) obj;
+			return (fontKey.font.equals(font) && fontKey.height == height);
 		}
 
 		@Override
@@ -169,18 +178,18 @@ public class ScaledGraphics extends Graphics {
 
 	private boolean allowText = true;
 	// private static final Point PT = new Point();
-	private Map fontCache = new HashMap();
-	private Map fontDataCache = new HashMap();
-	private FontKey fontKey = new FontKey();
+	private final Map fontCache = new HashMap();
+	private final Map fontDataCache = new HashMap();
+	private final FontKey fontKey = new FontKey();
 	private double fractionalX;
 	private double fractionalY;
-	private Graphics graphics;
-	private FontHeightCache localCache = new FontHeightCache();
+	private final Graphics graphics;
+	private final FontHeightCache localCache = new FontHeightCache();
 	private Font localFont;
 	private float localLineWidth;
-	private List stack = new ArrayList();
+	private final List stack = new ArrayList();
 	private int stackPointer = 0;
-	private FontHeightCache targetCache = new FontHeightCache();
+	private final FontHeightCache targetCache = new FontHeightCache();
 
 	double zoom = 1.0;
 

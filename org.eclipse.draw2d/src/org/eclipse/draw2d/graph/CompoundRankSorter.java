@@ -47,6 +47,13 @@ class CompoundRankSorter extends RankSorter {
 
 		@Override
 		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (obj == null || getClass() != obj.getClass()) {
+				return false;
+			}
 			RowKey rp = (RowKey) obj;
 			return rp.s == s && rp.rank == rank;
 		}
