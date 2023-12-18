@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -15,7 +15,6 @@ package org.eclipse.draw2d.graph;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +37,7 @@ public class Path {
 	/**
 	 * A Stack of segments.
 	 */
-	private static class SegmentStack extends ArrayList {
+	private static class SegmentStack extends ArrayList<Object /* Segment or Obstacle */> {
 
 		Segment pop() {
 			return (Segment) remove(size() - 1);
@@ -68,8 +67,8 @@ public class Path {
 	 * object.
 	 */
 	public Object data;
-	List excludedObstacles;
-	List grownSegments;
+	List<Obstacle> excludedObstacles;
+	List<Segment> grownSegments;
 	/**
 	 * this field is for internal use only. It is true whenever a property has been
 	 * changed which requires the solver to resolve this path.
@@ -85,14 +84,14 @@ public class Path {
 	 * divided by the length from the start to the end.
 	 */
 	private double prevCostRatio;
-	List segments;
+	List<Segment> segments;
 
 	private final SegmentStack stack;
 	Vertex start, end;
 	private Path subPath;
 	double threshold;
-	Set visibleObstacles;
-	Set visibleVertices;
+	Set<Obstacle> visibleObstacles;
+	Set<Vertex> visibleVertices;
 
 	/**
 	 * Constructs a new path.
@@ -100,13 +99,13 @@ public class Path {
 	 * @since 3.0
 	 */
 	public Path() {
-		segments = new ArrayList();
-		grownSegments = new ArrayList();
+		segments = new ArrayList<>();
+		grownSegments = new ArrayList<>();
 		points = new PointList();
-		visibleVertices = new HashSet();
+		visibleVertices = new HashSet<>();
 		stack = new SegmentStack();
-		visibleObstacles = new HashSet();
-		excludedObstacles = new ArrayList();
+		visibleObstacles = new HashSet<>();
+		excludedObstacles = new ArrayList<>();
 	}
 
 	/**
@@ -221,9 +220,7 @@ public class Path {
 	 */
 	private void addObstacle(Obstacle newObs) {
 		visibleObstacles.add(newObs);
-		Iterator oItr = new HashSet(visibleObstacles).iterator();
-		while (oItr.hasNext()) {
-			Obstacle currObs = (Obstacle) oItr.next();
+		for (Obstacle currObs : new HashSet<>(visibleObstacles)) {
 			if (newObs != currObs) {
 				addSegmentsFor(newObs, currObs);
 			}
@@ -268,14 +265,13 @@ public class Path {
 	 * @param exclude2     another obstacle to exclude from the search
 	 * @param allObstacles the list of all obstacles
 	 */
-	private void addSegment(Segment segment, Obstacle exclude1, Obstacle exclude2, List allObstacles) {
+	private void addSegment(Segment segment, Obstacle exclude1, Obstacle exclude2, List<Obstacle> allObstacles) {
 		if (threshold != 0 && (segment.end.getDistance(end) + segment.end.getDistance(start) > threshold
 				|| segment.start.getDistance(end) + segment.start.getDistance(start) > threshold)) {
 			return;
 		}
 
-		for (Object obstacle : allObstacles) {
-			Obstacle obs = (Obstacle) obstacle;
+		for (Obstacle obs : allObstacles) {
 
 			if (obs == exclude1 || obs == exclude2 || obs.exclude) {
 				continue;
@@ -491,7 +487,7 @@ public class Path {
 	 *
 	 * @param allObstacles list of all obstacles
 	 */
-	private void createVisibilityGraph(List allObstacles) {
+	private void createVisibilityGraph(List<Obstacle> allObstacles) {
 		stack.push(null);
 		stack.push(null);
 		stack.push(new Segment(start, end));
@@ -552,7 +548,7 @@ public class Path {
 	 * @param allObstacles the list of all obstacles
 	 * @return true if a shortest path was found
 	 */
-	boolean generateShortestPath(List allObstacles) {
+	boolean generateShortestPath(List<Obstacle> allObstacles) {
 		createVisibilityGraph(allObstacles);
 
 		if (visibleVertices.isEmpty()) {
@@ -609,11 +605,11 @@ public class Path {
 	Path getSubPath(Segment currentSegment) {
 		// ready new path
 		Path newPath = new Path(currentSegment.start, end);
-		newPath.grownSegments = new ArrayList(
+		newPath.grownSegments = new ArrayList<>(
 				grownSegments.subList(grownSegments.indexOf(currentSegment), grownSegments.size()));
 
 		// fix old path
-		grownSegments = new ArrayList(grownSegments.subList(0, grownSegments.indexOf(currentSegment) + 1));
+		grownSegments = new ArrayList<>(grownSegments.subList(0, grownSegments.indexOf(currentSegment) + 1));
 		end = currentSegment.end;
 
 		subPath = newPath;
@@ -630,7 +626,7 @@ public class Path {
 	void invertPriorVertices(Segment currentSegment) {
 		int stop = grownSegments.indexOf(currentSegment);
 		for (int i = 0; i < stop; i++) {
-			Vertex vertex = ((Segment) grownSegments.get(i)).end;
+			Vertex vertex = grownSegments.get(i).end;
 			if (vertex.type == Vertex.INNIE) {
 				vertex.type = Vertex.OUTIE;
 			} else {
@@ -661,13 +657,13 @@ public class Path {
 		vertex.isPermanent = true;
 		double newCost;
 		while (numPermanentNodes != visibleVertices.size()) {
-			List neighbors = vertex.neighbors;
+			List<Vertex> neighbors = vertex.neighbors;
 			if (neighbors == null) {
 				return false;
 			}
 			// label neighbors if they have a new shortest path
-			for (Object neighbor : neighbors) {
-				neighborVertex = (Vertex) neighbor;
+			for (Vertex neighbor : neighbors) {
+				neighborVertex = neighbor;
 				if (!neighborVertex.isPermanent) {
 					newCost = vertex.cost + vertex.getDistance(neighborVertex);
 					if (neighborVertex.label == null) {
@@ -682,9 +678,8 @@ public class Path {
 			// find the next none-permanent, labeled vertex with smallest cost
 			double smallestCost = 0;
 			Vertex tempVertex = null;
-			Iterator v = visibleVertices.iterator();
-			while (v.hasNext()) {
-				tempVertex = (Vertex) v.next();
+			for (Vertex visibleVertex : visibleVertices) {
+				tempVertex = visibleVertex;
 				if (!tempVertex.isPermanent && tempVertex.label != null
 						&& (tempVertex.cost < smallestCost || smallestCost == 0)) {
 					smallestCost = tempVertex.cost;
@@ -705,10 +700,10 @@ public class Path {
 	 */
 	private void linkVertices(Segment segment) {
 		if (segment.start.neighbors == null) {
-			segment.start.neighbors = new ArrayList();
+			segment.start.neighbors = new ArrayList<>();
 		}
 		if (segment.end.neighbors == null) {
-			segment.end.neighbors = new ArrayList();
+			segment.end.neighbors = new ArrayList<>();
 		}
 
 		if (!segment.start.neighbors.contains(segment.end)) {
@@ -728,8 +723,8 @@ public class Path {
 		if (subPath != null) {
 			subPath.reconnectSubPaths();
 
-			Segment changedSegment = (Segment) subPath.grownSegments.remove(0);
-			Segment oldSegment = (Segment) grownSegments.get(grownSegments.size() - 1);
+			Segment changedSegment = subPath.grownSegments.remove(0);
+			Segment oldSegment = grownSegments.get(grownSegments.size() - 1);
 
 			oldSegment.end = changedSegment.end;
 			grownSegments.addAll(subPath.grownSegments);
@@ -751,11 +746,10 @@ public class Path {
 	 *
 	 * @param allObstacles list of all obstacles
 	 */
-	void refreshExcludedObstacles(List allObstacles) {
+	void refreshExcludedObstacles(List<Obstacle> allObstacles) {
 		excludedObstacles.clear();
 
-		for (int i = 0; i < allObstacles.size(); i++) {
-			Obstacle o = (Obstacle) allObstacles.get(i);
+		for (Obstacle o : allObstacles) {
 			o.exclude = false;
 
 			if (o.contains(start)) {

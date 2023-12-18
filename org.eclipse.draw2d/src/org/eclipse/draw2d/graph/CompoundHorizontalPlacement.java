@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -44,7 +44,7 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 		}
 	}
 
-	Set entries = new HashSet();
+	Set<LeftRight> entries = new HashSet<>();
 
 	/**
 	 * @see org.eclipse.graph.HorizontalPlacement#applyGPrime()

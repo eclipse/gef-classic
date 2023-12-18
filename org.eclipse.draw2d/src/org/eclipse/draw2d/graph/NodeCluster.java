@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -81,7 +81,7 @@ class NodeCluster extends NodeList {
 		rightLinks[rightCount++] = link;
 	}
 
-	public void adjustRank(int delta, Collection affected) {
+	public void adjustRank(int delta, Collection<NodeCluster> affected) {
 		adjustRank(delta);
 		NodeCluster neighbor;
 		CollapsedEdges edges;

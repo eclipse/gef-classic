@@ -19,15 +19,15 @@ import java.util.Map;
 
 class NestingTree {
 
-	List contents = new ArrayList();
+	List<Object /* Node or NestingTree */> contents = new ArrayList<>();
 	boolean isLeaf = true;
 	int size;
 	double sortValue;
 	Node subgraph;
 
-	private static void addToNestingTree(Map map, Node child) {
+	private static void addToNestingTree(Map<Subgraph, NestingTree> map, Node child) {
 		Subgraph subgraph = child.getParent();
-		NestingTree parent = (NestingTree) map.get(subgraph);
+		NestingTree parent = map.get(subgraph);
 		if (parent == null) {
 			parent = new NestingTree();
 			parent.subgraph = subgraph;
@@ -39,9 +39,9 @@ class NestingTree {
 		parent.contents.add(child);
 	}
 
-	private static void addToNestingTree(Map map, NestingTree branch) {
+	private static void addToNestingTree(Map<Subgraph, NestingTree> map, NestingTree branch) {
 		Subgraph subgraph = branch.subgraph.getParent();
-		NestingTree parent = (NestingTree) map.get(subgraph);
+		NestingTree parent = map.get(subgraph);
 		if (parent == null) {
 			parent = new NestingTree();
 			parent.subgraph = subgraph;
@@ -54,14 +54,14 @@ class NestingTree {
 	}
 
 	static NestingTree buildNestingTreeForRank(Rank rank) {
-		Map nestingMap = new HashMap();
+		Map<Subgraph, NestingTree> nestingMap = new HashMap<>();
 
 		for (int j = 0; j < rank.count(); j++) {
 			Node node = rank.get(j);
 			addToNestingTree(nestingMap, node);
 		}
 
-		return (NestingTree) nestingMap.get(null);
+		return nestingMap.get(null);
 	}
 
 	void calculateSortValues() {
