@@ -127,9 +127,6 @@ def void mvn() {
     wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
       // Only promoted builds will be signed.
        //
-       // -B sonar:sonar \
-       // -Dsonar.projectKey=gef-classic \
-       // -Dsonar.organization=eclipse \
        sh '''
          if [[ $PROMOTE == true ]]; then
            promotion_argument='-Ppromote -Peclipse-sign'
@@ -144,8 +141,11 @@ def void mvn() {
            -Dcommit.id=$GIT_COMMIT \
            -Dbuild.type=$BUILD_TYPE \
            -Dorg.eclipse.justj.p2.manager.build.url=$JOB_URL \
+           -Dsonar.projectKey=gef-classic \
+           -Dsonar.organization=eclipse \
            clean \
-           verify
+           verify \
+           sonar:sonar
          '''
     }
   }
