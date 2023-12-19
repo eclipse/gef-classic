@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setup:Project
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:git="http://www.eclipse.org/oomph/setup/git/1.0"
+    xmlns:jdt="http://www.eclipse.org/oomph/setup/jdt/1.0"
+    xmlns:predicates="http://www.eclipse.org/oomph/predicates/1.0"
+    xmlns:setup="http://www.eclipse.org/oomph/setup/1.0"
+    xmlns:setup.p2="http://www.eclipse.org/oomph/setup/p2/1.0"
+    xmlns:setup.targlets="http://www.eclipse.org/oomph/setup/targlets/1.0"
+    xmlns:setup.workingsets="http://www.eclipse.org/oomph/setup/workingsets/1.0"
+    xmlns:workingsets="http://www.eclipse.org/oomph/workingsets/1.0"
+    xsi:schemaLocation="http://www.eclipse.org/oomph/setup/git/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/Git.ecore http://www.eclipse.org/oomph/setup/jdt/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/JDT.ecore http://www.eclipse.org/oomph/predicates/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/Predicates.ecore http://www.eclipse.org/oomph/setup/targlets/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/SetupTarglets.ecore http://www.eclipse.org/oomph/setup/workingsets/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/SetupWorkingSets.ecore http://www.eclipse.org/oomph/workingsets/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/WorkingSets.ecore"
+    name="gef.classic"
+    label="GEF Classic">
+  <annotation
+      source="http://www.eclipse.org/oomph/setup/ConfigurationReference">
+    <reference
+        href="GEFConfiguration.setup#/"/>
+  </annotation>
+  <setupTask
+      xsi:type="setup:CompoundTask"
+      name="User Preferences">
+    <setupTask
+        xsi:type="setup:CompoundTask"
+        name="org.eclipse.oomph.setup.ui">
+      <setupTask
+          xsi:type="setup:PreferenceTask"
+          key="/instance/org.eclipse.oomph.setup.ui/showToolBarContributions"
+          value="true"/>
+    </setupTask>
+  </setupTask>
+  <setupTask
+      xsi:type="jdt:JRETask"
+      version="JavaSE-17"
+      location="${jre.location-17}">
+    <description>Define the JRE needed to compile and run the Java projects of ${scope.project.label}</description>
+  </setupTask>
+  <setupTask
+      xsi:type="setup:EclipseIniTask"
+      option="-Xmx"
+      value="4048m"
+      vm="true">
+    <description>Set the heap space needed to work with the projects of ${scope.project.label}</description>
+  </setupTask>
+  <setupTask
+      xsi:type="setup:ResourceCreationTask"
+      excludedTriggers="STARTUP MANUAL"
+      targetURL="${workspace.location|uri}/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml"
+      encoding="UTF-8">
+    <description>Initialize JDT's package explorer to show working sets as its root objects</description>
+    <content>
+      &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+      &lt;section name=&quot;Workbench&quot;>
+      	&lt;section name=&quot;org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart&quot;>
+      		&lt;item value=&quot;true&quot; key=&quot;group_libraries&quot;/>
+      		&lt;item value=&quot;false&quot; key=&quot;linkWithEditor&quot;/>
+      		&lt;item value=&quot;2&quot; key=&quot;layout&quot;/>
+      		&lt;item value=&quot;2&quot; key=&quot;rootMode&quot;/>
+      		&lt;item value=&quot;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&amp;#x0D;&amp;#x0A;&amp;lt;packageExplorer configured=&amp;quot;true&amp;quot; group_libraries=&amp;quot;1&amp;quot; layout=&amp;quot;2&amp;quot; linkWithEditor=&amp;quot;0&amp;quot; rootMode=&amp;quot;2&amp;quot; sortWorkingSets=&amp;quot;false&amp;quot; workingSetName=&amp;quot;&amp;quot;&amp;gt;&amp;#x0D;&amp;#x0A;&amp;lt;localWorkingSetManager&amp;gt;&amp;#x0D;&amp;#x0A;&amp;lt;workingSet editPageId=&amp;quot;org.eclipse.jdt.internal.ui.OthersWorkingSet&amp;quot; factoryID=&amp;quot;org.eclipse.ui.internal.WorkingSetFactory&amp;quot; id=&amp;quot;1382792884467_1&amp;quot; label=&amp;quot;Other Projects&amp;quot; name=&amp;quot;Other Projects&amp;quot;/&amp;gt;&amp;#x0D;&amp;#x0A;&amp;lt;/localWorkingSetManager&amp;gt;&amp;#x0D;&amp;#x0A;&amp;lt;activeWorkingSet workingSetName=&amp;quot;Other Projects&amp;quot;/&amp;gt;&amp;#x0D;&amp;#x0A;&amp;lt;allWorkingSets workingSetName=&amp;quot;Other Projects&amp;quot;/&amp;gt;&amp;#x0D;&amp;#x0A;&amp;lt;/packageExplorer&amp;gt;&quot; key=&quot;memento&quot;/>
+      	&lt;/section>
+      &lt;/section>
+
+    </content>
+  </setupTask>
+  <setupTask
+      xsi:type="setup:VariableTask"
+      name="eclipse.target.platform"
+      value="${eclipse.target.platform.latest}"
+      storageURI="scope://Workspace"/>
+  <setupTask
+      xsi:type="setup:VariableTask"
+      name="eclipse.api.baseline.target.platform"
+      value="${eclipse.api.baseline.target.platform.latest.released}"
+      storageURI="scope://Workspace"/>
+  <setupTask
+      xsi:type="setup.p2:P2Task"
+      label="P2 Repository Aggregator">
+    <description>Install the tools needed in the IDE to work with the source code for ${scope.project.label}</description>
+  </setupTask>
+  <setupTask
+      xsi:type="git:GitCloneTask"
+      id="git.clone.gef.classic"
+      remoteURI="eclipse/gef-classic">
+    <annotation
+        source="http://www.eclipse.org/oomph/setup/InducedChoices">
+      <detail
+          key="inherit">
+        <value>github.remoteURIs</value>
+      </detail>
+      <detail
+          key="label">
+        <value>${scope.project.label} Git repository</value>
+      </detail>
+      <detail
+          key="target">
+        <value>remoteURI</value>
+      </detail>
+    </annotation>
+    <configSections
+        name="branch">
+      <properties
+          key="autoSetupRebase"
+          value="always"/>
+    </configSections>
+    <description>${scope.project.label}</description>
+  </setupTask>
+  <setupTask
+      xsi:type="setup:ResourceCreationTask"
+      targetURL="${git.clone.gef.classic.location|uri}/.project"
+      encoding="UTF-8">
+    <content>
+      &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+      &lt;projectDescription>
+      	&lt;name>org.eclipse.gef.root&lt;/name>
+      	&lt;comment>&lt;/comment>
+      	&lt;projects>
+      	&lt;/projects>
+      	&lt;buildSpec>
+      	&lt;/buildSpec>
+      	&lt;natures>
+      	&lt;/natures>
+      	&lt;filteredResources>
+      		&lt;filter>
+      			&lt;id>1702458489811&lt;/id>
+      			&lt;name>&lt;/name>
+      			&lt;type>30&lt;/type>
+      			&lt;matcher>
+      				&lt;id>org.eclipse.ui.ide.multiFilter&lt;/id>
+      				&lt;arguments>1.0-projectRelativePath-matches-false-true-org.eclipse.*/.*|target-platform/.*&lt;/arguments>
+      			&lt;/matcher>
+      		&lt;/filter>
+      	&lt;/filteredResources>
+      &lt;/projectDescription>
+
+    </content>
+  </setupTask>
+  <setupTask
+      xsi:type="setup:StringSubstitutionTask"
+      name="gef.classic.clone.location"
+      value="${git.clone.gef.classic.location}"/>
+  <setupTask
+      xsi:type="setup:StringSubstitutionTask"
+      name="jdk.sdk.location"
+      value="${jre.location-17}"/>
+  <setupTask
+      xsi:type="setup.targlets:TargletTask"
+      targetName="Modular API Baseline Target"
+      activateTarget="false">
+    <targlet
+        name="GEF Classic"
+        includeSources="false">
+      <requirement
+          name="org.eclipse.draw2d.feature.group"/>
+      <requirement
+          name="org.eclipse.draw2d.source.feature.group"/>
+      <requirement
+          name="org.eclipse.draw2d.examples"/>
+      <requirement
+          name="org.eclipse.draw2d.examples.source"/>
+      <requirement
+          name="org.eclipse.draw2d.sdk.feature.group"/>
+      <requirement
+          name="org.eclipse.gef.feature.group"/>
+      <requirement
+          name="org.eclipse.gef.source.feature.group"/>
+      <requirement
+          name="org.eclipse.gef.examples.feature.group"/>
+      <requirement
+          name="org.eclipse.gef.examples.source.feature.group"/>
+      <requirement
+          name="org.eclipse.gef.sdk.feature.group"/>
+      <requirement
+          name="org.eclipse.zest.feature.group"/>
+      <requirement
+          name="org.eclipse.zest.source.feature.group"/>
+      <requirement
+          name="org.eclipse.zest.examples"/>
+      <requirement
+          name="org.eclipse.zest.examples.source"/>
+      <requirement
+          name="org.eclipse.zest.sdk.feature.group"/>
+      <repositoryList>
+        <repository
+            url="https://download.eclipse.org/tools/gef/classic/release/latest/"/>
+      </repositoryList>
+    </targlet>
+  </setupTask>
+  <setupTask
+      xsi:type="setup.targlets:TargletTask">
+    <targlet
+        name="GEF Classic">
+      <requirement
+          name="org.eclipse.sdk.feature.group"/>
+      <requirement
+          name="*"/>
+      <sourceLocator
+          rootFolder="${git.clone.gef.classic.location}"
+          locateNestedProjects="true"/>
+      <repositoryList>
+        <repository
+            url="https://download.eclipse.org/releases/${eclipse.target.platform.latest}"/>
+        <repository
+            url="https://download.eclipse.org/cbi/updates/license"/>
+      </repositoryList>
+    </targlet>
+  </setupTask>
+  <setupTask
+      xsi:type="setup.workingsets:WorkingSetTask"
+      id="gef.classic.workingsets">
+    <workingSet
+        name="GEF Classic Plugins">
+      <predicate
+          xsi:type="predicates:AndPredicate">
+        <operand
+            xsi:type="predicates:RepositoryPredicate"
+            project="org.eclipse.gef"/>
+        <operand
+            xsi:type="predicates:NaturePredicate"
+            nature="org.eclipse.pde.PluginNature"/>
+        <operand
+            xsi:type="workingsets:ExclusionPredicate"
+            excludedWorkingSet="//'gef.classic.workingsets'/@workingSets[name='GEF%20Classic%20Tests'] //'gef.classic.workingsets'/@workingSets[name='GEF%20Classic%20Examples']"/>
+      </predicate>
+    </workingSet>
+    <workingSet
+        name="GEF Classic Tests">
+      <predicate
+          xsi:type="predicates:AndPredicate">
+        <operand
+            xsi:type="predicates:RepositoryPredicate"
+            project="org.eclipse.gef"/>
+        <operand
+            xsi:type="predicates:NaturePredicate"
+            nature="org.eclipse.pde.PluginNature"/>
+        <operand
+            xsi:type="predicates:NamePredicate"
+            pattern=".*test.*"/>
+      </predicate>
+    </workingSet>
+    <workingSet
+        name="GEF Classic Examples">
+      <predicate
+          xsi:type="predicates:AndPredicate">
+        <operand
+            xsi:type="predicates:RepositoryPredicate"
+            project="org.eclipse.gef"/>
+        <operand
+            xsi:type="predicates:NaturePredicate"
+            nature="org.eclipse.pde.PluginNature"/>
+        <operand
+            xsi:type="predicates:NamePredicate"
+            pattern=".*example.*"/>
+      </predicate>
+    </workingSet>
+    <workingSet
+        name="GEF Classic Features">
+      <predicate
+          xsi:type="predicates:AndPredicate">
+        <operand
+            xsi:type="predicates:RepositoryPredicate"
+            project="org.eclipse.gef"/>
+        <operand
+            xsi:type="predicates:NaturePredicate"
+            nature="org.eclipse.pde.FeatureNature"/>
+      </predicate>
+    </workingSet>
+    <workingSet
+        name="GEF Classic Docs">
+      <predicate
+          xsi:type="predicates:AndPredicate">
+        <operand
+            xsi:type="predicates:RepositoryPredicate"
+            project="org.eclipse.gef"/>
+        <operand
+            xsi:type="predicates:NamePredicate"
+            pattern=".*.doc.isv"/>
+      </predicate>
+    </workingSet>
+    <workingSet
+        name="GEF Classic Releng">
+      <predicate
+          xsi:type="predicates:AndPredicate">
+        <operand
+            xsi:type="predicates:RepositoryPredicate"
+            project="org.eclipse.gef"/>
+        <operand
+            xsi:type="workingsets:ExclusionPredicate"
+            excludedWorkingSet="//'gef.classic.workingsets'/@workingSets[name='GEF%20Classic%20Plugins'] //'gef.classic.workingsets'/@workingSets[name='GEF%20Classic%20Features'] //'gef.classic.workingsets'/@workingSets[name='GEF%20Classic%20Docs'] //'gef.classic.workingsets'/@workingSets[name='GEF%20Classic%20Examples'] //'gef.classic.workingsets'/@workingSets[name='GEF%20Classic%20Tests']"/>
+      </predicate>
+    </workingSet>
+    <description>The dynamic working sets for GEF Classic</description>
+  </setupTask>
+  <stream name="master"
+      label="Master">
+    <setupTask
+        xsi:type="setup:EclipseIniTask"
+        option="-Doomph.redirection.gef.classic"
+        value="=https://raw.githubusercontent.com/eclipse/gef-classic/master/setup/GEF.setup->${git.clone.gef.classic.location|uri}/setup/GEF.setup"
+        vm="true">
+      <description>Set an Oomph redirection system property to redirect the logical location of this setup to its physical location in the Git clone.</description>
+    </setupTask>
+  </stream>
+  <logicalProjectContainer
+      xsi:type="setup:ProjectCatalog"
+      href="../org.eclipse.setup#//@projectCatalogs[name='org.eclipse']"/>
+  <description>Graphical Ediing Framework Classic</description>
+</setup:Project>
