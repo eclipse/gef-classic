@@ -108,6 +108,7 @@
   </setupTask>
   <setupTask
       xsi:type="setup:ResourceCreationTask"
+      excludedTriggers="BOOTSTRAP"
       targetURL="${git.clone.gef.classic.location|uri}/.project"
       encoding="UTF-8">
     <content>
