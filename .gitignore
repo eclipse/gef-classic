@@ -1,6 +1,8 @@
 /*/*/bin/
 /target
 /*/*/target
+/promotion/target
+/gef-updates
 *~
 *.rej
 *.bak
@@ -14,4 +16,5 @@ Snap.*
 .polyglot.META-INF
 *.class
 .polyglot*.xml
+build.log
 
