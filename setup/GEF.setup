@@ -304,6 +304,6 @@
   </stream>
   <logicalProjectContainer
       xsi:type="setup:ProjectCatalog"
-      href="../org.eclipse.setup#//@projectCatalogs[name='org.eclipse']"/>
+      href="index:/org.eclipse.setup#//@projectCatalogs[name='org.eclipse']"/>
   <description>Graphical Ediing Framework Classic</description>
 </setup:Project>
