@@ -22,8 +22,6 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.palette.PaletteListener;
 import org.eclipse.gef.palette.PaletteStack;
-import org.eclipse.gef.palette.ToolEntry;
-import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.editparts.IPinnableEditPart;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
@@ -38,18 +36,13 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPaletteStackEditPart, IPinnableEditPart {
 
 	// listen to see if active tool is changed in the palette
-	private PaletteListener paletteListener = new PaletteListener() {
-
-		@Override
-		public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
-			if (!getFigure().isPinnedOpen() && getStack().getChildren().contains(tool)) {
-				if (!getStack().getActiveEntry().equals(tool)) {
-					getStack().setActiveEntry(tool);
-				}
-			}
-			if (!getFigure().isPinnedOpen()) {
-				getFigure().setExpanded(false);
-			}
+	private final PaletteListener paletteListener = (palette, tool) -> {
+		if (!getFigure().isPinnedOpen() && getStack().getChildren().contains(tool)
+				&& !getStack().getActiveEntry().equals(tool)) {
+			getStack().setActiveEntry(tool);
+		}
+		if (!getFigure().isPinnedOpen()) {
+			getFigure().setExpanded(false);
 		}
 	};
 

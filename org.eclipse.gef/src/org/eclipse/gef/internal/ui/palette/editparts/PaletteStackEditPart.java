@@ -27,7 +27,6 @@ import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.ChangeEvent;
 import org.eclipse.draw2d.ChangeListener;
 import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.ColorConstants;
@@ -46,7 +45,6 @@ import org.eclipse.gef.palette.PaletteListener;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.actions.SetActivePaletteToolAction;
-import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
@@ -60,47 +58,38 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
 
 	// listen to changes of clickable tool figure
-	private ChangeListener clickableListener = new ChangeListener() {
-		@Override
-		public void handleStateChanged(ChangeEvent event) {
-			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY)) {
-				arrowFigure.getModel().setMouseOver(activeFigure.getModel().isMouseOver());
-			} else if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY)) {
-				arrowFigure.getModel().setArmed(activeFigure.getModel().isArmed());
-			}
+	private final ChangeListener clickableListener = event -> {
+		if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY)) {
+			this.arrowFigure.getModel().setMouseOver(this.activeFigure.getModel().isMouseOver());
+		} else if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY)) {
+			this.arrowFigure.getModel().setArmed(this.activeFigure.getModel().isArmed());
 		}
 	};
 
 	// listen to changes of arrow figure
-	private ChangeListener clickableArrowListener = new ChangeListener() {
-		@Override
-		public void handleStateChanged(ChangeEvent event) {
-			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY)) {
-				activeFigure.getModel().setMouseOver(arrowFigure.getModel().isMouseOver());
-			}
-			if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY)) {
-				activeFigure.getModel().setArmed(arrowFigure.getModel().isArmed());
-			}
+	private final ChangeListener clickableArrowListener = event -> {
+		if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY)) {
+			this.activeFigure.getModel().setMouseOver(this.arrowFigure.getModel().isMouseOver());
+		}
+		if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY)) {
+			this.activeFigure.getModel().setArmed(this.arrowFigure.getModel().isArmed());
 		}
 	};
 
 	// listen to see if arrow is pressed
-	private ActionListener actionListener = event -> openMenu();
+	private final ActionListener actionListener = event -> openMenu();
 
 	// listen to see if active tool is changed in palette
-	private PaletteListener paletteListener = new PaletteListener() {
-		@Override
-		public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
-			if (getStack().getChildren().contains(tool)) {
-				if (!arrowFigure.getModel().isSelected()) {
-					arrowFigure.getModel().setSelected(true);
-				}
-				if (!getStack().getActiveEntry().equals(tool)) {
-					getStack().setActiveEntry(tool);
-				}
-			} else {
-				arrowFigure.getModel().setSelected(false);
+	private final PaletteListener paletteListener = (palette, tool) -> {
+		if (getStack().getChildren().contains(tool)) {
+			if (!this.arrowFigure.getModel().isSelected()) {
+				this.arrowFigure.getModel().setSelected(true);
 			}
+			if (!getStack().getActiveEntry().equals(tool)) {
+				getStack().setActiveEntry(tool);
+			}
+		} else {
+			this.arrowFigure.getModel().setSelected(false);
 		}
 	};
 
@@ -313,7 +302,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 class StackMenuListener implements MenuListener {
 
 	private Menu menu;
-	private Display d;
+	private final Display d;
 
 	/**
 	 * Creates a new listener to listen to the menu that it used to select the
@@ -358,7 +347,6 @@ class RolloverArrow extends Clickable {
 	 * Creates a new Clickable that paints a triangle figure.
 	 */
 	RolloverArrow() {
-		super();
 		setRolloverEnabled(true);
 		setBorder(BORDER_TOGGLE);
 		setBackgroundColor(ColorConstants.black);

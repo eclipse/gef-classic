@@ -158,12 +158,7 @@ public abstract class TargetingTool extends AbstractTool {
 	 * @return the targeting conditional
 	 */
 	protected EditPartViewer.Conditional getTargetingConditional() {
-		return new EditPartViewer.Conditional() {
-			@Override
-			public boolean evaluate(EditPart editpart) {
-				return editpart.getTargetEditPart(getTargetRequest()) != null;
-			}
-		};
+		return editpart -> editpart.getTargetEditPart(getTargetRequest()) != null;
 	}
 
 	/**
@@ -367,8 +362,8 @@ public abstract class TargetingTool extends AbstractTool {
 				handleExitingEditPart();
 			}
 			targetEditPart = editpart;
-			if (getTargetRequest() instanceof TargetRequest) {
-				((TargetRequest) getTargetRequest()).setTargetEditPart(targetEditPart);
+			if (getTargetRequest() instanceof TargetRequest targetReq) {
+				targetReq.setTargetEditPart(targetEditPart);
 			}
 			handleEnteredEditPart();
 		}
@@ -435,21 +430,20 @@ public abstract class TargetingTool extends AbstractTool {
 	 * @return <code>true</code> if the target was changed
 	 */
 	protected boolean updateTargetUnderMouse() {
-		if (!isTargetLocked()) {
-			EditPart editPart = null;
-			if (getCurrentViewer() != null) {
-				editPart = getCurrentViewer().findObjectAtExcluding(getLocation(), getExclusionSet(),
-						getTargetingConditional());
-			}
-			if (editPart != null) {
-				editPart = editPart.getTargetEditPart(getTargetRequest());
-			}
-			boolean changed = getTargetEditPart() != editPart;
-			setTargetEditPart(editPart);
-			return changed;
-		} else {
+		if (isTargetLocked()) {
 			return false;
 		}
+		EditPart editPart = null;
+		if (getCurrentViewer() != null) {
+			editPart = getCurrentViewer().findObjectAtExcluding(getLocation(), getExclusionSet(),
+					getTargetingConditional());
+		}
+		if (editPart != null) {
+			editPart = editPart.getTargetEditPart(getTargetRequest());
+		}
+		boolean changed = getTargetEditPart() != editPart;
+		setTargetEditPart(editPart);
+		return changed;
 	}
 
 	/**

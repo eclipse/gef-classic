@@ -36,10 +36,10 @@ class Splitter extends Composite {
 
 	private int fixedSize = 150;
 	private int orientation = SWT.VERTICAL;
-	private Sash[] sashes = new Sash[0];
-	private Control[] controls = new Control[0];
+	private Sash[] sashes = {};
+	private Control[] controls = {};
 	private Control maxControl = null;
-	private Listener sashListener;
+	private final Listener sashListener;
 	private int sashWidth = DEFAULT_SASH_WIDTH;
 
 	/**
@@ -85,19 +85,9 @@ class Splitter extends Composite {
 			orientation = SWT.HORIZONTAL;
 		}
 
-		this.addListener(SWT.Resize, new Listener() {
-			@Override
-			public void handleEvent(Event e) {
-				layout(true);
-			}
-		});
+		this.addListener(SWT.Resize, e -> layout(true));
 
-		sashListener = new Listener() {
-			@Override
-			public void handleEvent(Event e) {
-				onDragSash(e);
-			}
-		};
+		sashListener = this::onDragSash;
 	}
 
 	private static int checkStyle(int style) {
@@ -165,7 +155,7 @@ class Splitter extends Composite {
 
 	private Control[] getControls(boolean onlyVisible) {
 		Control[] children = getChildren();
-		Control[] controls = new Control[0];
+		Control[] controls = {};
 		for (Control child : children) {
 			if (child instanceof Sash) {
 				continue;

@@ -32,8 +32,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 
 import org.eclipse.draw2d.ExclusionSearch;
@@ -150,9 +148,9 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 		list.add(layermanager.getLayer(LayerConstants.PRIMARY_LAYER));
 		list.add(layermanager.getLayer(LayerConstants.CONNECTION_LAYER));
 		list.add(layermanager.getLayer(LayerConstants.FEEDBACK_LAYER));
-		IFigure handle = getLightweightSystem().getRootFigure().findFigureAtExcluding(p.x, p.y, list);
-		if (handle instanceof Handle) {
-			return (Handle) handle;
+		IFigure foundFigure = getLightweightSystem().getRootFigure().findFigureAtExcluding(p.x, p.y, list);
+		if (foundFigure instanceof Handle handle) {
+			return handle;
 		}
 		return null;
 	}
@@ -207,6 +205,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * @deprecated This method should not be called by subclasses
 	 * @return the event dispatcher
 	 */
+	@Deprecated
 	protected DomainEventDispatcher getEventDispatcher() {
 		return eventDispatcher;
 	}
@@ -235,6 +234,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * @deprecated There is no reason to call this method $TODO delete this method
 	 * @return the root figure
 	 */
+	@Deprecated
 	protected IFigure getRootFigure() {
 		return rootFigure;
 	}
@@ -341,12 +341,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	public void setContextMenu(MenuManager contextMenu) {
 		super.setContextMenu(contextMenu);
 		if (contextMenu != null) {
-			contextMenu.addMenuListener(new IMenuListener() {
-				@Override
-				public void menuAboutToShow(IMenuManager manager) {
-					flush();
-				}
-			});
+			contextMenu.addMenuListener(manager -> flush());
 		}
 	}
 
@@ -433,6 +428,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * @param figure the root figure
 	 * @deprecated This method should no longer be used.
 	 */
+	@Deprecated
 	protected void setRootFigure(IFigure figure) {
 		rootFigure = figure;
 		hookRootFigure();

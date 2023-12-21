@@ -14,7 +14,6 @@ package org.eclipse.gef.ui.palette.customize;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -36,14 +35,9 @@ import org.eclipse.gef.palette.PaletteRoot;
  */
 class PaletteTreeProvider implements ITreeContentProvider {
 
-	private TreeViewer viewer;
+	private final TreeViewer viewer;
 	private PaletteRoot root;
-	private PropertyChangeListener modelListener = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			handlePropertyChanged(evt);
-		}
-	};
+	private final PropertyChangeListener modelListener = this::handlePropertyChanged;
 
 	/**
 	 * Constructor
@@ -74,8 +68,8 @@ class PaletteTreeProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		if (parentElement instanceof PaletteContainer) {
-			List children = ((PaletteContainer) parentElement).getChildren();
+		if (parentElement instanceof PaletteContainer pc) {
+			List children = pc.getChildren();
 			if (!children.isEmpty()) {
 				return children.toArray();
 			}
@@ -130,8 +124,8 @@ class PaletteTreeProvider implements ITreeContentProvider {
 		} else if (property.equals(PaletteContainer.PROPERTY_CHILDREN)) {
 			viewer.refresh(entry);
 			List oldChildren = (List) evt.getOldValue();
-			for (Iterator iter = oldChildren.iterator(); iter.hasNext();) {
-				PaletteEntry child = (PaletteEntry) iter.next();
+			for (Object oldChild : oldChildren) {
+				PaletteEntry child = (PaletteEntry) oldChild;
 				traverseModel(child, false);
 			}
 			traverseModel(entry, true);

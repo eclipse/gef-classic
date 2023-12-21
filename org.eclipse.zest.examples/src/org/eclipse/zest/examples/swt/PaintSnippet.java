@@ -13,8 +13,6 @@
 package org.eclipse.zest.examples.swt;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.GC;
@@ -24,8 +22,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.zest.core.widgets.Graph;
@@ -93,21 +89,11 @@ public class PaintSnippet {
 
 				Shell popup = new Shell(shell);
 				popup.setText("Image");
-				popup.addListener(SWT.Close, new Listener() {
-					@Override
-					public void handleEvent(Event e) {
-						image.dispose();
-					}
-				});
+				popup.addListener(SWT.Close, e1 -> image.dispose());
 
 				Canvas canvas = new Canvas(popup, SWT.NONE);
 				canvas.setBounds(10, 10, size.x + 10, size.y + 10);
-				canvas.addPaintListener(new PaintListener() {
-					@Override
-					public void paintControl(PaintEvent e) {
-						e.gc.drawImage(image, 0, 0);
-					}
-				});
+				canvas.addPaintListener(e1 -> e1.gc.drawImage(image, 0, 0));
 				popup.pack();
 				popup.open();
 

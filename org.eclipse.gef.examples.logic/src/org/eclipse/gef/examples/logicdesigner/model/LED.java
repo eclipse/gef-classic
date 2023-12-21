@@ -53,7 +53,7 @@ public class LED extends LogicSubpart {
 		PropertyDescriptor pValueProp = new TextPropertyDescriptor(P_VALUE, LogicMessages.PropertyDescriptor_LED_Value);
 		pValueProp.setValidator(LogicNumberCellEditorValidator.instance());
 		if (descriptors != null) {
-			newDescriptors = Arrays.copyOf(descriptors, descriptors.length);
+			newDescriptors = Arrays.copyOf(descriptors, descriptors.length + 1);
 			newDescriptors[descriptors.length] = pValueProp;
 		} else {
 			newDescriptors = new IPropertyDescriptor[] { pValueProp };

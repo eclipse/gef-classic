@@ -492,7 +492,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 */
 	protected void setCursor(Cursor c) {
 		if (c == null && cursor == null) {
-		} else if ((c != cursor) || (!c.equals(cursor))) {
+			return;
+		}
+		if (c == null || !c.equals(cursor)) {
 			cursor = c;
 			if (control != null && !control.isDisposed()) {
 				control.setCursor(c);

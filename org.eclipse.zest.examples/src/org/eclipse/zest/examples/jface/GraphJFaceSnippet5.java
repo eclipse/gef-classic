@@ -37,13 +37,14 @@ public class GraphJFaceSnippet5 {
 
 	static class MyContentProvider implements IGraphContentProvider {
 
-		Object[] elements = new Object[] { "Rock2Paper", "Paper2Scissors", "Scissors2Rock" };
+		Object[] elements = { "Rock2Paper", "Paper2Scissors", "Scissors2Rock" };
 
 		@Override
 		public Object getDestination(Object rel) {
 			if ("Rock2Paper".equals(rel)) {
 				return "Rock";
-			} else if ("Paper2Scissors".equals(rel) || "Scissors2Paper".equals(rel)) {
+			}
+			if ("Paper2Scissors".equals(rel) || "Scissors2Paper".equals(rel)) {
 				return "Paper";
 			} else if ("Scissors2Rock".equals(rel)) {
 				return "Scissors";
@@ -60,7 +61,8 @@ public class GraphJFaceSnippet5 {
 		public Object getSource(Object rel) {
 			if ("Rock2Paper".equals(rel)) {
 				return "Paper";
-			} else if ("Paper2Scissors".equals(rel) || "Scissors2Paper".equals(rel)) {
+			}
+			if ("Paper2Scissors".equals(rel) || "Scissors2Paper".equals(rel)) {
 				return "Scissors";
 			} else if ("Scissors2Rock".equals(rel)) {
 				return "Rock";

@@ -629,6 +629,10 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		protected int revertValue;
 		protected boolean armed;
 
+		public ThumbDragger() {
+			// constructor needed for public access
+		}
+
 		@Override
 		public void mousePressed(MouseEvent me) {
 			armed = true;

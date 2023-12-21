@@ -17,8 +17,6 @@ import org.eclipse.swt.graphics.Color;
 
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.ChangeEvent;
-import org.eclipse.draw2d.ChangeListener;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.ImageFigure;
@@ -52,22 +50,22 @@ public class PinFigure extends Toggle {
 		setToolTip(tooltip);
 		setOpaque(false);
 
-		addChangeListener(new ChangeListener() {
-
-			@Override
-			public void handleStateChanged(ChangeEvent e) {
-				if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
-					if (isSelected()) {
-						((ImageFigure) (getChildren().get(0))).setImage(InternalImages.get(InternalImages.IMG_PINNED));
-						((Label) getToolTip()).setText(PaletteMessages.TOOLTIP_UNPIN_FIGURE);
-					} else {
-						((ImageFigure) (getChildren().get(0)))
-								.setImage(InternalImages.get(InternalImages.IMG_UNPINNED));
-						((Label) getToolTip()).setText(PaletteMessages.TOOLTIP_PIN_FIGURE);
-					}
+		addChangeListener(e -> {
+			if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
+				if (isSelected()) {
+					getImageFigure().setImage(InternalImages.get(InternalImages.IMG_PINNED));
+					getToolTip().setText(PaletteMessages.TOOLTIP_UNPIN_FIGURE);
+				} else {
+					((ImageFigure) (getChildren().get(0))).setImage(InternalImages.get(InternalImages.IMG_UNPINNED));
+					getToolTip().setText(PaletteMessages.TOOLTIP_PIN_FIGURE);
 				}
 			}
 		});
+	}
+
+	@Override
+	public Label getToolTip() {
+		return (Label) super.getToolTip();
 	}
 
 	@Override
@@ -79,5 +77,9 @@ public class PinFigure extends Toggle {
 			graphics.setBackgroundColor(PIN_HOTSPOT_COLOR);
 			graphics.fillRoundRectangle(getClientArea().getCopy().shrink(1, 1), 3, 3);
 		}
+	}
+
+	private ImageFigure getImageFigure() {
+		return (ImageFigure) (getChildren().get(0));
 	}
 }

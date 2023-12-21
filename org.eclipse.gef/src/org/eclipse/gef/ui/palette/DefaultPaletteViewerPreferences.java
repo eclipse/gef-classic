@@ -45,11 +45,11 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 
 	private static final String DEFAULT_FONT = "Default"; //$NON-NLS-1$
 
-	private PreferenceStoreListener listener;
-	private IPropertyChangeListener fontListener;
+	private final PreferenceStoreListener listener;
+	private final IPropertyChangeListener fontListener;
 	private FontData fontData;
-	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-	private IPreferenceStore store;
+	private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+	private final IPreferenceStore store;
 	private int[] supportedModes = { LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, LAYOUT_DETAILS };
 
 	/**
@@ -80,15 +80,11 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 		listener = new PreferenceStoreListener();
 		store.addPropertyChangeListener(listener);
 
-		fontListener = new IPropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				if (JFaceResources.DIALOG_FONT.equals(event.getProperty())) {
-					if (getPreferenceStore().getString(PREFERENCE_FONT).equals(DEFAULT_FONT)) {
-						setFontData(JFaceResources.getDialogFont().getFontData()[0]);
-						handlePreferenceStorePropertyChanged(PREFERENCE_FONT);
-					}
-				}
+		fontListener = event -> {
+			if (JFaceResources.DIALOG_FONT.equals(event.getProperty())
+					&& getPreferenceStore().getString(PREFERENCE_FONT).equals(DEFAULT_FONT)) {
+				setFontData(JFaceResources.getDialogFont().getFontData()[0]);
+				handlePreferenceStorePropertyChanged(PREFERENCE_FONT);
 			}
 		};
 		JFaceResources.getFontRegistry().addListener(fontListener);

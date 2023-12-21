@@ -56,12 +56,9 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	 */
 	public UndoablePropertySheetEntry(CommandStack commandStack) {
 		this.commandStack = commandStack;
-		this.commandStackListener = new CommandStackEventListener() {
-			@Override
-			public void stackChanged(org.eclipse.gef.commands.CommandStackEvent event) {
-				if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
-					refreshFromRoot();
-				}
+		this.commandStackListener = event -> {
+			if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
+				refreshFromRoot();
 			}
 		};
 		this.commandStack.addCommandStackEventListener(commandStackListener);
