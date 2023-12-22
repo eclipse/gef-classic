@@ -66,10 +66,12 @@ public class FreeformViewport extends Viewport {
 	 */
 	@Override
 	protected void readjustScrollBars() {
-		if (getContents() == null)
+		if (getContents() == null) {
 			return;
-		if (!(getContents() instanceof FreeformFigure))
+		}
+		if (!(getContents() instanceof FreeformFigure)) {
 			return;
+		}
 		FreeformFigure ff = (FreeformFigure) getContents();
 		Rectangle clientArea = getClientArea();
 		Rectangle bounds = ff.getFreeformExtent().getCopy();

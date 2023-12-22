@@ -56,10 +56,11 @@ class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener 
 	public void dragFinished(DragSourceEvent event) {
 		TreeViewerTransfer.getInstance().setObject(null);
 		TreeViewerTransfer.getInstance().setViewer(null);
-		if (event.doit)
+		if (event.doit) {
 			revertModelSelection();
-		else
+		} else {
 			modelSelection = null;
+		}
 	}
 
 	protected void revertModelSelection() {
@@ -67,8 +68,9 @@ class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener 
 		Object editpart;
 		for (int i = 0; i < modelSelection.size(); i++) {
 			editpart = getViewer().getEditPartRegistry().get(modelSelection.get(i));
-			if (editpart != null)
+			if (editpart != null) {
 				list.add(editpart);
+			}
 		}
 		getViewer().setSelection(new StructuredSelection(list));
 		modelSelection = null;

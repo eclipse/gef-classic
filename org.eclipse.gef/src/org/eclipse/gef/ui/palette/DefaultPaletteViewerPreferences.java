@@ -252,8 +252,8 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	 */
 	@Override
 	public boolean isSupportedLayoutMode(int layout) {
-		for (int i = 0; i < supportedModes.length; i++) {
-			if (supportedModes[i] == layout) {
+		for (int supportedMode : supportedModes) {
+			if (supportedMode == layout) {
 				return true;
 			}
 		}

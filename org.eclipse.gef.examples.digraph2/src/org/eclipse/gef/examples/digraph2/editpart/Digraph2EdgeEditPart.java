@@ -15,9 +15,11 @@ package org.eclipse.gef.examples.digraph2.editpart;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolylineConnection;
+
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
+
 import org.eclipse.gef.examples.digraph2.policy.Digraph2ConnectionEditPolicy;
 
 /**

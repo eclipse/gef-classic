@@ -18,9 +18,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.examples.text.edit.TextEditPart;
 import org.eclipse.gef.tools.ToolUtilities;
+
+import org.eclipse.gef.examples.text.edit.TextEditPart;
 
 public class SelectionRange {
 
@@ -89,11 +91,13 @@ public class SelectionRange {
 	}
 
 	private static void depthFirstTraversal(EditPart part, List<EditPart> result) {
-		if (part.getChildren().isEmpty())
+		if (part.getChildren().isEmpty()) {
 			result.add(part);
-		else
-			for (int i = 0; i < part.getChildren().size(); i++)
-				depthFirstTraversal(part.getChildren().get(i), result);
+		} else {
+			for (EditPart element : part.getChildren()) {
+				depthFirstTraversal(element, result);
+			}
+		}
 	}
 
 	@Override
@@ -105,8 +109,9 @@ public class SelectionRange {
 	}
 
 	private static List<EditPart> findLeavesBetweenInclusive(EditPart left, EditPart right) {
-		if (left == right)
+		if (left == right) {
 			return Collections.singletonList(left);
+		}
 		EditPart commonAncestor = ToolUtilities.findCommonAncestor(left, right);
 
 		EditPart nextLeft = left.getParent();
@@ -114,12 +119,14 @@ public class SelectionRange {
 
 		List<EditPart> result = new ArrayList<>();
 
-		if (nextLeft == commonAncestor)
+		if (nextLeft == commonAncestor) {
 			result.add(left);
+		}
 		while (nextLeft != commonAncestor) {
 			children = nextLeft.getChildren();
-			for (int i = children.indexOf(left); i < children.size(); i++)
+			for (int i = children.indexOf(left); i < children.size(); i++) {
 				depthFirstTraversal(children.get(i), result);
+			}
 
 			left = nextLeft;
 			nextLeft = nextLeft.getParent();
@@ -127,12 +134,14 @@ public class SelectionRange {
 
 		List<EditPart> rightSide = new ArrayList<>();
 		EditPart nextRight = right.getParent();
-		if (nextRight == commonAncestor)
+		if (nextRight == commonAncestor) {
 			rightSide.add(right);
+		}
 		while (nextRight != commonAncestor) {
 			children = nextRight.getChildren();
-			for (int i = 0; i <= children.indexOf(right); i++)
+			for (int i = 0; i <= children.indexOf(right); i++) {
 				depthFirstTraversal(children.get(i), rightSide);
+			}
 
 			right = nextRight;
 			nextRight = nextRight.getParent();
@@ -140,16 +149,18 @@ public class SelectionRange {
 
 		children = commonAncestor.getChildren();
 		int start = children.indexOf(left) + 1;
-		for (int i = start; i < children.indexOf(right); i++)
+		for (int i = start; i < children.indexOf(right); i++) {
 			depthFirstTraversal(children.get(i), result);
+		}
 
 		result.addAll(rightSide);
 		return result;
 	}
 
 	private static List<EditPart> findNodesBetweenInclusive(EditPart left, EditPart right) {
-		if (left == right)
+		if (left == right) {
 			return Collections.singletonList(left);
+		}
 		EditPart commonAncestor = ToolUtilities.findCommonAncestor(left, right);
 
 		EditPart nextLeft = left.getParent();
@@ -160,8 +171,9 @@ public class SelectionRange {
 		result.add(left);
 		while (nextLeft != commonAncestor) {
 			children = nextLeft.getChildren();
-			for (int i = children.indexOf(left) + 1; i < children.size(); i++)
+			for (int i = children.indexOf(left) + 1; i < children.size(); i++) {
 				result.add(children.get(i));
+			}
 
 			left = nextLeft;
 			nextLeft = nextLeft.getParent();
@@ -173,8 +185,9 @@ public class SelectionRange {
 		while (nextRight != commonAncestor) {
 			children = nextRight.getChildren();
 			int end = children.indexOf(right);
-			for (int i = 0; i < end; i++)
+			for (int i = 0; i < end; i++) {
 				rightSide.add(children.get(i));
+			}
 
 			right = nextRight;
 			nextRight = nextRight.getParent();
@@ -183,8 +196,9 @@ public class SelectionRange {
 		children = commonAncestor.getChildren();
 		int start = children.indexOf(left) + 1;
 		int end = children.indexOf(right);
-		if (end > start)
+		if (end > start) {
 			result.addAll(children.subList(start, end));
+		}
 		result.addAll(rightSide);
 		return result;
 	}

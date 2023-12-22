@@ -61,7 +61,9 @@ public class LayoutAction extends Action implements IMenuCreator {
 		setMenuCreator(this);
 
 		if (hasIcon)
+		 {
 			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/palette_layout.gif")); //$NON-NLS-1$
+		}
 
 		setToolTipText(PaletteMessages.LAYOUT_MENU_LABEL);
 	}
@@ -87,8 +89,8 @@ public class LayoutAction extends Action implements IMenuCreator {
 		int[] modes = prefs.getSupportedLayoutModes();
 
 		Action action;
-		for (int i = 0; i < modes.length; i++) {
-			switch (modes[i]) {
+		for (int mode : modes) {
+			switch (mode) {
 			case PaletteViewerPreferences.LAYOUT_COLUMNS:
 				action = new LayoutChangeAction(PaletteViewerPreferences.LAYOUT_COLUMNS);
 				action.setText(PaletteMessages.SETTINGS_COLUMNS_VIEW_LABEL);

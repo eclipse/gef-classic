@@ -14,6 +14,7 @@
 package org.eclipse.gef.examples.digraph2.figure;
 
 import org.eclipse.draw2d.ColorConstants;
+
 import org.eclipse.gef.examples.digraph1.figure.Digraph1NodeFigure;
 
 /**

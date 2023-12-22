@@ -55,8 +55,9 @@ public class LogicLabelEditManager extends DirectEditManager {
 	@Override
 	protected void bringDown() {
 		ZoomManager zoomMgr = (ZoomManager) getEditPart().getViewer().getProperty(ZoomManager.class.toString());
-		if (zoomMgr != null)
+		if (zoomMgr != null) {
 			zoomMgr.removeZoomListener(zoomListener);
+		}
 
 		if (actionHandler != null) {
 			actionHandler.dispose();
@@ -97,8 +98,9 @@ public class LogicLabelEditManager extends DirectEditManager {
 			cachedZoom = -1.0;
 			updateScaledFont(zoomMgr.getZoom());
 			zoomMgr.addZoomListener(zoomListener);
-		} else
+		} else {
 			getCellEditor().getControl().setFont(stickyNote.getFont());
+		}
 
 		// Hook the cell editor's copy/paste actions to the actionBars so that
 		// they can
@@ -134,17 +136,18 @@ public class LogicLabelEditManager extends DirectEditManager {
 	}
 
 	private void updateScaledFont(double zoom) {
-		if (cachedZoom == zoom)
+		if (cachedZoom == zoom) {
 			return;
+		}
 
 		Text text = (Text) getCellEditor().getControl();
 		Font font = getEditPart().getFigure().getFont();
 
 		disposeScaledFont();
 		cachedZoom = zoom;
-		if (zoom == 1.0)
+		if (zoom == 1.0) {
 			text.setFont(font);
-		else {
+		} else {
 			FontData fd = font.getFontData()[0];
 			fd.setHeight((int) (fd.getHeight() * zoom));
 			scaledFont = new Font(null, fd);

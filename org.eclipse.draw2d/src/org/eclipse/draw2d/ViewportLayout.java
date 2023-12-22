@@ -54,23 +54,27 @@ public class ViewportLayout extends AbstractHintLayout {
 		Insets insets = viewport.getInsets();
 		IFigure contents = viewport.getContents();
 
-		if (viewport.getContentsTracksWidth() && wHint > -1)
+		if (viewport.getContentsTracksWidth() && wHint > -1) {
 			wHint = Math.max(0, wHint - insets.getWidth());
-		else
+		} else {
 			wHint = -1;
-		if (viewport.getContentsTracksHeight() && hHint > -1)
+		}
+		if (viewport.getContentsTracksHeight() && hHint > -1) {
 			hHint = Math.max(0, hHint - insets.getHeight());
-		else
+		} else {
 			hHint = -1;
+		}
 
 		if (contents == null) {
 			return new Dimension(insets.getWidth(), insets.getHeight());
 		} else {
 			Dimension minSize = contents.getMinimumSize(wHint, hHint);
-			if (wHint > -1)
+			if (wHint > -1) {
 				wHint = Math.max(wHint, minSize.width);
-			if (hHint > -1)
+			}
+			if (hHint > -1) {
 				hHint = Math.max(hHint, minSize.height);
+			}
 			return contents.getPreferredSize(wHint, hHint).getExpanded(insets.getWidth(), insets.getHeight());
 		}
 
@@ -101,8 +105,9 @@ public class ViewportLayout extends AbstractHintLayout {
 		Viewport viewport = (Viewport) figure;
 		IFigure contents = viewport.getContents();
 
-		if (contents == null)
+		if (contents == null) {
 			return;
+		}
 		Point p = viewport.getClientArea().getLocation();
 
 		p.translate(viewport.getViewLocation().getNegated());
@@ -116,15 +121,17 @@ public class ViewportLayout extends AbstractHintLayout {
 		Dimension min = contents.getMinimumSize(wHint, hHint);
 		Dimension pref = contents.getPreferredSize(wHint, hHint);
 
-		if (viewport.getContentsTracksHeight())
+		if (viewport.getContentsTracksHeight()) {
 			newSize.height = Math.max(newSize.height, min.height);
-		else
+		} else {
 			newSize.height = Math.max(newSize.height, pref.height);
+		}
 
-		if (viewport.getContentsTracksWidth())
+		if (viewport.getContentsTracksWidth()) {
 			newSize.width = Math.max(newSize.width, min.width);
-		else
+		} else {
 			newSize.width = Math.max(newSize.width, pref.width);
+		}
 
 		contents.setBounds(new Rectangle(p, newSize));
 	}

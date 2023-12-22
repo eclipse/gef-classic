@@ -79,8 +79,9 @@ public class ParagraphTextLayout extends TextLayout {
 	 * @return the requested segment
 	 */
 	private String[] getSegments(String text, int levelInfo[]) {
-		if (levelInfo.length == 1)
+		if (levelInfo.length == 1) {
 			return new String[] { text };
+		}
 
 		String result[] = new String[levelInfo.length / 2 + 1];
 
@@ -121,8 +122,9 @@ public class ParagraphTextLayout extends TextLayout {
 					getContext().getWidthLookahead(textFlow, width);
 				} else {
 					String rest = segs[startingIndex];
-					for (int k = startingIndex + 1; k < segs.length; k++)
+					for (int k = startingIndex + 1; k < segs.length; k++) {
 						rest += segs[k];
+					}
 					if (!textFlow.addLeadingWordWidth(rest, width)) {
 						width[0] += trailingBorderSize;
 						getContext().getWidthLookahead(textFlow, width);
@@ -157,8 +159,9 @@ public class ParagraphTextLayout extends TextLayout {
 
 		String segment, segments[] = getSegments(textFlow.getText(), levelInfo);
 		FlowBorder border = null;
-		if (textFlow.getBorder() instanceof FlowBorder)
+		if (textFlow.getBorder() instanceof FlowBorder) {
 			border = (FlowBorder) textFlow.getBorder();
+		}
 
 		SegmentLookahead lookahead = new SegmentLookahead(segments, border == null ? 0 : border.getRightMargin());
 		int seg;
@@ -169,8 +172,9 @@ public class ParagraphTextLayout extends TextLayout {
 			fragment.setTruncated(false);
 			fragment.offset = fragment.length = -1;
 			fragment.setWidth(border.getLeftMargin() + border.getInsets(textFlow).left);
-			if (context.getRemainingLineWidth() < fragment.getWidth() + lookahead.getWidth())
+			if (context.getRemainingLineWidth() < fragment.getWidth() + lookahead.getWidth()) {
 				context.endLine();
+			}
 			context.addToCurrentLine(fragment);
 		}
 
@@ -189,8 +193,9 @@ public class ParagraphTextLayout extends TextLayout {
 						wrappingStyle);
 				segment = segment.substring(advance);
 				offset += advance;
-				if ((segment.length() > 0 || fragment.length < advance) || fragment.isTruncated())
+				if ((segment.length() > 0 || fragment.length < advance) || fragment.isTruncated()) {
 					context.endLine();
+				}
 			} while (segment.length() > 0 || (!fragment.isTruncated() && fragment.length < advance));
 		}
 
@@ -204,8 +209,9 @@ public class ParagraphTextLayout extends TextLayout {
 		}
 
 		// Remove the remaining unused fragments.
-		while (fragIndex < fragments.size())
+		while (fragIndex < fragments.size()) {
 			fragments.remove(fragments.size() - 1);
+		}
 	}
 
 }

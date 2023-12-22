@@ -56,8 +56,9 @@ public class CompoundSnapToHelper extends SnapToHelper {
 	@Override
 	public int snapRectangle(Request request, int snapOrientation, PrecisionRectangle baseRect,
 			PrecisionRectangle result) {
-		for (int i = 0; i < getDelegates().length && snapOrientation != NONE; i++)
+		for (int i = 0; i < getDelegates().length && snapOrientation != NONE; i++) {
 			snapOrientation = getDelegates()[i].snapRectangle(request, snapOrientation, baseRect, result);
+		}
 		return snapOrientation;
 	}
 

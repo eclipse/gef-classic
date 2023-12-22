@@ -169,14 +169,16 @@ public class DetailedLabelFigure extends Figure {
 	public void setLayoutMode(int layoutMode) {
 		updateFont(layoutMode);
 
-		if (layoutMode == this.layoutMode)
+		if (layoutMode == this.layoutMode) {
 			return;
+		}
 
 		this.layoutMode = layoutMode;
 
 		add(page);
-		if (descText.getParent() == page)
+		if (descText.getParent() == page) {
 			page.remove(descText);
+		}
 
 		BorderLayout layout = (BorderLayout) getLayoutManager();
 		if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
@@ -247,8 +249,9 @@ public class DetailedLabelFigure extends Figure {
 				FONTCACHE.checkIn(boldFont);
 				boldFont = null;
 			}
-			if (layout == PaletteViewerPreferences.LAYOUT_DETAILS && cachedFont != null)
+			if (layout == PaletteViewerPreferences.LAYOUT_DETAILS && cachedFont != null) {
 				boldFont = FONTCACHE.checkOut(cachedFont);
+			}
 			nameText.setFont(boldFont);
 		}
 	}
@@ -274,20 +277,23 @@ public class DetailedLabelFigure extends Figure {
 
 		@Override
 		public Image getImage() {
-			if (shadedImage != null)
+			if (shadedImage != null) {
 				return shadedImage;
+			}
 			return super.getImage();
 		}
 
 		@Override
 		public void setImage(Image image) {
-			if (image == super.getImage())
+			if (image == super.getImage()) {
 				return;
+			}
 			boolean wasShaded = shadedImage != null;
 			disposeShadedImage();
 			super.setImage(image);
-			if (wasShaded)
+			if (wasShaded) {
 				useShadedImage();
+			}
 		}
 	}
 
@@ -333,8 +339,8 @@ public class DetailedLabelFigure extends Figure {
 			} else {
 				info = new FontInfo();
 				FontData[] boldDatas = font.getFontData();
-				for (int i = 0; i < boldDatas.length; i++) {
-					boldDatas[i].setStyle(SWT.BOLD);
+				for (FontData element : boldDatas) {
+					element.setStyle(SWT.BOLD);
 				}
 				info.boldFont = new Font(Display.getCurrent(), boldDatas);
 				table.put(key, info);

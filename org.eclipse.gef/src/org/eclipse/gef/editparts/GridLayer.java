@@ -12,9 +12,14 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.FreeformLayer;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+
 import org.eclipse.gef.SnapToGrid;
 
 /**
@@ -90,8 +95,9 @@ public class GridLayer extends FreeformLayer {
 	 * @param p the origin
 	 */
 	public void setOrigin(Point p) {
-		if (p == null)
+		if (p == null) {
 			p = new Point();
+		}
 		if (!origin.equals(p)) {
 			origin = p;
 			repaint();
@@ -108,8 +114,9 @@ public class GridLayer extends FreeformLayer {
 	 *                (height) gaps
 	 */
 	public void setSpacing(Dimension spacing) {
-		if (spacing == null)
+		if (spacing == null) {
 			spacing = new Dimension(SnapToGrid.DEFAULT_GRID_SIZE, SnapToGrid.DEFAULT_GRID_SIZE);
+		}
 		if (!spacing.equals(gridX, gridY)) {
 			gridX = spacing.width != 0 ? spacing.width : gridX;
 			gridY = spacing.height != 0 ? spacing.height : gridY;

@@ -41,22 +41,24 @@ public class CreateCommand extends org.eclipse.gef.commands.Command {
 	public void execute() {
 		if (rect != null) {
 			Insets expansion = getInsets();
-			if (!rect.isEmpty())
+			if (!rect.isEmpty()) {
 				rect.expand(expansion);
-			else {
+			} else {
 				rect.x -= expansion.left;
 				rect.y -= expansion.top;
 			}
 			child.setLocation(rect.getLocation());
-			if (!rect.isEmpty())
+			if (!rect.isEmpty()) {
 				child.setSize(rect.getSize());
+			}
 		}
 		redo();
 	}
 
 	private Insets getInsets() {
-		if (child instanceof LED || child instanceof Circuit)
+		if (child instanceof LED || child instanceof Circuit) {
 			return new Insets(2, 0, 2, 0);
+		}
 		return new Insets();
 	}
 

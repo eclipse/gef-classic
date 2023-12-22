@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.text.AppendableCommand;
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
@@ -35,8 +36,9 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 	}
 
 	public void add(TextCommand command) {
-		if (command != null)
+		if (command != null) {
 			pending.add(command);
+		}
 	}
 
 	@Override
@@ -46,22 +48,26 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 
 	@Override
 	public boolean canExecutePending() {
-		if (pending.isEmpty())
+		if (pending.isEmpty()) {
 			return false;
-		for (int i = 0; i < pending.size(); i++) {
-			Command cmd = (Command) pending.get(i);
-			if (cmd == null)
+		}
+		for (Object element : pending) {
+			Command cmd = (Command) element;
+			if (cmd == null) {
 				return false;
-			if (!cmd.canExecute())
+			}
+			if (!cmd.canExecute()) {
 				return false;
+			}
 		}
 		return true;
 	}
 
 	@Override
 	public void dispose() {
-		for (int i = 0; i < applied.size(); i++)
-			((Command) applied.get(i)).dispose();
+		for (Object element : applied) {
+			((Command) element).dispose();
+		}
 		flushPending();
 	}
 
@@ -87,35 +93,40 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 
 	@Override
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
-		if (applied.isEmpty())
+		if (applied.isEmpty()) {
 			return null;
+		}
 		return ((TextCommand) applied.get(applied.size() - 1)).getExecuteSelectionRange(viewer);
 	}
 
 	@Override
 	public SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer) {
-		if (applied.isEmpty())
+		if (applied.isEmpty()) {
 			return null;
+		}
 		return ((TextCommand) applied.get(applied.size() - 1)).getExecuteSelectionRange(viewer);
 	}
 
 	@Override
 	public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {
-		if (applied.isEmpty())
+		if (applied.isEmpty()) {
 			return null;
+		}
 		return ((TextCommand) applied.get(0)).getUndoSelectionRange(viewer);
 	}
 
 	@Override
 	public void redo() {
-		for (int i = 0; i < applied.size(); i++)
-			((Command) applied.get(i)).redo();
+		for (Object element : applied) {
+			((Command) element).redo();
+		}
 	}
 
 	@Override
 	public void undo() {
-		for (int i = applied.size() - 1; i >= 0; i--)
+		for (int i = applied.size() - 1; i >= 0; i--) {
 			((Command) applied.get(i)).undo();
+		}
 	}
 
 }

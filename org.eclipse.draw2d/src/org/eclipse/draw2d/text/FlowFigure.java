@@ -52,8 +52,9 @@ public abstract class FlowFigure extends Figure {
 		super.add(child, constraint, index);
 		// If this layout manager is a FlowContext, then the child *must* be a
 		// FlowFigure
-		if (getLayoutManager() instanceof FlowContext)
+		if (getLayoutManager() instanceof FlowContext) {
 			((FlowFigure) child).setFlowContext((FlowContext) getLayoutManager());
+		}
 		revalidateBidi(this);
 	}
 
@@ -88,8 +89,9 @@ public abstract class FlowFigure extends Figure {
 	 * @since 3.1
 	 */
 	protected void contributeBidi(BidiProcessor proc) {
-		for (IFigure child : getChildren())
+		for (IFigure child : getChildren()) {
 			((FlowFigure) child).contributeBidi(proc);
+		}
 	}
 
 	/**
@@ -132,8 +134,9 @@ public abstract class FlowFigure extends Figure {
 	 * @since 3.1
 	 */
 	protected void revalidateBidi(IFigure origin) {
-		if (getParent() != null)
+		if (getParent() != null) {
 			((FlowFigure) getParent()).revalidateBidi(origin);
+		}
 	}
 
 	/**
@@ -157,17 +160,20 @@ public abstract class FlowFigure extends Figure {
 	 */
 	@Override
 	public void setBounds(Rectangle r) {
-		if (bounds.equals(r))
+		if (bounds.equals(r)) {
 			return;
-		if (!r.contains(bounds))
+		}
+		if (!r.contains(bounds)) {
 			erase();
+		}
 		bounds.x = r.x;
 		bounds.y = r.y;
 		bounds.width = r.width;
 		bounds.height = r.height;
 		fireFigureMoved();
-		if (isCoordinateSystem())
+		if (isCoordinateSystem()) {
 			fireCoordinateSystemChanged();
+		}
 		repaint();
 	}
 
@@ -191,8 +197,9 @@ public abstract class FlowFigure extends Figure {
 	 * @since 3.1
 	 */
 	public void setSelection(int start, int end) {
-		if (selectionStart == start)
+		if (selectionStart == start) {
 			return;
+		}
 		selectionStart = start;
 		repaint();
 	}

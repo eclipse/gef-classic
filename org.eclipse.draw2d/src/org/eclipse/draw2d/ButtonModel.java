@@ -94,8 +94,9 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	public void addActionListener(ActionListener listener) {
-		if (listener == null)
+		if (listener == null) {
 			throw new IllegalArgumentException();
+		}
 		listeners.addListener(ActionListener.class, listener);
 	}
 
@@ -106,8 +107,9 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	public void addChangeListener(ChangeListener listener) {
-		if (listener == null)
+		if (listener == null) {
 			throw new IllegalArgumentException();
+		}
 		listeners.addListener(ChangeListener.class, listener);
 	}
 
@@ -118,8 +120,9 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	public void addStateTransitionListener(ButtonStateTransitionListener listener) {
-		if (listener == null)
+		if (listener == null) {
 			throw new IllegalArgumentException();
+		}
 		listeners.addListener(ButtonStateTransitionListener.class, listener);
 	}
 
@@ -327,10 +330,12 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	public void setArmed(boolean value) {
-		if (isArmed() == value)
+		if (isArmed() == value) {
 			return;
-		if (!isEnabled())
+		}
+		if (!isEnabled()) {
 			return;
+		}
 		setFlag(ARMED_FLAG, value);
 		fireStateChanged(ARMED_PROPERTY);
 	}
@@ -342,8 +347,9 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	public void setEnabled(boolean value) {
-		if (isEnabled() == value)
+		if (isEnabled() == value) {
 			return;
+		}
 		if (!value) {
 			setMouseOver(false);
 			setArmed(false);
@@ -364,8 +370,9 @@ public class ButtonModel {
 	 *
 	 */
 	public void setFiringBehavior(int type) {
-		if (firingBehavior != null)
+		if (firingBehavior != null) {
 			removeStateTransitionListener(firingBehavior);
+		}
 		switch (type) {
 		case REPEAT_FIRING_BEHAVIOR:
 			firingBehavior = new RepeatFiringBehavior();
@@ -377,10 +384,11 @@ public class ButtonModel {
 	}
 
 	void setFlag(int flag, boolean value) {
-		if (value)
+		if (value) {
 			state |= flag;
-		else
+		} else {
 			state &= ~flag;
+		}
 	}
 
 	/**
@@ -391,13 +399,16 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	public void setGroup(ButtonGroup bg) {
-		if (group == bg)
+		if (group == bg) {
 			return;
-		if (group != null)
+		}
+		if (group != null) {
 			group.remove(this);
+		}
 		group = bg;
-		if (group != null)
+		if (group != null) {
 			group.add(this);
+		}
 	}
 
 	/**
@@ -407,13 +418,16 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	public void setMouseOver(boolean value) {
-		if (isMouseOver() == value)
+		if (isMouseOver() == value) {
 			return;
-		if (isPressed())
-			if (value)
+		}
+		if (isPressed()) {
+			if (value) {
 				fireResume();
-			else
+			} else {
 				fireSuspend();
+			}
+		}
 		setFlag(MOUSEOVER_FLAG, value);
 		fireStateChanged(MOUSEOVER_PROPERTY);
 	}
@@ -425,16 +439,18 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	public void setPressed(boolean value) {
-		if (isPressed() == value)
+		if (isPressed() == value) {
 			return;
+		}
 		setFlag(PRESSED_FLAG, value);
-		if (value)
+		if (value) {
 			firePressed();
-		else {
-			if (isArmed())
+		} else {
+			if (isArmed()) {
 				fireReleased();
-			else
+			} else {
 				fireCanceled();
+			}
 		}
 		fireStateChanged(PRESSED_PROPERTY);
 	}
@@ -447,12 +463,14 @@ public class ButtonModel {
 	 */
 	public void setSelected(boolean value) {
 		if (group == null) {
-			if (isSelected() == value)
+			if (isSelected() == value) {
 				return;
+			}
 		} else {
 			group.setSelected(this, value);
-			if (getFlag(SELECTED_FLAG) == isSelected())
+			if (getFlag(SELECTED_FLAG) == isSelected()) {
 				return;
+			}
 		}
 		setFlag(SELECTED_FLAG, value);
 		fireStateChanged(SELECTED_PROPERTY);
@@ -485,8 +503,9 @@ public class ButtonModel {
 		@Override
 		public void pressed() {
 			fireActionPerformed();
-			if (!isEnabled())
+			if (!isEnabled()) {
 				return;
+			}
 
 			timer = new Timer();
 			TimerTask runAction = new Task(timer);
@@ -515,8 +534,9 @@ public class ButtonModel {
 
 		@Override
 		public void suspend() {
-			if (timer == null)
+			if (timer == null) {
 				return;
+			}
 			timer.cancel();
 			timer = null;
 		}
@@ -535,8 +555,9 @@ public class ButtonModel {
 			org.eclipse.swt.widgets.Display.getDefault().syncExec(new Runnable() {
 				@Override
 				public void run() {
-					if (!isEnabled())
+					if (!isEnabled()) {
 						timer.cancel();
+					}
 					fireActionPerformed();
 				}
 			});

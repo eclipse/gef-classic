@@ -34,8 +34,9 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	 */
 	@Override
 	public void addDirtyRegion(IFigure f, int x, int y, int w, int h) {
-		if (getSuperior() == null)
+		if (getSuperior() == null) {
 			return;
+		}
 		getSuperior().addDirtyRegion(f, x, y, w, h);
 	}
 
@@ -45,8 +46,9 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	@Override
 	public void addInvalidFigure(IFigure f) {
 		UpdateManager um = getSuperior();
-		if (um == null)
+		if (um == null) {
 			return;
+		}
 		um.addInvalidFigure(f);
 	}
 
@@ -63,8 +65,9 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	 * @return the superior
 	 */
 	protected UpdateManager getSuperior() {
-		if (getHost().getParent() == null)
+		if (getHost().getParent() == null) {
 			return null;
+		}
 		return getHost().getParent().getUpdateManager();
 	}
 
@@ -74,8 +77,9 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	@Override
 	public void performUpdate() {
 		UpdateManager um = getSuperior();
-		if (um == null)
+		if (um == null) {
 			return;
+		}
 		um.performUpdate();
 	}
 
@@ -85,8 +89,9 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	@Override
 	public void performUpdate(Rectangle rect) {
 		UpdateManager um = getSuperior();
-		if (um == null)
+		if (um == null) {
 			return;
+		}
 		um.performUpdate(rect);
 	}
 

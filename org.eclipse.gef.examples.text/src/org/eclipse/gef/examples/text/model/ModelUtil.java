@@ -23,8 +23,9 @@ public final class ModelUtil {
 
 	public static List<ModelElement> getModelSpan(ModelElement start, int startIndex, ModelElement end, int endIndex) {
 		Container ancestor = start.getContainer();
-		while (!ancestor.contains(end))
+		while (!ancestor.contains(end)) {
 			ancestor = ancestor.getContainer();
+		}
 
 		List<ModelElement> result = new ArrayList<>();
 
@@ -79,17 +80,20 @@ public final class ModelUtil {
 			}
 		}
 		List<ModelElement> children = ancestor.getChildren();
-		if (startIndex == 0)
+		if (startIndex == 0) {
 			startIndex = children.indexOf(start);
-		else
+		} else {
 			startIndex = children.indexOf(start) + 1;
+		}
 
-		if (endIndex == end.size())
+		if (endIndex == end.size()) {
 			endIndex = children.indexOf(end) + 1;
-		else
+		} else {
 			endIndex = children.indexOf(end);
-		if (endIndex > startIndex)
+		}
+		if (endIndex > startIndex) {
 			result.addAll(ancestor.getChildren().subList(startIndex, endIndex));
+		}
 		result.addAll(rightSide);
 
 		return result;

@@ -39,11 +39,14 @@ public abstract class StackAction extends WorkbenchPartAction {
 	 */
 	protected String getLabelForCommand(Command command) {
 		if (command == null)
+		 {
 			return "";//$NON-NLS-1$
-		if (command.getLabel() == null)
+		}
+		if (command.getLabel() == null) {
 			return "";//$NON-NLS-1$
-		else
+		} else {
 			return command.getLabel();
+		}
 	}
 
 }

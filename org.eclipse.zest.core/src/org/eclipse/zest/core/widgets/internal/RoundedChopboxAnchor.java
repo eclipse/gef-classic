@@ -51,12 +51,15 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 		Rectangle bounds = getBox();
 
 		boolean done = getTranslatedPoint(bounds.getTopLeft(), p, shift, shift);
-		if (!done)
+		if (!done) {
 			done = getTranslatedPoint(bounds.getTopRight(), p, -shift, shift);
-		if (!done)
+		}
+		if (!done) {
 			done = getTranslatedPoint(bounds.getBottomLeft(), p, shift, -shift);
-		if (!done)
+		}
+		if (!done) {
 			done = getTranslatedPoint(bounds.getBottomRight(), p, -shift, -shift);
+		}
 		return p;
 	}
 

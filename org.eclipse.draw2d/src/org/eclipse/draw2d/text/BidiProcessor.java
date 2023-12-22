@@ -113,26 +113,29 @@ public final class BidiProcessor {
 		BidiEntry prevEntry = null, entry = null;
 		BidiInfo prevInfo = null, info = null;
 		int end = 2, start = 0;
-		for (int i = 0; i < list.size(); i++) {
-			entry = (BidiEntry) list.get(i);
+		for (Object element : list) {
+			entry = (BidiEntry) element;
 			info = new BidiInfo();
 
-			while (levels[end] < entry.end)
+			while (levels[end] < entry.end) {
 				end += 2;
+			}
 
 			int levelInfo[];
 			if (end == start) {
 				levelInfo = new int[1];
-				if (prevInfo != null)
+				if (prevInfo != null) {
 					levelInfo[0] = prevInfo.levelInfo[prevInfo.levelInfo.length - 1];
-				else
+				} else {
 					levelInfo[0] = (orientation == SWT.LEFT_TO_RIGHT) ? 0 : 1;
+				}
 			} else {
 				levelInfo = new int[end - start - 1];
 				System.arraycopy(levels, start + 1, levelInfo, 0, levelInfo.length);
 			}
-			for (int j = 1; j < levelInfo.length; j += 2)
+			for (int j = 1; j < levelInfo.length; j += 2) {
 				levelInfo[j] -= entry.begin;
+			}
 			info.levelInfo = levelInfo;
 
 			// Compare current and previous for joiners, and commit previous
@@ -146,19 +149,22 @@ public final class BidiProcessor {
 						&& isJoiner(entry.begin)
 						// and the last character of the previous figure was
 						// Arabic
-						&& isPrecedingJoiner(entry.begin))
+						&& isPrecedingJoiner(entry.begin)) {
 					prevInfo.trailingJoiner = info.leadingJoiner = true;
+				}
 				prevEntry.fig.setBidiInfo(prevInfo);
 			}
 			prevEntry = entry;
 			prevInfo = info;
-			if (entry.end == levels[end])
+			if (entry.end == levels[end]) {
 				start = end;
-			else
+			} else {
 				start = end - 2;
+			}
 		}
-		if (entry != null)
+		if (entry != null) {
 			entry.fig.setBidiInfo(info);
+		}
 	}
 
 	private boolean isJoiner(int begin) {
@@ -187,13 +193,15 @@ public final class BidiProcessor {
 	 */
 	public void process() {
 		try {
-			if (bidiText.length() == 0)
+			if (bidiText.length() == 0) {
 				return;
+			}
 			char[] chars = new char[bidiText.length()];
 			bidiText.getChars(0, bidiText.length(), chars, 0);
 
-			if (orientation != SWT.RIGHT_TO_LEFT && !Bidi.requiresBidi(chars, 0, chars.length - 1))
+			if (orientation != SWT.RIGHT_TO_LEFT && !Bidi.requiresBidi(chars, 0, chars.length - 1)) {
 				return;
+			}
 
 			int[] levels = new int[15];
 			TextLayout layout = FlowUtilities.getTextLayout();

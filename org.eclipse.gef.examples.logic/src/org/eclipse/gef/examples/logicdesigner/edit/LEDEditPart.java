@@ -85,7 +85,7 @@ public class LEDEditPart extends LogicEditPart {
 
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
-		if (key == AccessibleAnchorProvider.class)
+		if (key == AccessibleAnchorProvider.class) {
 			return key.cast(new DefaultAccessibleAnchorProvider() {
 				@Override
 				public List<Point> getSourceAnchorLocations() {
@@ -103,18 +103,23 @@ public class LEDEditPart extends LogicEditPart {
 					return list;
 				}
 			});
+		}
 		return super.getAdapter(key);
 	}
 
 	protected Image getBackgroundImage(int state) {
 		if (state == SELECTED_PRIMARY) {
 			if (LED_SEL_PRIM_BG == null)
+			 {
 				LED_SEL_PRIM_BG = createImage("icons/ledbgprim.gif"); //$NON-NLS-1$
+			}
 			return LED_SEL_PRIM_BG;
 		}
 		if (state == SELECTED) {
 			if (LED_SEL_SECD_BG == null)
+			 {
 				LED_SEL_SECD_BG = createImage("icons/ledbgsel.gif"); //$NON-NLS-1$
+			}
 			return LED_SEL_SECD_BG;
 		}
 		return null;
@@ -140,10 +145,11 @@ public class LEDEditPart extends LogicEditPart {
 
 	@Override
 	public void propertyChange(java.beans.PropertyChangeEvent change) {
-		if (change.getPropertyName().equals(LED.P_VALUE))
+		if (change.getPropertyName().equals(LED.P_VALUE)) {
 			refreshVisuals();
-		else
+		} else {
 			super.propertyChange(change);
+		}
 	}
 
 	/**

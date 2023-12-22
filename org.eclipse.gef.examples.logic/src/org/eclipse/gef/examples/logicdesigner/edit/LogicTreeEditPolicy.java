@@ -23,8 +23,9 @@ public class LogicTreeEditPolicy extends AbstractEditPolicy {
 
 	@Override
 	public Command getCommand(Request req) {
-		if (REQ_MOVE.equals(req.getType()))
+		if (REQ_MOVE.equals(req.getType())) {
 			return getMoveCommand((ChangeBoundsRequest) req);
+		}
 		return null;
 	}
 

@@ -105,8 +105,8 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 */
 	@Override
 	public void dispose() {
-		for (int i = 0; i < retargetActions.size(); i++) {
-			RetargetAction action = (RetargetAction) retargetActions.get(i);
+		for (Object retargetAction : retargetActions) {
+			RetargetAction action = (RetargetAction) retargetAction;
 			getPage().removePartListener(action);
 			action.dispose();
 		}
@@ -151,8 +151,8 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	public void setActiveEditor(IEditorPart editor) {
 		ActionRegistry registry = editor.getAdapter(ActionRegistry.class);
 		IActionBars bars = getActionBars();
-		for (int i = 0; i < globalActionKeys.size(); i++) {
-			String id = (String) globalActionKeys.get(i);
+		for (Object globalActionKey : globalActionKeys) {
+			String id = (String) globalActionKey;
 			IAction handler = registry != null ? registry.getAction(id) : null;
 			bars.setGlobalActionHandler(id, handler);
 		}

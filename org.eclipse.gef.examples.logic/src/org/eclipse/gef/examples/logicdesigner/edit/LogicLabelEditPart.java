@@ -69,16 +69,18 @@ public class LogicLabelEditPart extends LogicEditPart {
 
 	@Override
 	public void performRequest(Request request) {
-		if (request.getType() == RequestConstants.REQ_DIRECT_EDIT)
+		if (request.getType() == RequestConstants.REQ_DIRECT_EDIT) {
 			performDirectEdit();
+		}
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equalsIgnoreCase("labelContents"))//$NON-NLS-1$
+		if (evt.getPropertyName().equalsIgnoreCase("labelContents")) { //$NON-NLS-1$
 			refreshVisuals();
-		else
+		} else { //$NON-NLS-1$
 			super.propertyChange(evt);
+		}
 	}
 
 	@Override

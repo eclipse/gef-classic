@@ -68,19 +68,23 @@ public class KeyHandler {
 	 * @return <code>true</code> if KeyEvent was handled in some way
 	 */
 	public boolean keyReleased(KeyEvent event) {
-		if (performStroke(new KeyStroke(event, false)))
+		if (performStroke(new KeyStroke(event, false))) {
 			return true;
+		}
 		return parent != null && parent.keyReleased(event);
 	}
 
 	private boolean performStroke(KeyStroke key) {
-		if (actions == null)
+		if (actions == null) {
 			return false;
+		}
 		IAction action = (IAction) actions.get(key);
-		if (action == null)
+		if (action == null) {
 			return false;
-		if (action.isEnabled())
+		}
+		if (action.isEnabled()) {
 			action.run();
+		}
 		return true;
 	}
 
@@ -93,8 +97,9 @@ public class KeyHandler {
 	 * @param action    the Action to run
 	 */
 	public void put(KeyStroke keystroke, IAction action) {
-		if (actions == null)
+		if (actions == null) {
 			actions = new HashMap();
+		}
 		actions.put(keystroke, action);
 	}
 
@@ -105,8 +110,9 @@ public class KeyHandler {
 	 * @param keystroke the KeyStroke to be unmapped
 	 */
 	public void remove(KeyStroke keystroke) {
-		if (actions != null)
+		if (actions != null) {
 			actions.remove(keystroke);
+		}
 	}
 
 	/**

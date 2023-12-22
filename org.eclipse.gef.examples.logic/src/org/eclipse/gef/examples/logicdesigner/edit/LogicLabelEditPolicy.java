@@ -23,8 +23,9 @@ public class LogicLabelEditPolicy extends LogicElementEditPolicy {
 
 	@Override
 	public Command getCommand(Request request) {
-		if (NativeDropRequest.ID.equals(request.getType()))
+		if (NativeDropRequest.ID.equals(request.getType())) {
 			return getDropTextCommand((NativeDropRequest) request);
+		}
 		return super.getCommand(request);
 	}
 
@@ -34,8 +35,9 @@ public class LogicLabelEditPolicy extends LogicElementEditPolicy {
 
 	@Override
 	public EditPart getTargetEditPart(Request request) {
-		if (NativeDropRequest.ID.equals(request.getType()))
+		if (NativeDropRequest.ID.equals(request.getType())) {
 			return getHost();
+		}
 		return super.getTargetEditPart(request);
 	}
 

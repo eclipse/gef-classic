@@ -66,10 +66,11 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	protected void addChildVisual(EditPart childEditPart, int index) {
 		Widget widget = getWidget();
 		TreeItem item;
-		if (widget instanceof Tree tree)
+		if (widget instanceof Tree tree) {
 			item = new TreeItem(tree, 0, index);
-		else
+		} else {
 			item = new TreeItem((TreeItem) widget, 0, index);
+		}
 		((TreeEditPart) childEditPart).setWidget(item);
 	}
 
@@ -188,16 +189,18 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 				item.addDisposeListener(e -> expanded = item.getExpanded());
 			}
 			for (TreeEditPart tep : getChildren()) {
-				if (widget instanceof TreeItem ti)
+				if (widget instanceof TreeItem ti) {
 					tep.setWidget(new TreeItem(ti, 0));
-				else
+				} else {
 					tep.setWidget(new TreeItem((Tree) widget, 0));
+				}
 
 				// We have just assigned a new TreeItem to the EditPart
 				tep.refresh();
 			}
-			if (widget instanceof TreeItem item)
+			if (widget instanceof TreeItem item) {
 				item.setExpanded(expanded);
+			}
 		} else {
 			getChildren().forEach(child -> child.setWidget(null));
 		}
@@ -211,8 +214,9 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	 * @param image the Image
 	 */
 	protected final void setWidgetImage(Image image) {
-		if (checkTreeItem())
+		if (checkTreeItem()) {
 			((TreeItem) getWidget()).setImage(image);
+		}
 	}
 
 	/**
@@ -222,8 +226,9 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	 * @param text the String
 	 */
 	protected final void setWidgetText(String text) {
-		if (checkTreeItem())
+		if (checkTreeItem()) {
 			((TreeItem) getWidget()).setText(text);
+		}
 	}
 
 }

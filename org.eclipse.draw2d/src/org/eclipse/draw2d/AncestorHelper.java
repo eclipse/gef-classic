@@ -96,10 +96,12 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	 * @param ancestor the figure which moved
 	 */
 	protected void fireAncestorMoved(IFigure ancestor) {
-		if (listeners == null)
+		if (listeners == null) {
 			return;
-		for (int i = 0; i < listeners.length; i++)
-			listeners[i].ancestorMoved(ancestor);
+		}
+		for (AncestorListener listener : listeners) {
+			listener.ancestorMoved(ancestor);
+		}
 	}
 
 	/**
@@ -108,10 +110,12 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	 * @param ancestor the figure which moved
 	 */
 	protected void fireAncestorAdded(IFigure ancestor) {
-		if (listeners == null)
+		if (listeners == null) {
 			return;
-		for (int i = 0; i < listeners.length; i++)
-			listeners[i].ancestorAdded(ancestor);
+		}
+		for (AncestorListener listener : listeners) {
+			listener.ancestorAdded(ancestor);
+		}
 	}
 
 	/**
@@ -120,10 +124,12 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	 * @param ancestor the figure which moved
 	 */
 	protected void fireAncestorRemoved(IFigure ancestor) {
-		if (listeners == null)
+		if (listeners == null) {
 			return;
-		for (int i = 0; i < listeners.length; i++)
-			listeners[i].ancestorRemoved(ancestor);
+		}
+		for (AncestorListener listener : listeners) {
+			listener.ancestorRemoved(ancestor);
+		}
 	}
 
 	/**
@@ -160,9 +166,10 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	 * @param listener the listener to remove
 	 */
 	public void removeAncestorListener(AncestorListener listener) {
-		if (listeners == null)
+		if (listeners == null) {
 			return;
-		for (int index = 0; index < listeners.length; index++)
+		}
+		for (int index = 0; index < listeners.length; index++) {
 			if (listeners[index] == listener) {
 				int newSize = listeners.length - 1;
 				AncestorListener newListeners[] = null;
@@ -174,6 +181,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 				listeners = newListeners;
 				return;
 			}
+		}
 	}
 
 	/**

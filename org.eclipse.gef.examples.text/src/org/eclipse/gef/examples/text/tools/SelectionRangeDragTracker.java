@@ -13,17 +13,20 @@
 
 package org.eclipse.gef.examples.text.tools;
 
+import org.eclipse.swt.graphics.Cursor;
+
 import org.eclipse.draw2d.Cursors;
+
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.tools.SimpleDragTracker;
+import org.eclipse.gef.tools.ToolUtilities;
+
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.edit.TextEditPart;
 import org.eclipse.gef.examples.text.requests.CaretRequest;
 import org.eclipse.gef.examples.text.requests.SearchResult;
-import org.eclipse.gef.tools.SimpleDragTracker;
-import org.eclipse.gef.tools.ToolUtilities;
-import org.eclipse.swt.graphics.Cursor;
 
 /**
  * @since 3.1
@@ -70,21 +73,24 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 			EditPart end = endDrag.part;
 			EditPart begin = beginDrag.part;
 			boolean inverted = false;
-			if (end == begin)
+			if (end == begin) {
 				inverted = endDrag.offset < beginDrag.offset;
-			else {
+			} else {
 				EditPart ancestor = ToolUtilities.findCommonAncestor(end, begin);
-				while (end.getParent() != ancestor)
+				while (end.getParent() != ancestor) {
 					end = end.getParent();
-				while (begin.getParent() != ancestor)
+				}
+				while (begin.getParent() != ancestor) {
 					begin = begin.getParent();
+				}
 				inverted = ancestor.getChildren().indexOf(end) < ancestor.getChildren().indexOf(begin);
 			}
 			GraphicalTextViewer viewer = (GraphicalTextViewer) getCurrentViewer();
-			if (!inverted)
+			if (!inverted) {
 				viewer.setSelectionRange(new SelectionRange(beginDrag, endDrag, true, result.trailing));
-			else
+			} else {
 				viewer.setSelectionRange(new SelectionRange(endDrag, beginDrag, false, result.trailing));
+			}
 		}
 	}
 
@@ -115,9 +121,10 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 		nextWord.isForward = false;
 		getSource().getTextLocation(nextWord, result);
 		TextLocation wordBegin = result.location;
-		if (wordBegin != null && wordEnd != null)
+		if (wordBegin != null && wordEnd != null) {
 			((GraphicalTextViewer) getCurrentViewer())
 					.setSelectionRange(new SelectionRange(wordBegin, wordEnd, true, isAfter));
+		}
 	}
 
 	/**
@@ -180,10 +187,11 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 		// $TODO during a swipe, the viewer should not be firing selection
 		// changes the whole time.
 		if (isInState(STATE_SWIPE)) {
-			if (isWordSelection)
+			if (isWordSelection) {
 				doWordSwipe();
-			else
+			} else {
 				doNormalSwipe();
+			}
 		}
 		return super.handleDragInProgress();
 	}

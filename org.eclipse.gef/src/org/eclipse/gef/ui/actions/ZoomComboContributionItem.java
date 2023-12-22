@@ -105,27 +105,31 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	}
 
 	private void refresh(boolean repopulateCombo) {
-		if (combo == null || combo.isDisposed())
+		if (combo == null || combo.isDisposed()) {
 			return;
+		}
 		// $TODO GTK workaround
 		try {
 			if (zoomManager == null) {
 				combo.setEnabled(false);
 				combo.setText(""); //$NON-NLS-1$
 			} else {
-				if (repopulateCombo)
+				if (repopulateCombo) {
 					combo.setItems(getZoomManager().getZoomLevelsAsText());
+				}
 				String zoom = getZoomManager().getZoomAsText();
 				int index = combo.indexOf(zoom);
-				if (index == -1 || forceSetText)
+				if (index == -1 || forceSetText) {
 					combo.setText(zoom);
-				else
+				} else {
 					combo.select(index);
+				}
 				combo.setEnabled(true);
 			}
 		} catch (SWTException exception) {
-			if (!SWT.getPlatform().equals("gtk")) //$NON-NLS-1$
+			if (!SWT.getPlatform().equals("gtk")) { //$NON-NLS-1$
 				throw exception;
+			}
 		}
 	}
 
@@ -183,8 +187,9 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	 */
 	@Override
 	public void dispose() {
-		if (partListener == null)
+		if (partListener == null) {
 			return;
+		}
 		service.removePartListener(partListener);
 		if (zoomManager != null) {
 			zoomManager.removeZoomListener(this);
@@ -250,16 +255,19 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	 * @param zm The ZoomManager
 	 */
 	public void setZoomManager(ZoomManager zm) {
-		if (zoomManager == zm)
+		if (zoomManager == zm) {
 			return;
-		if (zoomManager != null)
+		}
+		if (zoomManager != null) {
 			zoomManager.removeZoomListener(this);
+		}
 
 		zoomManager = zm;
 		refresh(true);
 
-		if (zoomManager != null)
+		if (zoomManager != null) {
 			zoomManager.addZoomListener(this);
+		}
 	}
 
 	/**
@@ -267,10 +275,11 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	 */
 	private void handleWidgetDefaultSelected(SelectionEvent event) {
 		if (zoomManager != null) {
-			if (combo.getSelectionIndex() >= 0)
+			if (combo.getSelectionIndex() >= 0) {
 				zoomManager.setZoomAsText(combo.getItem(combo.getSelectionIndex()));
-			else
+			} else {
 				zoomManager.setZoomAsText(combo.getText());
+			}
 		}
 		/*
 		 * There are several cases where invoking setZoomAsText (above) will not result

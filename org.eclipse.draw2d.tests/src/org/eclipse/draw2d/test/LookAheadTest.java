@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
+import org.eclipse.swt.graphics.Font;
+
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.FlowContext;
@@ -19,7 +21,6 @@ import org.eclipse.draw2d.text.FlowFigure;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.TextFlow;
-import org.eclipse.swt.graphics.Font;
 
 import org.junit.Before;
 import org.junit.Test;

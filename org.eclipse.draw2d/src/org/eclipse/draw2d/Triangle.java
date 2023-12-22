@@ -66,10 +66,11 @@ public final class Triangle extends Shape implements Orientable {
 	 */
 	@Override
 	public void setDirection(int value) {
-		if ((value & (NORTH | SOUTH)) != 0)
+		if ((value & (NORTH | SOUTH)) != 0) {
 			orientation = VERTICAL;
-		else
+		} else {
 			orientation = HORIZONTAL;
+		}
 		direction = value;
 		revalidate();
 		repaint();
@@ -81,16 +82,18 @@ public final class Triangle extends Shape implements Orientable {
 	@Override
 	public void setOrientation(int value) {
 		if (orientation == VERTICAL && value == HORIZONTAL) {
-			if (direction == NORTH)
+			if (direction == NORTH) {
 				setDirection(WEST);
-			else
+			} else {
 				setDirection(EAST);
+			}
 		}
 		if (orientation == HORIZONTAL && value == VERTICAL) {
-			if (direction == WEST)
+			if (direction == WEST) {
 				setDirection(NORTH);
-			else
+			} else {
 				setDirection(SOUTH);
+			}
 		}
 	}
 

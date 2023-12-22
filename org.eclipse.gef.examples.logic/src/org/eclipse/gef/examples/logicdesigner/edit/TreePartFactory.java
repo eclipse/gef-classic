@@ -22,10 +22,12 @@ public class TreePartFactory implements EditPartFactory {
 
 	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
-		if (model instanceof LED)
+		if (model instanceof LED) {
 			return new LogicTreeEditPart(model);
-		if (model instanceof LogicDiagram)
+		}
+		if (model instanceof LogicDiagram) {
 			return new LogicContainerTreeEditPart(model);
+		}
 		return new LogicTreeEditPart(model);
 	}
 

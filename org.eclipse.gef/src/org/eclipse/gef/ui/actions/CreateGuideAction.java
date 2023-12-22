@@ -65,8 +65,9 @@ public class CreateGuideAction extends Action {
 			}
 			index++;
 		}
-		if (!found && positions.length > 0)
+		if (!found && positions.length > 0) {
 			newPosition += positions[positions.length - 1];
+		}
 
 		// Create the guide and reveal it
 		viewer.getEditDomain().getCommandStack().execute(provider.getCreateGuideCommand(newPosition));

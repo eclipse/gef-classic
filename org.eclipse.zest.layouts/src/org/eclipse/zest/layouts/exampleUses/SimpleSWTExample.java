@@ -17,8 +17,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.events.ControlEvent;
@@ -47,6 +45,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutBendPoint;
@@ -499,8 +500,8 @@ public class SimpleSWTExample {
 						element.setUnSelected();
 					}
 					SimpleRelationship[] rels = selectedEntity.getRelationships();
-					for (int i = 0; i < rels.length; i++) {
-						rels[i].resetLineWidth();
+					for (SimpleRelationship rel : rels) {
+						rel.resetLineWidth();
 					}
 				}
 				selectedEntity = null;

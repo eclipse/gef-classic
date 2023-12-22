@@ -51,8 +51,9 @@ public abstract class LineBox extends CompositeBox {
 	@Override
 	public int getAscent() {
 		int ascent = 0;
-		for (int i = 0; i < fragments.size(); i++)
-			ascent = Math.max(ascent, ((FlowBox) fragments.get(i)).getAscent());
+		for (Object fragment : fragments) {
+			ascent = Math.max(ascent, ((FlowBox) fragment).getAscent());
+		}
 		return ascent;
 	}
 
@@ -62,8 +63,9 @@ public abstract class LineBox extends CompositeBox {
 	 * @return the available width in pixels
 	 */
 	int getAvailableWidth() {
-		if (recommendedWidth < 0)
+		if (recommendedWidth < 0) {
 			return Integer.MAX_VALUE;
+		}
 		return recommendedWidth - getWidth();
 	}
 
@@ -78,8 +80,9 @@ public abstract class LineBox extends CompositeBox {
 	@Override
 	public int getDescent() {
 		int descent = 0;
-		for (int i = 0; i < fragments.size(); i++)
-			descent = Math.max(descent, ((FlowBox) fragments.get(i)).getDescent());
+		for (Object fragment : fragments) {
+			descent = Math.max(descent, ((FlowBox) fragment).getDescent());
+		}
 		return descent;
 	}
 
@@ -109,8 +112,9 @@ public abstract class LineBox extends CompositeBox {
 	public boolean requiresBidi() {
 		for (Iterator iter = getFragments().iterator(); iter.hasNext();) {
 			FlowBox box = (FlowBox) iter.next();
-			if (box.requiresBidi())
+			if (box.requiresBidi()) {
 				return true;
+			}
 		}
 		return false;
 	}

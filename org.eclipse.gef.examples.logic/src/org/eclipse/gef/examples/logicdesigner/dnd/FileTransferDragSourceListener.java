@@ -37,8 +37,9 @@ public class FileTransferDragSourceListener extends org.eclipse.gef.dnd.Abstract
 
 	@Override
 	public void dragStart(DragSourceEvent event) {
-		if (getViewer().getSelectedEditParts().get(0) instanceof LogicLabelEditPart)
+		if (getViewer().getSelectedEditParts().get(0) instanceof LogicLabelEditPart) {
 			return;
+		}
 		event.doit = false;
 	}
 

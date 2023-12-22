@@ -280,22 +280,30 @@ public final class GridData {
 	 */
 	public GridData(int style) {
 		super();
-		if ((style & VERTICAL_ALIGN_BEGINNING) != 0)
+		if ((style & VERTICAL_ALIGN_BEGINNING) != 0) {
 			verticalAlignment = BEGINNING;
-		if ((style & VERTICAL_ALIGN_CENTER) != 0)
+		}
+		if ((style & VERTICAL_ALIGN_CENTER) != 0) {
 			verticalAlignment = CENTER;
-		if ((style & VERTICAL_ALIGN_FILL) != 0)
+		}
+		if ((style & VERTICAL_ALIGN_FILL) != 0) {
 			verticalAlignment = FILL;
-		if ((style & VERTICAL_ALIGN_END) != 0)
+		}
+		if ((style & VERTICAL_ALIGN_END) != 0) {
 			verticalAlignment = END;
-		if ((style & HORIZONTAL_ALIGN_BEGINNING) != 0)
+		}
+		if ((style & HORIZONTAL_ALIGN_BEGINNING) != 0) {
 			horizontalAlignment = BEGINNING;
-		if ((style & HORIZONTAL_ALIGN_CENTER) != 0)
+		}
+		if ((style & HORIZONTAL_ALIGN_CENTER) != 0) {
 			horizontalAlignment = CENTER;
-		if ((style & HORIZONTAL_ALIGN_FILL) != 0)
+		}
+		if ((style & HORIZONTAL_ALIGN_FILL) != 0) {
 			horizontalAlignment = FILL;
-		if ((style & HORIZONTAL_ALIGN_END) != 0)
+		}
+		if ((style & HORIZONTAL_ALIGN_END) != 0) {
 			horizontalAlignment = END;
+		}
 		grabExcessHorizontalSpace = (style & GRAB_HORIZONTAL) != 0;
 		grabExcessVerticalSpace = (style & GRAB_VERTICAL) != 0;
 	}
@@ -378,13 +386,16 @@ public final class GridData {
 		}
 
 		Dimension size = figure.getPreferredSize(widthHint, heightHint).getCopy();
-		if (widthHint != -1)
+		if (widthHint != -1) {
 			size.width = widthHint;
-		if (heightHint != -1)
+		}
+		if (heightHint != -1) {
 			size.height = heightHint;
+		}
 
-		if (cacheIndex < cache.length - 1)
+		if (cacheIndex < cache.length - 1) {
 			cacheIndex++;
+		}
 		cache[cacheIndex][0] = widthHint;
 		cache[cacheIndex][1] = heightHint;
 		cacheWidth = cache[cacheIndex][2] = size.width;
@@ -400,8 +411,9 @@ public final class GridData {
 	String getName() {
 		String string = getClass().getName();
 		int index = string.lastIndexOf('.');
-		if (index == -1)
+		if (index == -1) {
 			return string;
+		}
 		return string.substring(index + 1, string.length());
 	}
 
@@ -471,22 +483,36 @@ public final class GridData {
 		String string = getName() + " {"; //$NON-NLS-1$
 		string += "horizontalAlignment=" + hAlign + " "; //$NON-NLS-1$ //$NON-NLS-2$
 		if (horizontalIndent != 0)
+		 {
 			string += "horizontalIndent=" + horizontalIndent + " "; //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		if (horizontalSpan != 1)
+		 {
 			string += "horizontalSpan=" + horizontalSpan + " "; //$NON-NLS-1$//$NON-NLS-2$
+		}
 		if (grabExcessHorizontalSpace)
+		 {
 			string += "grabExcessHorizontalSpace=" + grabExcessHorizontalSpace //$NON-NLS-1$
 					+ " "; //$NON-NLS-1$
+		}
 		if (widthHint != SWT.DEFAULT)
+		 {
 			string += "widthHint=" + widthHint + " "; //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		string += "verticalAlignment=" + vAlign + " "; //$NON-NLS-1$ //$NON-NLS-2$
 		if (verticalSpan != 1)
+		 {
 			string += "verticalSpan=" + verticalSpan + " "; //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		if (grabExcessVerticalSpace)
+		 {
 			string += "grabExcessVerticalSpace=" + grabExcessVerticalSpace //$NON-NLS-1$
 					+ " "; //$NON-NLS-1$
+		}
 		if (heightHint != SWT.DEFAULT)
+		 {
 			string += "heightHint=" + heightHint + " "; //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		string = string.trim();
 		string += "}"; //$NON-NLS-1$
 		return string;

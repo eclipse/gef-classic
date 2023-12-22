@@ -53,8 +53,9 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	public PointList getPoints() {
 		if (points == null) {
 			points = new PointList();
-			for (int i = 0; i < template.size(); i++)
+			for (int i = 0; i < template.size(); i++) {
 				points.addPoint(transform.getTransformed(template.getPoint(i)));
+			}
 		}
 		return points;
 	}

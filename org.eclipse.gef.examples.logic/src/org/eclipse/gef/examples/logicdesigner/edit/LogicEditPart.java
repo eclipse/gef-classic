@@ -45,8 +45,9 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 
 	@Override
 	public void activate() {
-		if (isActive())
+		if (isActive()) {
 			return;
+		}
 		super.activate();
 		getLogicSubpart().addPropertyChangeListener(this);
 	}
@@ -65,16 +66,18 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	 */
 	@Override
 	public void deactivate() {
-		if (!isActive())
+		if (!isActive()) {
 			return;
+		}
 		super.deactivate();
 		getLogicSubpart().removePropertyChangeListener(this);
 	}
 
 	@Override
 	protected AccessibleEditPart getAccessibleEditPart() {
-		if (acc == null)
+		if (acc == null) {
 			acc = createAccessible();
+		}
 		return acc;
 	}
 
@@ -182,18 +185,20 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (LogicElement.CHILDREN.equals(prop)) {
-			if (evt.getOldValue() instanceof Integer)
+			if (evt.getOldValue() instanceof Integer) {
 				// new child
 				addChild(createChild(evt.getNewValue()), ((Integer) evt.getOldValue()).intValue());
-			else
+			} else {
 				// remove child
 				removeChild((EditPart) getViewer().getEditPartRegistry().get(evt.getOldValue()));
-		} else if (LogicElement.INPUTS.equals(prop))
+			}
+		} else if (LogicElement.INPUTS.equals(prop)) {
 			refreshTargetConnections();
-		else if (LogicElement.OUTPUTS.equals(prop))
+		} else if (LogicElement.OUTPUTS.equals(prop)) {
 			refreshSourceConnections();
-		else if (prop.equals(LogicSubpart.ID_SIZE) || prop.equals(LogicSubpart.ID_LOCATION))
+		} else if (prop.equals(LogicSubpart.ID_SIZE) || prop.equals(LogicSubpart.ID_LOCATION)) {
 			refreshVisuals();
+		}
 	}
 
 	/**

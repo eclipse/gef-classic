@@ -97,10 +97,11 @@ public class CommandStackInspector extends PageBookView {
 	@Override
 	protected IWorkbenchPart getBootstrapPart() {
 		IWorkbenchPage persp = getSite().getWorkbenchWindow().getActivePage();
-		if (persp != null)
+		if (persp != null) {
 			return persp.getActiveEditor();
-		else
+		} else {
 			return null;
+		}
 	}
 
 	/**

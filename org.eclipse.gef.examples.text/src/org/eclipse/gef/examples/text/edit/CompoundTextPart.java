@@ -23,6 +23,7 @@ import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
+
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.figures.CommentPage;
 import org.eclipse.gef.examples.text.model.Container;
@@ -119,28 +120,33 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 	@Override
 	public void getTextLocation(CaretRequest search, SearchResult result) {
 		if (search.getType() == CaretRequest.LINE_BOUNDARY) {
-			if (search.isForward)
+			if (search.isForward) {
 				searchLineEnd(search, result);
-			else
+			} else {
 				searchLineBegin(search, result);
+			}
 		} else if (search.getType() == CaretRequest.ROW || search.getType() == CaretRequest.LOCATION) {
-			if (search.isForward)
+			if (search.isForward) {
 				searchLineBelow(search, result);
-			else
+			} else {
 				searchLineAbove(search, result);
+			}
 		} else if (search.getType() == CaretRequest.COLUMN || search.getType() == CaretRequest.WORD_BOUNDARY) {
-			if (search.isForward)
+			if (search.isForward) {
 				searchForward(search, result);
-			else
+			} else {
 				searchBackward(search, result);
-		} else if (getParent() instanceof TextEditPart)
+			}
+		} else if (getParent() instanceof TextEditPart) {
 			getTextParent().getTextLocation(search, result);
+		}
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("children")) //$NON-NLS-1$
+		if (evt.getPropertyName().equals("children")) { //$NON-NLS-1$
 			refreshChildren();
+		}
 	}
 
 	protected void searchBackward(CaretRequest search, SearchResult result) {
@@ -150,13 +156,15 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		while (childIndex >= 0) {
 			TextEditPart part = getChildren().get(childIndex--);
 			part.getTextLocation(search, result);
-			if (result.location != null)
+			if (result.location != null) {
 				return;
+			}
 		}
 		search.setRecursive(wasRecursive);
 		if (!search.isRecursive && getParent() instanceof TextEditPart) {
-			if (this instanceof BlockTextPart)
+			if (this instanceof BlockTextPart) {
 				search.isInto = true;
+			}
 			search.setReferenceTextLocation(this, 0);
 			getTextParent().getTextLocation(search, result);
 		}
@@ -170,13 +178,15 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		while (childIndex < childCount) {
 			TextEditPart part = getChildren().get(childIndex++);
 			part.getTextLocation(search, result);
-			if (result.location != null)
+			if (result.location != null) {
 				return;
+			}
 		}
 		search.setRecursive(wasRecursive);
 		if (!search.isRecursive && getParent() instanceof TextEditPart) {
-			if (this instanceof BlockTextPart)
+			if (this instanceof BlockTextPart) {
 				search.isInto = true;
+			}
 			search.setReferenceTextLocation(this, getLength());
 			getTextParent().getTextLocation(search, result);
 		}
@@ -185,12 +195,13 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 	protected void searchLineAbove(CaretRequest search, SearchResult result) {
 		int childIndex;
 		TextEditPart part;
-		if (search.isRecursive)
+		if (search.isRecursive) {
 			childIndex = getChildren().size() - 1;
-		else {
+		} else {
 			childIndex = getChildren().indexOf(search.where.part);
-			if (search.where.offset == 0)
+			if (search.where.offset == 0) {
 				childIndex--;
+			}
 		}
 
 		boolean wasRecursive = search.isRecursive;
@@ -198,8 +209,9 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		while (childIndex >= 0) {
 			part = getChildren().get(childIndex--);
 			part.getTextLocation(search, result);
-			if (result.bestMatchFound)
+			if (result.bestMatchFound) {
 				return;
+			}
 		}
 		search.setRecursive(wasRecursive);
 		if (!search.isRecursive && getParent() instanceof TextEditPart) {
@@ -215,8 +227,9 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		while (childIndex < childCount) {
 			TextEditPart newPart = getChildren().get(childIndex++);
 			newPart.getTextLocation(search, result);
-			if (result.location != null)
+			if (result.location != null) {
 				return;
+			}
 		}
 	}
 
@@ -227,12 +240,13 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 
 		int childIndex;
 		int childCount = getChildren().size();
-		if (search.isRecursive || (!search.isRecursive && search.where == null))
+		if (search.isRecursive || (!search.isRecursive && search.where == null)) {
 			childIndex = 0;
-		else {
+		} else {
 			childIndex = getChildren().indexOf(search.where.part);
-			if (search.where.offset == search.where.part.getLength())
+			if (search.where.offset == search.where.part.getLength()) {
 				childIndex++;
+			}
 		}
 
 		boolean wasRecursive = search.isRecursive;
@@ -240,8 +254,9 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		while (childIndex < childCount) {
 			TextEditPart part = getChildren().get(childIndex++);
 			part.getTextLocation(search, result);
-			if (result.bestMatchFound)
+			if (result.bestMatchFound) {
 				return;
+			}
 		}
 		search.setRecursive(wasRecursive);
 		if (!search.isRecursive && getParent() instanceof TextEditPart) {
@@ -257,8 +272,9 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		while (childIndex >= 0) {
 			child = getChildren().get(childIndex--);
 			child.getTextLocation(search, result);
-			if (result.location != null)
+			if (result.location != null) {
 				return;
+			}
 		}
 	}
 

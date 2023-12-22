@@ -101,8 +101,9 @@ public class DirectedGraphLayout {
 	 * @param graph the graph to layout
 	 */
 	public void visit(DirectedGraph graph) {
-		if (graph.nodes.isEmpty())
+		if (graph.nodes.isEmpty()) {
 			return;
+		}
 		steps.iterator().forEachRemaining(visitor -> visitor.visit(graph));
 		steps.descendingIterator().forEachRemaining(visitor -> visitor.revisit(graph));
 	}

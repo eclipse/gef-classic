@@ -73,14 +73,15 @@ public class PrintModeDialog extends Dialog {
 	@Override
 	protected void okPressed() {
 		int returnCode = -1;
-		if (tile.getSelection())
+		if (tile.getSelection()) {
 			returnCode = PrintFigureOperation.TILE;
-		else if (fitPage.getSelection())
+		} else if (fitPage.getSelection()) {
 			returnCode = PrintFigureOperation.FIT_PAGE;
-		else if (fitHeight.getSelection())
+		} else if (fitHeight.getSelection()) {
 			returnCode = PrintFigureOperation.FIT_HEIGHT;
-		else if (fitWidth.getSelection())
+		} else if (fitWidth.getSelection()) {
 			returnCode = PrintFigureOperation.FIT_WIDTH;
+		}
 		setReturnCode(returnCode);
 		close();
 	}

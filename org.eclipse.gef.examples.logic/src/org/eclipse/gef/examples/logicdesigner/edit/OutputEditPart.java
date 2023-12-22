@@ -52,20 +52,21 @@ public class OutputEditPart extends LogicEditPart {
 	@Override
 	protected IFigure createFigure() {
 		OutputFigure figure;
-		if (getModel() == null)
+		if (getModel() == null) {
 			return null;
-		else if (getModel() instanceof LiveOutput)
+		} else if (getModel() instanceof LiveOutput) {
 			figure = new LiveOutputFigure();
-		else if (getModel() instanceof GroundOutput)
+		} else if (getModel() instanceof GroundOutput) {
 			figure = new GroundFigure();
-		else
+		} else {
 			figure = new OutputFigure();
+		}
 		return figure;
 	}
 
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
-		if (key == AccessibleAnchorProvider.class)
+		if (key == AccessibleAnchorProvider.class) {
 			return key.cast(new DefaultAccessibleAnchorProvider() {
 				@Override
 				public List<Point> getSourceAnchorLocations() {
@@ -76,6 +77,7 @@ public class OutputEditPart extends LogicEditPart {
 				}
 
 			});
+		}
 		return super.getAdapter(key);
 	}
 

@@ -45,8 +45,9 @@ public class CommandStackViewerAction extends Action {
 	 */
 	@Override
 	public void run() {
-		if (viewer == null)
+		if (viewer == null) {
 			return;
+		}
 		TreeLabelProvider labelProvider = (TreeLabelProvider) viewer.getLabelProvider();
 		if (!isChecked()) {
 			labelProvider.setLabelStyle(TreeLabelProvider.NORMAL_LABEL_STYLE);

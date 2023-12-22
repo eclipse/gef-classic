@@ -111,19 +111,24 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 		if (adapter == SnapToHelper.class) {
 			List<SnapToHelper> snapStrategies = new ArrayList<>();
 			Boolean val = (Boolean) getViewer().getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
-			if (val != null && val.booleanValue())
+			if (val != null && val.booleanValue()) {
 				snapStrategies.add(new SnapToGuides(this));
+			}
 			val = (Boolean) getViewer().getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
-			if (val != null && val.booleanValue())
+			if (val != null && val.booleanValue()) {
 				snapStrategies.add(new SnapToGeometry(this));
+			}
 			val = (Boolean) getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
-			if (val != null && val.booleanValue())
+			if (val != null && val.booleanValue()) {
 				snapStrategies.add(new SnapToGrid(this));
+			}
 
-			if (snapStrategies.isEmpty())
+			if (snapStrategies.isEmpty()) {
 				return null;
-			if (snapStrategies.size() == 1)
+			}
+			if (snapStrategies.size() == 1) {
 				return adapter.cast(snapStrategies.get(0));
+			}
 
 			return adapter.cast(new CompoundSnapToHelper(snapStrategies.toArray(new SnapToHelper[0])));
 		}
@@ -132,8 +137,9 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 
 	@Override
 	public DragTracker getDragTracker(Request req) {
-		if (req instanceof SelectionRequest && ((SelectionRequest) req).getLastButtonPressed() == 3)
+		if (req instanceof SelectionRequest && ((SelectionRequest) req).getLastButtonPressed() == 3) {
 			return new DeselectAllTracker(this);
+		}
 		return new MarqueeDragTracker();
 	}
 
@@ -177,27 +183,30 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (LogicDiagram.ID_ROUTER.equals(evt.getPropertyName()))
+		if (LogicDiagram.ID_ROUTER.equals(evt.getPropertyName())) {
 			refreshVisuals();
-		else
+		} else {
 			super.propertyChange(evt);
+		}
 	}
 
 	@Override
 	protected void refreshVisuals() {
 		Animation.markBegin();
 		ConnectionLayer cLayer = (ConnectionLayer) getLayer(CONNECTION_LAYER);
-		if ((getViewer().getControl().getStyle() & SWT.MIRRORED) == 0)
+		if ((getViewer().getControl().getStyle() & SWT.MIRRORED) == 0) {
 			cLayer.setAntialias(SWT.ON);
+		}
 
 		if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANUAL)) {
 			AutomaticRouter router = new FanRouter();
 			router.setNextRouter(new BendpointConnectionRouter());
 			cLayer.setConnectionRouter(router);
-		} else if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANHATTAN))
+		} else if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANHATTAN)) {
 			cLayer.setConnectionRouter(new ManhattanConnectionRouter());
-		else
+		} else {
 			cLayer.setConnectionRouter(new ShortestPathConnectionRouter(getFigure()));
+		}
 		Animation.run(400);
 	}
 

@@ -73,8 +73,9 @@ public class FlowPage extends BlockFlow {
 	@Override
 	public Dimension getPreferredSize(int width, int h) {
 		for (int i = 0; i < 3; i++) {
-			if (pageSizeCacheKeys[i] == width && pageSizeCacheValues[i] != null)
+			if (pageSizeCacheKeys[i] == width && pageSizeCacheValues[i] != null) {
 				return pageSizeCacheValues[i];
+			}
 		}
 
 		pageSizeCacheKeys[2] = pageSizeCacheKeys[1];
@@ -128,8 +129,9 @@ public class FlowPage extends BlockFlow {
 	 */
 	@Override
 	public void setBounds(Rectangle r) {
-		if (getBounds().equals(r))
+		if (getBounds().equals(r)) {
 			return;
+		}
 		boolean invalidate = getBounds().width != r.width || getBounds().height != r.height;
 		super.setBounds(r);
 		int newWidth = r.width;
@@ -140,8 +142,9 @@ public class FlowPage extends BlockFlow {
 	}
 
 	private void setPageWidth(int width) {
-		if (recommendedWidth == width)
+		if (recommendedWidth == width) {
 			return;
+		}
 		recommendedWidth = width;
 		super.invalidate();
 	}
@@ -151,8 +154,9 @@ public class FlowPage extends BlockFlow {
 	 */
 	@Override
 	public void validate() {
-		if (isValid())
+		if (isValid()) {
 			return;
+		}
 		super.validate();
 		postValidate();
 	}

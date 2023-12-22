@@ -12,14 +12,15 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples;
 
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.IFigure;
 
 /**
  * A baseclass for draw2d examples.
@@ -57,9 +58,11 @@ public abstract class AbstractExample {
 		hookShell(shell);
 		sizeShell();
 		shell.open();
-		while (!shell.isDisposed())
-			while (!d.readAndDispatch())
+		while (!shell.isDisposed()) {
+			while (!d.readAndDispatch()) {
 				d.sleep();
+			}
+		}
 	}
 
 	@SuppressWarnings("static-method") // allow children to provide their own shell style

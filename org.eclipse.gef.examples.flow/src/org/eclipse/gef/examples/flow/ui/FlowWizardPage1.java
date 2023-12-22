@@ -17,21 +17,23 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.eclipse.ui.ide.IDE;
+
 import org.eclipse.gef.examples.flow.FlowPlugin;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.ActivityDiagram;
 import org.eclipse.gef.examples.flow.model.ParallelActivity;
 import org.eclipse.gef.examples.flow.model.SequentialActivity;
 import org.eclipse.gef.examples.flow.model.Transition;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
-import org.eclipse.ui.ide.IDE;
 
 /**
  * FlowWizardPage1
@@ -133,15 +135,18 @@ public class FlowWizardPage1 extends WizardNewFileCreationPage {
 	public boolean finish() {
 		IFile newFile = createNewFile();
 		if (newFile == null)
+		 {
 			return false; // ie.- creation was unsuccessful
+		}
 
 		// Since the file resource was created fine, open it for editing
 		// iff requested by the user
 		try {
 			IWorkbenchWindow dwindow = workbench.getActiveWorkbenchWindow();
 			IWorkbenchPage page = dwindow.getActivePage();
-			if (page != null)
+			if (page != null) {
 				IDE.openEditor(page, newFile, true);
+			}
 		} catch (org.eclipse.ui.PartInitException e) {
 			e.printStackTrace();
 			return false;

@@ -32,10 +32,11 @@ abstract class ViewportHelper {
 		IFigure figure = null;
 		Viewport port = null;
 		do {
-			if (figure == null)
+			if (figure == null) {
 				figure = part.getContentPane();
-			else
+			} else {
 				figure = figure.getParent();
+			}
 			if (figure instanceof Viewport) {
 				port = (Viewport) figure;
 				break;

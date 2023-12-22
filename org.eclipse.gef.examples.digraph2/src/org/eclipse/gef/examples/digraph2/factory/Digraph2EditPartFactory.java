@@ -15,6 +15,7 @@ package org.eclipse.gef.examples.digraph2.factory;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
+
 import org.eclipse.gef.examples.digraph2.editpart.Digraph2EdgeEditPart;
 import org.eclipse.gef.examples.digraph2.editpart.Digraph2GraphEditPart;
 import org.eclipse.gef.examples.digraph2.editpart.Digraph2NodeEditPart;

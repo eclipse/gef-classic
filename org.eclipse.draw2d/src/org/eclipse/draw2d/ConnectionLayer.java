@@ -44,8 +44,9 @@ public class ConnectionLayer extends FreeformLayer {
 
 		// If the connection layout manager is set, then every
 		// figure added should use this layout manager.
-		if (figure instanceof Connection && getConnectionRouter() != null)
+		if (figure instanceof Connection && getConnectionRouter() != null) {
 			((Connection) figure).setConnectionRouter(getConnectionRouter());
+		}
 	}
 
 	/**
@@ -63,8 +64,9 @@ public class ConnectionLayer extends FreeformLayer {
 	 */
 	@Override
 	public void paint(Graphics graphics) {
-		if (antialias != SWT.DEFAULT)
+		if (antialias != SWT.DEFAULT) {
 			graphics.setAntialias(antialias);
+		}
 		super.paint(graphics);
 	}
 
@@ -76,8 +78,9 @@ public class ConnectionLayer extends FreeformLayer {
 	 */
 	@Override
 	public void remove(IFigure figure) {
-		if (figure instanceof Connection)
+		if (figure instanceof Connection) {
 			((Connection) figure).setConnectionRouter(null);
+		}
 		super.remove(figure);
 	}
 
@@ -91,8 +94,9 @@ public class ConnectionLayer extends FreeformLayer {
 	public void setConnectionRouter(ConnectionRouter router) {
 		connectionRouter = router;
 		getChildrenRevIterable().forEach(child -> {
-			if (child instanceof Connection)
+			if (child instanceof Connection) {
 				((Connection) child).setConnectionRouter(router);
+			}
 		});
 	}
 

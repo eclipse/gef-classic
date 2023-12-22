@@ -65,8 +65,9 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	public void addRoutingListener(RoutingListener listener) {
 		if (connectionRouter instanceof RoutingNotifier notifier) {
 			notifier.listeners.add(listener);
-		} else
+		} else {
 			connectionRouter = new RoutingNotifier(connectionRouter, listener);
+		}
 	}
 
 	/**
@@ -104,8 +105,9 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 */
 	@Override
 	public ConnectionRouter getConnectionRouter() {
-		if (connectionRouter instanceof RoutingNotifier)
+		if (connectionRouter instanceof RoutingNotifier) {
 			return ((RoutingNotifier) connectionRouter).realRouter;
+		}
 		return connectionRouter;
 	}
 
@@ -117,10 +119,11 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 */
 	@Override
 	public Object getRoutingConstraint() {
-		if (getConnectionRouter() != null)
+		if (getConnectionRouter() != null) {
 			return getConnectionRouter().getConstraint(this);
-		else
+		} else {
 			return null;
+		}
 	}
 
 	/**
@@ -156,13 +159,15 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	}
 
 	private void hookSourceAnchor() {
-		if (getSourceAnchor() != null)
+		if (getSourceAnchor() != null) {
 			getSourceAnchor().addAnchorListener(this);
+		}
 	}
 
 	private void hookTargetAnchor() {
-		if (getTargetAnchor() != null)
+		if (getTargetAnchor() != null) {
 			getTargetAnchor().addAnchorListener(this);
+		}
 	}
 
 	/**
@@ -172,8 +177,9 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 */
 	@Override
 	public void layout() {
-		if (getSourceAnchor() != null && getTargetAnchor() != null)
+		if (getSourceAnchor() != null && getTargetAnchor() != null) {
 			connectionRouter.route(this);
+		}
 
 		Rectangle oldBounds = bounds;
 		super.layout();
@@ -211,8 +217,9 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	public void removeRoutingListener(RoutingListener listener) {
 		if (connectionRouter instanceof RoutingNotifier notifier) {
 			notifier.listeners.remove(listener);
-			if (notifier.listeners.isEmpty())
+			if (notifier.listeners.isEmpty()) {
 				connectionRouter = notifier.realRouter;
+			}
 		}
 	}
 
@@ -233,15 +240,17 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 */
 	@Override
 	public void setConnectionRouter(ConnectionRouter cr) {
-		if (cr == null)
+		if (cr == null) {
 			cr = ConnectionRouter.NULL;
+		}
 		ConnectionRouter oldRouter = getConnectionRouter();
 		if (oldRouter != cr) {
 			connectionRouter.remove(this);
-			if (connectionRouter instanceof RoutingNotifier)
+			if (connectionRouter instanceof RoutingNotifier) {
 				((RoutingNotifier) connectionRouter).realRouter = cr;
-			else
+			} else {
 				connectionRouter = cr;
+			}
 			firePropertyChange(Connection.PROPERTY_CONNECTION_ROUTER, oldRouter, cr);
 			revalidate();
 		}
@@ -254,8 +263,9 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 */
 	@Override
 	public void setRoutingConstraint(Object cons) {
-		if (connectionRouter != null)
+		if (connectionRouter != null) {
 			connectionRouter.setConstraint(this, cons);
+		}
 		revalidate();
 	}
 
@@ -266,14 +276,16 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 */
 	@Override
 	public void setSourceAnchor(ConnectionAnchor anchor) {
-		if (anchor == startAnchor)
+		if (anchor == startAnchor) {
 			return;
+		}
 		unhookSourceAnchor();
 		// No longer needed, revalidate does this.
 		// getConnectionRouter().invalidate(this);
 		startAnchor = anchor;
-		if (getParent() != null)
+		if (getParent() != null) {
 			hookSourceAnchor();
+		}
 		revalidate();
 	}
 
@@ -284,13 +296,16 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * @since 2.0
 	 */
 	public void setSourceDecoration(RotatableDecoration dec) {
-		if (startArrow == dec)
+		if (startArrow == dec) {
 			return;
-		if (startArrow != null)
+		}
+		if (startArrow != null) {
 			remove(startArrow);
+		}
 		startArrow = dec;
-		if (startArrow != null)
+		if (startArrow != null) {
 			add(startArrow, new ArrowLocator(this, ConnectionLocator.SOURCE));
+		}
 	}
 
 	/**
@@ -301,14 +316,16 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 */
 	@Override
 	public void setTargetAnchor(ConnectionAnchor anchor) {
-		if (anchor == endAnchor)
+		if (anchor == endAnchor) {
 			return;
+		}
 		unhookTargetAnchor();
 		// No longer needed, revalidate does this.
 		// getConnectionRouter().invalidate(this);
 		endAnchor = anchor;
-		if (getParent() != null)
+		if (getParent() != null) {
 			hookTargetAnchor();
+		}
 		revalidate();
 	}
 
@@ -318,23 +335,28 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * @param dec the new target decoration
 	 */
 	public void setTargetDecoration(RotatableDecoration dec) {
-		if (endArrow == dec)
+		if (endArrow == dec) {
 			return;
-		if (endArrow != null)
+		}
+		if (endArrow != null) {
 			remove(endArrow);
+		}
 		endArrow = dec;
-		if (endArrow != null)
+		if (endArrow != null) {
 			add(endArrow, new ArrowLocator(this, ConnectionLocator.TARGET));
+		}
 	}
 
 	private void unhookSourceAnchor() {
-		if (getSourceAnchor() != null)
+		if (getSourceAnchor() != null) {
 			getSourceAnchor().removeAnchorListener(this);
+		}
 	}
 
 	private void unhookTargetAnchor() {
-		if (getTargetAnchor() != null)
+		if (getTargetAnchor() != null) {
 			getTargetAnchor().removeAnchorListener(this);
+		}
 	}
 
 	final class RoutingNotifier implements ConnectionRouter {
@@ -354,8 +376,9 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 
 		@Override
 		public void invalidate(Connection connection) {
-			for (int i = 0; i < listeners.size(); i++)
-				((RoutingListener) listeners.get(i)).invalidate(connection);
+			for (Object listener : listeners) {
+				((RoutingListener) listener).invalidate(connection);
+			}
 
 			realRouter.invalidate(connection);
 		}
@@ -363,27 +386,32 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 		@Override
 		public void route(Connection connection) {
 			boolean consumed = false;
-			for (int i = 0; i < listeners.size(); i++)
-				consumed |= ((RoutingListener) listeners.get(i)).route(connection);
+			for (Object listener : listeners) {
+				consumed |= ((RoutingListener) listener).route(connection);
+			}
 
-			if (!consumed)
+			if (!consumed) {
 				realRouter.route(connection);
+			}
 
-			for (int i = 0; i < listeners.size(); i++)
-				((RoutingListener) listeners.get(i)).postRoute(connection);
+			for (Object listener : listeners) {
+				((RoutingListener) listener).postRoute(connection);
+			}
 		}
 
 		@Override
 		public void remove(Connection connection) {
-			for (int i = 0; i < listeners.size(); i++)
-				((RoutingListener) listeners.get(i)).remove(connection);
+			for (Object listener : listeners) {
+				((RoutingListener) listener).remove(connection);
+			}
 			realRouter.remove(connection);
 		}
 
 		@Override
 		public void setConstraint(Connection connection, Object constraint) {
-			for (int i = 0; i < listeners.size(); i++)
-				((RoutingListener) listeners.get(i)).setConstraint(connection, constraint);
+			for (Object listener : listeners) {
+				((RoutingListener) listener).setConstraint(connection, constraint);
+			}
 			realRouter.setConstraint(connection, constraint);
 		}
 

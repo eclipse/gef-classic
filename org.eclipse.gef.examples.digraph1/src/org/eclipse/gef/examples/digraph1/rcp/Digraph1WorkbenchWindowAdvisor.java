@@ -13,10 +13,11 @@
 
 package org.eclipse.gef.examples.digraph1.rcp;
 
+import org.eclipse.swt.graphics.Point;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;

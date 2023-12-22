@@ -117,12 +117,14 @@ public class ToolbarLayout extends OrderedLayout {
 		Insets insets = container.getInsets();
 		if (isHorizontal()) {
 			wHint = -1;
-			if (hHint >= 0)
+			if (hHint >= 0) {
 				hHint = Math.max(0, hHint - insets.getHeight());
+			}
 		} else {
 			hHint = -1;
-			if (wHint >= 0)
+			if (wHint >= 0) {
 				wHint = Math.max(0, wHint - insets.getWidth());
+			}
 		}
 
 		List<? extends IFigure> children = container.getChildren();
@@ -160,12 +162,14 @@ public class ToolbarLayout extends OrderedLayout {
 		Insets insets = container.getInsets();
 		if (isHorizontal()) {
 			wHint = -1;
-			if (hHint >= 0)
+			if (hHint >= 0) {
 				hHint = Math.max(0, hHint - insets.getHeight());
+			}
 		} else {
 			hHint = -1;
-			if (wHint >= 0)
+			if (wHint >= 0) {
 				wHint = Math.max(0, wHint - insets.getWidth());
+			}
 		}
 
 		List<? extends IFigure> children = container.getChildren();
@@ -338,12 +342,14 @@ public class ToolbarLayout extends OrderedLayout {
 			Rectangle newBounds = new Rectangle(x, y, prefWidth, prefHeight);
 
 			child = children.get(i);
-			if (prefMinSumHeight != 0)
+			if (prefMinSumHeight != 0) {
 				amntShrinkCurrentHeight = (prefHeight - minHeight) * amntShrinkHeight / (prefMinSumHeight);
+			}
 
 			int width = Math.min(prefWidth, transposer.t(child.getMaximumSize()).width);
-			if (isStretchMinorAxis())
+			if (isStretchMinorAxis()) {
 				width = transposer.t(child.getMaximumSize()).width;
+			}
 			width = Math.max(minWidth, Math.min(clientArea.width, width));
 			newBounds.width = width;
 

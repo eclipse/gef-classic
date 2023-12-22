@@ -1,6 +1,5 @@
 package org.eclipse.zest.examples.swt;
 
-import org.eclipse.draw2d.Animation;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -8,9 +7,12 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
+
+import org.eclipse.draw2d.Animation;
 
 /**
  * The following snippet shows how to setup animation in Zest. By using the

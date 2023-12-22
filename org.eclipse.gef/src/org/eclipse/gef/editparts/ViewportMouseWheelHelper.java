@@ -70,19 +70,22 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements MouseWhe
 	@Override
 	public void handleMouseWheelScrolled(Event event) {
 		Viewport viewport = findViewport(owner);
-		if (viewport == null || !viewport.isShowing())
+		if (viewport == null || !viewport.isShowing()) {
 			return;
+		}
 		RangeModel rModel = viewport.getVerticalRangeModel();
 		if (rModel.getExtent() < (rModel.getMaximum() - rModel.getMinimum())) {
 			int currentPos = rModel.getValue();
 			int scrollHeight = lineHeight;
-			if (event.detail == SWT.SCROLL_PAGE)
+			if (event.detail == SWT.SCROLL_PAGE) {
 				scrollHeight = pageHeight > lineHeight ? pageHeight
 						: Math.max(lineHeight, viewport.getClientArea(Rectangle.SINGLETON).height - 26);
+			}
 			scrollHeight *= event.count;
 			viewport.setVerticalLocation(currentPos - scrollHeight);
-			if (rModel.getValue() != currentPos)
+			if (rModel.getValue() != currentPos) {
 				event.doit = false;
+			}
 		}
 	}
 
@@ -94,10 +97,11 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements MouseWhe
 	 * @param height the new line height
 	 */
 	public void setLineHeight(int height) {
-		if (height > 0)
+		if (height > 0) {
 			lineHeight = height;
-		else
+		} else {
 			lineHeight = LINE_HEIGHT;
+		}
 	}
 
 	/**

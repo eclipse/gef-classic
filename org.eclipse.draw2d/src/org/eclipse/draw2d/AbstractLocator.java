@@ -71,15 +71,17 @@ public abstract class AbstractLocator implements Locator {
 		int xFactor = 0, yFactor = 0;
 		int position = getRelativePosition();
 
-		if ((position & PositionConstants.NORTH) != 0)
+		if ((position & PositionConstants.NORTH) != 0) {
 			yFactor = -1;
-		else if ((position & PositionConstants.SOUTH) != 0)
+		} else if ((position & PositionConstants.SOUTH) != 0) {
 			yFactor = 1;
+		}
 
-		if ((position & PositionConstants.WEST) != 0)
+		if ((position & PositionConstants.WEST) != 0) {
 			xFactor = -1;
-		else if ((position & PositionConstants.EAST) != 0)
+		} else if ((position & PositionConstants.EAST) != 0) {
 			xFactor = 1;
+		}
 
 		bounds.x += xFactor * (bounds.width / 2 + getGap());
 		bounds.y += yFactor * (bounds.height / 2 + getGap());

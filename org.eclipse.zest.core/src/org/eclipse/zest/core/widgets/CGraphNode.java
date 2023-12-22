@@ -12,9 +12,10 @@
  *******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+
+import org.eclipse.draw2d.IFigure;
 
 /**
  * A Custom Graph Node

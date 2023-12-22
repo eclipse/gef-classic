@@ -52,9 +52,9 @@ class DelayedDirectEditHelper implements Runnable {
 		this.req = request;
 		this.viewer = viewer;
 		this.part = receiver;
-		if (activeHelper != null)
+		if (activeHelper != null) {
 			activeHelper = null;
-		else {
+		} else {
 			hookControl(viewer.getControl());
 			activeHelper = this;
 			Display display = Display.getCurrent();

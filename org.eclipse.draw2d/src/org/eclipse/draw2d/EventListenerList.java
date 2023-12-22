@@ -29,13 +29,15 @@ public final class EventListenerList {
 	 * @param listener the listener
 	 */
 	public synchronized <T> void addListener(Class<T> c, Object listener) {
-		if (listener == null || c == null)
+		if (listener == null || c == null) {
 			throw new IllegalArgumentException();
+		}
 
 		int oldSize = (array == null) ? 0 : array.length;
 		Object[] newArray = new Object[oldSize + 2];
-		if (oldSize != 0)
+		if (oldSize != 0) {
 			System.arraycopy(array, 0, newArray, 0, oldSize);
+		}
 		newArray[oldSize++] = c;
 		newArray[oldSize] = listener;
 		array = newArray;
@@ -49,11 +51,14 @@ public final class EventListenerList {
 	 * @return whether this list contains a listener of type <i>c</i>
 	 */
 	public synchronized <T> boolean containsListener(Class<T> c) {
-		if (array == null)
+		if (array == null) {
 			return false;
-		for (int i = 0; i < array.length; i += 2)
-			if (array[i] == c)
+		}
+		for (int i = 0; i < array.length; i += 2) {
+			if (array[i] == c) {
 				return true;
+			}
+		}
 		return false;
 	}
 
@@ -77,10 +82,12 @@ public final class EventListenerList {
 
 		@Override
 		public boolean hasNext() {
-			if (items == null)
+			if (items == null) {
 				return false;
-			while (index < items.length && items[index] != type)
+			}
+			while (index < items.length && items[index] != type) {
 				index += 2;
+			}
 			return index < items.length;
 		}
 
@@ -118,19 +125,24 @@ public final class EventListenerList {
 	 * @param listener the listener
 	 */
 	public synchronized <T> void removeListener(Class<T> c, Object listener) {
-		if (array == null || array.length == 0)
+		if (array == null || array.length == 0) {
 			return;
-		if (listener == null || c == null)
+		}
+		if (listener == null || c == null) {
 			throw new IllegalArgumentException();
+		}
 
 		int index = 0;
 		while (index < array.length) {
-			if (array[index] == c && array[index + 1] == listener)
+			if (array[index] == c && array[index + 1] == listener) {
 				break;
+			}
 			index += 2;
 		}
 		if (index == array.length)
+		 {
 			return; // listener was not found
+		}
 
 		Object[] newArray = new Object[array.length - 2];
 		System.arraycopy(array, 0, newArray, 0, index);

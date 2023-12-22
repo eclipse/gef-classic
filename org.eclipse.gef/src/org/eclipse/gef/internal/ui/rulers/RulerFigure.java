@@ -296,8 +296,9 @@ public class RulerFigure extends Figure {
 					 * marks are erased because they are too close to the number, they are erased
 					 * from both sides of that number.
 					 */
-					if (numSize.width % 2 == 0)
+					if (numSize.width % 2 == 0) {
 						numSize.width++;
+					}
 					Point textLocation = new Point(y - (numSize.width / 2), clippedBounds.x + textMargin - leading);
 					forbiddenZone.setLocation(textLocation);
 					forbiddenZone.setSize(numSize);

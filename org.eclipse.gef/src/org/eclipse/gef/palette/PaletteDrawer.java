@@ -85,8 +85,9 @@ public class PaletteDrawer extends PaletteContainer {
 	 */
 	@Override
 	public boolean acceptsType(Object type) {
-		if (type.equals(PALETTE_TYPE_DRAWER) || type.equals(PaletteGroup.PALETTE_TYPE_GROUP))
+		if (type.equals(PALETTE_TYPE_DRAWER) || type.equals(PaletteGroup.PALETTE_TYPE_GROUP)) {
 			return false;
+		}
 		return super.acceptsType(type);
 	}
 
@@ -102,11 +103,12 @@ public class PaletteDrawer extends PaletteContainer {
 		if (drawerType != null) {
 			return drawerType;
 		}
-		for (int i = 0; i < children.size(); i++) {
-			PaletteEntry child = (PaletteEntry) children.get(i);
+		for (Object child2 : children) {
+			PaletteEntry child = (PaletteEntry) child2;
 			Object type = child.getType();
-			if (type != PaletteSeparator.PALETTE_TYPE_SEPARATOR)
+			if (type != PaletteSeparator.PALETTE_TYPE_SEPARATOR) {
 				return type;
+			}
 		}
 		return PaletteEntry.PALETTE_TYPE_UNKNOWN;
 	}
@@ -154,8 +156,9 @@ public class PaletteDrawer extends PaletteContainer {
 	 *              INITIAL_STATE_PINNED_OPEN
 	 */
 	public void setInitialState(int state) {
-		if (initialState == state)
+		if (initialState == state) {
 			return;
+		}
 		int oldState = initialState;
 		initialState = state;
 		listeners.firePropertyChange(PROPERTY_INITIAL_STATUS, oldState, state);

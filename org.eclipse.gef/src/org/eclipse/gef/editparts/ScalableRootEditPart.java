@@ -126,8 +126,9 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	private PropertyChangeListener gridListener = (PropertyChangeEvent evt) -> {
 		String property = evt.getPropertyName();
 		if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN) || property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
-				|| property.equals(SnapToGrid.PROPERTY_GRID_VISIBLE))
+				|| property.equals(SnapToGrid.PROPERTY_GRID_VISIBLE)) {
 			refreshGridLayer();
+		}
 	};
 
 	private final ZoomManager zoomManager;
@@ -259,8 +260,9 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 */
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
-		if (key == AutoexposeHelper.class)
+		if (key == AutoexposeHelper.class) {
 			return key.cast(new ViewportAutoexposeHelper(this));
+		}
 		return super.getAdapter(key);
 	}
 
@@ -295,14 +297,17 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 */
 	@Override
 	public IFigure getLayer(Object key) {
-		if (innerLayers == null)
+		if (innerLayers == null) {
 			return null;
+		}
 		IFigure layer = scaledLayers.getLayer(key);
-		if (layer != null)
+		if (layer != null) {
 			return layer;
+		}
 		layer = printableLayers.getLayer(key);
-		if (layer != null)
+		if (layer != null) {
 			return layer;
+		}
 		return innerLayers.getLayer(key);
 	}
 
@@ -324,8 +329,9 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * @return the layered pane containing all printable content
 	 */
 	protected LayeredPane getPrintableLayers() {
-		if (printableLayers == null)
+		if (printableLayers == null) {
 			printableLayers = createPrintableLayers();
+		}
 		return printableLayers;
 	}
 
@@ -335,8 +341,9 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * @return LayeredPane
 	 */
 	protected LayeredPane getScaledLayers() {
-		if (scaledLayers == null)
+		if (scaledLayers == null) {
 			scaledLayers = createScaledLayers();
+		}
 		return scaledLayers;
 	}
 
@@ -363,8 +370,9 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 		boolean visible = false;
 		GridLayer grid = (GridLayer) getLayer(GRID_LAYER);
 		Boolean val = (Boolean) getViewer().getProperty(SnapToGrid.PROPERTY_GRID_VISIBLE);
-		if (val != null)
+		if (val != null) {
 			visible = val.booleanValue();
+		}
 		grid.setOrigin((Point) getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
 		grid.setSpacing((Dimension) getViewer().getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
 		grid.setVisible(visible);

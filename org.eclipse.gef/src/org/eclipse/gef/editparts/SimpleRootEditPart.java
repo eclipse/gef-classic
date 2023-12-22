@@ -105,13 +105,16 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	 */
 	@Override
 	public void setContents(EditPart editpart) {
-		if (contents == editpart)
+		if (contents == editpart) {
 			return;
-		if (contents != null)
+		}
+		if (contents != null) {
 			removeChild(contents);
+		}
 		contents = editpart;
-		if (contents != null)
+		if (contents != null) {
 			addChild(contents, 0);
+		}
 	}
 
 	/**
@@ -119,13 +122,16 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	 */
 	@Override
 	public void setViewer(EditPartViewer newViewer) {
-		if (viewer == newViewer)
+		if (viewer == newViewer) {
 			return;
-		if (viewer != null)
+		}
+		if (viewer != null) {
 			unregister();
+		}
 		viewer = newViewer;
-		if (viewer != null)
+		if (viewer != null) {
 			register();
+		}
 	}
 
 }

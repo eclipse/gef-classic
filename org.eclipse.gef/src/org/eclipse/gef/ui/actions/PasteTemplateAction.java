@@ -107,8 +107,9 @@ public class PasteTemplateAction extends SelectionAction {
 	 * @return a Factory
 	 */
 	protected CreationFactory getFactory(Object template) {
-		if (template instanceof CreationFactory)
+		if (template instanceof CreationFactory) {
 			return (CreationFactory) template;
+		}
 		return null;
 	}
 

@@ -13,12 +13,13 @@
 
 package org.eclipse.gef.examples.text.figures;
 
+import org.eclipse.swt.graphics.Image;
+
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * A border class which displays an Image on the left side of a figure.
@@ -54,15 +55,17 @@ public class TreeItemBorder extends ListItemBorder {
 
 	@Override
 	public void paintBorder(IFigure figure, Graphics graphics, Insets insets) {
-		if (image == null)
+		if (image == null) {
 			return;
+		}
 		Rectangle rect = getPaintRectangle(figure, insets);
 		graphics.translate(rect.x, rect.y);
 		graphics.drawImage(getImage(), LEFT_SPACE, 0);
 
 		int y = imageSize.height / 2;
-		for (int i = 0; i < LEFT_SPACE; i += 2)
+		for (int i = 0; i < LEFT_SPACE; i += 2) {
 			graphics.drawPoint(i, y);
+		}
 	}
 
 	public void setImage(Image img) {

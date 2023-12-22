@@ -68,8 +68,9 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	 * @return The font for this border
 	 */
 	protected Font getFont(IFigure f) {
-		if (font == null)
+		if (font == null) {
 			return f.getFont();
+		}
 		return font;
 	}
 
@@ -83,8 +84,9 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	 */
 	@Override
 	public Insets getInsets(IFigure fig) {
-		if (insets == null)
+		if (insets == null) {
 			insets = calculateInsets(fig);
+		}
 		return insets;
 	}
 
@@ -122,8 +124,9 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	 * @since 2.0
 	 */
 	protected Dimension getTextExtents(IFigure f) {
-		if (textExtents == null)
+		if (textExtents == null) {
 			textExtents = FigureUtilities.getTextExtents(label, getFont(f));
+		}
 		return textExtents;
 	}
 

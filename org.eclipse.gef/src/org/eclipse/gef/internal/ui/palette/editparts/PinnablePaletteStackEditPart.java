@@ -105,8 +105,9 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 	}
 
 	private void checkActiveEntrySync() {
-		if (getFigure().getActiveFigure() == null)
+		if (getFigure().getActiveFigure() == null) {
 			activeEntryChanged(null, getStack().getActiveEntry());
+		}
 	}
 
 	@Override
@@ -186,10 +187,11 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY))
+		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY)) {
 			activeEntryChanged(event.getOldValue(), event.getNewValue());
-		else
+		} else {
 			super.propertyChange(event);
+		}
 	}
 
 	@Override

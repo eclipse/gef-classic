@@ -17,7 +17,9 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+
 import org.eclipse.gef.examples.digraph1.figure.Digraph1NodeFigure;
 import org.eclipse.gef.examples.digraph1.model.Digraph1Node;
 

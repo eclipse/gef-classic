@@ -12,10 +12,11 @@
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Widget;
+
+import org.eclipse.draw2d.IFigure;
 
 /**
  * Provides support for property changes. All model elements extend this class.

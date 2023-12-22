@@ -14,6 +14,7 @@
 package org.eclipse.gef.examples.text.requests;
 
 import org.eclipse.gef.Request;
+
 import org.eclipse.gef.examples.text.AppendableCommand;
 import org.eclipse.gef.examples.text.SelectionRange;
 

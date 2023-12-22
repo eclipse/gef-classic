@@ -141,8 +141,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 		 * Upon focus gained, if there is no current focus owner, set focus on first
 		 * focusable child.
 		 */
-		if (currentFocusOwner == null)
+		if (currentFocusOwner == null) {
 			currentFocusOwner = getFocusTraverseManager().getNextFocusableFigure(root, focusOwner);
+		}
 		setFocus(currentFocusOwner);
 	}
 
@@ -181,14 +182,16 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 */
 	@Override
 	public void dispatchKeyTraversed(TraverseEvent e) {
-		if (!figureTraverse)
+		if (!figureTraverse) {
 			return;
+		}
 		IFigure nextFigure = null;
 
-		if (e.detail == SWT.TRAVERSE_TAB_NEXT)
+		if (e.detail == SWT.TRAVERSE_TAB_NEXT) {
 			nextFigure = getFocusTraverseManager().getNextFocusableFigure(root, focusOwner);
-		else if (e.detail == SWT.TRAVERSE_TAB_PREVIOUS)
+		} else if (e.detail == SWT.TRAVERSE_TAB_PREVIOUS) {
 			nextFigure = getFocusTraverseManager().getPreviousFocusableFigure(root, focusOwner);
+		}
 
 		if (nextFigure != null) {
 			e.doit = false;
@@ -202,8 +205,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 	@Override
 	public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me) {
 		receive(me);
-		if (mouseTarget != null)
+		if (mouseTarget != null) {
 			mouseTarget.handleMouseHover(currentEvent);
+		}
 		/*
 		 * Check Tooltip source. Get Tooltip source's Figure. Set that tooltip as the
 		 * lws contents on the helper.
@@ -224,8 +228,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 	@Override
 	public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me) {
 		receive(me);
-		if (mouseTarget != null)
+		if (mouseTarget != null) {
 			mouseTarget.handleMouseDoubleClicked(currentEvent);
+		}
 	}
 
 	/**
@@ -258,8 +263,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 		receive(me);
 		if (mouseTarget != null) {
 			mouseTarget.handleMousePressed(currentEvent);
-			if (currentEvent.isConsumed())
+			if (currentEvent.isConsumed()) {
 				setCapture(mouseTarget);
+			}
 		}
 	}
 
@@ -270,10 +276,11 @@ public class SWTEventDispatcher extends EventDispatcher {
 	public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
 		receive(me);
 		if (mouseTarget != null) {
-			if ((me.stateMask & SWT.BUTTON_MASK) != 0)
+			if ((me.stateMask & SWT.BUTTON_MASK) != 0) {
 				mouseTarget.handleMouseDragged(currentEvent);
-			else
+			} else {
 				mouseTarget.handleMouseMoved(currentEvent);
+			}
 		}
 	}
 
@@ -308,10 +315,11 @@ public class SWTEventDispatcher extends EventDispatcher {
 	}
 
 	private IFigure getCurrentToolTip() {
-		if (hoverSource != null)
+		if (hoverSource != null) {
 			return hoverSource.getToolTip();
-		else
+		} else {
 			return null;
+		}
 	}
 
 	/**
@@ -329,8 +337,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 * @return the ToolTipHelper
 	 */
 	protected ToolTipHelper getToolTipHelper() {
-		if (toolTipHelper == null)
+		if (toolTipHelper == null) {
 			toolTipHelper = new ToolTipHelper(control);
+		}
 		return toolTipHelper;
 	}
 
@@ -388,13 +397,15 @@ public class SWTEventDispatcher extends EventDispatcher {
 		currentEvent = null;
 		updateFigureUnderCursor(me);
 		if (captured) {
-			if (mouseTarget != null)
+			if (mouseTarget != null) {
 				currentEvent = new MouseEvent(this, mouseTarget, me);
+			}
 		} else {
 			IFigure f = root.findMouseEventTargetAt(me.x, me.y);
 			if (f == mouseTarget) {
-				if (mouseTarget != null)
+				if (mouseTarget != null) {
 					currentEvent = new MouseEvent(this, mouseTarget, me);
+				}
 				return;
 			}
 			if (mouseTarget != null) {
@@ -430,14 +441,18 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 */
 	@Override
 	public void requestRemoveFocus(IFigure fig) {
-		if (getFocusOwner() == fig)
+		if (getFocusOwner() == fig) {
 			setFocus(null);
-		if (mouseTarget == fig)
+		}
+		if (mouseTarget == fig) {
 			mouseTarget = null;
-		if (cursorTarget == fig)
+		}
+		if (cursorTarget == fig) {
 			cursorTarget = null;
-		if (hoverSource == fig)
+		}
+		if (hoverSource == fig) {
 			hoverSource = null;
+		}
 		getFocusTraverseManager().setCurrentFocusOwner(null);
 	}
 
@@ -455,18 +470,23 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 */
 	@Override
 	public void setControl(Control c) {
-		if (c == control)
+		if (c == control) {
 			return;
+		}
 		if (control != null && !control.isDisposed())
+		 {
 			throw new RuntimeException("Can not set control again once it has been set"); //$NON-NLS-1$
-		if (c != null)
+		}
+		if (c != null) {
 			c.addDisposeListener(new org.eclipse.swt.events.DisposeListener() {
 				@Override
 				public void widgetDisposed(DisposeEvent e) {
-					if (toolTipHelper != null)
+					if (toolTipHelper != null) {
 						toolTipHelper.dispose();
+					}
 				}
 			});
+		}
 		control = c;
 	}
 
@@ -480,8 +500,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 			return;
 		} else if ((c != cursor) || (!c.equals(cursor))) {
 			cursor = c;
-			if (control != null && !control.isDisposed())
+			if (control != null && !control.isDisposed()) {
 				control.setCursor(c);
+			}
 		}
 	}
 
@@ -501,8 +522,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 * @param f the new figure under the cursor
 	 */
 	protected void setFigureUnderCursor(IFigure f) {
-		if (cursorTarget == f)
+		if (cursorTarget == f) {
 			return;
+		}
 		cursorTarget = f;
 		updateCursor();
 	}
@@ -517,17 +539,21 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 * @param fig the new focus figure
 	 */
 	protected void setFocus(IFigure fig) {
-		if (fig == focusOwner)
+		if (fig == focusOwner) {
 			return;
+		}
 		FocusEvent fe = new FocusEvent(focusOwner, fig);
 		IFigure oldOwner = focusOwner;
 		focusOwner = fig;
-		if (oldOwner != null)
+		if (oldOwner != null) {
 			oldOwner.handleFocusLost(fe);
-		if (fig != null)
+		}
+		if (fig != null) {
 			getFocusTraverseManager().setCurrentFocusOwner(fig);
-		if (focusOwner != null)
+		}
+		if (focusOwner != null) {
 			focusOwner.handleFocusGained(fe);
+		}
 	}
 
 	/**
@@ -573,8 +599,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 	@Override
 	protected void updateCursor() {
 		Cursor newCursor = null;
-		if (cursorTarget != null)
+		if (cursorTarget != null) {
 			newCursor = cursorTarget.getCursor();
+		}
 		setCursor(newCursor);
 	}
 
@@ -588,8 +615,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 		if (!captured) {
 			IFigure f = root.findFigureAt(me.x, me.y);
 			setFigureUnderCursor(f);
-			if (cursorTarget != hoverSource)
+			if (cursorTarget != hoverSource) {
 				updateHoverSource(me);
+			}
 		}
 	}
 
@@ -611,10 +639,11 @@ public class SWTEventDispatcher extends EventDispatcher {
 			boolean sourceFound = false;
 			Figure source = (Figure) cursorTarget;
 			while (!sourceFound && source.getParent() != null) {
-				if (source.getToolTip() != null)
+				if (source.getToolTip() != null) {
 					sourceFound = true;
-				else
+				} else {
 					source = (Figure) source.getParent();
+				}
 			}
 			setHoverSource(source, me);
 		} else {

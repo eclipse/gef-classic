@@ -64,10 +64,11 @@ public final class CheckBox extends Toggle {
 	 * @since 2.0
 	 */
 	protected void handleSelectionChanged() {
-		if (isSelected())
+		if (isSelected()) {
 			label.setIcon(CHECKED);
-		else
+		} else {
 			label.setIcon(UNCHECKED);
+		}
 	}
 
 	/**
@@ -83,8 +84,9 @@ public final class CheckBox extends Toggle {
 		addChangeListener(new ChangeListener() {
 			@Override
 			public void handleStateChanged(ChangeEvent changeEvent) {
-				if (changeEvent.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY))
+				if (changeEvent.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
 					handleSelectionChanged();
+				}
 			}
 		});
 	}

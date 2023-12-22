@@ -30,14 +30,17 @@ public class StackLayout extends AbstractHintLayout {
 	 */
 	@Override
 	protected Dimension calculateMinimumSize(IFigure figure, int wHint, int hHint) {
-		if (wHint > -1)
+		if (wHint > -1) {
 			wHint = Math.max(0, wHint - figure.getInsets().getWidth());
-		if (hHint > -1)
+		}
+		if (hHint > -1) {
 			hHint = Math.max(0, hHint - figure.getInsets().getHeight());
+		}
 		Dimension d = new Dimension();
 		for (IFigure child : figure.getChildren()) {
-			if (!isObservingVisibility() || child.isVisible())
+			if (!isObservingVisibility() || child.isVisible()) {
 				d.union(child.getMinimumSize(wHint, hHint));
+			}
 		}
 
 		d.expand(figure.getInsets().getWidth(), figure.getInsets().getHeight());
@@ -55,14 +58,17 @@ public class StackLayout extends AbstractHintLayout {
 	 */
 	@Override
 	protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint) {
-		if (wHint > -1)
+		if (wHint > -1) {
 			wHint = Math.max(0, wHint - figure.getInsets().getWidth());
-		if (hHint > -1)
+		}
+		if (hHint > -1) {
 			hHint = Math.max(0, hHint - figure.getInsets().getHeight());
+		}
 		Dimension d = new Dimension();
 		for (IFigure child : figure.getChildren()) {
-			if (!isObservingVisibility() || child.isVisible())
+			if (!isObservingVisibility() || child.isVisible()) {
 				d.union(child.getPreferredSize(wHint, hHint));
+			}
 		}
 
 		d.expand(figure.getInsets().getWidth(), figure.getInsets().getHeight());

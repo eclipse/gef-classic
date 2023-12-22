@@ -195,9 +195,12 @@ public class LEDFigure extends NodeFigure implements HandleBounds {
 	public void setValue(int val) {
 		String newValue = String.valueOf(val);
 		if (val < 10)
+		 {
 			newValue = "0" + newValue; //$NON-NLS-1$
-		if (newValue.equals(value))
+		}
+		if (newValue.equals(value)) {
 			return;
+		}
 		value = newValue;
 		repaint();
 	}

@@ -78,10 +78,11 @@ public class FeedbackHelper {
 	 * @param anchor the new anchor
 	 */
 	protected void setAnchor(ConnectionAnchor anchor) {
-		if (isMovingStartAnchor())
+		if (isMovingStartAnchor()) {
 			getConnection().setSourceAnchor(anchor);
-		else
+		} else {
 			getConnection().setTargetAnchor(anchor);
+		}
 	}
 
 	/**
@@ -92,9 +93,9 @@ public class FeedbackHelper {
 	 * @param p      the point to use when there is no anchor
 	 */
 	public void update(ConnectionAnchor anchor, Point p) {
-		if (anchor != null)
+		if (anchor != null) {
 			setAnchor(anchor);
-		else {
+		} else {
 			dummyAnchor.setLocation(p);
 			setAnchor(dummyAnchor);
 		}

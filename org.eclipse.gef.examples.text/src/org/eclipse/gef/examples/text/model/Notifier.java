@@ -26,19 +26,22 @@ public class Notifier implements Serializable {
 	private static final long serialVersionUID = 1;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
-		if (listeners == null)
+		if (listeners == null) {
 			listeners = new PropertyChangeSupport(this);
+		}
 		listeners.addPropertyChangeListener(l);
 	}
 
 	protected void firePropertyChange(String prop, Object old, Object newValue) {
-		if (listeners != null)
+		if (listeners != null) {
 			listeners.firePropertyChange(prop, old, newValue);
+		}
 	}
 
 	public void removePropertyChangeListener(PropertyChangeListener l) {
-		if (listeners != null)
+		if (listeners != null) {
 			listeners.removePropertyChangeListener(l);
+		}
 	}
 
 }

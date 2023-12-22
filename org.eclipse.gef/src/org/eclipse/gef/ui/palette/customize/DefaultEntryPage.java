@@ -196,8 +196,9 @@ public class DefaultEntryPage implements EntryPage {
 
 		Text textBox = new Text(panel, style);
 		textBox.setFont(panel.getFont());
-		if (text != null)
+		if (text != null) {
 			textBox.setText(text);
+		}
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint = 200;
 		textBox.setLayoutData(data);

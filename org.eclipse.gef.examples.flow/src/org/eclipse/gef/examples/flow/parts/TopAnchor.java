@@ -31,12 +31,14 @@ class TopAnchor extends AbstractConnectionAnchor {
 		Rectangle r = getOwner().getBounds().getCopy();
 		getOwner().translateToAbsolute(r);
 		int off = offset;
-		if (off == -1)
+		if (off == -1) {
 			off = r.width / 2;
-		if (r.contains(reference) || r.y < reference.y)
+		}
+		if (r.contains(reference) || r.y < reference.y) {
 			return r.getBottomLeft().translate(off, -1);
-		else
+		} else {
 			return r.getTopLeft().translate(off, 0);
+		}
 	}
 
 }

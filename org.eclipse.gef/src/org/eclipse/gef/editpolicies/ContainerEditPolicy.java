@@ -53,14 +53,18 @@ public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 	 */
 	@Override
 	public Command getCommand(Request request) {
-		if (REQ_CREATE.equals(request.getType()))
+		if (REQ_CREATE.equals(request.getType())) {
 			return getCreateCommand((CreateRequest) request);
-		if (REQ_ADD.equals(request.getType()))
+		}
+		if (REQ_ADD.equals(request.getType())) {
 			return getAddCommand((GroupRequest) request);
-		if (REQ_CLONE.equals(request.getType()))
+		}
+		if (REQ_CLONE.equals(request.getType())) {
 			return getCloneCommand((ChangeBoundsRequest) request);
-		if (REQ_ORPHAN_CHILDREN.equals(request.getType()))
+		}
+		if (REQ_ORPHAN_CHILDREN.equals(request.getType())) {
 			return getOrphanChildrenCommand((GroupRequest) request);
+		}
 		return null;
 	}
 

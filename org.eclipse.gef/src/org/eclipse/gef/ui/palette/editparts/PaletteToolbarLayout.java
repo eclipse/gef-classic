@@ -150,7 +150,7 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 		 * Do the actual layout, i.e. set the bounds of all the figures.
 		 */
 		for (int i = 0; i < numChildren; i++) {
-			IFigure child = (IFigure) children.get(i);
+			IFigure child = children.get(i);
 			Rectangle newBounds = new Rectangle(x, y, prefSizes[i].width, prefSizes[i].height);
 
 			if (childrenGrabbingVertical.contains(child)) {
@@ -158,16 +158,18 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 				// give it
 				// the excess height.
 				childrenGrabbingVertical.remove(child);
-				if (childrenGrabbingVertical.isEmpty())
+				if (childrenGrabbingVertical.isEmpty()) {
 					newBounds.height = heightPerChild + excessHeight;
-				else
+				} else {
 					newBounds.height = heightPerChild;
+				}
 			}
 
-			if (getStretchMinorAxis())
+			if (getStretchMinorAxis()) {
 				newBounds.width = clientArea.width;
-			else
+			} else {
 				newBounds.width = Math.min(prefSizes[i].width, clientArea.width);
+			}
 
 			int adjust = clientArea.width - newBounds.width;
 			switch (getMinorAlignment()) {

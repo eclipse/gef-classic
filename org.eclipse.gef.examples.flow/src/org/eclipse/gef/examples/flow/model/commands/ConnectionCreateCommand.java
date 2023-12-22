@@ -13,6 +13,7 @@
 package org.eclipse.gef.examples.flow.model.commands;
 
 import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.Transition;
 
@@ -33,8 +34,9 @@ public class ConnectionCreateCommand extends Command {
 	 */
 	@Override
 	public boolean canExecute() {
-		if (source.equals(target))
+		if (source.equals(target)) {
 			return false;
+		}
 
 		// Check for existence of connection already
 		return source.getOutgoingTransitions().stream().noneMatch(t -> t.target.equals(target));

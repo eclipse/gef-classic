@@ -94,8 +94,9 @@ public class ScrollPane extends Figure {
 	 * @since 2.0
 	 */
 	public ScrollBar getHorizontalScrollBar() {
-		if (hBar == null)
+		if (hBar == null) {
 			createHorizontalScrollBar();
+		}
 		return hBar;
 	}
 
@@ -118,8 +119,9 @@ public class ScrollPane extends Figure {
 	 * @since 2.0
 	 */
 	public ScrollBar getVerticalScrollBar() {
-		if (vBar == null)
+		if (vBar == null) {
 			createVerticalScrollBar();
+		}
 		return vBar;
 	}
 
@@ -163,8 +165,9 @@ public class ScrollPane extends Figure {
 	 * @since 2.0
 	 */
 	public Viewport getViewport() {
-		if (viewport == null)
+		if (viewport == null) {
 			createViewport();
+		}
 		return viewport;
 	}
 
@@ -246,8 +249,9 @@ public class ScrollPane extends Figure {
 	 * @since 2.0
 	 */
 	public void setHorizontalScrollBarVisibility(int v) {
-		if (hVisibility == v)
+		if (hVisibility == v) {
 			return;
+		}
 		hVisibility = v;
 		revalidate();
 	}
@@ -293,8 +297,9 @@ public class ScrollPane extends Figure {
 	 * @since 2.0
 	 */
 	public void setVerticalScrollBarVisibility(int v) {
-		if (vVisibility == v)
+		if (vVisibility == v) {
 			return;
+		}
 		vVisibility = v;
 		revalidate();
 	}
@@ -318,11 +323,13 @@ public class ScrollPane extends Figure {
 	 * @since 2.0
 	 */
 	public void setViewport(Viewport vp) {
-		if (viewport != null)
+		if (viewport != null) {
 			remove(viewport);
+		}
 		viewport = vp;
-		if (vp != null)
+		if (vp != null) {
 			add(vp, 0);
+		}
 	}
 
 	/**

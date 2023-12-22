@@ -119,8 +119,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 		 * @return the next non-<code>null</code> EditPolicy.
 		 */
 		public EditPolicy next() {
-			if (offset < length)
+			if (offset < length) {
 				return (EditPolicy) list[offset++];
+			}
 			return null;
 		}
 
@@ -130,11 +131,13 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 		 * @return <code>true</code> if there is a next policy
 		 */
 		public boolean hasNext() {
-			if (list == null)
+			if (list == null) {
 				return false;
+			}
 
-			while (offset < list.length && !(list[offset] instanceof EditPolicy))
+			while (offset < list.length && !(list[offset] instanceof EditPolicy)) {
 				offset++;
+			}
 			return offset < list.length;
 		}
 	}
@@ -203,18 +206,21 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	protected void addChild(EditPart child, int index) {
 		Assert.isNotNull(child);
-		if (index == -1)
+		if (index == -1) {
 			index = getChildren().size();
-		if (children == null)
+		}
+		if (children == null) {
 			children = new ArrayList<>(2);
+		}
 
 		children.add(index, child);
 		child.setParent(this);
 		addChildVisual(child, index);
 		child.addNotify();
 
-		if (isActive())
+		if (isActive()) {
 			child.activate();
+		}
 		fireChildAdded(child, index);
 	}
 
@@ -434,8 +440,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
-		if (AccessibleEditPart.class == key)
+		if (AccessibleEditPart.class == key) {
 			return key.cast(getAccessibleEditPart());
+		}
 		return Platform.getAdapterManager().getAdapter(this, key);
 	}
 
@@ -444,8 +451,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	@Override
 	public List<? extends EditPart> getChildren() {
-		if (children == null)
+		if (children == null) {
 			return Collections.emptyList();
+		}
 		return children;
 	}
 
@@ -502,11 +510,13 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	@Override
 	public EditPolicy getEditPolicy(Object key) {
-		if (policies != null)
+		if (policies != null) {
 			for (int i = 0; i < policies.length; i += 2) {
-				if (key.equals(policies[i]))
+				if (key.equals(policies[i])) {
 					return (EditPolicy) policies[i + 1];
+				}
 			}
+		}
 		return null;
 	}
 
@@ -618,8 +628,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	public EditPart getTargetEditPart(Request request) {
 		for (EditPolicy ep : getEditPolicyIterable()) {
 			EditPart editPart = ep.getTargetEditPart(request);
-			if (editPart != null)
+			if (editPart != null) {
 				return editPart;
+			}
 		}
 
 		if ((RequestConstants.REQ_SELECTION == request.getType()) && isSelectable()) {
@@ -661,13 +672,15 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 			policies[1] = editPolicy;
 		} else {
 			int index = 0;
-			while (index < policies.length && !key.equals(policies[index]))
+			while (index < policies.length && !key.equals(policies[index])) {
 				index += 2;
+			}
 			if (index < policies.length) {
 				index++;
 				EditPolicy old = (EditPolicy) policies[index];
-				if (old != null && isActive())
+				if (old != null && isActive()) {
 					old.deactivate();
+				}
 				policies[index] = editPolicy;
 			} else {
 				Object[] newPolicies = new Object[policies.length + 2];
@@ -680,8 +693,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 
 		if (editPolicy != null) {
 			editPolicy.setHost(this);
-			if (isActive())
+			if (isActive()) {
 				editPolicy.activate();
+			}
 		}
 	}
 
@@ -759,15 +773,16 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 			Object curModel = modelObjects.get(i);
 
 			// Do a quick check to see if editPart[i] == model[i]
-			if (i < curChildren.size() && curChildren.get(i).getModel() == curModel)
+			if (i < curChildren.size() && curChildren.get(i).getModel() == curModel) {
 				continue;
+			}
 
 			// Look to see if the EditPart is already around but in the wrong location
 			EditPart editPart = modelToEditPart.get(curModel);
 
-			if (editPart != null)
+			if (editPart != null) {
 				reorderChild(editPart, i);
-			else {
+			} else {
 				// An EditPart for this model doesn't exist yet. Create and insert one.
 				editPart = createChild(curModel);
 				addChild(editPart, i);
@@ -814,8 +829,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * @see #getAccessibleEditPart()
 	 */
 	protected final void registerAccessibility() {
-		if (getAccessibleEditPart() != null)
+		if (getAccessibleEditPart() != null) {
 			getViewer().registerAccessibleEditPart(getAccessibleEditPart());
+		}
 	}
 
 	/**
@@ -857,11 +873,13 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	protected void removeChild(EditPart child) {
 		Assert.isNotNull(child);
 		int index = getChildren().indexOf(child);
-		if (index < 0)
+		if (index < 0) {
 			return;
+		}
 		fireRemovingChild(child, index);
-		if (isActive())
+		if (isActive()) {
 			child.deactivate();
+		}
 		child.removeNotify();
 		removeChildVisual(child);
 		child.setParent(null);
@@ -894,15 +912,17 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	@Override
 	public void removeEditPolicy(Object key) {
-		if (policies == null)
+		if (policies == null) {
 			return;
+		}
 		for (int i = 0; i < policies.length; i += 2) {
 			if (key.equals(policies[i])) {
 				i++;
 				EditPolicy policy = (EditPolicy) policies[i];
 				policies[i] = null;
-				if (isActive() && policy != null)
+				if (isActive() && policy != null) {
 					policy.deactivate();
+				}
 			}
 		}
 	}
@@ -925,10 +945,12 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	@Override
 	public void removeNotify() {
-		if (getSelected() != SELECTED_NONE)
+		if (getSelected() != SELECTED_NONE) {
 			getViewer().deselect(this);
-		if (hasFocus())
+		}
+		if (hasFocus()) {
 			getViewer().setFocus(null);
+		}
 
 		getChildren().forEach(c -> c.removeNotify());
 		unregister();
@@ -958,10 +980,11 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * @see #getFlag(int)
 	 */
 	protected final void setFlag(int flag, boolean value) {
-		if (value)
+		if (value) {
 			flags |= flag;
-		else
+		} else {
 			flags &= ~flag;
+		}
 	}
 
 	/**
@@ -986,8 +1009,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 		Assert.isLegal(isSelectable() || !value,
 				"An EditPart has to be selectable (isSelectable() == true) in order to obtain focus."); //$NON-NLS-1$
 
-		if (hasFocus() == value)
+		if (hasFocus() == value) {
 			return;
+		}
 		setFlag(FLAG_FOCUS, value);
 		fireSelectionChanged();
 	}
@@ -1042,8 +1066,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 		Assert.isLegal(isSelectable() || value == SELECTED_NONE,
 				"An EditPart has to be selectable (isSelectable() == true) in order to get selected."); //$NON-NLS-1$
 
-		if (selected == value)
+		if (selected == value) {
 			return;
+		}
 		selected = value;
 		fireSelectionChanged();
 	}
@@ -1067,8 +1092,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	@Override
 	public void showSourceFeedback(Request request) {
-		if (!isActive())
+		if (!isActive()) {
 			return;
+		}
 
 		getEditPolicyIterable().forEach(ep -> ep.showSourceFeedback(request));
 	}
@@ -1092,8 +1118,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	@Override
 	public void showTargetFeedback(Request request) {
-		if (!isActive())
+		if (!isActive()) {
 			return;
+		}
 		getEditPolicyIterable().forEach(ep -> ep.showTargetFeedback(request));
 	}
 
@@ -1127,8 +1154,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	@Override
 	public boolean understandsRequest(Request req) {
 		for (EditPolicy ep : getEditPolicyIterable()) {
-			if (ep.understandsRequest(req))
+			if (ep.understandsRequest(req)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -1147,8 +1175,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * Unregisters the {@link #getAccessibleEditPart() AccessibleEditPart} adapter.
 	 */
 	protected final void unregisterAccessibility() {
-		if (getAccessibleEditPart() != null)
+		if (getAccessibleEditPart() != null) {
 			getViewer().unregisterAccessibleEditPart(getAccessibleEditPart());
+		}
 	}
 
 	/**
@@ -1158,8 +1187,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	protected void unregisterModel() {
 		Map registry = getViewer().getEditPartRegistry();
-		if (registry.get(getModel()) == this)
+		if (registry.get(getModel()) == this) {
 			registry.remove(getModel());
+		}
 	}
 
 	/**

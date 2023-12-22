@@ -106,15 +106,17 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 		port.getClientArea(rect);
 		port.translateToParent(rect);
 		port.translateToAbsolute(rect);
-		if (!rect.contains(where) || rect.crop(threshold).contains(where))
+		if (!rect.contains(where) || rect.crop(threshold).contains(where)) {
 			return false;
+		}
 
 		// set scroll offset (speed factor)
 		int scrollOffset = 0;
 
 		// calculate time based scroll offset
-		if (lastStepTime == 0)
+		if (lastStepTime == 0) {
 			lastStepTime = System.currentTimeMillis();
+		}
 
 		long difference = System.currentTimeMillis() - lastStepTime;
 
@@ -123,23 +125,26 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 			lastStepTime = System.currentTimeMillis();
 		}
 
-		if (scrollOffset == 0)
+		if (scrollOffset == 0) {
 			return true;
+		}
 
 		rect.crop(threshold);
 
 		int region = rect.getPosition(where);
 		Point loc = port.getViewLocation();
 
-		if ((region & PositionConstants.SOUTH) != 0)
+		if ((region & PositionConstants.SOUTH) != 0) {
 			loc.y += scrollOffset;
-		else if ((region & PositionConstants.NORTH) != 0)
+		} else if ((region & PositionConstants.NORTH) != 0) {
 			loc.y -= scrollOffset;
+		}
 
-		if ((region & PositionConstants.EAST) != 0)
+		if ((region & PositionConstants.EAST) != 0) {
 			loc.x += scrollOffset;
-		else if ((region & PositionConstants.WEST) != 0)
+		} else if ((region & PositionConstants.WEST) != 0) {
 			loc.x -= scrollOffset;
+		}
 
 		port.setViewLocation(loc);
 		return true;

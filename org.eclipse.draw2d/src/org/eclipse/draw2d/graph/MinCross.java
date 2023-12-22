@@ -46,8 +46,9 @@ class MinCross extends GraphVisitor {
 				rank = g.ranks.getRank(row);
 				sorter.sortRankIncoming(g, rank, row, (double) loop / MAX);
 			}
-			if (loop == MAX - 1)
+			if (loop == MAX - 1) {
 				continue;
+			}
 			for (int row = g.ranks.size() - 2; row >= 0; row--) {
 				rank = g.ranks.getRank(row);
 				sorter.sortRankOutgoing(g, rank, row, (double) loop / MAX);

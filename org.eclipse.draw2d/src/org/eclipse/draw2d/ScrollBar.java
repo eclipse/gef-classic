@@ -118,10 +118,11 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		clickable.addChangeListener(new ChangeListener() {
 			@Override
 			public void handleStateChanged(ChangeEvent evt) {
-				if (clickable.getModel().isArmed())
+				if (clickable.getModel().isArmed()) {
 					clickable.setBackgroundColor(ColorConstants.black);
-				else
+				} else {
 					clickable.setBackgroundColor(COLOR_TRACK);
+				}
 			}
 		});
 		return clickable;
@@ -381,8 +382,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		}
 		buttonDown = down;
 		if (buttonDown != null) {
-			if (buttonDown instanceof Orientable)
+			if (buttonDown instanceof Orientable) {
 				((Orientable) buttonDown).setDirection(isHorizontal() ? Orientable.EAST : Orientable.SOUTH);
+			}
 			buttonDown.setFiringMethod(Clickable.REPEAT_FIRING);
 			buttonDown.addActionListener(new ActionListener() {
 				@Override
@@ -407,8 +409,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		}
 		buttonUp = up;
 		if (up != null) {
-			if (up instanceof Orientable)
+			if (up instanceof Orientable) {
 				((Orientable) up).setDirection(isHorizontal() ? Orientable.WEST : Orientable.NORTH);
+			}
 			buttonUp.setFiringMethod(Clickable.REPEAT_FIRING);
 			buttonUp.addActionListener(new ActionListener() {
 				@Override
@@ -425,8 +428,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 */
 	@Override
 	public void setEnabled(boolean value) {
-		if (isEnabled() == value)
+		if (isEnabled() == value) {
 			return;
+		}
 		super.setEnabled(value);
 		setChildrenEnabled(value);
 		if (getThumb() != null) {
@@ -442,8 +446,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * @since 2.0
 	 */
 	public void setExtent(int ext) {
-		if (getExtent() == ext)
+		if (getExtent() == ext) {
 			return;
+		}
 		getRangeModel().setExtent(ext);
 	}
 
@@ -466,8 +471,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * @since 2.0
 	 */
 	public void setMaximum(int max) {
-		if (getMaximum() == max)
+		if (getMaximum() == max) {
 			return;
+		}
 		getRangeModel().setMaximum(max);
 	}
 
@@ -478,8 +484,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * @since 2.0
 	 */
 	public void setMinimum(int min) {
-		if (getMinimum() == min)
+		if (getMinimum() == min) {
 			return;
+		}
 		getRangeModel().setMinimum(min);
 	}
 
@@ -488,8 +495,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 */
 	@Override
 	public void setOrientation(int value) {
-		if ((value == HORIZONTAL) == isHorizontal())
+		if ((value == HORIZONTAL) == isHorizontal()) {
 			return;
+		}
 		isHorizontal = value == HORIZONTAL;
 		transposer.setEnabled(isHorizontal);
 
@@ -518,8 +526,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * @since 2.0
 	 */
 	public void setPageDown(Clickable down) {
-		if (pageDown != null)
+		if (pageDown != null) {
 			remove(pageDown);
+		}
 		pageDown = down;
 		if (pageDown != null) {
 			pageDown.setFiringMethod(Clickable.REPEAT_FIRING);
@@ -542,8 +551,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * @since 2.0
 	 */
 	public void setPageUp(Clickable up) {
-		if (pageUp != null)
+		if (pageUp != null) {
 			remove(pageUp);
+		}
 		pageUp = up;
 		if (pageUp != null) {
 			pageUp.setFiringMethod(Clickable.REPEAT_FIRING);
@@ -564,8 +574,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * @since 2.0
 	 */
 	public void setRangeModel(RangeModel rangeModel) {
-		if (this.rangeModel != null)
+		if (this.rangeModel != null) {
 			this.rangeModel.removePropertyChangeListener(this);
+		}
 		this.rangeModel = rangeModel;
 		rangeModel.addPropertyChangeListener(this);
 	}
@@ -651,10 +662,12 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 			start = me.getLocation();
 			Rectangle area = new Rectangle(transposer.t(getClientArea()));
 			Dimension thumbSize = transposer.t(getThumb().getSize());
-			if (getButtonUp() != null)
+			if (getButtonUp() != null) {
 				area.height -= transposer.t(getButtonUp().getSize()).height;
-			if (getButtonDown() != null)
+			}
+			if (getButtonDown() != null) {
 				area.height -= transposer.t(getButtonDown().getSize()).height;
+			}
 			Dimension sizeDifference = new Dimension(area.width, area.height - thumbSize.height);
 			dragRange = sizeDifference.height;
 			revertValue = getValue();
@@ -663,8 +676,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 		@Override
 		public void mouseDragged(MouseEvent me) {
-			if (!armed)
+			if (!armed) {
 				return;
+			}
 			Dimension difference = transposer.t(me.getLocation().getDifference(start));
 			int change = getValueRange() * difference.height / dragRange;
 			setValue(revertValue + change);
@@ -673,8 +687,9 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 		@Override
 		public void mouseReleased(MouseEvent me) {
-			if (!armed)
+			if (!armed) {
 				return;
+			}
 			armed = false;
 			me.consume();
 		}

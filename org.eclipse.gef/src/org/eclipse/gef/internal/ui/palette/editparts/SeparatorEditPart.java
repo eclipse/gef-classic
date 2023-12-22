@@ -68,8 +68,9 @@ public class SeparatorEditPart extends PaletteEditPart {
 		 */
 		@Override
 		public Dimension getPreferredSize(int wHint, int hHint) {
-			if (getBackgroundColor().equals(PaletteColorUtil.WIDGET_BACKGROUND))
+			if (getBackgroundColor().equals(PaletteColorUtil.WIDGET_BACKGROUND)) {
 				return new Dimension(wHint, 4);
+			}
 			return new Dimension(wHint, 5);
 		}
 

@@ -190,10 +190,12 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 */
 	private static boolean belongsToContextMenu(MenuItem item) {
 		Menu menu = item.getParent();
-		if (menu == null)
+		if (menu == null) {
 			return false;
-		while (menu.getParentMenu() != null)
+		}
+		while (menu.getParentMenu() != null) {
 			menu = menu.getParentMenu();
+		}
 		return (menu.getStyle() & SWT.BAR) == 0;
 	}
 
@@ -221,8 +223,9 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 			int flags = SWT.PUSH;
 
 			if (action != null) {
-				if (action.getStyle() == IAction.AS_CHECK_BOX)
+				if (action.getStyle() == IAction.AS_CHECK_BOX) {
 					flags = SWT.TOGGLE;
+				}
 			}
 
 			Button b = new Button(parent, flags);
@@ -230,8 +233,9 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 			b.addListener(SWT.Dispose, listener);
 			// Don't hook a dispose listener on the parent
 			b.addListener(SWT.Selection, listener);
-			if (action.getHelpListener() != null)
+			if (action.getHelpListener() != null) {
 				b.addHelpListener(action.getHelpListener());
+			}
 			widget = b;
 
 			update(null);
@@ -255,9 +259,9 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 			if (action != null) {
 				int style = action.getStyle();
-				if (style == IAction.AS_CHECK_BOX)
+				if (style == IAction.AS_CHECK_BOX) {
 					flags = SWT.CHECK;
-				else if (style == IAction.AS_DROP_DOWN_MENU) {
+				} else if (style == IAction.AS_DROP_DOWN_MENU) {
 					IMenuCreator mc = action.getMenuCreator();
 					subMenu = mc.getMenu(parent);
 					flags = SWT.CASCADE;
@@ -265,21 +269,24 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 			}
 
 			MenuItem mi = null;
-			if (index >= 0)
+			if (index >= 0) {
 				mi = new MenuItem(parent, flags, index);
-			else
+			} else {
 				mi = new MenuItem(parent, flags);
+			}
 			widget = mi;
 
 			mi.setData(this);
 			mi.addListener(SWT.Arm, listener);
 			mi.addListener(SWT.Dispose, listener);
 			mi.addListener(SWT.Selection, listener);
-			if (action.getHelpListener() != null)
+			if (action.getHelpListener() != null) {
 				mi.addHelpListener(action.getHelpListener());
+			}
 
-			if (subMenu != null)
+			if (subMenu != null) {
 				mi.setMenu(subMenu);
+			}
 
 			update(null);
 
@@ -301,17 +308,19 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 			if (action != null) {
 				int style = action.getStyle();
-				if (style == IAction.AS_CHECK_BOX)
+				if (style == IAction.AS_CHECK_BOX) {
 					flags = SWT.CHECK;
-				else if (style == IAction.AS_DROP_DOWN_MENU)
+				} else if (style == IAction.AS_DROP_DOWN_MENU) {
 					flags = SWT.DROP_DOWN;
+				}
 			}
 
 			ToolItem ti = null;
-			if (index >= 0)
+			if (index >= 0) {
 				ti = new ToolItem(parent, flags, index);
-			else
+			} else {
 				ti = new ToolItem(parent, flags);
+			}
 			ti.setData(this);
 			ti.addListener(SWT.Selection, listener);
 			ti.addListener(SWT.Dispose, listener);
@@ -496,8 +505,9 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 * @since 2.0
 	 */
 	protected boolean isEnabledAllowed() {
-		if (getParent() == null)
+		if (getParent() == null) {
 			return true;
+		}
 		Boolean value = getParent().getOverrides().getEnabled(this);
 		return (value == null) ? true : value.booleanValue();
 	}
@@ -534,19 +544,22 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 				if (imageChanged) {
 					updateImages(true);
 				}
-				if (tooltipTextChanged)
+				if (tooltipTextChanged) {
 					ti.setToolTipText(action.getToolTipText());
+				}
 
 				if (enableStateChanged) {
 					boolean shouldBeEnabled = action.isEnabled() && isEnabledAllowed();
-					if (ti.getEnabled() != shouldBeEnabled)
+					if (ti.getEnabled() != shouldBeEnabled) {
 						ti.setEnabled(shouldBeEnabled);
+					}
 				}
 
 				if (checkChanged) {
 					boolean bv = action.isChecked();
-					if (ti.getSelection() != bv)
+					if (ti.getSelection() != bv) {
 						ti.setSelection(bv);
+					}
 				}
 				return;
 			}
@@ -566,12 +579,15 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 					} else {
 						String text = null;
 						IContributionManagerOverrides overrides = null;
-						if (getParent() != null)
+						if (getParent() != null) {
 							overrides = getParent().getOverrides();
-						if (overrides != null)
+						}
+						if (overrides != null) {
 							text = getParent().getOverrides().getText(this);
-						if (text == null)
+						}
+						if (text == null) {
 							text = action.getText();
+						}
 						if (text != null) {
 							String label = Action.removeAcceleratorText(text);
 							String accText = null;
@@ -580,16 +596,20 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 								accText = overrides.getAcceleratorText(this);
 								acc = overrides.getAccelerator(this);
 							}
-							if ((accText == null) && (label.length() + 1 < text.length()))
+							if ((accText == null) && (label.length() + 1 < text.length())) {
 								accText = text.substring(label.length() + 1);
-							if (acc == null)
+							}
+							if (acc == null) {
 								acc = Integer.valueOf(action.getAccelerator());
-							if (acc.intValue() >= 0)
+							}
+							if (acc.intValue() >= 0) {
 								mi.setAccelerator(acc.intValue());
-							if (accText == null)
+							}
+							if (accText == null) {
 								mi.setText(label);
-							else
+							} else {
 								mi.setText(label + '\t' + accText);
+							}
 						}
 					}
 				}
@@ -598,14 +618,16 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 				}
 				if (enableStateChanged) {
 					boolean shouldBeEnabled = action.isEnabled() && isEnabledAllowed();
-					if (mi.getEnabled() != shouldBeEnabled)
+					if (mi.getEnabled() != shouldBeEnabled) {
 						mi.setEnabled(shouldBeEnabled);
+					}
 				}
 
 				if (checkChanged) {
 					boolean bv = action.isChecked();
-					if (mi.getSelection() != bv)
+					if (mi.getSelection() != bv) {
 						mi.setSelection(bv);
+					}
 				}
 				return;
 			}
@@ -619,22 +641,26 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 				}
 				if (textChanged) {
 					String text = action.getText();
-					if (text != null)
+					if (text != null) {
 						button.setText(text);
+					}
 				}
-				if (tooltipTextChanged)
+				if (tooltipTextChanged) {
 					button.setToolTipText(action.getToolTipText());
+				}
 
 				if (enableStateChanged) {
 					boolean shouldBeEnabled = action.isEnabled() && isEnabledAllowed();
-					if (button.getEnabled() != shouldBeEnabled)
+					if (button.getEnabled() != shouldBeEnabled) {
 						button.setEnabled(shouldBeEnabled);
+					}
 				}
 
 				if (checkChanged) {
 					boolean bv = action.isChecked();
-					if (button.getSelection() != bv)
+					if (button.getSelection() != bv) {
 						button.setSelection(bv);
+					}
 				}
 				return;
 			}

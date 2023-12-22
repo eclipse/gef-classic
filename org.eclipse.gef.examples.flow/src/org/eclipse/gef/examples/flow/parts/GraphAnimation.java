@@ -66,11 +66,13 @@ public class GraphAnimation {
 
 		RECORDING = true;
 
-		while (!(root instanceof Viewport))
+		while (!(root instanceof Viewport)) {
 			root = root.getParent();
+		}
 		viewport = (Viewport) root;
-		while (root.getParent() != null)
+		while (root.getParent() != null) {
 			root = root.getParent();
+		}
 
 		initialStates = new HashMap();
 		finalStates = new HashMap();
@@ -83,8 +85,9 @@ public class GraphAnimation {
 			RECORDING = false;
 			return false;
 		}
-		while (iter.hasNext())
+		while (iter.hasNext()) {
 			recordFinalState((IFigure) iter.next());
+		}
 
 		start = System.currentTimeMillis();
 		finish = start + DURATION;
@@ -96,8 +99,9 @@ public class GraphAnimation {
 	}
 
 	static boolean playbackState(Connection conn) {
-		if (!PLAYBACK)
+		if (!PLAYBACK) {
 			return false;
+		}
 
 		PointList list1 = (PointList) initialStates.get(conn);
 		PointList list2 = (PointList) finalStates.get(conn);
@@ -122,15 +126,17 @@ public class GraphAnimation {
 	}
 
 	static boolean playbackState(IFigure container) {
-		if (!PLAYBACK)
+		if (!PLAYBACK) {
 			return false;
+		}
 
 		Rectangle rect1, rect2;
 		for (IFigure child : container.getChildren()) {
 			rect1 = (Rectangle) initialStates.get(child);
 			rect2 = (Rectangle) finalStates.get(child);
-			if (rect2 == null)
+			if (rect2 == null) {
 				continue;
+			}
 			child.setBounds(new Rectangle((int) Math.round(progress * rect2.x + (1 - progress) * rect1.x),
 					(int) Math.round(progress * rect2.y + (1 - progress) * rect1.y),
 					(int) Math.round(progress * rect2.width + (1 - progress) * rect1.width),
@@ -221,19 +227,22 @@ public class GraphAnimation {
 	}
 
 	static void recordInitialState(Connection connection) {
-		if (!RECORDING)
+		if (!RECORDING) {
 			return;
+		}
 		PointList points = connection.getPoints().getCopy();
 		if (points.size() == 2 && points.getPoint(0).equals(Point.SINGLETON.setLocation(0, 0))
-				&& points.getPoint(1).equals(Point.SINGLETON.setLocation(100, 100)))
+				&& points.getPoint(1).equals(Point.SINGLETON.setLocation(100, 100))) {
 			initialStates.put(connection, null);
-		else
+		} else {
 			initialStates.put(connection, points);
+		}
 	}
 
 	static void recordInitialState(IFigure container) {
-		if (!RECORDING)
+		if (!RECORDING) {
 			return;
+		}
 
 		for (IFigure child : container.getChildren()) {
 			initialStates.put(child, child.getBounds().getCopy());
@@ -252,8 +261,9 @@ public class GraphAnimation {
 		progress = Math.min(progress, 0.999);
 		Iterator iter = initialStates.keySet().iterator();
 
-		while (iter.hasNext())
+		while (iter.hasNext()) {
 			((IFigure) iter.next()).revalidate();
+		}
 		viewport.validate();
 
 		// Point loc = viewport.getViewLocation();

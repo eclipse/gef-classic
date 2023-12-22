@@ -85,11 +85,13 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 		@Override
 		protected boolean handleButtonDown(int button) {
-			if (getParent() instanceof IPaletteStackEditPart)
+			if (getParent() instanceof IPaletteStackEditPart) {
 				enableTimer();
+			}
 
-			if (button == 2 && isInState(STATE_INITIAL))
+			if (button == 2 && isInState(STATE_INITIAL)) {
 				performConditionalSelection();
+			}
 			super.handleButtonDown(button);
 			if (button == 1) {
 				getFigure().internalGetEventDispatcher().requestRemoveFocus(getFigure());
@@ -289,18 +291,20 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		protected void paintBorder(Graphics graphics) {
 			if (isEnabled()) {
 
-				if (getBorder() != null)
+				if (getBorder() != null) {
 					getBorder().paint(this, graphics, NO_INSETS);
+				}
 				if (hasFocus()) {
 					graphics.setForegroundColor(ColorConstants.black);
 					graphics.setBackgroundColor(ColorConstants.white);
 
 					Rectangle area = isToolbarItem() ? getClientArea()
 							: getSelectionRectangle(getLayoutSetting(), customLabel);
-					if (isStyle(STYLE_BUTTON))
+					if (isStyle(STYLE_BUTTON)) {
 						graphics.drawFocus(area.x, area.y, area.width, area.height);
-					else
+					} else {
 						graphics.drawFocus(area.x, area.y, area.width - 1, area.height - 1);
+					}
 				}
 			} else {
 				super.paintBorder(graphics);
@@ -365,8 +369,9 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			@Override
 			public void getState(AccessibleControlEvent e) {
 				super.getState(e);
-				if (getButtonModel().isSelected())
+				if (getButtonModel().isSelected()) {
 					e.detail |= ACC.STATE_CHECKED;
+				}
 			}
 		};
 	}
@@ -407,8 +412,9 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	 */
 	@Override
 	public void eraseTargetFeedback(Request request) {
-		if (RequestConstants.REQ_SELECTION.equals(request.getType()))
+		if (RequestConstants.REQ_SELECTION.equals(request.getType())) {
 			getButtonModel().setMouseOver(false);
+		}
 		super.eraseTargetFeedback(request);
 	}
 
@@ -422,10 +428,11 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	 */
 	@Override
 	public DragTracker getDragTracker(Request request) {
-		if (SWT.getPlatform().equals("gtk")) //$NON-NLS-1$
+		if (SWT.getPlatform().equals("gtk")) { //$NON-NLS-1$
 			return new GTKToggleButtonTracker();
-		else
+		} else { //$NON-NLS-1$
 			return new OtherToggleButtonTracker();
+		}
 	}
 
 	@Override
@@ -466,10 +473,11 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 		customLabel.setName(entry.getLabel());
 		customLabel.setDescription(entry.getDescription());
-		if (getPreferenceSource().useLargeIcons())
+		if (getPreferenceSource().useLargeIcons()) {
 			setImageDescriptor(entry.getLargeIcon());
-		else
+		} else {
 			setImageDescriptor(entry.getSmallIcon());
+		}
 		int layoutMode = getLayoutSetting();
 		customLabel.setLayoutMode(layoutMode);
 		if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
@@ -491,8 +499,9 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	 */
 	@Override
 	public void removeNotify() {
-		if (getButtonModel().isSelected())
+		if (getButtonModel().isSelected()) {
 			getPaletteViewer().setActiveTool(null);
+		}
 		super.removeNotify();
 	}
 
@@ -502,8 +511,9 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 	@Override
 	public void restoreState(IMemento memento) {
-		if (Boolean.valueOf(memento.getString(ACTIVE_STATE)).booleanValue())
+		if (Boolean.valueOf(memento.getString(ACTIVE_STATE)).booleanValue()) {
 			getPaletteViewer().setActiveTool(getModel());
+		}
 		super.restoreState(memento);
 	}
 
@@ -529,8 +539,9 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	public void setSelected(int value) {
 		super.setSelected(value);
 		if (value == SELECTED_PRIMARY && getPaletteViewer().getControl() != null
-				&& !getPaletteViewer().getControl().isDisposed() && getPaletteViewer().getControl().isFocusControl())
+				&& !getPaletteViewer().getControl().isDisposed() && getPaletteViewer().getControl().isFocusControl()) {
 			getFigure().requestFocus();
+		}
 	}
 
 	/**
@@ -538,8 +549,9 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	 */
 	@Override
 	public void showTargetFeedback(Request request) {
-		if (RequestConstants.REQ_SELECTION.equals(request.getType()))
+		if (RequestConstants.REQ_SELECTION.equals(request.getType())) {
 			getButtonModel().setMouseOver(true);
+		}
 		super.showTargetFeedback(request);
 	}
 

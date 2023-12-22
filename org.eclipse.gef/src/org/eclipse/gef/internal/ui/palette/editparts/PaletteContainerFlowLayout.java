@@ -61,10 +61,12 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 			if (child instanceof PinnablePaletteStackFigure && ((PinnablePaletteStackFigure) child).isExpanded()) {
 
 				// Subtract out the insets from the hints
-				if (wHint > -1)
+				if (wHint > -1) {
 					wHint = Math.max(0, wHint - container.getInsets().getWidth());
-				if (hHint > -1)
+				}
+				if (hHint > -1) {
 					hHint = Math.max(0, hHint - container.getInsets().getHeight());
+				}
 
 				// Figure out the new hint that we are interested in based on the orientation.
 				// Ignore the other hint (by setting it to -1).
@@ -159,10 +161,11 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 
 				int wHint = -1;
 				int hHint = -1;
-				if (isHorizontal())
+				if (isHorizontal()) {
 					wHint = parent.getClientArea().width;
-				else
+				} else {
 					hHint = parent.getClientArea().height;
+				}
 
 				expandedPaneHeight = ((PinnablePaletteStackFigure) child).getExpandedContainerPreferredSize(wHint,
 						hHint).height;

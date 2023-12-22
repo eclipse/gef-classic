@@ -58,8 +58,9 @@ public abstract class PrintOperation {
 			printerGraphics.dispose();
 			g.dispose();
 		}
-		if (printerGC != null)
+		if (printerGC != null) {
 			printerGC.dispose();
+		}
 	}
 
 	/**

@@ -81,8 +81,9 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 */
 	@Override
 	public final void invalidate(Connection conn) {
-		if (Animation.isInitialRecording())
+		if (Animation.isInitialRecording()) {
 			Animation.hookAnimator(conn, this);
+		}
 	}
 
 	/**
@@ -125,8 +126,9 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 */
 	@Override
 	public final void postRoute(Connection connection) {
-		if (Animation.isFinalRecording())
+		if (Animation.isFinalRecording()) {
 			Animation.hookNeedsCapture(connection, this);
+		}
 	}
 
 	private void reconcileStates(Connection conn) {

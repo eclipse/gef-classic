@@ -89,7 +89,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 			for (EditPart part : AbstractGraphicalEditPart.this.getChildren()) {
 				AccessibleEditPart access = part.getAdapter(AccessibleEditPart.class);
 				if (access == null)
+				 {
 					return; // fail if any children aren't accessible.
+				}
 				children.add(Integer.valueOf(access.getAccessibleID()));
 			}
 			e.children = children.toArray();
@@ -116,10 +118,12 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		@Override
 		public void getState(AccessibleControlEvent e) {
 			e.detail = ACC.STATE_SELECTABLE | ACC.STATE_FOCUSABLE;
-			if (getSelected() != EditPart.SELECTED_NONE)
+			if (getSelected() != EditPart.SELECTED_NONE) {
 				e.detail |= ACC.STATE_SELECTED;
-			if (getViewer().getFocusEditPart() == AbstractGraphicalEditPart.this)
+			}
+			if (getViewer().getFocusEditPart() == AbstractGraphicalEditPart.this) {
 				e.detail |= ACC.STATE_FOCUSED;
+			}
 		}
 
 		/**
@@ -195,8 +199,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	public void activate() {
 		super.activate();
 		List l = getSourceConnections();
-		for (int i = 0; i < l.size(); i++)
-			((EditPart) l.get(i)).activate();
+		for (Object element : l) {
+			((EditPart) element).activate();
+		}
 	}
 
 	/**
@@ -226,11 +231,13 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		super.addNotify();
 		List conns;
 		conns = getSourceConnections();
-		for (int i = 0; i < conns.size(); i++)
-			((ConnectionEditPart) conns.get(i)).setSource(this);
+		for (Object conn : conns) {
+			((ConnectionEditPart) conn).setSource(this);
+		}
 		conns = getTargetConnections();
-		for (int i = 0; i < conns.size(); i++)
-			((ConnectionEditPart) conns.get(i)).setTarget(this);
+		for (Object conn : conns) {
+			((ConnectionEditPart) conn).setTarget(this);
+		}
 	}
 
 	/**
@@ -255,12 +262,14 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		primAddSourceConnection(connection, index);
 
 		GraphicalEditPart source = (GraphicalEditPart) connection.getSource();
-		if (source != null)
+		if (source != null) {
 			source.getSourceConnections().remove(connection);
+		}
 
 		connection.setSource(this);
-		if (isActive())
+		if (isActive()) {
 			connection.activate();
+		}
 		fireSourceConnectionAdded(connection, index);
 	}
 
@@ -284,8 +293,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		primAddTargetConnection(connection, index);
 
 		GraphicalEditPart target = (GraphicalEditPart) connection.getTarget();
-		if (target != null)
+		if (target != null) {
 			target.getTargetConnections().remove(connection);
+		}
 
 		connection.setTarget(this);
 		fireTargetConnectionAdded(connection, index);
@@ -328,8 +338,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	protected ConnectionEditPart createOrFindConnection(Object model) {
 		ConnectionEditPart conx = (ConnectionEditPart) getViewer().getEditPartRegistry().get(model);
-		if (conx != null)
+		if (conx != null) {
 			return conx;
+		}
 		return createConnection(model);
 	}
 
@@ -343,8 +354,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	@Override
 	public void deactivate() {
 		List l = getSourceConnections();
-		for (int i = 0; i < l.size(); i++)
-			((EditPart) l.get(i)).deactivate();
+		for (Object element : l) {
+			((EditPart) element).deactivate();
+		}
 
 		super.deactivate();
 	}
@@ -358,8 +370,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @param index      Position child is being added into.
 	 */
 	protected void fireRemovingSourceConnection(ConnectionEditPart connection, int index) {
-		if (eventListeners == null)
+		if (eventListeners == null) {
 			return;
+		}
 		eventListeners.getListenersIterable(NodeListener.class)
 				.forEach(lst -> lst.removingSourceConnection(connection, index));
 	}
@@ -373,8 +386,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @param index      Position child is being added into.
 	 */
 	protected void fireRemovingTargetConnection(ConnectionEditPart connection, int index) {
-		if (eventListeners == null)
+		if (eventListeners == null) {
 			return;
+		}
 		eventListeners.getListenersIterable(NodeListener.class)
 				.forEach(lst -> lst.removingTargetConnection(connection, index));
 	}
@@ -388,8 +402,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @param index      Position child is being added into.
 	 */
 	protected void fireSourceConnectionAdded(ConnectionEditPart connection, int index) {
-		if (eventListeners == null)
+		if (eventListeners == null) {
 			return;
+		}
 		eventListeners.getListenersIterable(NodeListener.class)
 				.forEach(lst -> lst.sourceConnectionAdded(connection, index));
 	}
@@ -403,8 +418,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @param index      Position child is being added into.
 	 */
 	protected void fireTargetConnectionAdded(ConnectionEditPart connection, int index) {
-		if (eventListeners == null)
+		if (eventListeners == null) {
 			return;
+		}
 		eventListeners.getListenersIterable(NodeListener.class)
 				.forEach(lst -> lst.targetConnectionAdded(connection, index));
 	}
@@ -420,11 +436,13 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
-		if (key == AccessibleHandleProvider.class)
+		if (key == AccessibleHandleProvider.class) {
 			return key.cast(new MergedAccessibleHandles(getEditPolicyIterable()));
+		}
 
-		if (key == AccessibleAnchorProvider.class)
+		if (key == AccessibleAnchorProvider.class) {
 			return key.cast(new DefaultAccessibleAnchorProvider());
+		}
 
 		return super.getAdapter(key);
 	}
@@ -467,8 +485,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	@Override
 	public IFigure getFigure() {
-		if (figure == null)
+		if (figure == null) {
 			setFigure(createFigure());
+		}
 		return figure;
 	}
 
@@ -519,8 +538,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	@Override
 	public List getSourceConnections() {
-		if (sourceConnections == null)
+		if (sourceConnections == null) {
 			return Collections.EMPTY_LIST;
+		}
 		return sourceConnections;
 	}
 
@@ -529,8 +549,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	@Override
 	public List getTargetConnections() {
-		if (targetConnections == null)
+		if (targetConnections == null) {
 			return Collections.EMPTY_LIST;
+		}
 		return targetConnections;
 	}
 
@@ -555,8 +576,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @param index      the index of the add
 	 */
 	protected void primAddSourceConnection(ConnectionEditPart connection, int index) {
-		if (sourceConnections == null)
+		if (sourceConnections == null) {
 			sourceConnections = new ArrayList();
+		}
 		sourceConnections.add(index, connection);
 	}
 
@@ -570,8 +592,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @param index      the index of the add
 	 */
 	protected void primAddTargetConnection(ConnectionEditPart connection, int index) {
-		if (targetConnections == null)
+		if (targetConnections == null) {
 			targetConnections = new ArrayList();
+		}
 		targetConnections.add(index, connection);
 	}
 
@@ -652,13 +675,14 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		for (i = 0; i < modelObjects.size(); i++) {
 			model = modelObjects.get(i);
 
-			if (i < sourceConnections.size() && ((EditPart) sourceConnections.get(i)).getModel() == model)
+			if (i < sourceConnections.size() && ((EditPart) sourceConnections.get(i)).getModel() == model) {
 				continue;
+			}
 
 			editPart = (ConnectionEditPart) modelToEditPart.get(model);
-			if (editPart != null)
+			if (editPart != null) {
 				reorderSourceConnection(editPart, i);
-			else {
+			} else {
 				editPart = createOrFindConnection(model);
 				addSourceConnection(editPart, i);
 			}
@@ -668,10 +692,12 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		size = sourceConnections.size();
 		if (i < size) {
 			List trash = new ArrayList(size - i);
-			for (; i < size; i++)
+			for (; i < size; i++) {
 				trash.add(sourceConnections.get(i));
-			for (i = 0; i < trash.size(); i++)
+			}
+			for (i = 0; i < trash.size(); i++) {
 				removeSourceConnection((ConnectionEditPart) trash.get(i));
+			}
 		}
 	}
 
@@ -713,13 +739,14 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		for (i = 0; i < modelObjects.size(); i++) {
 			model = modelObjects.get(i);
 
-			if (i < targetConnections.size() && ((EditPart) targetConnections.get(i)).getModel() == model)
+			if (i < targetConnections.size() && ((EditPart) targetConnections.get(i)).getModel() == model) {
 				continue;
+			}
 
 			editPart = (ConnectionEditPart) modelToEditPart.get(model);
-			if (editPart != null)
+			if (editPart != null) {
 				reorderTargetConnection(editPart, i);
-			else {
+			} else {
 				editPart = createOrFindConnection(model);
 				addTargetConnection(editPart, i);
 			}
@@ -729,10 +756,12 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		size = targetConnections.size();
 		if (i < size) {
 			List trash = new ArrayList(size - i);
-			for (; i < size; i++)
+			for (; i < size; i++) {
 				trash.add(targetConnections.get(i));
-			for (i = 0; i < trash.size(); i++)
+			}
+			for (i = 0; i < trash.size(); i++) {
 				removeTargetConnection((ConnectionEditPart) trash.get(i));
+			}
 		}
 	}
 
@@ -777,16 +806,18 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		List conns;
 		ConnectionEditPart cep;
 		conns = getSourceConnections();
-		for (int i = 0; i < conns.size(); i++) {
-			cep = (ConnectionEditPart) conns.get(i);
-			if (cep.getSource() == this)
+		for (Object conn : conns) {
+			cep = (ConnectionEditPart) conn;
+			if (cep.getSource() == this) {
 				cep.setSource(null);
+			}
 		}
 		conns = getTargetConnections();
-		for (int i = 0; i < conns.size(); i++) {
-			cep = (ConnectionEditPart) conns.get(i);
-			if (cep.getTarget() == this)
+		for (Object conn : conns) {
+			cep = (ConnectionEditPart) conn;
+			if (cep.getTarget() == this) {
 				cep.setTarget(null);
+			}
 		}
 		super.removeNotify();
 	}
@@ -818,8 +849,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	protected void removeTargetConnection(ConnectionEditPart connection) {
 		fireRemovingTargetConnection(connection, getTargetConnections().indexOf(connection));
-		if (connection.getTarget() == this)
+		if (connection.getTarget() == this) {
 			connection.setTarget(null);
+		}
 		primRemoveTargetConnection(connection);
 	}
 
@@ -835,8 +867,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		IFigure childFigure = ((GraphicalEditPart) child).getFigure();
 		LayoutManager layout = getContentPane().getLayoutManager();
 		Object constraint = null;
-		if (layout != null)
+		if (layout != null) {
 			constraint = layout.getConstraint(childFigure);
+		}
 
 		super.reorderChild(child, index);
 		setLayoutConstraint(child, childFigure, constraint);

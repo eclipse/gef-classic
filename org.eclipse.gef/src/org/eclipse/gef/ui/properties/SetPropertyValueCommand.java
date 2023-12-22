@@ -192,8 +192,9 @@ public class SetPropertyValueCommand extends Command {
 	}
 
 	private Object unwrapValue(Object value) {
-		if (value instanceof IPropertySource)
+		if (value instanceof IPropertySource) {
 			return ((IPropertySource) value).getEditableValue();
+		}
 		return value;
 	}
 

@@ -13,18 +13,20 @@
 package org.eclipse.gef.examples.flow.policies;
 
 import org.eclipse.draw2d.PolylineConnection;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
+
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.model.Transition;
 import org.eclipse.gef.examples.flow.model.commands.DeleteConnectionCommand;
 import org.eclipse.gef.examples.flow.model.commands.SplitTransitionCommand;
 import org.eclipse.gef.examples.flow.parts.TransitionPart;
-import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * EditPolicy for Transitions. Supports deletion and "splitting", i.e. adding an
@@ -40,8 +42,9 @@ public class TransitionEditPolicy extends ConnectionEditPolicy {
 	 */
 	@Override
 	public Command getCommand(Request request) {
-		if (REQ_CREATE.equals(request.getType()))
+		if (REQ_CREATE.equals(request.getType())) {
 			return getSplitTransitionCommand(request);
+		}
 		return super.getCommand(request);
 	}
 
@@ -75,8 +78,9 @@ public class TransitionEditPolicy extends ConnectionEditPolicy {
 	 */
 	@Override
 	public EditPart getTargetEditPart(Request request) {
-		if (REQ_CREATE.equals(request.getType()))
+		if (REQ_CREATE.equals(request.getType())) {
 			return getHost();
+		}
 		return null;
 	}
 
@@ -85,8 +89,9 @@ public class TransitionEditPolicy extends ConnectionEditPolicy {
 	 */
 	@Override
 	public void eraseTargetFeedback(Request request) {
-		if (REQ_CREATE.equals(request.getType()))
+		if (REQ_CREATE.equals(request.getType())) {
 			getConnectionFigure().setLineWidth(1);
+		}
 	}
 
 	/**
@@ -94,8 +99,9 @@ public class TransitionEditPolicy extends ConnectionEditPolicy {
 	 */
 	@Override
 	public void showTargetFeedback(Request request) {
-		if (REQ_CREATE.equals(request.getType()))
+		if (REQ_CREATE.equals(request.getType())) {
 			getConnectionFigure().setLineWidth(2);
+		}
 	}
 
 }

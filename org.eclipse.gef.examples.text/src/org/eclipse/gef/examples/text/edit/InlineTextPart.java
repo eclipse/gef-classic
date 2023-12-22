@@ -32,8 +32,9 @@ public class InlineTextPart extends CompoundTextPart {
 				&& (search.getType() == CaretRequest.LINE_BOUNDARY || search.getType() == CaretRequest.ROW)) {
 			search.setReferenceTextLocation(this, search.isForward ? 0 : getLength());
 			getTextParent().getTextLocation(search, result);
-		} else
+		} else {
 			super.getTextLocation(search, result);
+		}
 	}
 
 }

@@ -187,8 +187,9 @@ public class LogicDiagramFactory {
 	}
 
 	public Object getRootElement() {
-		if (root == null)
+		if (root == null) {
 			createLargeModel();
+		}
 		return root;
 	}
 

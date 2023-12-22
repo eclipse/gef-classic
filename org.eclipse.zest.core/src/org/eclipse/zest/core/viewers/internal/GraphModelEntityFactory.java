@@ -65,8 +65,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		if (entities == null) {
 			return;
 		}
-		for (int i = 0; i < entities.length; i++) {
-			Object data = entities[i];
+		for (Object data : entities) {
 			IFigureProvider figureProvider = null;
 			if (getLabelProvider() instanceof IFigureProvider) {
 				figureProvider = (IFigureProvider) getLabelProvider();
@@ -84,9 +83,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		Set keySet = ((AbstractStructuredGraphViewer) getViewer()).getNodesMap().keySet();
 		entities = keySet.toArray();
 
-		for (int i = 0; i < entities.length; i++) {
-			Object data = entities[i];
-
+		for (Object data : entities) {
 			// If this element is filtered, continue to the next one.
 			if (filterElement(inputElement, data)) {
 				continue;
@@ -94,17 +91,17 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 			Object[] related = ((IGraphEntityContentProvider) getContentProvider()).getConnectedTo(data);
 
 			if (related != null) {
-				for (int j = 0; j < related.length; j++) {
+				for (Object element : related) {
 					// if the node this node is connected to is filtered,
 					// don't display this edge
-					if (filterElement(inputElement, related[j])) {
+					if (filterElement(inputElement, element)) {
 						continue;
 					}
-					EntityConnectionData connectionData = new EntityConnectionData(data, related[j]);
+					EntityConnectionData connectionData = new EntityConnectionData(data, element);
 					if (filterElement(inputElement, connectionData)) {
 						continue;
 					}
-					createConnection(model, connectionData, data, related[j]);
+					createConnection(model, connectionData, data, element);
 				}
 			}
 		}
@@ -168,19 +165,17 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		for (Iterator it = connections.iterator(); it.hasNext();) {
 			oldExternalConnections.add(((GraphConnection) it.next()).getExternalConnection());
 		}
-		for (int i = 0; i < related.length; i++) {
-			newExternalConnections.add(new EntityConnectionData(element, related[i]));
+		for (Object element2 : related) {
+			newExternalConnections.add(new EntityConnectionData(element, element2));
 		}
-		for (Iterator it = oldExternalConnections.iterator(); it.hasNext();) {
-			Object next = it.next();
+		for (Object next : oldExternalConnections) {
 			if (!newExternalConnections.contains(next)) {
 				toDelete.add(next);
 			} else {
 				toKeep.add(next);
 			}
 		}
-		for (Iterator it = newExternalConnections.iterator(); it.hasNext();) {
-			Object next = it.next();
+		for (Object next : newExternalConnections) {
 			if (!oldExternalConnections.contains(next)) {
 				toAdd.add(next);
 			}

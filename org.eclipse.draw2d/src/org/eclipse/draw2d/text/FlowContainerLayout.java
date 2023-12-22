@@ -73,8 +73,9 @@ public abstract class FlowContainerLayout extends FlowFigureLayout implements Fl
 	 * @see org.eclipse.draw2d.text.FlowContext#getCurrentLine()
 	 */
 	LineBox getCurrentLine() {
-		if (currentLine == null)
+		if (currentLine == null) {
 			createNewLine();
+		}
 		return currentLine;
 	}
 
@@ -110,8 +111,9 @@ public abstract class FlowContainerLayout extends FlowFigureLayout implements Fl
 	 */
 	protected void layoutChildren() {
 		getFlowFigure().getChildren().forEach(f -> {
-			if (forceChildInvalidation(f))
+			if (forceChildInvalidation(f)) {
 				f.invalidate();
+			}
 			f.validate();
 		});
 	}

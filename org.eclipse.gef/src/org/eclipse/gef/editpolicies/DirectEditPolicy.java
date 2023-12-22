@@ -36,8 +36,9 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 */
 	@Override
 	public void eraseSourceFeedback(Request request) {
-		if (RequestConstants.REQ_DIRECT_EDIT == request.getType())
+		if (RequestConstants.REQ_DIRECT_EDIT == request.getType()) {
 			eraseDirectEditFeedback((DirectEditRequest) request);
+		}
 	}
 
 	/**
@@ -58,8 +59,9 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 */
 	@Override
 	public Command getCommand(Request request) {
-		if (RequestConstants.REQ_DIRECT_EDIT == request.getType())
+		if (RequestConstants.REQ_DIRECT_EDIT == request.getType()) {
 			return getDirectEditCommand((DirectEditRequest) request);
+		}
 		return null;
 	}
 
@@ -92,8 +94,9 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 */
 	@Override
 	public void showSourceFeedback(Request request) {
-		if (RequestConstants.REQ_DIRECT_EDIT == request.getType())
+		if (RequestConstants.REQ_DIRECT_EDIT == request.getType()) {
 			showDirectEditFeedback((DirectEditRequest) request);
+		}
 	}
 
 	/**
@@ -137,8 +140,9 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 */
 	@Override
 	public boolean understandsRequest(Request request) {
-		if (RequestConstants.REQ_DIRECT_EDIT.equals(request.getType()))
+		if (RequestConstants.REQ_DIRECT_EDIT.equals(request.getType())) {
 			return true;
+		}
 		return super.understandsRequest(request);
 	}
 

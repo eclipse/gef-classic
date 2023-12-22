@@ -79,8 +79,9 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		// boundsY, boundsWidth, boundsHeight);
 		// now begin
 		numChildren = entitiesToLayout.length;
-		if (numChildren < 1)
+		if (numChildren < 1) {
 			return;
+		}
 
 		int[] colsAndRows = calculateNumberOfRowsAndCols(numChildren, x, y, width, height);
 		cols = colsAndRows[0];
@@ -180,32 +181,40 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		if (boundWidth <= boundHeight) {
 			// decrease number of rows and columns until just enough or not enough
 			while (rows * cols > numChildren) {
-				if (rows > 1)
+				if (rows > 1) {
 					rows--;
-				if (rows * cols > numChildren)
-					if (cols > 1)
+				}
+				if (rows * cols > numChildren) {
+					if (cols > 1) {
 						cols--;
+					}
+				}
 			}
 			// increase number of rows and columns until just enough
 			while (rows * cols < numChildren) {
 				rows++;
-				if (rows * cols < numChildren)
+				if (rows * cols < numChildren) {
 					cols++;
+				}
 			}
 		} else {
 			// decrease number of rows and columns until just enough or not enough
 			while (rows * cols > numChildren) {
-				if (cols > 1)
+				if (cols > 1) {
 					cols--;
-				if (rows * cols > numChildren)
-					if (rows > 1)
+				}
+				if (rows * cols > numChildren) {
+					if (rows > 1) {
 						rows--;
+					}
+				}
 			}
 			// increase number of rows and columns until just enough
 			while (rows * cols < numChildren) {
 				cols++;
-				if (rows * cols < numChildren)
+				if (rows * cols < numChildren) {
 					rows++;
+				}
 			}
 		}
 		int[] result = { cols, rows };
@@ -246,14 +255,15 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
-		if (asynchronous && continueous)
+		if (asynchronous && continueous) {
 			return false;
-		else if (asynchronous && !continueous)
+		} else if (asynchronous && !continueous) {
 			return true;
-		else if (!asynchronous && continueous)
+		} else if (!asynchronous && continueous) {
 			return false;
-		else if (!asynchronous && !continueous)
+		} else if (!asynchronous && !continueous) {
 			return true;
+		}
 
 		return false;
 	}

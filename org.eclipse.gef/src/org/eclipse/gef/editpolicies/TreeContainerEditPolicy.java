@@ -73,8 +73,9 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	 */
 	@Override
 	public void eraseTargetFeedback(Request req) {
-		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_ADD) || req.getType().equals(REQ_CREATE))
+		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_ADD) || req.getType().equals(REQ_CREATE)) {
 			eraseDropFeedback(req);
+		}
 	}
 
 	/**
@@ -88,8 +89,9 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 		TreeItem item = findTreeItemAt(pt);
 		if (item != null) {
 			index = getHost().getChildren().indexOf(item.getData());
-			if (index >= 0 && !isInUpperHalf(item.getBounds(), pt))
+			if (index >= 0 && !isInUpperHalf(item.getBounds(), pt)) {
 				index++;
+			}
 		}
 		return index;
 	}
@@ -110,12 +112,15 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	 */
 	@Override
 	public Command getCommand(Request req) {
-		if (req.getType().equals(REQ_MOVE_CHILDREN))
+		if (req.getType().equals(REQ_MOVE_CHILDREN)) {
 			return getMoveChildrenCommand((ChangeBoundsRequest) req);
-		if (req.getType().equals(REQ_ADD))
+		}
+		if (req.getType().equals(REQ_ADD)) {
 			return getAddCommand((ChangeBoundsRequest) req);
-		if (req.getType().equals(REQ_CREATE))
+		}
+		if (req.getType().equals(REQ_CREATE)) {
 			return getCreateCommand((CreateRequest) req);
+		}
 
 		return null;
 	}
@@ -132,26 +137,29 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 			DropRequest drop = (DropRequest) req;
 			Point where = new Point(drop.getLocation().x, drop.getLocation().y);
 			Widget widget = ((TreeEditPart) getHost()).getWidget();
-			if (widget instanceof Tree)
+			if (widget instanceof Tree) {
 				return getHost();
+			}
 			TreeItem treeitem = (TreeItem) widget;
 			Rectangle bounds = treeitem.getBounds();
 			int fudge = bounds.height / 5;
 			Rectangle inner = new Rectangle(bounds.x, bounds.y + fudge, bounds.width,
 					bounds.height - (treeitem.getExpanded() ? 0 : fudge * 2));
 			// Point is either outside the Treeitem, or inside the inner Rect.
-			if (!bounds.contains(where) || inner.contains(where))
+			if (!bounds.contains(where) || inner.contains(where)) {
 				return getHost();
+			}
 		}
 		return null;
 	}
 
 	private Tree getTree() {
 		Widget widget = ((TreeEditPart) getHost()).getWidget();
-		if (widget instanceof Tree)
+		if (widget instanceof Tree) {
 			return (Tree) widget;
-		else
+		} else {
 			return ((TreeItem) widget).getParent();
+		}
 	}
 
 	private void insertMarkAfterLastChild(TreeItem[] children) {
@@ -189,8 +197,9 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	 */
 	@Override
 	public void showTargetFeedback(Request req) {
-		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_ADD) || req.getType().equals(REQ_CREATE))
+		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_ADD) || req.getType().equals(REQ_CREATE)) {
 			showDropFeedback((DropRequest) req);
+		}
 	}
 
 }

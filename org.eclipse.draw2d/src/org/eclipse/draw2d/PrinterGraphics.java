@@ -53,8 +53,9 @@ public class PrinterGraphics extends ScaledGraphics {
 
 	private Image printerImage(Image image) {
 		Image result = (Image) imageCache.get(image);
-		if (result != null)
+		if (result != null) {
 			return result;
+		}
 
 		result = new Image(printer, image.getImageData());
 		imageCache.put(image, result);

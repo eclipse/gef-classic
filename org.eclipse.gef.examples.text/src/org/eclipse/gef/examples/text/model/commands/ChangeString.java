@@ -14,6 +14,7 @@
 package org.eclipse.gef.examples.text.model.commands;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.gef.examples.text.model.ModelLocation;
 import org.eclipse.gef.examples.text.model.TextRun;
 
@@ -53,10 +54,11 @@ public class ChangeString extends MiniEdit {
 	 */
 	@Override
 	public void apply() {
-		if (overwrite)
+		if (overwrite) {
 			overwrittenText = run.overwriteText(pending, offset);
-		else
+		} else {
 			run.insertText(pending, offset);
+		}
 		insertedChars = pending.toCharArray();
 		pending = null;
 	}
@@ -70,10 +72,11 @@ public class ChangeString extends MiniEdit {
 	 * re-executes the command for the additional character added above.
 	 */
 	public void commitPending() {
-		if (overwrite)
+		if (overwrite) {
 			overwrittenText += run.overwriteText(pending, offset + insertedChars.length);
-		else
+		} else {
 			run.insertText(pending, offset + insertedChars.length);
+		}
 		char[] old = insertedChars;
 		insertedChars = new char[old.length + 1];
 		System.arraycopy(old, 0, insertedChars, 0, old.length);
@@ -88,10 +91,11 @@ public class ChangeString extends MiniEdit {
 
 	@Override
 	public void reapply() {
-		if (overwrite)
+		if (overwrite) {
 			overwrittenText = run.overwriteText(new String(insertedChars), offset);
-		else
+		} else {
 			run.insertText(new String(insertedChars), offset);
+		}
 	}
 
 	@Override
@@ -99,8 +103,9 @@ public class ChangeString extends MiniEdit {
 		if (overwrite) {
 			run.overwriteText(overwrittenText, offset);
 			overwrittenText = null;
-		} else
+		} else {
 			run.removeRange(offset, insertedChars.length);
+		}
 	}
 
 }

@@ -55,10 +55,11 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 	@Override
 	protected void createEditPolicies() {
 		EditPolicy component;
-		if (getModel() instanceof LED)
+		if (getModel() instanceof LED) {
 			component = new LEDEditPolicy();
-		else
+		} else {
 			component = new LogicElementEditPolicy();
+		}
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, component);
 		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new LogicTreeEditPolicy());
 	}
@@ -91,14 +92,16 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 	@Override
 	public void propertyChange(PropertyChangeEvent change) {
 		if (change.getPropertyName().equals(LogicElement.CHILDREN)) {
-			if (change.getOldValue() instanceof Integer)
+			if (change.getOldValue() instanceof Integer) {
 				// new child
 				addChild(createChild(change.getNewValue()), ((Integer) change.getOldValue()).intValue());
-			else
+			} else {
 				// remove child
 				removeChild((EditPart) getViewer().getEditPartRegistry().get(change.getOldValue()));
-		} else
+			}
+		} else {
 			refreshVisuals();
+		}
 	}
 
 	/**
@@ -106,12 +109,14 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 	 */
 	@Override
 	protected void refreshVisuals() {
-		if (getWidget() instanceof Tree)
+		if (getWidget() instanceof Tree) {
 			return;
+		}
 		Image image = getLogicSubpart().getIcon();
 		TreeItem item = (TreeItem) getWidget();
-		if (image != null)
+		if (image != null) {
 			image.setBackground(item.getParent().getBackground());
+		}
 		setWidgetImage(image);
 		setWidgetText(getLogicSubpart().toString());
 	}

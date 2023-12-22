@@ -13,8 +13,9 @@
 
 package org.eclipse.gef.examples.text.model;
 
-import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.swt.SWT;
+
+import org.eclipse.draw2d.PositionConstants;
 
 /**
  * @since 3.1
@@ -41,34 +42,42 @@ public class Style extends Notifier {
 	private boolean underline;
 
 	public int getAlignment() {
-		if (alignment != PositionConstants.NONE)
+		if (alignment != PositionConstants.NONE) {
 			return alignment;
-		if (parentStyle != null)
+		}
+		if (parentStyle != null) {
 			return parentStyle.getAlignment();
+		}
 		return PositionConstants.NONE;
 	}
 
 	public String getFontFamily() {
-		if (fontFamily != null)
+		if (fontFamily != null) {
 			return fontFamily;
-		if (parentStyle != null)
+		}
+		if (parentStyle != null) {
 			return parentStyle.getFontFamily();
+		}
 		return "";
 	}
 
 	public int getFontHeight() {
-		if (fontHeight != -1)
+		if (fontHeight != -1) {
 			return fontHeight;
-		if (parentStyle != null)
+		}
+		if (parentStyle != null) {
 			return parentStyle.getFontHeight();
+		}
 		return -1;
 	}
 
 	public int getOrientation() {
-		if (orientation != SWT.NONE)
+		if (orientation != SWT.NONE) {
 			return orientation;
-		if (parentStyle != null)
+		}
+		if (parentStyle != null) {
 			return parentStyle.getOrientation();
+		}
 		return SWT.NONE;
 	}
 
@@ -85,20 +94,27 @@ public class Style extends Notifier {
 	}
 
 	public boolean isSet(String property) {
-		if (PROPERTY_BOLD.equals(property))
+		if (PROPERTY_BOLD.equals(property)) {
 			return bold;
-		if (PROPERTY_FONT_SIZE.equals(property))
+		}
+		if (PROPERTY_FONT_SIZE.equals(property)) {
 			return fontHeight != -1;
-		if (PROPERTY_ITALIC.equals(property))
+		}
+		if (PROPERTY_ITALIC.equals(property)) {
 			return italic;
-		if (PROPERTY_UNDERLINE.equals(property))
+		}
+		if (PROPERTY_UNDERLINE.equals(property)) {
 			return underline;
-		if (PROPERTY_FONT.equals(property))
+		}
+		if (PROPERTY_FONT.equals(property)) {
 			return fontFamily != null;
-		if (PROPERTY_ALIGNMENT.equals(property))
+		}
+		if (PROPERTY_ALIGNMENT.equals(property)) {
 			return alignment != PositionConstants.NONE;
-		if (PROPERTY_ORIENTATION.equals(property))
+		}
+		if (PROPERTY_ORIENTATION.equals(property)) {
 			return orientation != SWT.NONE;
+		}
 		return false;
 	}
 
@@ -107,25 +123,31 @@ public class Style extends Notifier {
 	}
 
 	public void setAlignment(int value) {
-		if (alignment == value)
+		if (alignment == value) {
 			return;
+		}
 		if (value != PositionConstants.ALWAYS_RIGHT && value != PositionConstants.CENTER
 				&& value != PositionConstants.RIGHT && value != PositionConstants.NONE
 				&& value != PositionConstants.LEFT && value != PositionConstants.ALWAYS_LEFT)
+		 {
 			throw new IllegalArgumentException(
 					"Alignment must be LEFT, CENTER, RIGHT, ALWAYS_LEFT, ALWAYS_RIGHT or NONE."); //$NON-NLS-1$
+		}
 		int oldValue = alignment;
 		alignment = value;
-		if (listeners != null)
+		if (listeners != null) {
 			listeners.firePropertyChange(PROPERTY_ALIGNMENT, oldValue, alignment);
+		}
 	}
 
 	public void setBold(boolean value) {
-		if (bold == value)
+		if (bold == value) {
 			return;
+		}
 		bold = value;
-		if (listeners != null)
+		if (listeners != null) {
 			listeners.firePropertyChange(PROPERTY_BOLD, !value, value);
+		}
 	}
 
 	public void setFontFamily(String fontFamily) {
@@ -136,27 +158,33 @@ public class Style extends Notifier {
 
 	public void setFontHeight(int fontHeight) {
 		this.fontHeight = fontHeight;
-		if (listeners != null)
+		if (listeners != null) {
 			listeners.firePropertyChange(PROPERTY_FONT_SIZE, fontHeight, fontHeight);
+		}
 	}
 
 	public void setItalic(boolean value) {
-		if (italic == value)
+		if (italic == value) {
 			return;
+		}
 		italic = value;
-		if (listeners != null)
+		if (listeners != null) {
 			listeners.firePropertyChange(PROPERTY_ITALIC, !value, value);
+		}
 	}
 
 	public void setOrientation(int value) {
-		if (orientation == value)
+		if (orientation == value) {
 			return;
-		if (value != SWT.RIGHT_TO_LEFT && value != SWT.LEFT_TO_RIGHT && value != SWT.NONE)
+		}
+		if (value != SWT.RIGHT_TO_LEFT && value != SWT.LEFT_TO_RIGHT && value != SWT.NONE) {
 			throw new IllegalArgumentException("Orientation must LTR, RTL or NONE.");
+		}
 		int oldValue = orientation;
 		orientation = value;
-		if (listeners != null)
+		if (listeners != null) {
 			listeners.firePropertyChange(PROPERTY_ORIENTATION, oldValue, orientation);
+		}
 	}
 
 	public void setParentStyle(Style style) {
@@ -164,11 +192,13 @@ public class Style extends Notifier {
 	}
 
 	public void setUnderline(boolean value) {
-		if (underline == value)
+		if (underline == value) {
 			return;
+		}
 		underline = value;
-		if (listeners != null)
+		if (listeners != null) {
 			listeners.firePropertyChange(PROPERTY_UNDERLINE, !value, value);
+		}
 	}
 
 }

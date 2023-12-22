@@ -41,14 +41,16 @@ public class StyleService {
 	}
 
 	public Object getStyle(String styleID) {
-		if (provider != null)
+		if (provider != null) {
 			return provider.getStyle(styleID);
+		}
 		return UNDEFINED;
 	}
 
 	public Object getStyleState(String styleID) {
-		if (provider != null)
+		if (provider != null) {
 			return provider.getStyleState(styleID);
+		}
 		return UNDEFINED;
 	}
 
@@ -69,18 +71,22 @@ public class StyleService {
 	}
 
 	public void setStyle(String styleID, Object value) {
-		if (provider != null)
+		if (provider != null) {
 			provider.setStyle(styleID, value);
+		}
 	}
 
 	public void setStyleProvider(StyleProvider provider) {
-		if (this.provider == provider)
+		if (this.provider == provider) {
 			return;
-		if (this.provider != null)
+		}
+		if (this.provider != null) {
 			this.provider.removeStyleListener(providerListener);
+		}
 		this.provider = provider;
-		if (this.provider != null)
+		if (this.provider != null) {
 			this.provider.addStyleListener(providerListener);
+		}
 		propogateChange(null);
 	}
 

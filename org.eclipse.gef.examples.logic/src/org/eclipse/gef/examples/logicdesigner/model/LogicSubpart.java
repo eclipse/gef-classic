@@ -142,10 +142,11 @@ public abstract class LogicSubpart extends LogicElement {
 	 */
 	@Override
 	public Object getPropertyValue(Object propName) {
-		if (ID_SIZE.equals(propName))
+		if (ID_SIZE.equals(propName)) {
 			return new DimensionPropertySource(getSize());
-		else if (ID_LOCATION.equals(propName))
+		} else if (ID_LOCATION.equals(propName)) {
 			return new LocationPropertySource(getLocation());
+		}
 		return null;
 	}
 
@@ -194,8 +195,9 @@ public abstract class LogicSubpart extends LogicElement {
 	}
 
 	public void setLocation(Point p) {
-		if (location.equals(p))
+		if (location.equals(p)) {
 			return;
+		}
 		location = p;
 		firePropertyChange("location", null, p); //$NON-NLS-1$
 	}
@@ -214,15 +216,17 @@ public abstract class LogicSubpart extends LogicElement {
 	 */
 	@Override
 	public void setPropertyValue(Object id, Object value) {
-		if (ID_SIZE.equals(id))
+		if (ID_SIZE.equals(id)) {
 			setSize((Dimension) value);
-		else if (ID_LOCATION.equals(id))
+		} else if (ID_LOCATION.equals(id)) {
 			setLocation((Point) value);
+		}
 	}
 
 	public void setSize(Dimension d) {
-		if (size.equals(d))
+		if (size.equals(d)) {
 			return;
+		}
 		size = d;
 		firePropertyChange("size", null, size); //$NON-NLS-1$
 	}

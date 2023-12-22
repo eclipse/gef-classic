@@ -66,13 +66,13 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 
 			// If rels returns null then just continue
 			// @tag zest(bug(134928(fix))) : An empty graph causes an NPE
-			for (int i = 0; i < rels.length; i++) {
+			for (Object rel : rels) {
 				// Check the filter on the source
-				Object source = getCastedContent().getSource(rels[i]);
+				Object source = getCastedContent().getSource(rel);
 				source = filterElement(getViewer().getInput(), source) ? null : source;
 
 				// Check the filter on the dest
-				Object dest = getCastedContent().getDestination(rels[i]);
+				Object dest = getCastedContent().getDestination(rel);
 				dest = filterElement(getViewer().getInput(), dest) ? null : dest;
 
 				if (source == null) {
@@ -98,8 +98,8 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 				}
 				// If any of the source, dest is null or the edge is filtered,
 				// don't create the graph.
-				if (source != null && dest != null && !filterElement(getViewer().getInput(), rels[i])) {
-					createConnection(model, rels[i], source, dest);
+				if (source != null && dest != null && !filterElement(getViewer().getInput(), rel)) {
+					createConnection(model, rel, source, dest);
 				}
 			}
 		}

@@ -135,8 +135,9 @@ public abstract class SnapToHelper implements PositionConstants {
 	public int snapRectangle(Request request, int snapOrientation, PrecisionRectangle baseRects[],
 			PrecisionRectangle result) {
 
-		for (int i = 0; i < baseRects.length && snapOrientation != 0; i++)
+		for (int i = 0; i < baseRects.length && snapOrientation != 0; i++) {
 			snapOrientation = snapRectangle(request, snapOrientation, baseRects[i], result);
+		}
 
 		return snapOrientation;
 	}

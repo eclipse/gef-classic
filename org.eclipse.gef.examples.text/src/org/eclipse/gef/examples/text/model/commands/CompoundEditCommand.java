@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.gef.examples.text.AppendableCommand;
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
@@ -59,8 +60,9 @@ public class CompoundEditCommand extends ExampleTextCommand implements Appendabl
 
 	@Override
 	public boolean canExecutePending() {
-		if (pending == null || pending.isEmpty())
+		if (pending == null || pending.isEmpty()) {
 			return false;
+		}
 
 		return pending.stream().noneMatch(edit -> (edit == null || !edit.canApply()));
 	}
@@ -81,8 +83,9 @@ public class CompoundEditCommand extends ExampleTextCommand implements Appendabl
 	@Override
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
 		ModelLocation loc = edits.get(edits.size() - 1).getResultingLocation();
-		if (loc == null)
+		if (loc == null) {
 			return getUndoSelectionRange(viewer);
+		}
 		return new SelectionRange(lookupModel(viewer, loc.model), loc.offset);
 	}
 
@@ -94,15 +97,17 @@ public class CompoundEditCommand extends ExampleTextCommand implements Appendabl
 	@Override
 	public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {
 		TextEditPart begin = lookupModel(viewer, beginLocation.model);
-		if (endLocation == null)
+		if (endLocation == null) {
 			return new SelectionRange(begin, beginLocation.offset);
+		}
 		TextEditPart end = lookupModel(viewer, endLocation.model);
 		return new SelectionRange(begin, beginLocation.offset, end, endLocation.offset);
 	}
 
 	public void pendEdit(MiniEdit edit) {
-		if (pending == null)
+		if (pending == null) {
 			pending = new ArrayList<>(2);
+		}
 		pending.add(edit);
 	}
 

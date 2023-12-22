@@ -80,8 +80,9 @@ public class Transposer {
 	 * @since 2.0
 	 */
 	public Dimension t(Dimension d) {
-		if (isEnabled())
+		if (isEnabled()) {
 			return d.getTransposed();
+		}
 		return d;
 	}
 
@@ -93,8 +94,9 @@ public class Transposer {
 	 * @since 2.0
 	 */
 	public Insets t(Insets i) {
-		if (isEnabled())
+		if (isEnabled()) {
 			return i.getTransposed();
+		}
 		return i;
 	}
 
@@ -106,8 +108,9 @@ public class Transposer {
 	 * @since 2.0
 	 */
 	public Point t(Point p) {
-		if (isEnabled())
+		if (isEnabled()) {
 			return p.getTransposed();
+		}
 		return p;
 	}
 
@@ -119,8 +122,9 @@ public class Transposer {
 	 * @since 2.0
 	 */
 	public Rectangle t(Rectangle r) {
-		if (isEnabled())
+		if (isEnabled()) {
 			return r.getTransposed();
+		}
 		return r;
 	}
 

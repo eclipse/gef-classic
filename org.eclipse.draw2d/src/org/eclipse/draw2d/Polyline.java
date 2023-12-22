@@ -46,8 +46,9 @@ public class Polyline extends AbstractPointListShape {
 		int tolerance = (int) Math.max(getLineWidthFloat() / 2.0f, this.tolerance);
 		LINEBOUNDS.setBounds(getBounds());
 		LINEBOUNDS.expand(tolerance, tolerance);
-		if (!LINEBOUNDS.contains(x, y))
+		if (!LINEBOUNDS.contains(x, y)) {
 			return false;
+		}
 		return shapeContainsPoint(x, y) || childrenContainsPoint(x, y);
 	}
 

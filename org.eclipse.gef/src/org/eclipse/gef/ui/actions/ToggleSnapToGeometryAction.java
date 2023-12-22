@@ -52,8 +52,9 @@ public class ToggleSnapToGeometryAction extends Action {
 	@Override
 	public boolean isChecked() {
 		Boolean val = (Boolean) diagramViewer.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
-		if (val != null)
+		if (val != null) {
 			return val.booleanValue();
+		}
 		return false;
 	}
 

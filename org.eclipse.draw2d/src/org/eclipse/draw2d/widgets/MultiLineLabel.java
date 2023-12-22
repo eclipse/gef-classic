@@ -185,10 +185,11 @@ public final class MultiLineLabel extends FigureCanvas {
 	 */
 	public void setImage(Image image) {
 		this.image = image;
-		if (image != null)
+		if (image != null) {
 			setBorder(new ImageBorder(image));
-		else
+		} else {
 			setBorder(null);
+		}
 	}
 
 	/**

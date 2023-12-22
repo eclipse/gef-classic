@@ -45,8 +45,9 @@ public abstract class Container extends ModelElement {
 
 	public void add(ModelElement child, int index) {
 		child.setParent(this);
-		if (index == -1)
+		if (index == -1) {
 			index = children.size();
+		}
 		children.add(index, child);
 		firePropertyChange("children", null, child); //$NON-NLS-1$
 	}
@@ -60,8 +61,9 @@ public abstract class Container extends ModelElement {
 	 */
 	public boolean contains(ModelElement child) {
 		do {
-			if (child.getContainer() == this)
+			if (child.getContainer() == this) {
 				return true;
+			}
 			child = child.getContainer();
 		} while (child != null);
 		return false;
@@ -96,16 +98,19 @@ public abstract class Container extends ModelElement {
 
 	public void removeAll(Collection<ModelElement> children) {
 		if (children.removeAll(children))
+		 {
 			firePropertyChange("children", children, null); //$NON-NLS-1$
+		}
 	}
 
 	@Override
 	public void setParent(Container container) {
 		super.setParent(container);
-		if (container == null)
+		if (container == null) {
 			getStyle().setParentStyle(null);
-		else
+		} else {
 			getStyle().setParentStyle(container.getStyle());
+		}
 	}
 
 	/**

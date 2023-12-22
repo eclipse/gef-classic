@@ -56,10 +56,11 @@ public class MoveHandleLocator implements Locator {
 	public void relocate(IFigure target) {
 		Insets insets = target.getInsets();
 		Rectangle bounds;
-		if (getReference() instanceof HandleBounds)
+		if (getReference() instanceof HandleBounds) {
 			bounds = ((HandleBounds) getReference()).getHandleBounds();
-		else
+		} else {
 			bounds = getReference().getBounds();
+		}
 		bounds = new PrecisionRectangle(bounds.getResized(-1, -1));
 		getReference().translateToAbsolute(bounds);
 		target.translateToRelative(bounds);

@@ -67,10 +67,12 @@ public class OverlayScrollPaneLayout extends ScrollPaneLayout {
 		showV = !(vVis == NEVER) && (showV || vVis == ALWAYS);
 		showH = !(hVis == NEVER) && (showH || hVis == ALWAYS);
 
-		if (!showV)
+		if (!showV) {
 			insets.right = 0;
-		if (!showH)
+		}
+		if (!showH) {
 			insets.bottom = 0;
+		}
 		Rectangle bounds, viewportArea = clientArea;
 
 		if (showV) {

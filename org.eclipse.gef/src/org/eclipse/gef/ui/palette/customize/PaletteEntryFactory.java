@@ -99,14 +99,16 @@ public abstract class PaletteEntryFactory {
 	 *         <code>PaletteEntry</code>
 	 */
 	public boolean canCreate(PaletteEntry selected) {
-		if (selected instanceof PaletteRoot)
+		if (selected instanceof PaletteRoot) {
 			return false;
+		}
 
 		PaletteContainer parent;
-		if (selected instanceof PaletteContainer)
+		if (selected instanceof PaletteContainer) {
 			parent = (PaletteContainer) selected;
-		else
+		} else {
 			parent = selected.getParent();
+		}
 
 		return parent.getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION
 				&& parent.acceptsType(determineTypeForNewEntry(selected));
@@ -124,8 +126,9 @@ public abstract class PaletteEntryFactory {
 	 * @return The parent of the new entry to be created
 	 */
 	protected PaletteContainer determineContainerForNewEntry(PaletteEntry selected) {
-		if (selected instanceof PaletteContainer)
+		if (selected instanceof PaletteContainer) {
 			return (PaletteContainer) selected;
+		}
 		return selected.getParent();
 	}
 

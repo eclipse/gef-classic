@@ -13,6 +13,7 @@
 package org.eclipse.gef.examples.flow.policies;
 
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
+
 import org.eclipse.gef.examples.flow.figures.SimpleActivityLabel;
 import org.eclipse.gef.examples.flow.parts.SimpleActivityPart;
 

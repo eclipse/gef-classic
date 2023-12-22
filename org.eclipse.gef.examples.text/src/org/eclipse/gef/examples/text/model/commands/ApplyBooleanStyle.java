@@ -48,32 +48,36 @@ public class ApplyBooleanStyle extends MiniEdit {
 	@Override
 	public void apply() {
 		right = begin.subdivideRun(endOffset);
-		if (right.getText().length() == 0)
+		if (right.getText().length() == 0) {
 			right = null;
+		}
 		middle = begin.subdivideRun(beginOffset);
 
 		container = new InlineContainer(Container.TYPE_INLINE);
 		for (int i = 0; i < keys.length; i++) {
 			String key = keys[i];
-			if (key.equals(Style.PROPERTY_BOLD))
+			if (key.equals(Style.PROPERTY_BOLD)) {
 				container.getStyle().setBold(((Boolean) values[i]).booleanValue());
-			else if (key.equals(Style.PROPERTY_FONT_SIZE))
+			} else if (key.equals(Style.PROPERTY_FONT_SIZE)) {
 				container.getStyle().setFontHeight(((Integer) values[i]).intValue());
-			else if (key.equals(Style.PROPERTY_ITALIC))
+			} else if (key.equals(Style.PROPERTY_ITALIC)) {
 				container.getStyle().setItalic(((Boolean) values[i]).booleanValue());
-			else if (key.equals(Style.PROPERTY_UNDERLINE))
+			} else if (key.equals(Style.PROPERTY_UNDERLINE)) {
 				container.getStyle().setUnderline(((Boolean) values[i]).booleanValue());
-			else if (key.equals(Style.PROPERTY_FONT))
+			} else if (key.equals(Style.PROPERTY_FONT)) {
 				container.getStyle().setFontFamily((String) values[i]);
+			}
 		}
 		container.add(middle);
 		int index = begin.getContainer().getChildren().indexOf(begin) + 1;
 
-		if (right != null)
+		if (right != null) {
 			parent.add(right, index);
+		}
 		parent.add(container, index);
-		if (begin.getText().length() == 0)
+		if (begin.getText().length() == 0) {
 			parent.remove(begin);
+		}
 	}
 
 	@Override
@@ -90,13 +94,16 @@ public class ApplyBooleanStyle extends MiniEdit {
 	public void rollback() {
 		int index = parent.getChildren().indexOf(container);
 		parent.remove(container);
-		if (right != null)
+		if (right != null) {
 			parent.remove(right);
-		if (begin.getContainer() == null)
+		}
+		if (begin.getContainer() == null) {
 			parent.add(begin, index);
+		}
 		begin.insertText(middle.getText(), begin.size());
-		if (right != null)
+		if (right != null) {
 			begin.insertText(right.getText(), begin.size());
+		}
 	}
 
 }

@@ -95,8 +95,9 @@ public class NestedLine extends LineBox {
 	@Override
 	void setLineRoot(LineRoot root) {
 		this.root = root;
-		for (int i = 0; i < fragments.size(); i++)
-			((FlowBox) fragments.get(i)).setLineRoot(root);
+		for (Object fragment : fragments) {
+			((FlowBox) fragment).setLineRoot(root);
+		}
 	}
 
 	/**

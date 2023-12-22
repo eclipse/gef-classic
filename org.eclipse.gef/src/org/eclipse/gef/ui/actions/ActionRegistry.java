@@ -40,8 +40,9 @@ public class ActionRegistry {
 		Iterator actions = getActions();
 		while (actions.hasNext()) {
 			IAction action = (IAction) actions.next();
-			if (action instanceof Disposable)
+			if (action instanceof Disposable) {
 				((Disposable) action).dispose();
+			}
 		}
 	}
 

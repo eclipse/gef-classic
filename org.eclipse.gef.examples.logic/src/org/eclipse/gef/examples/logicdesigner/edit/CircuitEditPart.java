@@ -65,11 +65,13 @@ public class CircuitEditPart extends LogicContainerEditPart implements IScrollab
 
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
-		if (key == AutoexposeHelper.class)
+		if (key == AutoexposeHelper.class) {
 			return key.cast(new ViewportAutoexposeHelper(this));
-		if (key == ExposeHelper.class)
+		}
+		if (key == ExposeHelper.class) {
 			return key.cast(new ViewportExposeHelper(this));
-		if (key == AccessibleAnchorProvider.class)
+		}
+		if (key == AccessibleAnchorProvider.class) {
 			return key.cast(new DefaultAccessibleAnchorProvider() {
 				@Override
 				public List<Point> getSourceAnchorLocations() {
@@ -90,8 +92,10 @@ public class CircuitEditPart extends LogicContainerEditPart implements IScrollab
 					return getSourceAnchorLocations();
 				}
 			});
-		if (key == MouseWheelHelper.class)
+		}
+		if (key == MouseWheelHelper.class) {
 			return key.cast(new ViewportMouseWheelHelper(this));
+		}
 		return super.getAdapter(key);
 	}
 

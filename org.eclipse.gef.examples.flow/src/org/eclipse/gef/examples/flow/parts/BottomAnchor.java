@@ -31,12 +31,14 @@ class BottomAnchor extends AbstractConnectionAnchor {
 		Rectangle r = getOwner().getBounds().getCopy();
 		getOwner().translateToAbsolute(r);
 		int off = offset;
-		if (off == -1)
+		if (off == -1) {
 			off = r.width / 2;
-		if (r.contains(reference) || r.bottom() > reference.y)
+		}
+		if (r.contains(reference) || r.bottom() > reference.y) {
 			return r.getTopLeft().translate(off, 0);
-		else
+		} else {
 			return r.getBottomLeft().translate(off, -1);
+		}
 	}
 
 }

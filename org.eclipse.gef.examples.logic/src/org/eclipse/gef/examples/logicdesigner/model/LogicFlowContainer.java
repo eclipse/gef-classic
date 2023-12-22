@@ -28,10 +28,12 @@ public class LogicFlowContainer extends LogicDiagram {
 		@Override
 		public String getText(Object element) {
 			if (element instanceof Integer integer) {
-				if (LAYOUT_SINGLE_ROW.intValue() == integer.intValue())
+				if (LAYOUT_SINGLE_ROW.intValue() == integer.intValue()) {
 					return LogicMessages.PropertyDescriptor_LogicFlowContainer_SingleColumnLayout;
-				if (LAYOUT_MULTI_ROW.intValue() == integer.intValue())
+				}
+				if (LAYOUT_MULTI_ROW.intValue() == integer.intValue()) {
 					return LogicMessages.PropertyDescriptor_LogicFlowContainer_MultiRowLayout;
+				}
 			}
 			return super.getText(element);
 		}
@@ -74,8 +76,9 @@ public class LogicFlowContainer extends LogicDiagram {
 
 	@Override
 	public Object getPropertyValue(Object propName) {
-		if (propName.equals(ID_LAYOUT))
+		if (propName.equals(ID_LAYOUT)) {
 			return layout;
+		}
 		return super.getPropertyValue(propName);
 	}
 
@@ -87,10 +90,11 @@ public class LogicFlowContainer extends LogicDiagram {
 
 	@Override
 	public void setPropertyValue(Object id, Object value) {
-		if (ID_LAYOUT.equals(id))
+		if (ID_LAYOUT.equals(id)) {
 			setLayout((Integer) value);
-		else
+		} else {
 			super.setPropertyValue(id, value);
+		}
 	}
 
 	@Override

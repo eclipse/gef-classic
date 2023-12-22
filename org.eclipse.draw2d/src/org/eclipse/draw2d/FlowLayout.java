@@ -109,10 +109,12 @@ public class FlowLayout extends OrderedLayout {
 	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		// Subtract out the insets from the hints
-		if (wHint > -1)
+		if (wHint > -1) {
 			wHint = Math.max(0, wHint - container.getInsets().getWidth());
-		if (hHint > -1)
+		}
+		if (hHint > -1) {
 			hHint = Math.max(0, hHint - container.getInsets().getHeight());
+		}
 
 		// Figure out the new hint that we are interested in based on the
 		// orientation
@@ -294,10 +296,11 @@ public class FlowLayout extends OrderedLayout {
 		// Calculate the hints to be passed to children
 		int wHint = -1;
 		int hHint = -1;
-		if (isHorizontal())
+		if (isHorizontal()) {
 			wHint = parent.getClientArea().width;
-		else
+		} else {
 			hHint = parent.getClientArea().height;
+		}
 
 		initVariables(parent);
 		initRow();
@@ -306,8 +309,9 @@ public class FlowLayout extends OrderedLayout {
 			Rectangle r = new Rectangle(0, 0, pref.width, pref.height);
 
 			if (data.rowCount > 0) {
-				if (data.rowWidth + pref.width > data.maxWidth)
+				if (data.rowWidth + pref.width > data.maxWidth) {
 					layoutRow(parent);
+				}
 			}
 			r.x = data.rowX;
 			r.y = data.rowY;
@@ -319,8 +323,9 @@ public class FlowLayout extends OrderedLayout {
 			data.bounds[data.rowCount] = r;
 			data.rowCount++;
 		}
-		if (data.rowCount != 0)
+		if (data.rowCount != 0) {
 			layoutRow(parent);
+		}
 		data = null;
 	}
 

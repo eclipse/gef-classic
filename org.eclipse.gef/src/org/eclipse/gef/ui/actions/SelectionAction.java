@@ -68,8 +68,9 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	 * @return A List containing the currently selected objects.
 	 */
 	protected List getSelectedObjects() {
-		if (!(getSelection() instanceof IStructuredSelection))
+		if (!(getSelection() instanceof IStructuredSelection)) {
 			return Collections.EMPTY_LIST;
+		}
 		return ((IStructuredSelection) getSelection()).toList();
 	}
 
@@ -117,10 +118,11 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	 */
 	@Override
 	public void update() {
-		if (provider != null)
+		if (provider != null) {
 			setSelection(provider.getSelection());
-		else
+		} else {
 			setSelection(getWorkbenchPart().getSite().getWorkbenchWindow().getSelectionService().getSelection());
+		}
 	}
 
 }

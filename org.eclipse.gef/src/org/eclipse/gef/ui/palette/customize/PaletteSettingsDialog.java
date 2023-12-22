@@ -479,8 +479,8 @@ public class PaletteSettingsDialog extends Dialog {
 
 		Button b = null;
 		int[] modes = prefs.getSupportedLayoutModes();
-		for (int i = 0; i < modes.length; i++) {
-			switch (modes[i]) {
+		for (int mode : modes) {
+			switch (mode) {
 			case PaletteViewerPreferences.LAYOUT_COLUMNS:
 				b = createButton(composite, LAYOUT_COLUMNS_VIEW_ID, PaletteMessages.SETTINGS_COLUMNS_VIEW_LABEL,
 						SWT.RADIO, null);

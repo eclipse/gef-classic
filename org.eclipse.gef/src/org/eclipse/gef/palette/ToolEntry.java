@@ -69,8 +69,9 @@ public abstract class ToolEntry extends PaletteEntry {
 	 * @return the tool for this entry
 	 */
 	public Tool createTool() {
-		if (toolClass == null)
+		if (toolClass == null) {
 			return null;
+		}
 		Tool tool;
 		try {
 			tool = (Tool) toolClass.newInstance();
@@ -99,8 +100,9 @@ public abstract class ToolEntry extends PaletteEntry {
 	 * @since 3.1
 	 */
 	public Object getToolProperty(Object key) {
-		if (map != null)
+		if (map != null) {
 			return map.get(key);
+		}
 		return null;
 	}
 
@@ -114,8 +116,9 @@ public abstract class ToolEntry extends PaletteEntry {
 	 * @since 3.1
 	 */
 	public void setToolClass(Class toolClass) {
-		if (toolClass != null)
+		if (toolClass != null) {
 			Assert.isTrue(Tool.class.isAssignableFrom(toolClass));
+		}
 		this.toolClass = toolClass;
 	}
 
@@ -129,8 +132,9 @@ public abstract class ToolEntry extends PaletteEntry {
 	 * @see Tool#setProperties(Map)
 	 */
 	public void setToolProperty(Object key, Object value) {
-		if (map == null)
+		if (map == null) {
 			map = new HashMap();
+		}
 		map.put(key, value);
 	}
 

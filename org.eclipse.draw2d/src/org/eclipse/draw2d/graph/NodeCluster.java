@@ -87,8 +87,9 @@ class NodeCluster extends NodeList {
 		CollapsedEdges edges;
 		for (int i = 0; i < leftCount; i++) {
 			neighbor = leftNeighbors[i];
-			if (neighbor.isSetMember)
+			if (neighbor.isSetMember) {
 				continue;
+			}
 			edges = leftLinks[i];
 
 			neighbor.weightedTotal += delta * edges.collapsedWeight;
@@ -105,8 +106,9 @@ class NodeCluster extends NodeList {
 		}
 		for (int i = 0; i < rightCount; i++) {
 			neighbor = rightNeighbors[i];
-			if (neighbor.isSetMember)
+			if (neighbor.isSetMember) {
 				continue;
+			}
 			edges = rightLinks[i];
 
 			neighbor.weightedTotal += delta * edges.collapsedWeight;
@@ -132,8 +134,9 @@ class NodeCluster extends NodeList {
 
 	CollapsedEdges getLeftNeighbor(NodeCluster neighbor) {
 		for (int i = 0; i < leftCount; i++) {
-			if (leftNeighbors[i] == neighbor)
+			if (leftNeighbors[i] == neighbor) {
 				return leftLinks[i];
+			}
 		}
 		return null;
 	}
@@ -144,8 +147,9 @@ class NodeCluster extends NodeList {
 
 	CollapsedEdges getRightNeighbor(NodeCluster neighbor) {
 		for (int i = 0; i < rightCount; i++) {
-			if (rightNeighbors[i] == neighbor)
+			if (rightNeighbors[i] == neighbor) {
 				return rightLinks[i];
+			}
 		}
 		return null;
 	}
@@ -173,8 +177,9 @@ class NodeCluster extends NodeList {
 			weightedDivisor += edges.collapsedWeight;
 			slack = edges.tightestEdge.getSlack();
 			leftFreedom = Math.min(slack, leftFreedom);
-			if (slack > 0)
+			if (slack > 0) {
 				leftNonzero = Math.min(slack, leftNonzero);
+			}
 		}
 		for (int i = 0; i < rightCount; i++) {
 			CollapsedEdges edges = rightLinks[i];
@@ -184,8 +189,9 @@ class NodeCluster extends NodeList {
 			weightedDivisor += edges.collapsedWeight;
 			slack = edges.tightestEdge.getSlack();
 			rightFreedom = Math.min(slack, rightFreedom);
-			if (slack > 0)
+			if (slack > 0) {
 				rightNonzero = Math.min(slack, rightNonzero);
+			}
 		}
 		updateEffectivePull();
 	}
@@ -203,8 +209,9 @@ class NodeCluster extends NodeList {
 				CollapsedEdges edges = leftLinks[i];
 				slack = edges.tightestEdge.getSlack();
 				leftFreedom = Math.min(slack, leftFreedom);
-				if (slack > 0)
+				if (slack > 0) {
 					leftNonzero = Math.min(slack, leftNonzero);
+				}
 			}
 		}
 		if (rightDirty) {
@@ -214,20 +221,22 @@ class NodeCluster extends NodeList {
 				CollapsedEdges edges = rightLinks[i];
 				slack = edges.tightestEdge.getSlack();
 				rightFreedom = Math.min(slack, rightFreedom);
-				if (slack > 0)
+				if (slack > 0) {
 					rightNonzero = Math.min(slack, rightNonzero);
+				}
 			}
 		}
 		updateEffectivePull();
 	}
 
 	private void updateEffectivePull() {
-		if (weightedDivisor != 0)
+		if (weightedDivisor != 0) {
 			effectivePull = weightedTotal / weightedDivisor;
-		else if (unweightedDivisor != 0)
+		} else if (unweightedDivisor != 0) {
 			effectivePull = unweightedTotal / unweightedDivisor;
-		else
+		} else {
 			effectivePull = 0;
+		}
 	}
 
 }

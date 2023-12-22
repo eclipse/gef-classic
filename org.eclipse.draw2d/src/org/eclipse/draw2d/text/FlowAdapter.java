@@ -63,8 +63,9 @@ public class FlowAdapter extends FlowFigure {
 	@Override
 	protected void layout() {
 		int wHint = context.getRemainingLineWidth();
-		if (wHint == Integer.MAX_VALUE)
+		if (wHint == Integer.MAX_VALUE) {
 			wHint = -1;
+		}
 		Dimension prefSize = getPreferredSize(wHint, -1);
 		if (context.isCurrentLineOccupied() && prefSize.width > context.getRemainingLineWidth()) {
 			context.endLine();
@@ -107,8 +108,9 @@ public class FlowAdapter extends FlowFigure {
 		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
 				translate = (rect.x != x) || (rect.y != y);
 
-		if ((resize || translate) && isVisible())
+		if ((resize || translate) && isVisible()) {
 			erase();
+		}
 		if (translate) {
 			int dx = rect.x - x;
 			int dy = rect.y - y;
@@ -139,8 +141,9 @@ public class FlowAdapter extends FlowFigure {
 	 */
 	@Override
 	public void validate() {
-		if (isValid())
+		if (isValid()) {
 			return;
+		}
 		setValid(true);
 		layout();
 	}

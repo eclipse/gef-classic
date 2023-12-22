@@ -94,8 +94,9 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	@Override
 	protected Cursor calculateCursor() {
 		if (isInState(STATE_INITIAL)) {
-			if (getCurrentCommand() != null)
+			if (getCurrentCommand() != null) {
 				return getDefaultCursor();
+			}
 		}
 		return super.calculateCursor();
 	}
@@ -128,8 +129,9 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 * Asks the source editpart to erase connection creation feedback.
 	 */
 	protected void eraseSourceFeedback() {
-		if (!isShowingSourceFeedback())
+		if (!isShowingSourceFeedback()) {
 			return;
+		}
 		setFlag(FLAG_SOURCE_FEEDBACK, false);
 		if (connectionSource != null) {
 			connectionSource.eraseSourceFeedback(getSourceRequest());
@@ -141,10 +143,11 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 */
 	@Override
 	protected String getCommandName() {
-		if (isInState(STATE_CONNECTION_STARTED | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+		if (isInState(STATE_CONNECTION_STARTED | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			return REQ_CONNECTION_END;
-		else
+		} else {
 			return REQ_CONNECTION_START;
+		}
 	}
 
 	/**
@@ -161,7 +164,9 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	@Override
 	protected String getDebugNameForState(int s) {
 		if (s == STATE_CONNECTION_STARTED || s == STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
+		 {
 			return "Connection Started";//$NON-NLS-1$
+		}
 		return super.getDebugNameForState(s);
 	}
 
@@ -225,8 +230,9 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 */
 	@Override
 	protected boolean handleButtonUp(int button) {
-		if (isInState(STATE_TERMINAL | STATE_INVALID))
+		if (isInState(STATE_TERMINAL | STATE_INVALID)) {
 			handleFinished();
+		}
 		return true;
 	}
 
@@ -236,10 +242,11 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	@Override
 	protected boolean handleCommandStackChanged() {
 		if (!isInState(STATE_INITIAL)) {
-			if (getCurrentInput().isMouseButtonDown(1))
+			if (getCurrentInput().isMouseButtonDown(1)) {
 				setState(STATE_INVALID);
-			else
+			} else {
 				setState(STATE_INITIAL);
+			}
 			handleInvalidInput();
 			return true;
 		}
@@ -268,8 +275,9 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 */
 	@Override
 	protected boolean handleDrag() {
-		if (isInState(STATE_CONNECTION_STARTED))
+		if (isInState(STATE_CONNECTION_STARTED)) {
 			return handleMove();
+		}
 		return false;
 	}
 
@@ -278,8 +286,9 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 */
 	@Override
 	protected boolean handleDragInProgress() {
-		if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+		if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			return handleMove();
+		}
 		return false;
 	}
 
@@ -302,8 +311,9 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 */
 	@Override
 	protected boolean handleHover() {
-		if (isInState(STATE_CONNECTION_STARTED))
+		if (isInState(STATE_CONNECTION_STARTED)) {
 			updateAutoexposeHelper();
+		}
 		return true;
 	}
 
@@ -322,8 +332,9 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 */
 	@Override
 	protected boolean handleMove() {
-		if (isInState(STATE_CONNECTION_STARTED) && viewer != getCurrentViewer())
+		if (isInState(STATE_CONNECTION_STARTED) && viewer != getCurrentViewer()) {
 			return false;
+		}
 		if (isInState(STATE_CONNECTION_STARTED | STATE_INITIAL | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			updateTargetRequest();
 			updateTargetUnderMouse();
@@ -361,11 +372,13 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 * @param source the source editpart node
 	 */
 	protected void setConnectionSource(EditPart source) {
-		if (connectionSource != null)
+		if (connectionSource != null) {
 			connectionSource.removeEditPartListener(deactivationListener);
+		}
 		connectionSource = source;
-		if (connectionSource != null)
+		if (connectionSource != null) {
 			connectionSource.addEditPartListener(deactivationListener);
+		}
 	}
 
 	/**

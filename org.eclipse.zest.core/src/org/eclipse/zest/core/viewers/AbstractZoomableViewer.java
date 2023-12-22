@@ -12,9 +12,10 @@
  *******************************************************************************/
 package org.eclipse.zest.core.viewers;
 
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.zest.core.viewers.internal.ZoomManager;
+
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A simple interface that provides zooming capabilites. Not intended to be

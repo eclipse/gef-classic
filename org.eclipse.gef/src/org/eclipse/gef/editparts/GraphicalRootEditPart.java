@@ -130,12 +130,14 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	 */
 	@Override
 	public IFigure getLayer(Object key) {
-		if (innerLayers == null)
+		if (innerLayers == null) {
 			return null;
+		}
 
 		IFigure layer = printableLayers.getLayer(key);
-		if (layer != null)
+		if (layer != null) {
 			return layer;
+		}
 		return innerLayers.getLayer(key);
 	}
 
@@ -189,11 +191,13 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	 */
 	@Override
 	public void setContents(EditPart editpart) {
-		if (contents != null)
+		if (contents != null) {
 			removeChild(contents);
+		}
 		contents = editpart;
-		if (contents != null)
+		if (contents != null) {
 			addChild(contents, 0);
+		}
 	}
 
 	/**
@@ -201,13 +205,16 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	 */
 	@Override
 	public void setViewer(EditPartViewer newViewer) {
-		if (viewer == newViewer)
+		if (viewer == newViewer) {
 			return;
-		if (viewer != null)
+		}
+		if (viewer != null) {
 			unregister();
+		}
 		viewer = newViewer;
-		if (viewer != null)
+		if (viewer != null) {
 			register();
+		}
 	}
 
 	class FeedbackLayer extends Layer {

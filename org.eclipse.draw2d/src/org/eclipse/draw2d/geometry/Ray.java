@@ -122,8 +122,9 @@ public final class Ray {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == this)
+		if (obj == this) {
 			return true;
+		}
 		if (obj instanceof Ray r) {
 			return x == r.x && y == r.y;
 		}

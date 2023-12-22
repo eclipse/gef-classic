@@ -65,8 +65,9 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 	/** @see org.eclipse.draw2d.Figure#paintClientArea(Graphics) */
 	@Override
 	protected void paintClientArea(final Graphics graphics) {
-		if (getChildren().isEmpty())
+		if (getChildren().isEmpty()) {
 			return;
+		}
 
 		if (scale == 1.0) {
 			super.paintClientArea(graphics);
@@ -94,8 +95,9 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 	 */
 	@Override
 	public void setScale(double newZoom) {
-		if (scale == newZoom)
+		if (scale == newZoom) {
 			return;
+		}
 		scale = newZoom;
 		superFireMoved(); // For AncestorListener compatibility
 		getFreeformHelper().invalidate();

@@ -140,8 +140,9 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	 */
 	@Override
 	public DragTracker getDragTracker() {
-		if (dragTracker == null)
+		if (dragTracker == null) {
 			dragTracker = createDragTracker();
+		}
 		return dragTracker;
 	}
 
@@ -226,8 +227,9 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	 */
 	@Override
 	public void validate() {
-		if (isValid())
+		if (isValid()) {
 			return;
+		}
 		getLocator().relocate(this);
 		super.validate();
 	}

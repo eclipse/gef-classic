@@ -28,16 +28,18 @@ public class Layer extends Figure {
 	 */
 	@Override
 	public boolean containsPoint(int x, int y) {
-		if (isOpaque())
+		if (isOpaque()) {
 			return super.containsPoint(x, y);
+		}
 		Point pt = Point.SINGLETON;
 		pt.setLocation(x, y);
 		translateFromParent(pt);
 		x = pt.x;
 		y = pt.y;
 		for (IFigure child : getChildren()) {
-			if (child.containsPoint(x, y))
+			if (child.containsPoint(x, y)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -49,14 +51,17 @@ public class Layer extends Figure {
 	 */
 	@Override
 	public IFigure findFigureAt(int x, int y, TreeSearch search) {
-		if (!isEnabled())
+		if (!isEnabled()) {
 			return null;
-		if (isOpaque())
+		}
+		if (isOpaque()) {
 			return super.findFigureAt(x, y, search);
+		}
 
 		IFigure f = super.findFigureAt(x, y, search);
-		if (f == this)
+		if (f == this) {
 			return null;
+		}
 		return f;
 	}
 

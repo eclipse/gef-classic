@@ -35,8 +35,9 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 	 */
 	@Override
 	public void ancestorMoved(IFigure figure) {
-		if (figure instanceof ScalableFigure)
+		if (figure instanceof ScalableFigure) {
 			return;
+		}
 		super.ancestorMoved(figure);
 	}
 
@@ -44,15 +45,17 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 	public Point getLocation(Point reference) {
 		Rectangle r = getOwner().getBounds();
 		int x, y;
-		if (topDown)
+		if (topDown) {
 			y = r.y + offsetV;
-		else
+		} else {
 			y = r.bottom() - 1 - offsetV;
+		}
 
-		if (leftToRight)
+		if (leftToRight) {
 			x = r.x + offsetH;
-		else
+		} else {
 			x = r.right() - 1 - offsetH;
+		}
 
 		Point p = new PrecisionPoint(x, y);
 		getOwner().translateToAbsolute(p);

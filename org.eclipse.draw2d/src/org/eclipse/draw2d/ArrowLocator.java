@@ -47,10 +47,11 @@ public class ArrowLocator extends ConnectionLocator {
 		RotatableDecoration arrow = (RotatableDecoration) target;
 		arrow.setLocation(getLocation(points));
 
-		if (getAlignment() == SOURCE)
+		if (getAlignment() == SOURCE) {
 			arrow.setReferencePoint(points.getPoint(1));
-		else if (getAlignment() == TARGET)
+		} else if (getAlignment() == TARGET) {
 			arrow.setReferencePoint(points.getPoint(points.size() - 2));
+		}
 	}
 
 }

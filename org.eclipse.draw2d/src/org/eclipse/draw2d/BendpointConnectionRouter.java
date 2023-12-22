@@ -64,8 +64,9 @@ public class BendpointConnectionRouter extends AbstractRouter {
 		points.removeAllPoints();
 
 		List bendpoints = (List) getConstraint(conn);
-		if (bendpoints == null)
+		if (bendpoints == null) {
 			bendpoints = Collections.emptyList();
+		}
 
 		Point ref1;
 		Point ref2;
@@ -84,8 +85,8 @@ public class BendpointConnectionRouter extends AbstractRouter {
 		conn.translateToRelative(A_POINT);
 		points.addPoint(A_POINT);
 
-		for (int i = 0; i < bendpoints.size(); i++) {
-			Bendpoint bp = (Bendpoint) bendpoints.get(i);
+		for (Object bendpoint : bendpoints) {
+			Bendpoint bp = (Bendpoint) bendpoint;
 			points.addPoint(bp.getLocation());
 		}
 

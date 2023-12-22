@@ -112,15 +112,17 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 */
 	protected IFigure createToolTip() {
 		String message = getToolTipText();
-		if (message == null || message.length() == 0)
+		if (message == null || message.length() == 0) {
 			return null;
+		}
 
 		FlowPage fp = new FlowPage() {
 			@Override
 			public Dimension getPreferredSize(int w, int h) {
 				Dimension d = super.getPreferredSize(-1, -1);
-				if (d.width > 150)
+				if (d.width > 150) {
 					d = super.getPreferredSize(150, -1);
+				}
 				return d;
 			}
 		};
@@ -152,8 +154,9 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 */
 	@Override
 	protected AccessibleEditPart getAccessibleEditPart() {
-		if (acc == null)
+		if (acc == null) {
 			acc = createAccessible();
+		}
 		return acc;
 	}
 
@@ -173,8 +176,9 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 		 */
 		@Override
 		protected void performSelection() {
-			if (hasSelectionOccurred())
+			if (hasSelectionOccurred()) {
 				return;
+			}
 			setFlag(FLAG_SELECTION_PERFORMED, true);
 			getCurrentViewer().select(getSourceEditPart());
 		}
@@ -225,30 +229,33 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	@Override
 	public List getModelChildren() {
 		List modelChildren;
-		if (getModel() instanceof PaletteContainer palCont)
+		if (getModel() instanceof PaletteContainer palCont) {
 			modelChildren = new ArrayList(palCont.getChildren());
-		else
+		} else {
 			return Collections.EMPTY_LIST;
+		}
 
 		PaletteEntry prevVisibleEntry = null;
 		for (Iterator iter = modelChildren.iterator(); iter.hasNext();) {
 			PaletteEntry entry = (PaletteEntry) iter.next();
-			if (!entry.isVisible())
+			if (!entry.isVisible()) {
 				// not visible
 				iter.remove();
-			else if (entry instanceof PaletteSeparator && prevVisibleEntry == null)
+			} else if (entry instanceof PaletteSeparator && prevVisibleEntry == null) {
 				// first visible item in a group is a separator, don't need it
 				iter.remove();
-			else if (entry instanceof PaletteSeparator && prevVisibleEntry instanceof PaletteSeparator)
+			} else if (entry instanceof PaletteSeparator && prevVisibleEntry instanceof PaletteSeparator) {
 				// previous visible entry was a separator, don't need it
 				iter.remove();
-			else
+			} else {
 				prevVisibleEntry = entry;
+			}
 		}
 		// check to see if last visible entry was a separator, and thus should
 		// be hidden
-		if (prevVisibleEntry instanceof PaletteSeparator)
+		if (prevVisibleEntry instanceof PaletteSeparator) {
 			modelChildren.remove(prevVisibleEntry);
+		}
 
 		return modelChildren;
 	}
@@ -312,17 +319,20 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 		String desc = entry.getDescription();
 		boolean needName = nameNeededInToolTip();
 		if (desc == null || desc.trim().equals(entry.getLabel()) || desc.trim().equals("")) { //$NON-NLS-1$
-			if (needName)
+			if (needName) {
 				text = entry.getLabel();
+			}
 		} else {
-			if (needName)
+			if (needName) {
 				text = entry.getLabel() + " " //$NON-NLS-1$
 						+ PaletteMessages.NAME_DESCRIPTION_SEPARATOR + " " + desc; //$NON-NLS-1$
-			else
+			} else {
 				text = desc;
+			}
 		}
-		if (text != null && text.trim().equals(""))//$NON-NLS-1$
+		if (text != null && text.trim().equals("")) { //$NON-NLS-1$
 			return null;
+		}
 		return text;
 	}
 
@@ -348,8 +358,9 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 			traverseChildren((List) evt.getNewValue(), true);
 		} else if (property.equals(PaletteEntry.PROPERTY_LABEL) || property.equals(PaletteEntry.PROPERTY_SMALL_ICON)
 				|| property.equals(PaletteEntry.PROPERTY_LARGE_ICON)
-				|| property.equals(PaletteEntry.PROPERTY_DESCRIPTION))
+				|| property.equals(PaletteEntry.PROPERTY_DESCRIPTION)) {
 			refreshVisuals();
+		}
 	}
 
 	/**
@@ -381,8 +392,9 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * @param desc the image descriptor.
 	 */
 	protected void setImageDescriptor(ImageDescriptor desc) {
-		if (desc == imgDescriptor)
+		if (desc == imgDescriptor) {
 			return;
+		}
 		imgDescriptor = desc;
 		setImageInFigure(getImageCache().getImage(imgDescriptor));
 	}
@@ -396,8 +408,9 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	}
 
 	private void traverseChildren(PaletteEntry parent, boolean add) {
-		if (!(parent instanceof PaletteContainer container))
+		if (!(parent instanceof PaletteContainer container)) {
 			return;
+		}
 		traverseChildren(container.getChildren(), add);
 	}
 

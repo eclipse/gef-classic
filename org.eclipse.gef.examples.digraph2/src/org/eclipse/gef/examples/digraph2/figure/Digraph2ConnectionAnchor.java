@@ -44,10 +44,11 @@ public class Digraph2ConnectionAnchor extends AbstractConnectionAnchor {
 	public Point getLocation(Point reference) {
 		Point point = getOwner().getBounds().getCenter();
 		getOwner().translateToAbsolute(point);
-		if (reference.x < point.x)
+		if (reference.x < point.x) {
 			point = getOwner().getBounds().getTop();
-		else
+		} else {
 			point = getOwner().getBounds().getBottom();
+		}
 		getOwner().translateToAbsolute(point);
 		return point;
 	}

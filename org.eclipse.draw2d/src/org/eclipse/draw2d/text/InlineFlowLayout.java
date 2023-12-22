@@ -97,12 +97,15 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	public void getWidthLookahead(FlowFigure child, int result[]) {
 		List<? extends IFigure> children = getFlowFigure().getChildren();
 		int index = -1;
-		if (child != null)
+		if (child != null) {
 			index = children.indexOf(child);
+		}
 
-		for (int i = index + 1; i < children.size(); i++)
-			if (((FlowFigure) children.get(i)).addLeadingWordRequirements(result))
+		for (int i = index + 1; i < children.size(); i++) {
+			if (((FlowFigure) children.get(i)).addLeadingWordRequirements(result)) {
 				return;
+			}
+		}
 
 		getContext().getWidthLookahead(getFlowFigure(), result);
 	}

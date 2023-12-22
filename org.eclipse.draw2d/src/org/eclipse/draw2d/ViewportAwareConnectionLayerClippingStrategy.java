@@ -53,8 +53,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements IClippingSt
 		// translate clipping rectangles (which are in absolute coordinates)
 		// to be relative to the parent figure's (i.e. the connection
 		// layer's) client area
-		for (int i = 0; i < clipRect.length; i++) {
-			figure.translateToRelative(clipRect[i]);
+		for (Rectangle element : clipRect) {
+			figure.translateToRelative(element);
 		}
 		return clipRect;
 	}

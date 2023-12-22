@@ -134,8 +134,9 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 */
 	@Override
 	public <T> T getAdapter(final Class<T> adapter) {
-		if (adapter == AccessibleAnchorProvider.class)
+		if (adapter == AccessibleAnchorProvider.class) {
 			return adapter.cast(new DefaultAccessibleAnchorProvider());
+		}
 		return super.getAdapter(adapter);
 	}
 
@@ -268,11 +269,13 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	public void setParent(EditPart parent) {
 		boolean wasNull = getParent() == null;
 		boolean becomingNull = parent == null;
-		if (becomingNull && !wasNull)
+		if (becomingNull && !wasNull) {
 			removeNotify();
+		}
 		super.setParent(parent);
-		if (wasNull && !becomingNull)
+		if (wasNull && !becomingNull) {
 			addNotify();
+		}
 	}
 
 	/**
@@ -282,15 +285,18 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 */
 	@Override
 	public void setSource(EditPart editPart) {
-		if (sourceEditPart == editPart)
+		if (sourceEditPart == editPart) {
 			return;
+		}
 		sourceEditPart = editPart;
-		if (sourceEditPart != null)
+		if (sourceEditPart != null) {
 			setParent(sourceEditPart.getRoot());
-		else if (getTarget() == null)
+		} else if (getTarget() == null) {
 			setParent(null);
-		if (sourceEditPart != null && targetEditPart != null)
+		}
+		if (sourceEditPart != null && targetEditPart != null) {
 			refresh();
+		}
 	}
 
 	/**
@@ -300,15 +306,18 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 */
 	@Override
 	public void setTarget(EditPart editPart) {
-		if (targetEditPart == editPart)
+		if (targetEditPart == editPart) {
 			return;
+		}
 		targetEditPart = editPart;
-		if (editPart != null)
+		if (editPart != null) {
 			setParent(editPart.getRoot());
-		else if (getSource() == null)
+		} else if (getSource() == null) {
 			setParent(null);
-		if (sourceEditPart != null && targetEditPart != null)
+		}
+		if (sourceEditPart != null && targetEditPart != null) {
 			refresh();
+		}
 	}
 
 }

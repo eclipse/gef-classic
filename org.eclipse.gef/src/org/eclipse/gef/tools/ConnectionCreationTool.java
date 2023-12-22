@@ -72,14 +72,16 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	 */
 	@Override
 	protected boolean handleButtonDown(int button) {
-		if (button == 1 && stateTransition(STATE_CONNECTION_STARTED, STATE_TERMINAL))
+		if (button == 1 && stateTransition(STATE_CONNECTION_STARTED, STATE_TERMINAL)) {
 			return handleCreateConnection();
+		}
 
 		super.handleButtonDown(button);
-		if (isInState(STATE_CONNECTION_STARTED))
+		if (isInState(STATE_CONNECTION_STARTED)) {
 			// Fake a drag to cause feedback to be displayed immediately on
 			// mouse down.
 			handleDrag();
+		}
 		return true;
 	}
 
@@ -126,8 +128,9 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 			}
 
 			boolean consumed = false;
-			if (direction != 0 && event.stateMask == 0)
+			if (direction != 0 && event.stateMask == 0) {
 				consumed = navigateNextAnchor(direction);
+			}
 			if (!consumed) {
 				event.stateMask |= SWT.CONTROL;
 				event.stateMask &= ~SWT.SHIFT;
@@ -136,8 +139,9 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 					updateTargetRequest();
 					updateTargetUnderMouse();
 					Command command = getCommand();
-					if (command != null)
+					if (command != null) {
 						setCurrentCommand(command);
+					}
 					return true;
 				}
 			}
@@ -189,30 +193,34 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	 */
 	@Override
 	public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
-		if (isInState(STATE_INITIAL | STATE_CONNECTION_STARTED))
+		if (isInState(STATE_INITIAL | STATE_CONNECTION_STARTED)) {
 			performViewerMouseWheel(event, viewer);
+		}
 	}
 
 	boolean navigateNextAnchor(int direction) {
 		EditPart focus = getCurrentViewer().getFocusEditPart();
 		AccessibleAnchorProvider provider;
 		provider = focus.getAdapter(AccessibleAnchorProvider.class);
-		if (provider == null)
+		if (provider == null) {
 			return false;
+		}
 
 		List list;
-		if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+		if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			list = provider.getTargetAnchorLocations();
-		else
+		} else {
 			list = provider.getSourceAnchorLocations();
+		}
 
 		Point start = getLocation();
 		int distance = Integer.MAX_VALUE;
 		Point next = null;
-		for (int i = 0; i < list.size(); i++) {
-			Point p = (Point) list.get(i);
-			if (p.equals(start) || (direction != 0 && (start.getPosition(p) != direction)))
+		for (Object element : list) {
+			Point p = (Point) element;
+			if (p.equals(start) || (direction != 0 && (start.getPosition(p) != direction))) {
 				continue;
+			}
 			int d = p.getDistanceOrthogonal(start);
 			if (d < distance) {
 				distance = d;

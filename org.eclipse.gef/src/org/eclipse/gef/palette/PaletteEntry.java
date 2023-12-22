@@ -215,7 +215,9 @@ public class PaletteEntry {
 	 */
 	public String getId() {
 		if (id == null)
+		 {
 			return ""; //$NON-NLS-1$
+		}
 		return id;
 	}
 

@@ -189,13 +189,14 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 
 	protected ConnectionAnchor getConnectionAnchor() {
 		if (anchor == null) {
-			if (getModel() instanceof EllipticalShape)
+			if (getModel() instanceof EllipticalShape) {
 				anchor = new EllipseAnchor(getFigure());
-			else if (getModel() instanceof RectangularShape)
+			} else if (getModel() instanceof RectangularShape) {
 				anchor = new ChopboxAnchor(getFigure());
-			else
+			} else {
 				// if Shapes gets extended the conditions above must be updated
 				throw new IllegalArgumentException("unexpected model");
+			}
 		}
 		return anchor;
 	}

@@ -43,8 +43,9 @@ public class LayeredPane extends Layer {
 	 */
 	@Override
 	public void add(IFigure figure, Object layerKey, int index) {
-		if (index == -1)
+		if (index == -1) {
 			index = layerKeys.size();
+		}
 		super.add(figure, null, index);
 		layerKeys.add(index, layerKey);
 	}
@@ -86,8 +87,9 @@ public class LayeredPane extends Layer {
 	 */
 	public Layer getLayer(Object key) {
 		int index = layerKeys.indexOf(key);
-		if (index == -1)
+		if (index == -1) {
 			return null;
+		}
 		return (Layer) getChildren().get(index);
 	}
 
@@ -108,8 +110,9 @@ public class LayeredPane extends Layer {
 	@Override
 	public void remove(IFigure figure) {
 		int index = getChildren().indexOf(figure);
-		if (index != -1)
+		if (index != -1) {
 			layerKeys.remove(index);
+		}
 		super.remove(figure);
 	}
 

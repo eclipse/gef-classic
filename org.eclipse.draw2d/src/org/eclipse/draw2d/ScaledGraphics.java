@@ -219,8 +219,7 @@ public class ScaledGraphics extends Graphics {
 		}
 		Path scaledPath = new Path(path.getDevice());
 		int index = 0;
-		for (int i = 0; i < p.types.length; i++) {
-			byte type = p.types[i];
+		for (byte type : p.types) {
 			switch (type) {
 			case SWT.PATH_MOVE_TO:
 				scaledPath.moveTo(p.points[index], p.points[index + 1]);
@@ -268,8 +267,9 @@ public class ScaledGraphics extends Graphics {
 	@Override
 	public void drawArc(int x, int y, int w, int h, int offset, int sweep) {
 		Rectangle z = zoomRect(x, y, w, h);
-		if (z.isEmpty() || sweep == 0)
+		if (z.isEmpty() || sweep == 0) {
 			return;
+		}
 		graphics.drawArc(z, offset, sweep);
 	}
 
@@ -294,8 +294,9 @@ public class ScaledGraphics extends Graphics {
 		// "t" == target rectangle, "s" = source
 
 		Rectangle t = zoomRect(tx, ty, tw, th);
-		if (!t.isEmpty())
+		if (!t.isEmpty()) {
 			graphics.drawImage(srcImage, sx, sy, sw, sh, t.x, t.y, t.width, t.height);
+		}
 	}
 
 	/** @see Graphics#drawLine(int, int, int, int) */
@@ -372,15 +373,17 @@ public class ScaledGraphics extends Graphics {
 	/** @see Graphics#drawString(String, int, int) */
 	@Override
 	public void drawString(String s, int x, int y) {
-		if (allowText)
+		if (allowText) {
 			graphics.drawString(s, zoomTextPoint(x, y));
+		}
 	}
 
 	/** @see Graphics#drawText(String, int, int) */
 	@Override
 	public void drawText(String s, int x, int y) {
-		if (allowText)
+		if (allowText) {
 			graphics.drawText(s, zoomTextPoint(x, y));
+		}
 	}
 
 	/**
@@ -388,8 +391,9 @@ public class ScaledGraphics extends Graphics {
 	 */
 	@Override
 	public void drawText(String s, int x, int y, int style) {
-		if (allowText)
+		if (allowText) {
 			graphics.drawText(s, zoomTextPoint(x, y), style);
+		}
 	}
 
 	/**
@@ -415,8 +419,9 @@ public class ScaledGraphics extends Graphics {
 	@Override
 	public void fillArc(int x, int y, int w, int h, int offset, int sweep) {
 		Rectangle z = zoomFillRect(x, y, w, h);
-		if (z.isEmpty() || sweep == 0)
+		if (z.isEmpty() || sweep == 0) {
 			return;
+		}
 		graphics.fillArc(z, offset, sweep);
 	}
 
@@ -473,15 +478,17 @@ public class ScaledGraphics extends Graphics {
 	/** @see Graphics#fillString(String, int, int) */
 	@Override
 	public void fillString(String s, int x, int y) {
-		if (allowText)
+		if (allowText) {
 			graphics.fillString(s, zoomTextPoint(x, y));
+		}
 	}
 
 	/** @see Graphics#fillText(String, int, int) */
 	@Override
 	public void fillText(String s, int x, int y) {
-		if (allowText)
+		if (allowText) {
 			graphics.fillText(s, zoomTextPoint(x, y));
+		}
 	}
 
 	/**
@@ -1019,11 +1026,13 @@ public class ScaledGraphics extends Graphics {
 
 		int zoomWidth = -1;
 
-		if (layout.getWidth() != -1)
+		if (layout.getWidth() != -1) {
 			zoomWidth = ((int) (layout.getWidth() * zoom));
+		}
 
-		if (zoomWidth < -1 || zoomWidth == 0)
+		if (zoomWidth < -1 || zoomWidth == 0) {
 			return null;
+		}
 
 		zoomed.setFont(zoomFont(layout.getFont()));
 		zoomed.setAlignment(layout.getAlignment());
@@ -1042,8 +1051,9 @@ public class ScaledGraphics extends Graphics {
 			int start = 0, offset = 1;
 			TextStyle style = null, lastStyle = layout.getStyle(0);
 			for (; offset <= length; offset++) {
-				if (offset != length && (style = layout.getStyle(offset)) == lastStyle)
+				if (offset != length && (style = layout.getStyle(offset)) == lastStyle) {
 					continue;
+				}
 				int end = offset - 1;
 
 				if (lastStyle != null) {

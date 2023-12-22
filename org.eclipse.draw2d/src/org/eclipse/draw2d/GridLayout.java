@@ -161,8 +161,9 @@ public class GridLayout extends AbstractHintLayout {
 			int j = first ? column + hSpan - 1 : column - hSpan + 1;
 			if (0 <= i && i < rowCount) {
 				if (0 <= j && j < columnCount) {
-					if (figure == grid[i][j])
+					if (figure == grid[i][j]) {
 						return data;
+					}
 				}
 			}
 		}
@@ -171,8 +172,9 @@ public class GridLayout extends AbstractHintLayout {
 
 	void initChildren(IFigure container) {
 		for (IFigure child : container.getChildren()) {
-			if (child.getLayoutManager() == null)
+			if (child.getLayoutManager() == null) {
 				child.setLayoutManager(this);
+			}
 		}
 	}
 
@@ -189,17 +191,21 @@ public class GridLayout extends AbstractHintLayout {
 		int borderWidth = container.getInsets().getWidth();
 		int borderHeight = container.getInsets().getHeight();
 
-		if (wHint != SWT.DEFAULT)
+		if (wHint != SWT.DEFAULT) {
 			wHint -= borderWidth;
-		if (hHint != SWT.DEFAULT)
+		}
+		if (hHint != SWT.DEFAULT) {
 			hHint -= borderHeight;
+		}
 
 		Dimension size = layout(container, false, 0, 0, wHint, hHint, /* flushCache */
 				true);
-		if (wHint != SWT.DEFAULT)
+		if (wHint != SWT.DEFAULT) {
 			size.width = wHint;
-		if (hHint != SWT.DEFAULT)
+		}
+		if (hHint != SWT.DEFAULT) {
 			size.height = hHint;
+		}
 
 		// Add the size of the border again before returning the calculated size
 		size.expand(borderWidth, borderHeight);
@@ -226,14 +232,17 @@ public class GridLayout extends AbstractHintLayout {
 	}
 
 	Dimension layout(IFigure container, boolean move, int x, int y, int width, int height, boolean flushCache) {
-		if (numColumns < 1)
+		if (numColumns < 1) {
 			return new Dimension(marginWidth * 2, marginHeight * 2);
+		}
 		for (IFigure child : container.getChildren()) {
 			GridData data = (GridData) getConstraint(child);
-			if (data == null)
+			if (data == null) {
 				setConstraint(child, data = new GridData());
-			if (flushCache)
+			}
+			if (flushCache) {
 				data.flushCache();
+			}
 			data.computeSize(child, flushCache);
 		}
 
@@ -263,8 +272,9 @@ public class GridLayout extends AbstractHintLayout {
 					while (index < endCount && grid[row][index] == null) {
 						index++;
 					}
-					if (index == endCount)
+					if (index == endCount) {
 						break;
+					}
 					column = index;
 				}
 				if (column + hSpan >= columnCount) {
@@ -299,8 +309,9 @@ public class GridLayout extends AbstractHintLayout {
 						int w = data.cacheWidth + data.horizontalIndent;
 						widths[j] = Math.max(widths[j], w);
 						if (data.grabExcessHorizontalSpace) {
-							if (!expandColumn[j])
+							if (!expandColumn[j]) {
 								expandCount++;
+							}
 							expandColumn[j] = true;
 						}
 						if (data.widthHint != SWT.DEFAULT || !data.grabExcessHorizontalSpace) {
@@ -318,8 +329,9 @@ public class GridLayout extends AbstractHintLayout {
 						for (int k = 0; k < hSpan; k++) {
 							spanWidth += widths[j - k];
 							spanMinWidth += minWidths[j - k];
-							if (expandColumn[j - k])
+							if (expandColumn[j - k]) {
 								spanExpandCount++;
+							}
 						}
 						if (data.grabExcessHorizontalSpace && spanExpandCount == 0) {
 							expandCount++;
@@ -337,8 +349,9 @@ public class GridLayout extends AbstractHintLayout {
 										widths[last = j - k] += delta;
 									}
 								}
-								if (last > -1)
+								if (last > -1) {
 									widths[last] += remainder;
+								}
 							}
 						}
 						if (data.widthHint != SWT.DEFAULT || !data.grabExcessHorizontalSpace) {
@@ -355,8 +368,9 @@ public class GridLayout extends AbstractHintLayout {
 											minWidths[last = j - k] += delta;
 										}
 									}
-									if (last > -1)
+									if (last > -1) {
 										minWidths[last] += remainder;
+									}
 								}
 							}
 						}
@@ -399,8 +413,9 @@ public class GridLayout extends AbstractHintLayout {
 							}
 						}
 					}
-					if (last > -1)
+					if (last > -1) {
 						widths[last] += remainder;
+					}
 
 					for (int j = 0; j < columnCount; j++) {
 						for (int i = 0; i < rowCount; i++) {
@@ -412,8 +427,9 @@ public class GridLayout extends AbstractHintLayout {
 										int spanWidth = 0, spanExpandCount = 0;
 										for (int k = 0; k < hSpan; k++) {
 											spanWidth += widths[j - k];
-											if (expandColumn[j - k])
+											if (expandColumn[j - k]) {
 												spanExpandCount++;
+											}
 										}
 										int w = data.cacheWidth + data.horizontalIndent - spanWidth
 												- (hSpan - 1) * horizontalSpacing;
@@ -428,8 +444,9 @@ public class GridLayout extends AbstractHintLayout {
 														widths[last2 = j - k] += delta2;
 													}
 												}
-												if (last2 > -1)
+												if (last2 > -1) {
 													widths[last2] += remainder2;
+												}
 											}
 										}
 									}
@@ -437,8 +454,9 @@ public class GridLayout extends AbstractHintLayout {
 							}
 						}
 					}
-					if (count == 0)
+					if (count == 0) {
 						break;
+					}
 					totalWidth = 0;
 					for (int i = 0; i < columnCount; i++) {
 						totalWidth += widths[i];
@@ -484,8 +502,9 @@ public class GridLayout extends AbstractHintLayout {
 								data.cacheWidth = data.cacheHeight = SWT.DEFAULT;
 								data.computeSize(child, false);
 								data.widthHint = oldWidthHint;
-								if (flush == null)
+								if (flush == null) {
 									flush = new GridData[container.getChildren().size()];
+								}
 								flush[flushLength++] = data;
 							}
 						}
@@ -509,8 +528,9 @@ public class GridLayout extends AbstractHintLayout {
 						int h = data.cacheHeight; // + data.verticalIndent;
 						heights[i] = Math.max(heights[i], h);
 						if (data.grabExcessVerticalSpace) {
-							if (!expandRow[i])
+							if (!expandRow[i]) {
 								expandCount++;
+							}
 							expandRow[i] = true;
 						}
 						if (data.heightHint != SWT.DEFAULT || !data.grabExcessVerticalSpace) {
@@ -528,8 +548,9 @@ public class GridLayout extends AbstractHintLayout {
 						for (int k = 0; k < vSpan; k++) {
 							spanHeight += heights[i - k];
 							spanMinHeight += minHeights[i - k];
-							if (expandRow[i - k])
+							if (expandRow[i - k]) {
 								spanExpandCount++;
+							}
 						}
 						if (data.grabExcessVerticalSpace && spanExpandCount == 0) {
 							expandCount++;
@@ -548,8 +569,9 @@ public class GridLayout extends AbstractHintLayout {
 										heights[last = i - k] += delta;
 									}
 								}
-								if (last > -1)
+								if (last > -1) {
 									heights[last] += remainder;
+								}
 							}
 						}
 						if (data.heightHint != SWT.DEFAULT || !data.grabExcessVerticalSpace) {
@@ -566,8 +588,9 @@ public class GridLayout extends AbstractHintLayout {
 											minHeights[last = i - k] += delta;
 										}
 									}
-									if (last > -1)
+									if (last > -1) {
 										minHeights[last] += remainder;
+									}
 								}
 							}
 						}
@@ -596,8 +619,9 @@ public class GridLayout extends AbstractHintLayout {
 						}
 					}
 				}
-				if (last > -1)
+				if (last > -1) {
 					heights[last] += remainder;
+				}
 
 				for (int i = 0; i < rowCount; i++) {
 					for (int j = 0; j < columnCount; j++) {
@@ -609,8 +633,9 @@ public class GridLayout extends AbstractHintLayout {
 									int spanHeight = 0, spanExpandCount = 0;
 									for (int k = 0; k < vSpan; k++) {
 										spanHeight += heights[i - k];
-										if (expandRow[i - k])
+										if (expandRow[i - k]) {
 											spanExpandCount++;
+										}
 									}
 									int h = data.cacheHeight - spanHeight - (vSpan - 1) * verticalSpacing; // +
 									// data.verticalIndent
@@ -625,8 +650,9 @@ public class GridLayout extends AbstractHintLayout {
 													heights[last2 = i - k] += delta2;
 												}
 											}
-											if (last2 > -1)
+											if (last2 > -1) {
 												heights[last2] += remainder2;
+											}
 										}
 									}
 								}
@@ -634,8 +660,9 @@ public class GridLayout extends AbstractHintLayout {
 						}
 					}
 				}
-				if (count == 0)
+				if (count == 0) {
 					break;
+				}
 				totalHeight = 0;
 				for (int i = 0; i < rowCount; i++) {
 					totalHeight += heights[i];

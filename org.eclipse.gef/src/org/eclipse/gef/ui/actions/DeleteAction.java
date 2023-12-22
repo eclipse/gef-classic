@@ -75,8 +75,9 @@ public class DeleteAction extends SelectionAction {
 	@Override
 	protected boolean calculateEnabled() {
 		Command cmd = createDeleteCommand(getSelectedObjects());
-		if (cmd == null)
+		if (cmd == null) {
 			return false;
+		}
 		return cmd.canExecute();
 	}
 
@@ -87,20 +88,23 @@ public class DeleteAction extends SelectionAction {
 	 * @return The command to remove the selected objects.
 	 */
 	public Command createDeleteCommand(List objects) {
-		if (objects.isEmpty())
+		if (objects.isEmpty()) {
 			return null;
-		if (!(objects.get(0) instanceof EditPart))
+		}
+		if (!(objects.get(0) instanceof EditPart)) {
 			return null;
+		}
 
 		GroupRequest deleteReq = new GroupRequest(RequestConstants.REQ_DELETE);
 		deleteReq.setEditParts(objects);
 
 		CompoundCommand compoundCmd = new CompoundCommand(GEFMessages.DeleteAction_ActionDeleteCommandName);
-		for (int i = 0; i < objects.size(); i++) {
-			EditPart object = (EditPart) objects.get(i);
+		for (Object object2 : objects) {
+			EditPart object = (EditPart) object2;
 			Command cmd = object.getCommand(deleteReq);
-			if (cmd != null)
+			if (cmd != null) {
 				compoundCmd.add(cmd);
+			}
 		}
 
 		return compoundCmd;

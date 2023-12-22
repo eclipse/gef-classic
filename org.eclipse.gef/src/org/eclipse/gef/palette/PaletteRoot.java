@@ -34,8 +34,9 @@ public class PaletteRoot extends PaletteContainer {
 	 */
 	@Override
 	public boolean acceptsType(Object type) {
-		if (type.equals(ToolEntry.PALETTE_TYPE_TOOL) || type.equals(PaletteStack.PALETTE_TYPE_STACK))
+		if (type.equals(ToolEntry.PALETTE_TYPE_TOOL) || type.equals(PaletteStack.PALETTE_TYPE_STACK)) {
 			return false;
+		}
 		return super.acceptsType(type);
 	}
 

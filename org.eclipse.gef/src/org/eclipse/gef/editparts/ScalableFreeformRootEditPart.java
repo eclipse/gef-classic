@@ -148,8 +148,9 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 	@Override
 	public IFigure getLayer(Object key) {
 		IFigure layer = scaledLayers.getLayer(key);
-		if (layer != null)
+		if (layer != null) {
 			return layer;
+		}
 		return super.getLayer(key);
 	}
 
@@ -159,8 +160,9 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 	 * @return LayeredPane
 	 */
 	protected LayeredPane getScaledLayers() {
-		if (scaledLayers == null)
+		if (scaledLayers == null) {
 			scaledLayers = createScaledLayers();
+		}
 		return scaledLayers;
 	}
 

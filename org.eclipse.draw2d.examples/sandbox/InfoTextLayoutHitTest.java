@@ -67,12 +67,14 @@ public class InfoTextLayoutHitTest {
 			for (int y = 0; y < height; y++) {
 				int offset = layout.getOffset(x - 20, y - 20, trailing);
 
-				if (offset == -1)
+				if (offset == -1) {
 					gc.setForeground(defaultColor);
-				else
+				} else {
 					gc.setForeground(wheel[(offset + trailing[0]) % 6]);
-				if (layout.getLocation(offset, trailing[0] == 1).x != x - 20)
+				}
+				if (layout.getLocation(offset, trailing[0] == 1).x != x - 20) {
 					gc.drawPoint(x, y);
+				}
 			}
 		}
 		gc.setForeground(new Color(null, 0, 0, 0));
@@ -97,9 +99,11 @@ public class InfoTextLayoutHitTest {
 		shell.setSize(400, 300);
 		shell.open();
 
-		while (!shell.isDisposed())
-			if (!display.readAndDispatch())
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
+		}
 
 	}
 

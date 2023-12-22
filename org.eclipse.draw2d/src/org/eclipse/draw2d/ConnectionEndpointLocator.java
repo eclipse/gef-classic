@@ -65,27 +65,31 @@ public class ConnectionEndpointLocator implements Locator {
 		double m1, m2 = 0;
 		m1 = (double) (topLeft.y - center.y) / (double) (topLeft.x - center.x);
 
-		if (loc.x - center.x != 0)
+		if (loc.x - center.x != 0) {
 			m2 = (double) (loc.y - center.y) / (double) (loc.x - center.x);
+		}
 
 		if (loc.x == center.x) {
 			// Case where m2 is vertical
-			if (loc.y < center.y)
+			if (loc.y < center.y) {
 				return 3;
-			else
+			} else {
 				return 1;
+			}
 		} else if (Math.abs(m2) <= Math.abs(m1)) {
 			// Connection start point along left or right side
-			if (loc.x < center.x)
+			if (loc.x < center.x) {
 				return 4;
-			else
+			} else {
 				return 2;
+			}
 		} else {
 			// Connection start point along top or bottom
-			if (loc.y < center.y)
+			if (loc.y < center.y) {
 				return 3;
-			else
+			} else {
 				return 1;
+			}
 		}
 	}
 
@@ -101,15 +105,17 @@ public class ConnectionEndpointLocator implements Locator {
 	 */
 	private int calculateConnectionLocation(Point startPoint, Point endPoint) {
 		if (Math.abs(endPoint.x - startPoint.x) > Math.abs(endPoint.y - startPoint.y)) {
-			if (endPoint.x > startPoint.x)
+			if (endPoint.x > startPoint.x) {
 				return 2;
-			else
+			} else {
 				return 4;
+			}
 		} else {
-			if (endPoint.y > startPoint.y)
+			if (endPoint.y > startPoint.y) {
 				return 1;
-			else
+			} else {
 				return 3;
+			}
 		}
 	}
 
@@ -126,24 +132,27 @@ public class ConnectionEndpointLocator implements Locator {
 	 */
 	private double calculateTan(Point startPoint, Point endPoint) {
 		double tan = 0;
-		if (endPoint.x == startPoint.x)
+		if (endPoint.x == startPoint.x) {
 			tan = 1.0;
-		else
+		} else {
 			tan = (double) (endPoint.y - startPoint.y) / (double) (endPoint.x - startPoint.x);
-		if (tan > 1)
+		}
+		if (tan > 1) {
 			tan = 1.0;
-		else if (tan < -1)
+		} else if (tan < -1) {
 			tan = -1.0;
+		}
 
 		return tan;
 	}
 
 	private int calculateYShift(int figureWidth, int figureHeight) {
 		int yShift = 0;
-		if (vDistance < 0)
+		if (vDistance < 0) {
 			yShift = -figureHeight;
-		else if (vDistance == 0)
+		} else if (vDistance == 0) {
 			yShift = -figureHeight / 2;
+		}
 		return yShift;
 	}
 
@@ -153,10 +162,11 @@ public class ConnectionEndpointLocator implements Locator {
 
 	private IFigure getConnectionOwner() {
 		IFigure connOwner;
-		if (isEnd())
+		if (isEnd()) {
 			connOwner = conn.getTargetAnchor().getOwner();
-		else
+		} else {
 			connOwner = conn.getSourceAnchor().getOwner();
+		}
 
 		return connOwner;
 	}
@@ -214,8 +224,9 @@ public class ConnectionEndpointLocator implements Locator {
 			Point connOwnerCenter = connOwnerBounds.getCenter();
 			Point connOwnerTL = connOwnerBounds.getTopLeft();
 			quadrant = calculateConnectionLocation(startPoint, connOwnerTL, connOwnerCenter);
-		} else
+		} else {
 			quadrant = calculateConnectionLocation(startPoint, endPoint);
+		}
 
 		int cos = 1;
 		transposer.setEnabled(false);
@@ -225,11 +236,13 @@ public class ConnectionEndpointLocator implements Locator {
 		 * left or right side of the figure. If the connection point is along the top or
 		 * bottom, values are transposed.
 		 */
-		if (quadrant == 1 || quadrant == 3)
+		if (quadrant == 1 || quadrant == 3) {
 			transposer.setEnabled(true);
+		}
 
-		if (quadrant == 3 || quadrant == 4)
+		if (quadrant == 3 || quadrant == 4) {
 			cos = -1;
+		}
 
 		Dimension figureSize = transposer.t(figure.getPreferredSize());
 		startPoint = transposer.t(startPoint);

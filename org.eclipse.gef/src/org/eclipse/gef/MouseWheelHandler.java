@@ -62,7 +62,9 @@ public interface MouseWheelHandler {
 		 */
 		public static String getKey(int stateMask) {
 			if ((stateMask & ~(SWT.BUTTON_MASK | SWT.MODIFIER_MASK)) != 0)
+			 {
 				throw new IllegalArgumentException("Illegal state: " + stateMask); //$NON-NLS-1$
+			}
 			return "MouseWheelHandler(" + stateMask + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}

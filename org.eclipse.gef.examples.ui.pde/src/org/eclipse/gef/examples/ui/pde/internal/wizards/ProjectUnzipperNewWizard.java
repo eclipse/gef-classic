@@ -42,8 +42,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.gef.examples.ui.pde.internal.GefExamplesPlugin;
-import org.eclipse.gef.examples.ui.pde.internal.l10n.Messages;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -52,6 +50,9 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
+
+import org.eclipse.gef.examples.ui.pde.internal.GefExamplesPlugin;
+import org.eclipse.gef.examples.ui.pde.internal.l10n.Messages;
 
 /**
  * This abstract wizard serves as the base for our zipped project wizards. At
@@ -349,8 +350,9 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 						char[] buffer = new char[102400];
 						while (true) {
 							int len = is.read(buffer);
-							if (len < 0)
+							if (len < 0) {
 								break;
+							}
 							os.write(buffer, 0, len);
 						}
 					} finally {
@@ -372,8 +374,9 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 						byte[] buffer = new byte[102400];
 						while (true) {
 							int len = is.read(buffer);
-							if (len < 0)
+							if (len < 0) {
 								break;
+							}
 							os.write(buffer, 0, len);
 						}
 					} finally {

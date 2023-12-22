@@ -44,10 +44,11 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	 */
 	public ConnectionHandle(boolean fixed) {
 		setFixed(fixed);
-		if (fixed)
+		if (fixed) {
 			setCursor(Cursors.NO);
-		else
+		} else {
 			setCursor(Cursors.CROSS);
+		}
 	}
 
 	/**
@@ -84,8 +85,9 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(Connection.PROPERTY_POINTS))
+		if (evt.getPropertyName().equals(Connection.PROPERTY_POINTS)) {
 			revalidate();
+		}
 	}
 
 	/**
@@ -106,10 +108,11 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	 */
 	public void setFixed(boolean fixed) {
 		this.fixed = fixed;
-		if (fixed)
+		if (fixed) {
 			setCursor(Cursors.NO);
-		else
+		} else {
 			setCursor(Cursors.CROSS);
+		}
 	}
 
 }

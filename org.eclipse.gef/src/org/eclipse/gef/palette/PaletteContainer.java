@@ -75,9 +75,10 @@ public class PaletteContainer extends PaletteEntry {
 	 * @param entry the PaletteEntry to add
 	 */
 	public void add(int index, PaletteEntry entry) {
-		if (!acceptsType(entry.getType()))
+		if (!acceptsType(entry.getType())) {
 			throw new IllegalArgumentException("This container can not contain this type of child: " //$NON-NLS-1$
 					+ entry.getType());
+		}
 
 		List oldChildren = new ArrayList(getChildren());
 
@@ -96,9 +97,10 @@ public class PaletteContainer extends PaletteEntry {
 		ArrayList oldChildren = new ArrayList(getChildren());
 		for (int i = 0; i < list.size(); i++) {
 			PaletteEntry child = (PaletteEntry) list.get(i);
-			if (!acceptsType(child.getType()))
+			if (!acceptsType(child.getType())) {
 				throw new IllegalArgumentException("This container can not contain this type of child: " //$NON-NLS-1$
 						+ child.getType());
+			}
 			getChildren().add(child);
 			child.setParent(this);
 		}
@@ -117,17 +119,19 @@ public class PaletteContainer extends PaletteEntry {
 		boolean found = false;
 		for (int i = 0; i < getChildren().size(); i++) {
 			PaletteEntry currEntry = (PaletteEntry) getChildren().get(i);
-			if (currEntry.getId().equals(id))
+			if (currEntry.getId().equals(id)) {
 				found = true;
-			else if (found && currEntry instanceof PaletteSeparator) {
+			} else if (found && currEntry instanceof PaletteSeparator) {
 				add(i, entry);
 				return;
 			}
 		}
-		if (found)
+		if (found) {
 			add(entry);
-		else
+		}
+		else {
 			throw new IllegalArgumentException("Section not found: " + id); //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -156,10 +160,11 @@ public class PaletteContainer extends PaletteEntry {
 			if (container.acceptsType(entry.getType())
 					&& container.getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 				remove(entry);
-				if (up)
+				if (up) {
 					container.add(entry);
-				else
+				} else {
 					container.add(0, entry);
+				}
 				return true;
 			}
 		}
@@ -213,13 +218,13 @@ public class PaletteContainer extends PaletteEntry {
 	 */
 	public void setChildren(List list) {
 		List oldChildren = children;
-		for (int i = 0; i < oldChildren.size(); i++) {
-			PaletteEntry entry = (PaletteEntry) oldChildren.get(i);
+		for (Object oldChild : oldChildren) {
+			PaletteEntry entry = (PaletteEntry) oldChild;
 			entry.setParent(null);
 		}
 		children = list;
-		for (int i = 0; i < children.size(); i++) {
-			PaletteEntry entry = (PaletteEntry) children.get(i);
+		for (Object child : children) {
+			PaletteEntry entry = (PaletteEntry) child;
 			entry.setParent(this);
 		}
 		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, getChildren());

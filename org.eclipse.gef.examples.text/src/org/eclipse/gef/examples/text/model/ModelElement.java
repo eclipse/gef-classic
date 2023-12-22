@@ -24,8 +24,9 @@ public abstract class ModelElement extends Notifier {
 
 	public Block getBlockContainer() {
 		Container parent = getContainer();
-		while (parent != null && !(parent instanceof Block))
+		while (parent != null && !(parent instanceof Block)) {
 			parent = parent.getContainer();
+		}
 		return (Block) parent;
 	}
 
