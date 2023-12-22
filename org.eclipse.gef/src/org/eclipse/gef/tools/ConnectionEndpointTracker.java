@@ -67,8 +67,9 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 */
 	@Override
 	protected Cursor calculateCursor() {
-		if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG))
+		if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG)) {
 			return getDefaultCursor();
+		}
 		return super.calculateCursor();
 	}
 
@@ -114,8 +115,9 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * Erases the source feedback.
 	 */
 	protected void eraseSourceFeedback() {
-		if (!getFlag(FLAG_SOURCE_FEEBBACK))
+		if (!getFlag(FLAG_SOURCE_FEEBBACK)) {
 			return;
+		}
 		setFlag(FLAG_SOURCE_FEEBBACK, false);
 		getConnectionEditPart().eraseSourceFeedback(getTargetRequest());
 	}
@@ -212,8 +214,9 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 */
 	@Override
 	protected boolean handleHover() {
-		if (isInDragInProgress())
+		if (isInDragInProgress()) {
 			updateAutoexposeHelper();
+		}
 		return true;
 	}
 
@@ -255,8 +258,9 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 			}
 
 			boolean consumed = false;
-			if (direction != 0 && e.stateMask == 0)
+			if (direction != 0 && e.stateMask == 0) {
 				consumed = navigateNextAnchor(direction);
+			}
 			if (!consumed) {
 				e.stateMask |= SWT.CONTROL;
 				e.stateMask &= ~SWT.SHIFT;
@@ -270,8 +274,9 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 			e.stateMask |= SWT.CONTROL;
 			if (getCurrentViewer().getKeyHandler().keyPressed(e)) {
 				// Do not try to connect to the same connection being dragged.
-				if (getCurrentViewer().getFocusEditPart() != getConnectionEditPart())
+				if (getCurrentViewer().getFocusEditPart() != getConnectionEditPart()) {
 					navigateNextAnchor(0);
+				}
 				return true;
 			}
 		}
@@ -287,22 +292,25 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 		EditPart focus = getCurrentViewer().getFocusEditPart();
 		AccessibleAnchorProvider provider;
 		provider = focus.getAdapter(AccessibleAnchorProvider.class);
-		if (provider == null)
+		if (provider == null) {
 			return false;
+		}
 
 		List list;
-		if (isTarget())
+		if (isTarget()) {
 			list = provider.getTargetAnchorLocations();
-		else
+		} else {
 			list = provider.getSourceAnchorLocations();
+		}
 
 		Point start = getLocation();
 		int distance = Integer.MAX_VALUE;
 		Point next = null;
-		for (int i = 0; i < list.size(); i++) {
-			Point p = (Point) list.get(i);
-			if (p.equals(start) || (direction != 0 && (start.getPosition(p) != direction)))
+		for (Object element : list) {
+			Point p = (Point) element;
+			if (p.equals(start) || (direction != 0 && (start.getPosition(p) != direction))) {
 				continue;
+			}
 			int d = p.getDistanceOrthogonal(start);
 			if (d < distance) {
 				distance = d;

@@ -51,8 +51,9 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 		removeSelectionHandles();
 		IFigure layer = getLayer(LayerConstants.HANDLE_LAYER);
 		handles = createSelectionHandles();
-		for (int i = 0; i < handles.size(); i++)
-			layer.add((IFigure) handles.get(i));
+		for (Object handle : handles) {
+			layer.add((IFigure) handle);
+		}
 	}
 
 	/**
@@ -67,21 +68,23 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 	 */
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
-		if (key == AccessibleHandleProvider.class)
+		if (key == AccessibleHandleProvider.class) {
 			return key.cast(new AccessibleHandleProvider() {
 				@Override
 				public List<Point> getAccessibleHandleLocations() {
 					List<Point> result = new ArrayList<>();
 					if (handles != null) {
-						for (int i = 0; i < handles.size(); i++) {
-							Point p = ((Handle) handles.get(i)).getAccessibleLocation();
-							if (p != null)
+						for (Object handle : handles) {
+							Point p = ((Handle) handle).getAccessibleLocation();
+							if (p != null) {
 								result.add(p);
+							}
 						}
 					}
 					return result;
 				}
 			});
+		}
 		return null;
 	}
 
@@ -99,11 +102,13 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 	 * removes the selection handles from the selection layer.
 	 */
 	protected void removeSelectionHandles() {
-		if (handles == null)
+		if (handles == null) {
 			return;
+		}
 		IFigure layer = getLayer(LayerConstants.HANDLE_LAYER);
-		for (int i = 0; i < handles.size(); i++)
-			layer.remove((IFigure) handles.get(i));
+		for (Object handle : handles) {
+			layer.remove((IFigure) handle);
+		}
 		handles = null;
 	}
 

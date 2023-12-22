@@ -95,8 +95,9 @@ class Vertex extends Point {
 			paths = new ArrayList<>();
 			cachedCosines = new HashMap<>();
 		}
-		if (!paths.contains(path))
+		if (!paths.contains(path)) {
 			paths.add(path);
+		}
 		cachedCosines.put(path, start.cosine(end));
 	}
 
@@ -109,14 +110,16 @@ class Vertex extends Point {
 	 */
 	Point bend(int modifier) {
 		Point point = new Point(x, y);
-		if ((positionOnObstacle & PositionConstants.NORTH) > 0)
+		if ((positionOnObstacle & PositionConstants.NORTH) > 0) {
 			point.y -= modifier * offset;
-		else
+		} else {
 			point.y += modifier * offset;
-		if ((positionOnObstacle & PositionConstants.EAST) > 0)
+		}
+		if ((positionOnObstacle & PositionConstants.EAST) > 0) {
 			point.x += modifier * offset;
-		else
+		} else {
 			point.x -= modifier * offset;
+		}
 		return point;
 	}
 
@@ -133,12 +136,15 @@ class Vertex extends Point {
 		label = null;
 		nearestObstacleChecked = false;
 		isPermanent = false;
-		if (neighbors != null)
+		if (neighbors != null) {
 			neighbors.clear();
-		if (cachedCosines != null)
+		}
+		if (cachedCosines != null) {
 			cachedCosines.clear();
-		if (paths != null)
+		}
+		if (paths != null) {
 			paths.clear();
+		}
 	}
 
 	/**
@@ -170,8 +176,9 @@ class Vertex extends Point {
 	}
 
 	private int getSpacing() {
-		if (obs == null)
+		if (obs == null) {
 			return 0;
+		}
 		return obs.getSpacing();
 	}
 
@@ -181,19 +188,22 @@ class Vertex extends Point {
 	void grow() {
 		int modifier;
 
-		if (nearestObstacle == 0)
+		if (nearestObstacle == 0) {
 			modifier = totalCount * getSpacing();
-		else
+		} else {
 			modifier = (nearestObstacle / 2) - 1;
+		}
 
-		if ((positionOnObstacle & PositionConstants.NORTH) > 0)
+		if ((positionOnObstacle & PositionConstants.NORTH) > 0) {
 			y -= modifier;
-		else
+		} else {
 			y += modifier;
-		if ((positionOnObstacle & PositionConstants.EAST) > 0)
+		}
+		if ((positionOnObstacle & PositionConstants.EAST) > 0) {
 			x += modifier;
-		else
+		} else {
 			x -= modifier;
+		}
 	}
 
 	/**
@@ -208,8 +218,9 @@ class Vertex extends Point {
 	 * Updates the offset of this vertex based on its shortest distance.
 	 */
 	void updateOffset() {
-		if (nearestObstacle != 0)
+		if (nearestObstacle != 0) {
 			offset = ((nearestObstacle / 2) - 1) / totalCount;
+		}
 	}
 
 	/**

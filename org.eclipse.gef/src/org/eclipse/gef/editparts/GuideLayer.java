@@ -87,10 +87,12 @@ public class GuideLayer extends FreeformLayer {
 			}
 		}
 		Rectangle r = new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
-		if (r.width > 1)
+		if (r.width > 1) {
 			r.expand(5, 0);
-		if (r.height > 1)
+		}
+		if (r.height > 1) {
 			r.expand(0, 5);
+		}
 		return r;
 	}
 

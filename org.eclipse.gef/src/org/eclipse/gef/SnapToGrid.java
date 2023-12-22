@@ -104,15 +104,18 @@ public class SnapToGrid extends SnapToHelper {
 			gridX = spacing.width;
 			gridY = spacing.height;
 		}
-		if (gridX == 0)
+		if (gridX == 0) {
 			gridX = DEFAULT_GRID_SIZE;
-		if (gridY == 0)
+		}
+		if (gridY == 0) {
 			gridY = DEFAULT_GRID_SIZE;
+		}
 		Point loc = (Point) container.getViewer().getProperty(PROPERTY_GRID_ORIGIN);
-		if (loc != null)
+		if (loc != null) {
 			origin = loc;
-		else
+		} else {
 			origin = new Point();
+		}
 	}
 
 	/**

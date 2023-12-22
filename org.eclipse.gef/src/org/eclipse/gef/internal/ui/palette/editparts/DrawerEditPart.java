@@ -97,8 +97,9 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 			helper.setMargin(new Insets(PaletteScrollBar.BUTTON_HEIGHT, 0, PaletteScrollBar.BUTTON_HEIGHT, 0));
 			return key.cast(helper);
 		}
-		if (key == MouseWheelHelper.class)
+		if (key == MouseWheelHelper.class) {
 			return key.cast(new ViewportMouseWheelHelper(this));
+		}
 		return super.getAdapter(key);
 	}
 

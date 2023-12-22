@@ -13,12 +13,13 @@ package org.eclipse.zest.core.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.zest.core.widgets.internal.ContainerFigure;
+import org.eclipse.zest.core.widgets.internal.GraphLabel;
+
 import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.zest.core.widgets.internal.ContainerFigure;
-import org.eclipse.zest.core.widgets.internal.GraphLabel;
 
 /**
  * A ContainerFigure that container buttons and labels for hiding and revealing

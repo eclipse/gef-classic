@@ -32,10 +32,11 @@ public class StructuredActivity extends Activity {
 	}
 
 	public void addChild(Activity child, int index) {
-		if (index >= 0)
+		if (index >= 0) {
 			children.add(index, child);
-		else
+		} else {
 			children.add(child);
+		}
 		fireStructureChange(CHILDREN, child);
 	}
 

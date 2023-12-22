@@ -470,15 +470,16 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		// Add all the actions to the context menu
 		for (Iterator iter = actions.iterator(); iter.hasNext();) {
 			IAction action = (IAction) iter.next();
-			if (action instanceof IMenuCreator)
+			if (action instanceof IMenuCreator) {
 				outlineMenu.add(new ActionContributionItem(action) {
 					@Override
 					public boolean isDynamic() {
 						return true;
 					}
 				});
-			else
+			} else {
 				outlineMenu.add(action);
+			}
 			// Add separators after new and delete
 			if (action instanceof NewAction || action instanceof DeleteAction) {
 				outlineMenu.add(new Separator());
@@ -549,8 +550,8 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		// Create the ToolBarManager and add all the actions to it
 		ToolBarManager tbMgr = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
 		List actions = getOutlineActions();
-		for (int i = 0; i < actions.size(); i++) {
-			tbMgr.add(new ToolbarDropdownContributionItem(((IAction) actions.get(i))));
+		for (Object action : actions) {
+			tbMgr.add(new ToolbarDropdownContributionItem(((IAction) action)));
 		}
 		tbMgr.createControl(composite);
 		tbMgr.getControl().setFont(composite.getFont());
@@ -585,10 +586,11 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		TreeViewer viewer = new TreeViewer(treeForViewer) {
 			@Override
 			protected void preservingSelection(Runnable updateCode) {
-				if ((getTree().getStyle() & SWT.SINGLE) != 0)
+				if ((getTree().getStyle() & SWT.SINGLE) != 0) {
 					updateCode.run();
-				else
+				} else {
 					super.preservingSelection(updateCode);
+				}
 			}
 		};
 		viewer.setContentProvider(new PaletteTreeProvider(viewer));
@@ -1309,8 +1311,9 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		@Override
 		public void run() {
 			PaletteEntry selected = getSelectedPaletteEntry();
-			if (selected == null)
+			if (selected == null) {
 				selected = getPaletteRoot();
+			}
 			PaletteEntry newEntry = factory.createNewEntry(getShell(), selected);
 			treeviewer.setSelection(new StructuredSelection(newEntry), true);
 			updateActions();

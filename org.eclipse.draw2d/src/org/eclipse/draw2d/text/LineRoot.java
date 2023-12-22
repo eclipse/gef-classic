@@ -78,16 +78,20 @@ public class LineRoot extends LineBox {
 	private void buildBidiTree(FlowBox box, BidiLevelNode node, List branches) {
 		if (box instanceof LineBox) {
 			List children = ((LineBox) box).getFragments();
-			for (int i = 0; i < children.size(); i++)
-				buildBidiTree((FlowBox) children.get(i), node, branches);
-			if (box != this)
+			for (Object child : children) {
+				buildBidiTree((FlowBox) child, node, branches);
+			}
+			if (box != this) {
 				branches.add(box);
+			}
 		} else {
 			ContentBox leafBox = (ContentBox) box;
-			while (leafBox.getBidiLevel() < node.level)
+			while (leafBox.getBidiLevel() < node.level) {
 				node = node.pop();
-			while (leafBox.getBidiLevel() > node.level)
+			}
+			while (leafBox.getBidiLevel() > node.level) {
 				node = node.push();
+			}
 			node.add(leafBox);
 		}
 	}
@@ -98,10 +102,11 @@ public class LineRoot extends LineBox {
 	 * Unicode BiDi Algorithm, or left-to-right if Bidi is not necessary.
 	 */
 	public void commit() {
-		if (requiresBidi())
+		if (requiresBidi()) {
 			bidiCommit();
-		else
+		} else {
 			contiguousCommit(this, getX());
+		}
 	}
 
 	/**
@@ -136,8 +141,9 @@ public class LineRoot extends LineBox {
 		for (int i = afterIndex + 1; i < branches.size(); i++) {
 			NestedLine box = (NestedLine) branches.get(i);
 			int index = box.getFragments().indexOf(line);
-			if (index >= 0)
+			if (index >= 0) {
 				return new Result(box, index);
+			}
 		}
 		return new Result(this, getFragments().indexOf(line));
 	}
@@ -182,8 +188,9 @@ public class LineRoot extends LineBox {
 					newBox.setLineRoot(this);
 					// Add all remaining fragments from the current line box to
 					// the new one
-					for (int k = j; k < frags.size();)
+					for (int k = j; k < frags.size();) {
 						newBox.fragments.add(frags.remove(k));
+					}
 					// Add the new line box to the parent box's list of
 					// fragments
 					Result result = findParent(parent, branches, i);
@@ -194,10 +201,11 @@ public class LineRoot extends LineBox {
 					branches.add(i + 1, newBox);
 					break;
 				}
-				if (bounds == null)
+				if (bounds == null) {
 					bounds = new Rectangle(child.getX(), 1, child.getWidth(), 1);
-				else
+				} else {
 					bounds.union(child.getX(), 1, child.getWidth(), 1);
+				}
 				prevChild = child;
 			}
 			parent.setX(bounds.x);
@@ -239,18 +247,20 @@ public class LineRoot extends LineBox {
 			if (level % 2 == 1) {
 				for (int i = size() - 1; i >= 0; i--) {
 					Object child = get(i);
-					if (child instanceof BidiLevelNode)
+					if (child instanceof BidiLevelNode) {
 						((BidiLevelNode) child).emit(list);
-					else
+					} else {
 						list.add(child);
+					}
 				}
 			} else {
 				for (int i = 0; i < size(); i++) {
 					Object child = get(i);
-					if (child instanceof BidiLevelNode)
+					if (child instanceof BidiLevelNode) {
 						((BidiLevelNode) child).emit(list);
-					else
+					} else {
 						list.add(child);
+					}
 				}
 			}
 		}
@@ -262,8 +272,9 @@ public class LineRoot extends LineBox {
 		BidiLevelNode push() {
 			if (!isEmpty()) {
 				Object last = get(size() - 1);
-				if (last instanceof BidiLevelNode && ((BidiLevelNode) last).level == level + 1)
+				if (last instanceof BidiLevelNode && ((BidiLevelNode) last).level == level + 1) {
 					return (BidiLevelNode) last;
+				}
 			}
 			BidiLevelNode child = new BidiLevelNode(this, level + 1);
 			add(child);

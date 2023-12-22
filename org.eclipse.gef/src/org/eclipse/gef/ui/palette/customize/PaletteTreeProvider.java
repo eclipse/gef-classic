@@ -144,8 +144,9 @@ class PaletteTreeProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		if (root != null)
+		if (root != null) {
 			traverseModel(root, false);
+		}
 		if (newInput != null) {
 			root = (PaletteRoot) newInput;
 			traverseModel(root, true);
@@ -161,8 +162,8 @@ class PaletteTreeProvider implements ITreeContentProvider {
 
 		if (hasChildren(entry)) {
 			Object[] children = getChildren(entry);
-			for (int i = 0; i < children.length; i++) {
-				traverseModel((PaletteEntry) children[i], isHook);
+			for (Object child : children) {
+				traverseModel((PaletteEntry) child, isHook);
 			}
 		}
 	}

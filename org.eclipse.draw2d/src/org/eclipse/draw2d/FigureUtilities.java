@@ -56,8 +56,9 @@ public class FigureUtilities {
 	 */
 	public static FontMetrics getFontMetrics(Font f) {
 		setFont(f);
-		if (metrics == null)
+		if (metrics == null) {
 			metrics = getGC().getFontMetrics();
+		}
 		return metrics;
 	}
 
@@ -98,8 +99,9 @@ public class FigureUtilities {
 	 * @return the root ancestor
 	 */
 	public static IFigure getRoot(IFigure figure) {
-		while (figure.getParent() != null)
+		while (figure.getParent() != null) {
 			figure = figure.getParent();
+		}
 		return figure;
 	}
 
@@ -274,25 +276,33 @@ public class FigureUtilities {
 		Rectangle clip = g.getClip(Rectangle.SINGLETON);
 
 		if (distanceX > 0) {
-			if (origin.x >= clip.x)
-				while (origin.x - distanceX >= clip.x)
+			if (origin.x >= clip.x) {
+				while (origin.x - distanceX >= clip.x) {
 					origin.x -= distanceX;
-			else
-				while (origin.x < clip.x)
+				}
+			} else {
+				while (origin.x < clip.x) {
 					origin.x += distanceX;
-			for (int i = origin.x; i < clip.x + clip.width; i += distanceX)
+				}
+			}
+			for (int i = origin.x; i < clip.x + clip.width; i += distanceX) {
 				g.drawLine(i, clip.y, i, clip.y + clip.height);
+			}
 		}
 
 		if (distanceY > 0) {
-			if (origin.y >= clip.y)
-				while (origin.y - distanceY >= clip.y)
+			if (origin.y >= clip.y) {
+				while (origin.y - distanceY >= clip.y) {
 					origin.y -= distanceY;
-			else
-				while (origin.y < clip.y)
+				}
+			} else {
+				while (origin.y < clip.y) {
 					origin.y += distanceY;
-			for (int i = origin.y; i < clip.y + clip.height; i += distanceY)
+				}
+			}
+			for (int i = origin.y; i < clip.y + clip.height; i += distanceY) {
 				g.drawLine(clip.x, i, clip.x + clip.width, i);
+			}
 		}
 	}
 
@@ -317,8 +327,9 @@ public class FigureUtilities {
 	 * @since 2.0
 	 */
 	protected static void setFont(Font f) {
-		if (appliedFont == f || (f != null && f.equals(appliedFont)))
+		if (appliedFont == f || (f != null && f.equals(appliedFont))) {
 			return;
+		}
 		getGC().setFont(f);
 		appliedFont = f;
 		metrics = null;
@@ -337,8 +348,9 @@ public class FigureUtilities {
 	 * @return the common ancestor, if it exists, or <code>null</code>.
 	 */
 	public static IFigure findCommonAncestor(IFigure l, IFigure r) {
-		if (l == r)
+		if (l == r) {
 			return l;
+		}
 		ArrayList left = new ArrayList();
 		ArrayList right = new ArrayList();
 		while (l != null) {
@@ -349,12 +361,14 @@ public class FigureUtilities {
 			right.add(r);
 			r = r.getParent();
 		}
-		if (left.isEmpty() || right.isEmpty())
+		if (left.isEmpty() || right.isEmpty()) {
 			return null;
+		}
 
 		for (int i = 0; i < left.size(); i++) {
-			if (right.contains(left.get(i)))
+			if (right.contains(left.get(i))) {
 				return (IFigure) left.get(i);
+			}
 		}
 		return null;
 	}
@@ -371,8 +385,9 @@ public class FigureUtilities {
 	public static boolean isAncestor(final IFigure ancestor, IFigure descendant) {
 		while (descendant != null) {
 			descendant = descendant.getParent();
-			if (descendant == ancestor)
+			if (descendant == ancestor) {
 				return true;
+			}
 		}
 		return false;
 	}

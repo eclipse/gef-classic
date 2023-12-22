@@ -12,8 +12,6 @@
  ******************************************************************************/
 package org.eclipse.zest.core.viewers;
 
-import org.eclipse.draw2d.zoom.ZoomListener;
-import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
@@ -27,7 +25,11 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+
+import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.zest.core.viewers.internal.ZoomManager;
+
+import org.eclipse.draw2d.zoom.ZoomListener;
 
 /**
  * A contribution item that adds a combo to a toolbar or coolbar, or a list of
@@ -178,14 +180,14 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 		if (rebuild) {
 			zoomLevels = zoomManager.getZoomLevelsAsText();
 			MenuItem[] oldItems = fMenu.getItems();
-			for (int i = 0; i < oldItems.length; i++) {
-				if (oldItems[i].getData() == this) {
-					oldItems[i].dispose();
+			for (MenuItem oldItem : oldItems) {
+				if (oldItem.getData() == this) {
+					oldItem.dispose();
 				}
 			}
-			for (int i = 0; i < zoomLevels.length; i++) {
+			for (String zoomLevel : zoomLevels) {
 				MenuItem item = new MenuItem(fMenu, SWT.RADIO);
-				item.setText(zoomLevels[i]);
+				item.setText(zoomLevel);
 				item.setData(this);
 				item.addSelectionListener(new SelectionAdapter() {
 					@Override
@@ -198,8 +200,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 		}
 		String zoom = zoomManager.getZoomAsText();
 		MenuItem[] items = fMenu.getItems();
-		for (int i = 0; i < items.length; i++) {
-			MenuItem item = items[i];
+		for (MenuItem item : items) {
 			if (item.getData() == this) {
 				item.setSelection(false);
 				if (zoom.equalsIgnoreCase(item.getText())) {

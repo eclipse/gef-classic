@@ -28,8 +28,9 @@ public class TextRunTreePart extends ExampleTreePart {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("text")) //$NON-NLS-1$
+		if (evt.getPropertyName().equals("text")) { //$NON-NLS-1$
 			refreshVisuals();
+		}
 	}
 
 	@Override
@@ -37,7 +38,9 @@ public class TextRunTreePart extends ExampleTreePart {
 		TextRun run = (TextRun) getModel();
 		String s = run.getText();
 		if (s.length() > 50)
+		 {
 			s = s.substring(0, 50) + "..."; //$NON-NLS-1$
+		}
 		setWidgetText(s);
 	}
 

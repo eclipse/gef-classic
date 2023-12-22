@@ -48,8 +48,9 @@ public abstract class SimpleObjectTransfer extends ByteArrayTransfer {
 	public void javaToNative(Object object, TransferData transferData) {
 		setObject(object);
 		startTime = System.currentTimeMillis();
-		if (transferData != null)
+		if (transferData != null) {
 			super.javaToNative(String.valueOf(startTime).getBytes(), transferData);
+		}
 	}
 
 	/**

@@ -157,10 +157,11 @@ public class TemplateEditPart extends PaletteEditPart {
 		PaletteEntry entry = getModel();
 		fig.setName(entry.getLabel());
 		fig.setDescription(entry.getDescription());
-		if (getPreferenceSource().useLargeIcons())
+		if (getPreferenceSource().useLargeIcons()) {
 			setImageDescriptor(entry.getLargeIcon());
-		else
+		} else {
 			setImageDescriptor(entry.getSmallIcon());
+		}
 		int layoutMode = getLayoutSetting();
 		fig.setLayoutMode(layoutMode);
 		if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {

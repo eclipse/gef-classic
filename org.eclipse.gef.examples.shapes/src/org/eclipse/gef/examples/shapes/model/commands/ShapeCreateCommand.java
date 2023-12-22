@@ -71,8 +71,9 @@ public class ShapeCreateCommand extends Command {
 	public void execute() {
 		newShape.setLocation(bounds.getLocation());
 		Dimension size = bounds.getSize();
-		if (size.width > 0 && size.height > 0)
+		if (size.width > 0 && size.height > 0) {
 			newShape.setSize(size);
+		}
 		redo();
 	}
 

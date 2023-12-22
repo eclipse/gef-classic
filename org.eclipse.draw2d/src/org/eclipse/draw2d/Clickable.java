@@ -138,10 +138,11 @@ public class Clickable extends Figure {
 	 * @since 2.0
 	 */
 	protected ButtonModel createDefaultModel() {
-		if (isStyle(STYLE_TOGGLE))
+		if (isStyle(STYLE_TOGGLE)) {
 			return new ToggleModel();
-		else
+		} else {
 			return new ButtonModel();
+		}
 	}
 
 	/**
@@ -228,8 +229,9 @@ public class Clickable extends Figure {
 	 * @since 2.0
 	 */
 	protected void hookEventHandler(ClickableEventHandler handler) {
-		if (handler == null)
+		if (handler == null) {
 			return;
+		}
 		addMouseListener(handler);
 		addMouseMotionListener(handler);
 		addChangeListener(handler);
@@ -295,10 +297,11 @@ public class Clickable extends Figure {
 			graphics.setBackgroundColor(ColorConstants.white);
 
 			Rectangle area = getClientArea();
-			if (isStyle(STYLE_BUTTON))
+			if (isStyle(STYLE_BUTTON)) {
 				graphics.drawFocus(area.x, area.y, area.width, area.height);
-			else
+			} else {
 				graphics.drawFocus(area.x, area.y, area.width - 1, area.height - 1);
+			}
 		}
 	}
 
@@ -318,8 +321,9 @@ public class Clickable extends Figure {
 			super.paintClientArea(graphics);
 			graphics.popState();
 			graphics.translate(-1, -1);
-		} else
+		} else {
 			super.paintClientArea(graphics);
+		}
 	}
 
 	/**
@@ -353,8 +357,9 @@ public class Clickable extends Figure {
 	 */
 	protected void setContents(IFigure contents) {
 		setLayoutManager(new StackLayout());
-		if (!getChildren().isEmpty())
+		if (!getChildren().isEmpty()) {
 			remove(getChildren().get(0));
+		}
 		add(contents);
 	}
 
@@ -363,8 +368,9 @@ public class Clickable extends Figure {
 	 */
 	@Override
 	public void setEnabled(boolean value) {
-		if (isEnabled() == value)
+		if (isEnabled() == value) {
 			return;
+		}
 		super.setEnabled(value);
 		getModel().setEnabled(value);
 		setChildrenEnabled(value);
@@ -378,11 +384,13 @@ public class Clickable extends Figure {
 	 * @since 2.0
 	 */
 	public void setEventHandler(ClickableEventHandler h) {
-		if (eventHandler != null)
+		if (eventHandler != null) {
 			unhookEventHandler(eventHandler);
+		}
 		eventHandler = h;
-		if (eventHandler != null)
+		if (eventHandler != null) {
 			hookEventHandler(eventHandler);
+		}
 	}
 
 	/**
@@ -430,8 +438,9 @@ public class Clickable extends Figure {
 	 * @since 2.0
 	 */
 	public void setRolloverEnabled(boolean value) {
-		if (isRolloverEnabled() == value)
+		if (isRolloverEnabled() == value) {
 			return;
+		}
 		setFlag(ROLLOVER_ENABLED_FLAG, value);
 		repaint();
 	}
@@ -460,8 +469,9 @@ public class Clickable extends Figure {
 	public void setStyle(int style) {
 		if ((style & STYLE_BUTTON) != 0) {
 			setFlag(STYLE_BUTTON_FLAG, true);
-			if (!(getBorder() instanceof ButtonBorder))
+			if (!(getBorder() instanceof ButtonBorder)) {
 				setBorder(new ButtonBorder());
+			}
 			setOpaque(true);
 		} else {
 			setFlag(STYLE_BUTTON_FLAG, false);
@@ -482,8 +492,9 @@ public class Clickable extends Figure {
 	 * @since 2.0
 	 */
 	protected void unhookEventHandler(ClickableEventHandler handler) {
-		if (handler == null)
+		if (handler == null) {
 			return;
+		}
 		removeMouseListener(handler);
 		removeMouseMotionListener(handler);
 		removeChangeListener(handler);

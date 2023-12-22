@@ -76,8 +76,9 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 	@Override
 	public <T> T getAdapter(final Class<T> adapter) {
 		if (adapter == AutoexposeHelper.class) {
-			if (((RulerEditPart) getContents()).isHorizontal())
+			if (((RulerEditPart) getContents()).isHorizontal()) {
 				return adapter.cast(new ViewportAutoexposeHelper(this, HORIZONTAL_THRESHOLD));
+			}
 			return adapter.cast(new ViewportAutoexposeHelper(this, VERTICAL_THRESHOLD));
 		}
 		return super.getAdapter(adapter);
@@ -119,10 +120,11 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 			// can't scroll
 			// anymore (otherwise, CTRL + SHIFT + ARROW scrolls it).
 			RangeModel bogusRangeModel;
-			if (horizontal)
+			if (horizontal) {
 				bogusRangeModel = getVerticalRangeModel();
-			else
+			} else {
 				bogusRangeModel = getHorizontalRangeModel();
+			}
 			bogusRangeModel.setMinimum(0);
 			bogusRangeModel.setMaximum(100);
 			bogusRangeModel.setValue(0);
@@ -146,10 +148,11 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 			 */
 			if (force) {
 				RangeModel rModel;
-				if (horizontal)
+				if (horizontal) {
 					rModel = getHorizontalRangeModel();
-				else
+				} else {
 					rModel = getVerticalRangeModel();
+				}
 				Rectangle contentBounds = Rectangle.SINGLETON;
 				if (horizontal) {
 					contentBounds.y = 0;
@@ -174,8 +177,9 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		 */
 		@Override
 		public Dimension getPreferredSize(int wHint, int hHint) {
-			if (this.getContents() == null)
+			if (this.getContents() == null) {
 				return new Dimension();
+			}
 			Dimension pSize = this.getContents().getPreferredSize(wHint, hHint);
 			if (horizontal) {
 				RangeModel rModel = getHorizontalRangeModel();
@@ -237,8 +241,9 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		public void setContents(IFigure figure) {
 			super.setContents(figure);
 			// Need to layout when contents change
-			if (this.getContents() != null)
+			if (this.getContents() != null) {
 				doLayout(true);
+			}
 		}
 
 		/**

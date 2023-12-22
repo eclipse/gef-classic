@@ -11,6 +11,8 @@
 
 package org.eclipse.draw2d.examples.text;
 
+import org.eclipse.swt.SWT;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
@@ -21,7 +23,6 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.AbstractFlowBorder;
 import org.eclipse.draw2d.text.FlowFigure;
-import org.eclipse.swt.SWT;
 
 public class TestBorder extends AbstractFlowBorder {
 

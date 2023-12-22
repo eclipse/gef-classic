@@ -16,6 +16,7 @@ package org.eclipse.gef.examples.text.edit;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
+
 import org.eclipse.gef.examples.text.model.ModelElement;
 
 /**

@@ -92,8 +92,9 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 */
 	@Override
 	public void eraseSourceFeedback(Request request) {
-		if (REQ_CONNECTION_END.equals(request.getType()))
+		if (REQ_CONNECTION_END.equals(request.getType())) {
 			eraseCreationFeedback((CreateConnectionRequest) request);
+		}
 	}
 
 	/**
@@ -112,8 +113,9 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	@Override
 	public void eraseTargetFeedback(Request request) {
 		if (REQ_CONNECTION_START.equals(request.getType()) || REQ_CONNECTION_END.equals(request.getType())
-				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
+				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType())) {
 			eraseTargetConnectionFeedback((DropRequest) request);
+		}
 	}
 
 	/**
@@ -124,14 +126,18 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 */
 	@Override
 	public Command getCommand(Request request) {
-		if (REQ_CONNECTION_START.equals(request.getType()))
+		if (REQ_CONNECTION_START.equals(request.getType())) {
 			return getConnectionCreateCommand((CreateConnectionRequest) request);
-		if (REQ_CONNECTION_END.equals(request.getType()))
+		}
+		if (REQ_CONNECTION_END.equals(request.getType())) {
 			return getConnectionCompleteCommand((CreateConnectionRequest) request);
-		if (REQ_RECONNECT_TARGET.equals(request.getType()))
+		}
+		if (REQ_RECONNECT_TARGET.equals(request.getType())) {
 			return getReconnectTargetCommand((ReconnectRequest) request);
-		if (REQ_RECONNECT_SOURCE.equals(request.getType()))
+		}
+		if (REQ_RECONNECT_SOURCE.equals(request.getType())) {
 			return getReconnectSourceCommand((ReconnectRequest) request);
+		}
 
 		return null;
 	}
@@ -247,8 +253,9 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	@Override
 	public EditPart getTargetEditPart(Request request) {
 		if (REQ_CONNECTION_START.equals(request.getType()) || REQ_CONNECTION_END.equals(request.getType())
-				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
+				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType())) {
 			return getHost();
+		}
 		return null;
 	}
 
@@ -271,8 +278,9 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 */
 	@Override
 	public void showSourceFeedback(Request request) {
-		if (REQ_CONNECTION_END.equals(request.getType()))
+		if (REQ_CONNECTION_END.equals(request.getType())) {
 			showCreationFeedback((CreateConnectionRequest) request);
+		}
 	}
 
 	/**
@@ -291,8 +299,9 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	@Override
 	public void showTargetFeedback(Request request) {
 		if (REQ_CONNECTION_START.equals(request.getType()) || REQ_CONNECTION_END.equals(request.getType())
-				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
+				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType())) {
 			showTargetConnectionFeedback((DropRequest) request);
+		}
 	}
 
 }

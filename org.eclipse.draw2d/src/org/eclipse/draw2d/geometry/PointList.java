@@ -111,13 +111,15 @@ public class PointList implements java.io.Serializable, Translatable {
 	 * @since 2.0
 	 */
 	public Rectangle getBounds() {
-		if (bounds != null)
+		if (bounds != null) {
 			return bounds;
+		}
 		bounds = new Rectangle();
 		if (size > 0) {
 			bounds.setLocation(getPoint(0));
-			for (int i = 0; i < size; i++)
+			for (int i = 0; i < size; i++) {
 				bounds.union(getPoint(i));
+			}
 		}
 		return bounds;
 	}
@@ -166,8 +168,9 @@ public class PointList implements java.io.Serializable, Translatable {
 	 * @throws IndexOutOfBoundsException if the list is empty
 	 */
 	public Point getMidpoint() {
-		if (size() % 2 == 0)
+		if (size() % 2 == 0) {
 			return getPoint(size() / 2 - 1).getTranslated(getPoint(size() / 2)).scale(0.5f);
+		}
 		return getPoint(size() / 2);
 	}
 
@@ -181,8 +184,10 @@ public class PointList implements java.io.Serializable, Translatable {
 	 */
 	public Point getPoint(int index) {
 		if (index < 0 || index >= size)
+		 {
 			throw new IndexOutOfBoundsException("Index: " + index + //$NON-NLS-1$
 					", Size: " + size); //$NON-NLS-1$
+		}
 		index *= 2;
 		return new Point(points[index], points[index + 1]);
 	}
@@ -199,8 +204,10 @@ public class PointList implements java.io.Serializable, Translatable {
 	 */
 	public Point getPoint(Point p, int index) {
 		if (index < 0 || index >= size)
+		 {
 			throw new IndexOutOfBoundsException("Index: " + index + //$NON-NLS-1$
 					", Size: " + size); //$NON-NLS-1$
+		}
 		index *= 2;
 		p.x = points[index];
 		p.y = points[index + 1];
@@ -217,11 +224,14 @@ public class PointList implements java.io.Serializable, Translatable {
 	 * @since 2.0
 	 */
 	public void insertPoint(Point p, int index) {
-		if (bounds != null && !bounds.contains(p))
+		if (bounds != null && !bounds.contains(p)) {
 			bounds = null;
+		}
 		if (index > size || index < 0)
+		 {
 			throw new IndexOutOfBoundsException("Index: " + index + //$NON-NLS-1$
 					", Size: " + size); //$NON-NLS-1$
+		}
 		index *= 2;
 
 		int length = points.length;
@@ -246,11 +256,13 @@ public class PointList implements java.io.Serializable, Translatable {
 	 * @since 3.1
 	 */
 	public boolean intersects(Rectangle r) {
-		if (r.isEmpty())
+		if (r.isEmpty()) {
 			return false;
+		}
 		for (int i = 0; i < size * 2; i += 2) {
-			if (r.contains(points[i], points[i + 1]))
+			if (r.contains(points[i], points[i + 1])) {
 				return true;
+			}
 		}
 		int diagonal1x1 = r.x, diagonal1y1 = r.y, diagonal1x2 = r.x + r.width - 1, diagonal1y2 = r.y + r.height - 1,
 				diagonal2x1 = r.x + r.width - 1, diagonal2y1 = r.y, diagonal2x2 = r.x, diagonal2y2 = r.y + r.height - 1;
@@ -258,8 +270,9 @@ public class PointList implements java.io.Serializable, Translatable {
 			if (Geometry.linesIntersect(diagonal1x1, diagonal1y1, diagonal1x2, diagonal1y2, points[i], points[i + 1],
 					points[i + 2], points[i + 3])
 					|| Geometry.linesIntersect(diagonal2x1, diagonal2y1, diagonal2x2, diagonal2y2, points[i],
-							points[i + 1], points[i + 2], points[i + 3]))
+							points[i + 1], points[i + 2], points[i + 3])) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -269,8 +282,9 @@ public class PointList implements java.io.Serializable, Translatable {
 	 */
 	@Override
 	public void performScale(double factor) {
-		for (int i = 0; i < points.length; i++)
+		for (int i = 0; i < points.length; i++) {
 			points[i] = (int) Math.floor(points[i] * factor);
+		}
 		bounds = null;
 	}
 
@@ -283,8 +297,9 @@ public class PointList implements java.io.Serializable, Translatable {
 			points[i] += dx;
 			points[i + 1] += dy;
 		}
-		if (bounds != null)
+		if (bounds != null) {
 			bounds.translate(dx, dy);
+		}
 	}
 
 	/**
@@ -311,13 +326,16 @@ public class PointList implements java.io.Serializable, Translatable {
 	public Point removePoint(int index) {
 		bounds = null;
 		if (index < 0 || index >= size)
+		 {
 			throw new IndexOutOfBoundsException("Index: " + index + //$NON-NLS-1$
 					", Size: " + size); //$NON-NLS-1$
+		}
 
 		index *= 2;
 		Point pt = new Point(points[index], points[index + 1]);
-		if (index != size * 2 - 2)
+		if (index != size * 2 - 2) {
 			System.arraycopy(points, index + 2, points, index, size * 2 - index - 2);
+		}
 		size--;
 		return pt;
 	}
@@ -348,8 +366,10 @@ public class PointList implements java.io.Serializable, Translatable {
 	 */
 	public void setPoint(Point pt, int index) {
 		if (index < 0 || index >= size)
+		 {
 			throw new IndexOutOfBoundsException("Index: " + index + //$NON-NLS-1$
 					", Size: " + size); //$NON-NLS-1$
+		}
 		bounds = null;
 		points[index * 2] = pt.x;
 		points[index * 2 + 1] = pt.y;
@@ -421,10 +441,12 @@ public class PointList implements java.io.Serializable, Translatable {
 	 * @since 2.0
 	 */
 	public void translate(int x, int y) {
-		if (x == 0 && y == 0)
+		if (x == 0 && y == 0) {
 			return;
-		if (bounds != null)
+		}
+		if (bounds != null) {
 			bounds.translate(x, y);
+		}
 		for (int i = 0; i < size * 2; i += 2) {
 			points[i] += x;
 			points[i + 1] += y;
@@ -438,8 +460,9 @@ public class PointList implements java.io.Serializable, Translatable {
 	 */
 	public void transpose() {
 		int temp;
-		if (bounds != null)
+		if (bounds != null) {
 			bounds.transpose();
+		}
 		for (int i = 0; i < size * 2; i += 2) {
 			temp = points[i];
 			points[i] = points[i + 1];

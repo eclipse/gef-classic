@@ -64,19 +64,20 @@ public class SimpleTextLayout extends TextLayout {
 			offset = result + delimeterLength;
 		} while (offset < text.length());
 		// Remove the remaining unused fragments.
-		while (i < fragments.size())
+		while (i < fragments.size()) {
 			fragments.remove(i++);
+		}
 	}
 
 	private int nextLineBreak(String text, int offset) {
 		result = text.length();
 		delimeterLength = 0;
 		int current;
-		for (int i = 0; i < DELIMITERS.length; i++) {
-			current = text.indexOf(DELIMITERS[i], offset);
+		for (String element : DELIMITERS) {
+			current = text.indexOf(element, offset);
 			if (current != -1 && current < result) {
 				result = current;
-				delimeterLength = DELIMITERS[i].length();
+				delimeterLength = element.length();
 			}
 		}
 		return result;

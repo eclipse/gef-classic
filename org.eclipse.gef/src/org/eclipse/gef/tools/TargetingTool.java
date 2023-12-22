@@ -75,8 +75,9 @@ public abstract class TargetingTool extends AbstractTool {
 	 */
 	@Override
 	public void deactivate() {
-		if (isHoverActive())
+		if (isHoverActive()) {
 			resetHover();
+		}
 		eraseTargetFeedback();
 		targetEditPart = null;
 		targetRequest = null;
@@ -92,13 +93,15 @@ public abstract class TargetingTool extends AbstractTool {
 	 * step().
 	 */
 	protected void doAutoexpose() {
-		if (exposeHelper == null)
+		if (exposeHelper == null) {
 			return;
+		}
 		if (exposeHelper.step(getLocation())) {
 			handleAutoexpose();
 			Display.getCurrent().asyncExec(new QueuedAutoexpose());
-		} else
+		} else {
 			setAutoexposeHelper(null);
+		}
 	}
 
 	/**
@@ -109,11 +112,13 @@ public abstract class TargetingTool extends AbstractTool {
 	 * be overridden.
 	 */
 	protected void eraseTargetFeedback() {
-		if (!isShowingTargetFeedback())
+		if (!isShowingTargetFeedback()) {
 			return;
+		}
 		setFlag(FLAG_TARGET_FEEDBACK, false);
-		if (getTargetEditPart() != null)
+		if (getTargetEditPart() != null) {
 			getTargetEditPart().eraseTargetFeedback(getTargetRequest());
+		}
 	}
 
 	/**
@@ -123,8 +128,9 @@ public abstract class TargetingTool extends AbstractTool {
 	 */
 	@Override
 	protected Command getCommand() {
-		if (getTargetEditPart() == null)
+		if (getTargetEditPart() == null) {
 			return null;
+		}
 		return getTargetEditPart().getCommand(getTargetRequest());
 	}
 
@@ -176,8 +182,9 @@ public abstract class TargetingTool extends AbstractTool {
 	 * @return the target request
 	 */
 	protected Request getTargetRequest() {
-		if (targetRequest == null)
+		if (targetRequest == null) {
 			setTargetRequest(createTargetRequest());
+		}
 		return targetRequest;
 	}
 
@@ -315,16 +322,18 @@ public abstract class TargetingTool extends AbstractTool {
 	 * @since 3.4
 	 */
 	protected void resetHover() {
-		if (isHoverActive())
+		if (isHoverActive()) {
 			handleHoverStop();
+		}
 		setHoverActive(false);
 	}
 
 	class QueuedAutoexpose implements Runnable {
 		@Override
 		public void run() {
-			if (exposeHelper != null)
+			if (exposeHelper != null) {
 				doAutoexpose();
+			}
 		}
 	}
 
@@ -338,8 +347,9 @@ public abstract class TargetingTool extends AbstractTool {
 	 */
 	protected void setAutoexposeHelper(AutoexposeHelper helper) {
 		exposeHelper = helper;
-		if (exposeHelper == null)
+		if (exposeHelper == null) {
 			return;
+		}
 		Display.getCurrent().asyncExec(new QueuedAutoexpose());
 	}
 
@@ -353,11 +363,13 @@ public abstract class TargetingTool extends AbstractTool {
 	 */
 	protected void setTargetEditPart(EditPart editpart) {
 		if (editpart != targetEditPart) {
-			if (targetEditPart != null)
+			if (targetEditPart != null) {
 				handleExitingEditPart();
+			}
 			targetEditPart = editpart;
-			if (getTargetRequest() instanceof TargetRequest)
+			if (getTargetRequest() instanceof TargetRequest) {
 				((TargetRequest) getTargetRequest()).setTargetEditPart(targetEditPart);
+			}
 			handleEnteredEditPart();
 		}
 	}
@@ -377,8 +389,9 @@ public abstract class TargetingTool extends AbstractTool {
 	 * flag.
 	 */
 	protected void showTargetFeedback() {
-		if (getTargetEditPart() != null)
+		if (getTargetEditPart() != null) {
 			getTargetEditPart().showTargetFeedback(getTargetRequest());
+		}
 		setFlag(FLAG_TARGET_FEEDBACK, true);
 	}
 
@@ -398,8 +411,9 @@ public abstract class TargetingTool extends AbstractTool {
 	 * {@link #setAutoexposeHelper(AutoexposeHelper)}.
 	 */
 	protected void updateAutoexposeHelper() {
-		if (exposeHelper != null)
+		if (exposeHelper != null) {
 			return;
+		}
 		AutoexposeHelper.Search search;
 		search = new AutoexposeHelper.Search(getLocation());
 		getCurrentViewer().findObjectAtExcluding(getLocation(), Collections.emptyList(), search);
@@ -423,16 +437,19 @@ public abstract class TargetingTool extends AbstractTool {
 	protected boolean updateTargetUnderMouse() {
 		if (!isTargetLocked()) {
 			EditPart editPart = null;
-			if (getCurrentViewer() != null)
+			if (getCurrentViewer() != null) {
 				editPart = getCurrentViewer().findObjectAtExcluding(getLocation(), getExclusionSet(),
 						getTargetingConditional());
-			if (editPart != null)
+			}
+			if (editPart != null) {
 				editPart = editPart.getTargetEditPart(getTargetRequest());
+			}
 			boolean changed = getTargetEditPart() != editPart;
 			setTargetEditPart(editPart);
 			return changed;
-		} else
+		} else {
 			return false;
+		}
 	}
 
 	/**

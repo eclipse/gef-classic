@@ -56,8 +56,9 @@ public abstract class AbstractLayout implements LayoutManager {
 	 * @return The border's preferred size
 	 */
 	protected Dimension getBorderPreferredSize(IFigure container) {
-		if (container.getBorder() == null)
+		if (container.getBorder() == null) {
 			return new Dimension();
+		}
 		return container.getBorder().getPreferredSize(container);
 	}
 
@@ -100,8 +101,9 @@ public abstract class AbstractLayout implements LayoutManager {
 	 */
 	@Override
 	public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
-		if (preferredSize == null)
+		if (preferredSize == null) {
 			preferredSize = calculatePreferredSize(container, wHint, hHint);
+		}
 		return preferredSize;
 	}
 
@@ -168,8 +170,9 @@ public abstract class AbstractLayout implements LayoutManager {
 	 * @param newValue <code>true</code> if visibility should be observed
 	 */
 	public void setObserveVisibility(boolean newValue) {
-		if (isObservingVisibility == newValue)
+		if (isObservingVisibility == newValue) {
 			return;
+		}
 		isObservingVisibility = newValue;
 	}
 

@@ -45,16 +45,19 @@ public class XYLayout extends AbstractLayout {
 		Rectangle rect = new Rectangle();
 		for (IFigure child : f.getChildren()) {
 			Rectangle r = (Rectangle) constraints.get(child);
-			if (r == null)
+			if (r == null) {
 				continue;
+			}
 
 			if (r.width == -1 || r.height == -1) {
 				Dimension preferredSize = child.getPreferredSize(r.width, r.height);
 				r = r.getCopy();
-				if (r.width == -1)
+				if (r.width == -1) {
 					r.width = preferredSize.width;
-				if (r.height == -1)
+				}
+				if (r.height == -1) {
 					r.height = preferredSize.height;
+				}
 			}
 			rect.union(r);
 		}
@@ -94,16 +97,19 @@ public class XYLayout extends AbstractLayout {
 		Point offset = getOrigin(parent);
 		for (IFigure f : parent.getChildren()) {
 			Rectangle bounds = (Rectangle) getConstraint(f);
-			if (bounds == null)
+			if (bounds == null) {
 				continue;
+			}
 
 			if (bounds.width == -1 || bounds.height == -1) {
 				Dimension preferredSize = f.getPreferredSize(bounds.width, bounds.height);
 				bounds = bounds.getCopy();
-				if (bounds.width == -1)
+				if (bounds.width == -1) {
 					bounds.width = preferredSize.width;
-				if (bounds.height == -1)
+				}
+				if (bounds.height == -1) {
 					bounds.height = preferredSize.height;
+				}
 			}
 			bounds = bounds.getTranslated(offset);
 			f.setBounds(bounds);
@@ -129,8 +135,9 @@ public class XYLayout extends AbstractLayout {
 	@Override
 	public void setConstraint(IFigure figure, Object newConstraint) {
 		super.setConstraint(figure, newConstraint);
-		if (newConstraint != null)
+		if (newConstraint != null) {
 			constraints.put(figure, newConstraint);
+		}
 	}
 
 }

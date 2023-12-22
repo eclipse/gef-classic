@@ -36,8 +36,9 @@ public class SetConstraintCommand extends org.eclipse.gef.commands.Command {
 
 	@Override
 	public String getLabel() {
-		if (oldSize.equals(newSize))
+		if (oldSize.equals(newSize)) {
 			return LogicMessages.SetLocationCommand_Label_Location;
+		}
 		return LogicMessages.SetLocationCommand_Label_Resize;
 	}
 

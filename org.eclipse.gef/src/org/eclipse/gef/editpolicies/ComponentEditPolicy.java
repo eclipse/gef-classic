@@ -59,10 +59,12 @@ public abstract class ComponentEditPolicy extends AbstractEditPolicy {
 	 */
 	@Override
 	public Command getCommand(Request request) {
-		if (REQ_ORPHAN.equals(request.getType()))
+		if (REQ_ORPHAN.equals(request.getType())) {
 			return getOrphanCommand();
-		if (REQ_DELETE.equals(request.getType()))
+		}
+		if (REQ_DELETE.equals(request.getType())) {
 			return getDeleteCommand((GroupRequest) request);
+		}
 		return null;
 	}
 

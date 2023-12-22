@@ -12,12 +12,13 @@
  *******************************************************************************/
 package swt.bugs;
 
-import org.eclipse.draw2d.PrinterGraphics;
-import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.draw2d.PrinterGraphics;
+import org.eclipse.draw2d.SWTGraphics;
 
 public class Bug81467 {
 

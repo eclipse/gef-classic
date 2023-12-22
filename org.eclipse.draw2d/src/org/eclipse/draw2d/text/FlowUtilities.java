@@ -61,10 +61,12 @@ public class FlowUtilities {
 		int macNL = string.indexOf('\r');
 		int unixNL = string.indexOf('\n');
 
-		if (macNL == -1)
+		if (macNL == -1) {
 			macNL = Integer.MAX_VALUE;
-		if (unixNL == -1)
+		}
+		if (unixNL == -1) {
 			unixNL = Integer.MAX_VALUE;
+		}
 
 		return Math.min(macNL, unixNL);
 	}
@@ -80,8 +82,9 @@ public class FlowUtilities {
 	 * @return the average character width
 	 */
 	protected float getAverageCharWidth(TextFragmentBox fragment, Font font) {
-		if (fragment.getWidth() > 0 && fragment.length != 0)
+		if (fragment.getWidth() > 0 && fragment.length != 0) {
 			return fragment.getWidth() / (float) fragment.length;
+		}
 		return FigureUtilities.getFontMetrics(font).getAverageCharWidth();
 	}
 
@@ -126,8 +129,9 @@ public class FlowUtilities {
 	 * @since 3.1
 	 */
 	static TextLayout getTextLayout() {
-		if (layout == null)
+		if (layout == null) {
 			layout = new TextLayout(Display.getDefault());
+		}
 		layout.setOrientation(SWT.LEFT_TO_RIGHT);
 		return layout;
 	}
@@ -153,8 +157,9 @@ public class FlowUtilities {
 			// This will
 			// happen at most once.
 			return getTextLayoutBounds(string, font, 0, guess - 1).width;
-		} else
+		} else {
 			return getTextUtilities().getTextExtents(string.substring(0, guess), font).width;
+		}
 	}
 
 	/**
@@ -167,14 +172,16 @@ public class FlowUtilities {
 	final protected void setupFragment(TextFragmentBox fragment, Font font, String string) {
 		if (fragment.getWidth() == -1 || fragment.isTruncated()) {
 			int width;
-			if (string.length() == 0 || fragment.length == 0)
+			if (string.length() == 0 || fragment.length == 0) {
 				width = 0;
-			else if (fragment.requiresBidi()) {
+			} else if (fragment.requiresBidi()) {
 				width = getTextLayoutBounds(string, font, 0, fragment.length - 1).width;
-			} else
+			} else {
 				width = getTextUtilities().getTextExtents(string.substring(0, fragment.length), font).width;
-			if (fragment.isTruncated())
+			}
+			if (fragment.isTruncated()) {
 				width += getEllipsisWidth(font);
+			}
 			fragment.setWidth(width);
 		}
 	}
@@ -218,15 +225,17 @@ public class FlowUtilities {
 		int max, min = 1;
 		if (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) {
 			absoluteMin = INTERNAL_LINE_BREAK.next();
-			while (absoluteMin > 0 && Character.isWhitespace(string.charAt(absoluteMin - 1)))
+			while (absoluteMin > 0 && Character.isWhitespace(string.charAt(absoluteMin - 1))) {
 				absoluteMin--;
+			}
 			min = Math.max(absoluteMin, 1);
 		}
 		int firstDelimiter = findFirstDelimeter(string);
-		if (firstDelimiter == 0)
+		if (firstDelimiter == 0) {
 			min = max = 0;
-		else
+		} else {
 			max = Math.min(strLen, firstDelimiter) + 1;
+		}
 
 		int availableWidth = context.getRemainingLineWidth();
 		int guess = 0, guessSize = 0;
@@ -239,20 +248,24 @@ public class FlowUtilities {
 					context.endLine();
 					availableWidth = context.getRemainingLineWidth();
 					max = Math.min(strLen, firstDelimiter) + 1;
-					if ((max - min) <= 1)
+					if ((max - min) <= 1) {
 						break;
-				} else
+					}
+				} else {
 					break;
+				}
 			}
 			// Pick a new guess size
 			// New guess is the last guess plus the missing width in pixels
 			// divided by the average character size in pixels
 			guess += 0.5f + (availableWidth - guessSize) / avgCharWidth;
 
-			if (guess >= max)
+			if (guess >= max) {
 				guess = max - 1;
-			if (guess <= min)
+			}
+			if (guess <= min) {
 				guess = min + 1;
+			}
 
 			guessSize = measureString(frag, string, guess, font);
 
@@ -265,10 +278,12 @@ public class FlowUtilities {
 			if (guessSize <= availableWidth) {
 				min = guess;
 				frag.setWidth(guessSize);
-				if (guessSize == availableWidth)
+				if (guessSize == availableWidth) {
 					max = guess + 1;
-			} else
+				}
+			} else {
 				max = guess;
+			}
 		}
 
 		int result = min;
@@ -283,8 +298,9 @@ public class FlowUtilities {
 				if (lookahead.getWidth() > availableWidth - frag.getWidth()) {
 					frag.length = result - 1;
 					frag.setWidth(-1);
-				} else
+				} else {
 					frag.length = result;
+				}
 			} else {
 				continueOnLine = !canBreakAfter(string.charAt(strLen - 1));
 				frag.length = result;
@@ -294,20 +310,22 @@ public class FlowUtilities {
 			frag.length = result;
 			if (string.charAt(min) == '\r') {
 				result++;
-				if (++min < strLen && string.charAt(min) == '\n')
+				if (++min < strLen && string.charAt(min) == '\n') {
 					result++;
-			} else if (string.charAt(min) == '\n')
+				}
+			} else if (string.charAt(min) == '\n') {
 				result++;
+			}
 		} else if (string.charAt(min) == ' ' || canBreakAfter(string.charAt(min - 1))
 				|| INTERNAL_LINE_BREAK.isBoundary(min)) {
 			frag.length = min;
-			if (string.charAt(min) == ' ')
+			if (string.charAt(min) == ' ') {
 				result++;
-			else if (string.charAt(min - 1) == ' ') {
+			} else if (string.charAt(min - 1) == ' ') {
 				frag.length--;
 				frag.setWidth(-1);
 			}
-		} else
+		} else {
 			out: {
 				// In the middle of an unbreakable offset
 				result = INTERNAL_LINE_BREAK.preceding(min);
@@ -320,13 +338,15 @@ public class FlowUtilities {
 							// avgCharWidth to go faster
 							while (min > 0) {
 								guessSize = measureString(frag, string, min, font);
-								if (guessSize <= truncatedWidth)
+								if (guessSize <= truncatedWidth) {
 									break;
+								}
 								min--;
 							}
 							frag.length = min;
-						} else
+						} else {
 							frag.length = 0;
+						}
 						frag.setTruncated(true);
 						result = INTERNAL_LINE_BREAK.following(max - 1);
 						break out;
@@ -337,10 +357,12 @@ public class FlowUtilities {
 					}
 				}
 				frag.length = result;
-				if (string.charAt(result - 1) == ' ')
+				if (string.charAt(result - 1) == ' ') {
 					frag.length--;
+				}
 				frag.setWidth(-1);
 			}
+		}
 
 		setupFragment(frag, font, string);
 		context.addToCurrentLine(frag);

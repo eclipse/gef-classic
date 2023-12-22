@@ -100,20 +100,23 @@ public class TextUtilities {
 			// divided by the average character size in pixels
 			guess = guess + (int) ((availableWidth - guessSize) / avg);
 
-			if (guess >= max)
+			if (guess >= max) {
 				guess = max - 1;
-			if (guess <= min)
+			}
+			if (guess <= min) {
 				guess = min + 1;
+			}
 
 			// Measure the current guess
 			guessSize = getTextExtents(s.substring(0, guess), f).width;
 
-			if (guessSize < availableWidth)
+			if (guessSize < availableWidth) {
 				// We did not use the available width
 				min = guess;
-			else
+			} else {
 				// We exceeded the available width
 				max = guess;
+			}
 		}
 		return min;
 	}

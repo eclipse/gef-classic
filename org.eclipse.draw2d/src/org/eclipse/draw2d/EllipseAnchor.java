@@ -52,10 +52,12 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 
 		Point ref = r.getCenter().negate().translate(reference);
 
-		if (ref.x == 0)
+		if (ref.x == 0) {
 			return new Point(reference.x, (ref.y > 0) ? r.bottom() : r.y);
-		if (ref.y == 0)
+		}
+		if (ref.y == 0) {
 			return new Point((ref.x > 0) ? r.right() : r.x, reference.y);
+		}
 
 		float dx = (ref.x > 0) ? 0.5f : -0.5f;
 		float dy = (ref.y > 0) ? 0.5f : -0.5f;
@@ -92,9 +94,10 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	 */
 	@Override
 	public int hashCode() {
-		if (getOwner() != null)
+		if (getOwner() != null) {
 			return getOwner().hashCode();
-		else
+		} else {
 			return super.hashCode();
+		}
 	}
 }

@@ -13,6 +13,8 @@
 
 package org.eclipse.gef.examples.text.figures;
 
+import org.eclipse.swt.graphics.Image;
+
 import org.eclipse.draw2d.AbstractBorder;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
@@ -20,7 +22,6 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * @since 3.1
@@ -51,8 +52,9 @@ public class TreeBorder extends AbstractBorder {
 
 		g.translate(where.x, where.y);
 
-		for (int i = 16; i < where.height - 10; i += 2)
+		for (int i = 16; i < where.height - 10; i += 2) {
 			g.drawPoint(9, i);
+		}
 
 		g.drawImage(image, 0, 0);
 		int h = FigureUtilities.getFontMetrics(g.getFont()).getHeight();

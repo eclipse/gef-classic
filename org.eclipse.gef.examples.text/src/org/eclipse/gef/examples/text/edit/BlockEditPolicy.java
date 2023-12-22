@@ -14,10 +14,12 @@
 package org.eclipse.gef.examples.text.edit;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
+
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.Block;
@@ -81,7 +83,9 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 
 		CompoundEditCommand command = (CompoundEditCommand) request.getPreviousCommand();
 		if (command == null)
+		 {
 			command = new CompoundEditCommand("Backspace"); //$NON-NLS-1$
+		}
 
 		TextRun run = (TextRun) where.part.getModel();
 		MiniEdit remove;
@@ -102,21 +106,28 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 
 	@Override
 	public Command getCommand(Request request) {
-		if (TextRequest.REQ_STYLE == request.getType())
+		if (TextRequest.REQ_STYLE == request.getType()) {
 			return getTextStyleApplication((TextRequest) request);
+		}
 		if (TextRequest.REQ_INSERT == request.getType() || TextRequest.REQ_OVERWRITE == request.getType()
-				|| TextRequest.REQ_REMOVE_RANGE == request.getType())
+				|| TextRequest.REQ_REMOVE_RANGE == request.getType()) {
 			return getChangeTextCommand((TextRequest) request);
-		if (TextRequest.REQ_BACKSPACE == request.getType())
+		}
+		if (TextRequest.REQ_BACKSPACE == request.getType()) {
 			return getBackspaceCommand((TextRequest) request);
-		if (TextRequest.REQ_DELETE == request.getType())
+		}
+		if (TextRequest.REQ_DELETE == request.getType()) {
 			return getDeleteCommand((TextRequest) request);
-		if (TextRequest.REQ_NEWLINE == request.getType())
+		}
+		if (TextRequest.REQ_NEWLINE == request.getType()) {
 			return getNewlineCommand((TextRequest) request);
-		if (TextRequest.REQ_UNINDENT == request.getType())
+		}
+		if (TextRequest.REQ_UNINDENT == request.getType()) {
 			return getUnindentCommand((TextRequest) request);
-		if (TextRequest.REQ_INDENT == request.getType())
+		}
+		if (TextRequest.REQ_INDENT == request.getType()) {
 			return getIndentCommand((TextRequest) request);
+		}
 		return null;
 	}
 
@@ -157,8 +168,9 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 
 	private static Command getDeleteCommand(TextRequest request) {
 		TextLocation where = request.getSelectionRange().begin;
-		if (where.offset == where.part.getLength())
+		if (where.offset == where.part.getLength()) {
 			return null;
+		}
 		TextRun run = (TextRun) where.part.getModel();
 		MiniEdit remove = new RemoveText(run, where.offset, where.offset + 1);
 		CompoundEditCommand command = (CompoundEditCommand) request.getPreviousCommand();
@@ -174,8 +186,9 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 	private static MiniEdit getMergeBackspaceEdit(TextRequest request) {
 		TextEditPart part = request.getSelectionRange().begin.part;
 		MergeWithPrevious edit = new MergeWithPrevious(part);
-		if (edit.canApply())
+		if (edit.canApply()) {
 			return edit;
+		}
 		return null;
 	}
 
@@ -185,32 +198,37 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 		SubdivideElement edit = new SubdivideElement(run, where.offset);
 
 		CompoundEditCommand command = null;
-		if (request.getPreviousCommand() instanceof CompoundEditCommand)
+		if (request.getPreviousCommand() instanceof CompoundEditCommand) {
 			command = (CompoundEditCommand) request.getPreviousCommand();
-		else
+		}
+		else {
 			command = new CompoundEditCommand("typing"); //$NON-NLS-1$
+		}
 		command.pendEdit(edit);
 		return command;
 	}
 
 	@Override
 	public EditPart getTargetEditPart(Request request) {
-		if (request instanceof TextRequest)
+		if (request instanceof TextRequest) {
 			return getHost();
+		}
 		return null;
 	}
 
 	private static Command getChangeTextCommand(TextRequest request) {
 		CompoundEditCommand command = null;
-		if (request.getPreviousCommand() instanceof CompoundEditCommand cec)
+		if (request.getPreviousCommand() instanceof CompoundEditCommand cec) {
 			command = cec;
+		}
 
 		SelectionRange range = request.getSelectionRange();
 
 		if (range.isEmpty() && request.getText().equals(" ")) { //$NON-NLS-1$
 			Command result = checkForConversion(request.getSelectionRange().begin);
-			if (result != null)
+			if (result != null) {
 				return result;
+			}
 		}
 		TextRun rangeBegin = (TextRun) range.begin.part.getModel();
 		if (command == null) {

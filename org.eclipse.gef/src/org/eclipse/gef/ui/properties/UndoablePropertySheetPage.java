@@ -72,8 +72,9 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 	 */
 	@Override
 	public void dispose() {
-		if (commandStack != null)
+		if (commandStack != null) {
 			commandStack.removeCommandStackEventListener(commandStackEventListener);
+		}
 		super.dispose();
 	}
 

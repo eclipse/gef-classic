@@ -80,8 +80,9 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 	@Override
 	public ISelection getSelection() {
 		// $TODO when could this even happen?
-		if (getViewer() == null)
+		if (getViewer() == null) {
 			return StructuredSelection.EMPTY;
+		}
 		return getViewer().getSelection();
 	}
 
@@ -107,8 +108,9 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 	 */
 	@Override
 	public void setFocus() {
-		if (getControl() != null)
+		if (getControl() != null) {
 			getControl().setFocus();
+		}
 	}
 
 	/**
@@ -116,8 +118,9 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 	 */
 	@Override
 	public void setSelection(ISelection selection) {
-		if (getViewer() != null)
+		if (getViewer() != null) {
 			getViewer().setSelection(selection);
+		}
 	}
 
 }

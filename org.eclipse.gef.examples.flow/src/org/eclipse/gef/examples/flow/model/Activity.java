@@ -82,8 +82,9 @@ public class Activity extends FlowElement {
 	 */
 	@Override
 	public Object getPropertyValue(Object propName) {
-		if (NAME.equals(propName))
+		if (NAME.equals(propName)) {
 			return getName();
+		}
 		return super.getPropertyValue(propName);
 	}
 
@@ -114,8 +115,9 @@ public class Activity extends FlowElement {
 	 */
 	@Override
 	public void setPropertyValue(Object id, Object value) {
-		if (id == NAME)
+		if (id == NAME) {
 			setName((String) value);
+		}
 	}
 
 	public void setSortIndex(int i) {

@@ -12,13 +12,14 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.actions;
 
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.ui.actions.ActionFactory;
+
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.ui.actions.ActionFactory;
 
 /**
  * Provides a context menu for the flow editor.
@@ -56,8 +57,9 @@ public class FlowContextMenuProvider extends ContextMenuProvider {
 		menu.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
 
 		action = getActionRegistry().getAction(ActionFactory.DELETE.getId());
-		if (action.isEnabled())
+		if (action.isEnabled()) {
 			menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		}
 
 	}
 

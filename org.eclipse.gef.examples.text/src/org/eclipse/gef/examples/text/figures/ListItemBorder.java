@@ -26,8 +26,9 @@ public abstract class ListItemBorder extends AbstractBorder {
 
 	@Override
 	public final void paint(IFigure figure, Graphics graphics, Insets insets) {
-		if (((TextFlow) figure.getChildren().get(0)).getText().length() > 0)
+		if (((TextFlow) figure.getChildren().get(0)).getText().length() > 0) {
 			paintBorder(figure, graphics, insets);
+		}
 	}
 
 	protected abstract void paintBorder(IFigure figure, Graphics graphics, Insets insets);

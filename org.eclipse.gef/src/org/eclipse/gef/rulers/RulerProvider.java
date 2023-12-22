@@ -92,8 +92,9 @@ public abstract class RulerProvider {
 	 *                 properties
 	 */
 	public void addRulerChangeListener(RulerChangeListener listener) {
-		if (!listeners.contains(listener))
+		if (!listeners.contains(listener)) {
 			listeners.add(listener);
+		}
 	}
 
 	/**
@@ -158,8 +159,9 @@ public abstract class RulerProvider {
 
 		while (i.hasNext()) {
 			Object editPart = viewer.getEditPartRegistry().get(i.next());
-			if (editPart != null)
+			if (editPart != null) {
 				attachedEditParts.add(editPart);
+			}
 		}
 
 		return attachedEditParts;
@@ -196,8 +198,7 @@ public abstract class RulerProvider {
 	 */
 	public Object getGuideAt(int position) {
 		List guides = getGuides();
-		for (int i = 0; i < guides.size(); i++) {
-			Object guide = guides.get(i);
+		for (Object guide : guides) {
 			if (position == getGuidePosition(guide)) {
 				return guide;
 			}

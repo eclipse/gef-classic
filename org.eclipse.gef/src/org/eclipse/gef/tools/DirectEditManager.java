@@ -127,8 +127,9 @@ public abstract class DirectEditManager {
 	 * Finally, {@link #bringDown()} is called to perform and necessary cleanup.
 	 */
 	protected void commit() {
-		if (committing)
+		if (committing) {
 			return;
+		}
 		committing = true;
 		try {
 			eraseFeedback();
@@ -201,8 +202,9 @@ public abstract class DirectEditManager {
 	 * @since 3.9
 	 */
 	protected IFigure getCellEditorFrame() {
-		if (cellEditorFrame != null)
+		if (cellEditorFrame != null) {
 			return cellEditorFrame;
+		}
 		cellEditorFrame = new Figure();
 		cellEditorFrame.setBorder(BORDER_FRAME);
 		return cellEditorFrame;
@@ -228,8 +230,9 @@ public abstract class DirectEditManager {
 	 * @return the direct edit request
 	 */
 	protected DirectEditRequest getDirectEditRequest() {
-		if (request == null)
+		if (request == null) {
 			request = createDirectEditRequest();
+		}
 		return request;
 	}
 
@@ -350,8 +353,9 @@ public abstract class DirectEditManager {
 	 */
 	protected void setCellEditor(CellEditor editor) {
 		ce = editor;
-		if (ce == null)
+		if (ce == null) {
 			return;
+		}
 		hookListeners();
 	}
 
@@ -390,12 +394,14 @@ public abstract class DirectEditManager {
 	 * {@link #showFeedback()}.
 	 */
 	public void show() {
-		if (getCellEditor() != null)
+		if (getCellEditor() != null) {
 			return;
+		}
 		Composite composite = (Composite) source.getViewer().getControl();
 		setCellEditor(createCellEditorOn(composite));
-		if (getCellEditor() == null)
+		if (getCellEditor() == null) {
 			return;
+		}
 		initCellEditor();
 		getCellEditor().activate();
 		placeCellEditor();
@@ -413,8 +419,9 @@ public abstract class DirectEditManager {
 	 * Asks the source edit part to show source feedback.
 	 */
 	public void showFeedback() {
-		if (!showingFeedback)
+		if (!showingFeedback) {
 			showCellEditorFrame();
+		}
 		showingFeedback = true;
 		showCellEditorFrame();
 		getEditPart().showSourceFeedback(getDirectEditRequest());
@@ -429,14 +436,16 @@ public abstract class DirectEditManager {
 		ancestorListener = null;
 		editPartListener = null;
 
-		if (getCellEditor() == null)
+		if (getCellEditor() == null) {
 			return;
+		}
 		getCellEditor().removeListener(cellEditorListener);
 		cellEditorListener = null;
 
 		Control control = getCellEditor().getControl();
-		if (control == null || control.isDisposed())
+		if (control == null || control.isDisposed()) {
 			return;
+		}
 		control.removeControlListener(controlListener);
 		controlListener = null;
 	}

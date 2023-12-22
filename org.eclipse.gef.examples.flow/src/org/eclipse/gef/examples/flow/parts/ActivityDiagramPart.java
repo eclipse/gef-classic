@@ -18,10 +18,12 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
+
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
+
 import org.eclipse.gef.examples.flow.policies.ActivityContainerEditPolicy;
 import org.eclipse.gef.examples.flow.policies.StructuredActivityLayoutEditPolicy;
 
@@ -32,10 +34,12 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 
 	CommandStackEventListener stackListener = event -> {
 		if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
-			if (!GraphAnimation.captureLayout(getFigure()))
+			if (!GraphAnimation.captureLayout(getFigure())) {
 				return;
-			while (GraphAnimation.step())
+			}
+			while (GraphAnimation.step()) {
 				getFigure().getUpdateManager().performUpdate();
+			}
 			GraphAnimation.end();
 		}
 	};
@@ -76,8 +80,9 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 				boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height);
 				boolean translate = (rect.x != x) || (rect.y != y);
 
-				if (isVisible() && (resize || translate))
+				if (isVisible() && (resize || translate)) {
 					erase();
+				}
 				if (translate) {
 					int dx = rect.x - x;
 					int dy = rect.y - y;

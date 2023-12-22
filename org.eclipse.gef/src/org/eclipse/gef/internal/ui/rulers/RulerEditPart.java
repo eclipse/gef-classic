@@ -97,8 +97,9 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	@Override
 	protected IFigure createFigure() {
 		RulerFigure ruler = new RulerFigure(isHorizontal(), getRulerProvider().getUnit());
-		if (ruler.getUnit() == RulerProvider.UNIT_PIXELS)
+		if (ruler.getUnit() == RulerProvider.UNIT_PIXELS) {
 			ruler.setInterval(100, 2);
+		}
 		return ruler;
 	}
 
@@ -117,7 +118,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 
 	@Override
 	protected AccessibleEditPart getAccessibleEditPart() {
-		if (accPart == null)
+		if (accPart == null) {
 			accPart = new AccessibleGraphicalEditPart() {
 				@Override
 				public void getName(AccessibleEvent e) {
@@ -129,6 +130,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 					e.result = GEFMessages.Ruler_Desc;
 				}
 			};
+		}
 		return accPart;
 	}
 
@@ -163,8 +165,9 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 
 	public IFigure getGuideLayer() {
 		LayerManager lm = (LayerManager) diagramViewer.getEditPartRegistry().get(LayerManager.ID);
-		if (lm != null)
+		if (lm != null) {
 			return lm.getLayer(LayerConstants.GUIDE_LAYER);
+		}
 		return null;
 	}
 
@@ -214,10 +217,11 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 
 	public void handleUnitsChanged(int newUnit) {
 		getRulerFigure().setUnit(newUnit);
-		if (newUnit == RulerProvider.UNIT_PIXELS)
+		if (newUnit == RulerProvider.UNIT_PIXELS) {
 			getRulerFigure().setInterval(100, 2);
-		else
+		} else {
 			getRulerFigure().setInterval(0, 0);
+		}
 	}
 
 	public boolean isHorizontal() {

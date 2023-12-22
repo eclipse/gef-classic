@@ -74,8 +74,9 @@ public abstract class Command {
 	 * @return a Command representing the union
 	 */
 	public Command chain(Command command) {
-		if (command == null)
+		if (command == null) {
 			return this;
+		}
 		class ChainedCompoundCommand extends CompoundCommand {
 			@Override
 			public Command chain(Command c) {

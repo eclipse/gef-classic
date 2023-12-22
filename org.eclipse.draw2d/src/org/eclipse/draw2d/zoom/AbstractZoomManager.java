@@ -149,10 +149,11 @@ public abstract class AbstractZoomManager {
 
 		Dimension available = getViewport().getClientArea().getSize();
 		Dimension desired;
-		if (fig instanceof FreeformFigure)
+		if (fig instanceof FreeformFigure) {
 			desired = ((FreeformFigure) fig).getFreeformExtent().getCopy().union(0, 0).getSize();
-		else
+		} else {
 			desired = fig.getPreferredSize().getCopy();
+		}
 
 		desired.width -= fig.getInsets().getWidth();
 		desired.height -= fig.getInsets().getHeight();
@@ -165,10 +166,12 @@ public abstract class AbstractZoomManager {
 
 		double scaleX = Math.min(available.width * zoom / desired.width, getMaxZoom());
 		double scaleY = Math.min(available.height * zoom / desired.height, getMaxZoom());
-		if (which == 0)
+		if (which == 0) {
 			return scaleX;
-		if (which == 1)
+		}
+		if (which == 1) {
 			return scaleY;
+		}
 		return Math.min(scaleX, scaleY);
 	}
 
@@ -244,9 +247,11 @@ public abstract class AbstractZoomManager {
 	 * @return double The next zoom level
 	 */
 	public double getNextZoomLevel() {
-		for (int i = 0; i < zoomLevels.length; i++)
-			if (zoomLevels[i] > zoom)
-				return zoomLevels[i];
+		for (double zoomLevel : zoomLevels) {
+			if (zoomLevel > zoom) {
+				return zoomLevel;
+			}
+		}
 		return getMaxZoom();
 	}
 
@@ -257,9 +262,11 @@ public abstract class AbstractZoomManager {
 	 * @return double The previous zoom level
 	 */
 	public double getPreviousZoomLevel() {
-		for (int i = 1; i < zoomLevels.length; i++)
-			if (zoomLevels[i] >= zoom)
+		for (int i = 1; i < zoomLevels.length; i++) {
+			if (zoomLevels[i] >= zoom) {
 				return zoomLevels[i - 1];
+			}
+		}
 		return getMinZoom();
 	}
 
@@ -388,8 +395,9 @@ public abstract class AbstractZoomManager {
 	public void setZoom(double zoom) {
 		zoom = Math.min(getMaxZoom(), zoom);
 		zoom = Math.max(getMinZoom(), zoom);
-		if (this.zoom != zoom)
+		if (this.zoom != zoom) {
 			primSetZoom(zoom);
+		}
 	}
 
 	/**
@@ -429,8 +437,9 @@ public abstract class AbstractZoomManager {
 		} else {
 			try {
 				// Trim off the '%'
-				if (zoomString.charAt(zoomString.length() - 1) == '%')
+				if (zoomString.charAt(zoomString.length() - 1) == '%') {
 					zoomString = zoomString.substring(0, zoomString.length() - 1);
+				}
 				double newZoom = NumberFormat.getInstance().parse(zoomString).doubleValue() / 100;
 				setZoom(newZoom / multiplier);
 			} catch (Exception e) {

@@ -87,10 +87,11 @@ public class Animation {
 		Iterator keys = figureAnimators.iterator();
 		while (keys.hasNext()) {
 			AnimPair pair = (AnimPair) keys.next();
-			if (toCapture.contains(pair))
+			if (toCapture.contains(pair)) {
 				pair.animator.capture(pair.figure);
-			else
+			} else {
 				keys.remove();
+			}
 		}
 	}
 
@@ -130,14 +131,15 @@ public class Animation {
 		while (progress != 0) {
 			step();
 			updateManager.performUpdate();
-			if (progress == 1.0)
+			if (progress == 1.0) {
 				progress = 0;
-			else {
+			} else {
 				int delta = (int) (System.currentTimeMillis() - startTime);
-				if (delta >= duration)
+				if (delta >= duration) {
 					progress = 1f;
-				else
+				} else {
 					progress = 0.1f + 0.9f * delta / duration;
+				}
 			}
 		}
 	}
@@ -184,19 +186,22 @@ public class Animation {
 
 	static void hookAnimator(IFigure figure, Animator animator) {
 		AnimPair pair = new AnimPair(animator, figure);
-		if (figureAnimators.add(pair))
+		if (figureAnimators.add(pair)) {
 			animator.init(figure);
+		}
 	}
 
 	static void hookNeedsCapture(IFigure figure, Animator animator) {
 		AnimPair pair = new AnimPair(animator, figure);
-		if (figureAnimators.contains(pair))
+		if (figureAnimators.contains(pair)) {
 			toCapture.add(pair);
+		}
 	}
 
 	static boolean hookPlayback(IFigure figure, Animator animator) {
-		if (toCapture.contains(new AnimPair(animator, figure)))
+		if (toCapture.contains(new AnimPair(animator, figure))) {
 			return animator.playback(figure);
+		}
 		return false;
 	}
 
@@ -270,11 +275,13 @@ public class Animation {
 	 * @since 3.2
 	 */
 	public static void run(int duration) {
-		if (state == 0)
+		if (state == 0) {
 			return;
+		}
 		try {
-			if (!figureAnimators.isEmpty())
+			if (!figureAnimators.isEmpty()) {
 				doRun(duration);
+			}
 		} finally {
 			cleanup();
 		}
@@ -282,8 +289,9 @@ public class Animation {
 
 	private static void step() {
 		Iterator iter = initialStates.keySet().iterator();
-		while (iter.hasNext())
+		while (iter.hasNext()) {
 			((AnimPair) iter.next()).figure.revalidate();
+		}
 	}
 
 }

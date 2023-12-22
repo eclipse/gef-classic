@@ -15,7 +15,9 @@ package org.eclipse.gef.examples.text.edit;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.text.CaretInfo;
+
 import org.eclipse.gef.GraphicalEditPart;
+
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.requests.CaretRequest;
 

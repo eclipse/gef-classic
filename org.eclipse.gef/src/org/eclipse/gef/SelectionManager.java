@@ -138,8 +138,8 @@ public class SelectionManager {
 		// AbstractEditPartViewer#setFocus() should call back setFocus(null)
 		// here, so both focus part values should stay in sync.
 		viewer.setFocus(null);
-		for (int i = 0; i < selection.size(); i++) {
-			part = (EditPart) selection.get(i);
+		for (Object element : selection) {
+			part = (EditPart) element;
 			part.setSelected(EditPart.SELECTED_NONE);
 		}
 		selection.clear();
@@ -172,8 +172,9 @@ public class SelectionManager {
 	 * @since 3.2
 	 */
 	public ISelection getSelection() {
-		if (selection.isEmpty() && viewer.getContents() != null)
+		if (selection.isEmpty() && viewer.getContents() != null) {
 			return new StructuredSelection(viewer.getContents());
+		}
 		return new StructuredSelection(selection);
 	}
 
@@ -253,13 +254,16 @@ public class SelectionManager {
 				throw new IllegalStateException("Workaround for bug #458416 became ineffective"); //$NON-NLS-1$
 			}
 		}
-		if (focusPart == part)
+		if (focusPart == part) {
 			return;
-		if (focusPart != null)
+		}
+		if (focusPart != null) {
 			focusPart.setFocus(false);
+		}
 		focusPart = part;
-		if (focusPart != null)
+		if (focusPart != null) {
 			focusPart.setFocus(true);
+		}
 	}
 
 	/**
@@ -269,8 +273,9 @@ public class SelectionManager {
 	 * @since 3.2
 	 */
 	public void setSelection(ISelection newSelection) {
-		if (!(newSelection instanceof IStructuredSelection))
+		if (!(newSelection instanceof IStructuredSelection)) {
 			return;
+		}
 
 		List orderedSelection = ((IStructuredSelection) newSelection).toList();
 		// Convert to HashSet to optimize performance.
@@ -281,10 +286,11 @@ public class SelectionManager {
 		// AbstractEditPartViewer#setFocus() should call back setFocus(null)
 		// here, so both focus part values should stay in sync.
 		viewer.setFocus(null);
-		for (int i = 0; i < selection.size(); i++) {
-			EditPart part = (EditPart) selection.get(i);
-			if (!hashset.contains(part))
+		for (Object element : selection) {
+			EditPart part = (EditPart) element;
+			if (!hashset.contains(part)) {
 				part.setSelected(EditPart.SELECTED_NONE);
+			}
 		}
 		selection.clear();
 

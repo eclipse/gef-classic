@@ -82,10 +82,12 @@ public class ScrollPaneSolver {
 		 */
 		Dimension viewportMinSize = new Dimension(viewportInsets.getWidth(), viewportInsets.getHeight());
 		if (viewport.getContents() != null) {
-			if (viewport.getContentsTracksHeight() && hHint > -1)
+			if (viewport.getContentsTracksHeight() && hHint > -1) {
 				hHint = Math.max(0, hHint - viewportInsets.getHeight());
-			if (viewport.getContentsTracksWidth() && wHint > -1)
+			}
+			if (viewport.getContentsTracksWidth() && wHint > -1) {
 				wHint = Math.max(0, wHint - viewportInsets.getWidth());
+			}
 			viewportMinSize.expand(viewport.getContents().getMinimumSize(wHint, hHint));
 		}
 
@@ -93,10 +95,12 @@ public class ScrollPaneSolver {
 		 * Adjust preferred size if tracking flags set. Basically, tracking ==
 		 * "compress view until its minimum size is reached".
 		 */
-		if (viewport.getContentsTracksHeight())
+		if (viewport.getContentsTracksHeight()) {
 			preferred.height = viewportMinSize.height;
-		if (viewport.getContentsTracksWidth())
+		}
+		if (viewport.getContentsTracksWidth()) {
 			preferred.width = viewportMinSize.width;
+		}
 
 		boolean none = available.contains(preferred), both = !none && preferred.containsProper(guaranteed),
 				showV = both || preferred.height > available.height, showH = both || preferred.width > available.width;
@@ -105,10 +109,12 @@ public class ScrollPaneSolver {
 		result.showV = vVis != NEVER && (showV || vVis == ALWAYS);
 		result.showH = hVis != NEVER && (showH || hVis == ALWAYS);
 
-		if (!result.showV)
+		if (!result.showV) {
 			result.insets.right = 0;
-		if (!result.showH)
+		}
+		if (!result.showH) {
 			result.insets.bottom = 0;
+		}
 		result.viewportArea = clientArea.getCropped(result.insets);
 		viewport.setBounds(result.viewportArea);
 		return result;

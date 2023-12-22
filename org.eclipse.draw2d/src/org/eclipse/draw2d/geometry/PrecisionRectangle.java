@@ -184,8 +184,9 @@ public final class PrecisionRectangle extends Rectangle {
 	 */
 	@Override
 	public Rectangle expand(Insets insets) {
-		if (insets == null)
+		if (insets == null) {
 			return this;
+		}
 		setPreciseX(preciseX() - insets.left);
 		setPreciseY(preciseY() - insets.top);
 		setPreciseWidth(preciseWidth() + insets.getWidth());
@@ -311,9 +312,9 @@ public final class PrecisionRectangle extends Rectangle {
 		double x2 = Math.min(preciseX() + preciseWidth(), rect.preciseX() + rect.preciseWidth());
 		double y1 = Math.max(preciseY(), rect.preciseY());
 		double y2 = Math.min(preciseY() + preciseHeight(), rect.preciseY() + rect.preciseHeight());
-		if (((x2 - x1) < 0) || ((y2 - y1) < 0))
+		if (((x2 - x1) < 0) || ((y2 - y1) < 0)) {
 			return setPreciseBounds(0, 0, 0, 0); // no intersection
-		else {
+		} else {
 			return setPreciseBounds(x1, y1, x2 - x1, y2 - y1);
 		}
 	}
@@ -704,8 +705,9 @@ public final class PrecisionRectangle extends Rectangle {
 	 */
 	@Override
 	public Rectangle shrink(Insets insets) {
-		if (insets == null)
+		if (insets == null) {
 			return this;
+		}
 		setPreciseX(preciseX() + insets.left);
 		setPreciseY(preciseY() + insets.top);
 		setPreciseWidth(preciseWidth() - insets.getWidth());
@@ -864,8 +866,9 @@ public final class PrecisionRectangle extends Rectangle {
 	 */
 	@Override
 	public Rectangle union(Rectangle rect) {
-		if (rect == null || rect.isEmpty())
+		if (rect == null || rect.isEmpty()) {
 			return this;
+		}
 		return unionPrecise(rect.preciseX(), rect.preciseY(), rect.preciseWidth(), rect.preciseHeight());
 	}
 

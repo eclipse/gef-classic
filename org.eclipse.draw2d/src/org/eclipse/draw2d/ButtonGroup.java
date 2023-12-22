@@ -128,10 +128,12 @@ public class ButtonGroup {
 	 * @since 2.0
 	 */
 	public void remove(ButtonModel model) {
-		if (getSelected() == model)
+		if (getSelected() == model) {
 			setSelected(getDefault(), true);
-		if (defaultModel == model)
+		}
+		if (defaultModel == model) {
 			defaultModel = null;
+		}
 		members.remove(model);
 	}
 
@@ -155,8 +157,9 @@ public class ButtonGroup {
 	protected void selectNewModel(ButtonModel model) {
 		ButtonModel oldModel = selectedModel;
 		selectedModel = model;
-		if (oldModel != null)
+		if (oldModel != null) {
 			oldModel.setSelected(false);
+		}
 		firePropertyChange(oldModel, model);
 	}
 
@@ -169,8 +172,9 @@ public class ButtonGroup {
 	 */
 	public void setDefault(ButtonModel model) {
 		defaultModel = model;
-		if (getSelected() == null && defaultModel != null)
+		if (getSelected() == null && defaultModel != null) {
 			defaultModel.setSelected(true);
+		}
 	}
 
 	/**
@@ -180,10 +184,11 @@ public class ButtonGroup {
 	 * @since 2.0
 	 */
 	public void setSelected(ButtonModel model) {
-		if (model == null)
+		if (model == null) {
 			selectNewModel(null);
-		else
+		} else {
 			model.setSelected(true);
+		}
 	}
 
 	/**
@@ -212,14 +217,17 @@ public class ButtonGroup {
 	 */
 	public void setSelected(ButtonModel model, boolean value) {
 		if (value) {
-			if (model == getSelected())
+			if (model == getSelected()) {
 				return;
+			}
 			selectNewModel(model);
 		} else {
-			if (model != getSelected())
+			if (model != getSelected()) {
 				return;
-			if (getDefault() == null)
+			}
+			if (getDefault() == null) {
 				return;
+			}
 			getDefault().setSelected(true);
 		}
 	}

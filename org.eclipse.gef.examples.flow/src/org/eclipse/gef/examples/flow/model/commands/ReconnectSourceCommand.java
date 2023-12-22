@@ -13,6 +13,7 @@
 package org.eclipse.gef.examples.flow.model.commands;
 
 import org.eclipse.gef.commands.Command;
+
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.Transition;
 
@@ -37,8 +38,9 @@ public class ReconnectSourceCommand extends Command {
 	 */
 	@Override
 	public boolean canExecute() {
-		if (transition.target.equals(source))
+		if (transition.target.equals(source)) {
 			return false;
+		}
 
 		return source.getOutgoingTransitions().stream()
 				.noneMatch(t -> t.target.equals(target) && !t.source.equals(oldSource));

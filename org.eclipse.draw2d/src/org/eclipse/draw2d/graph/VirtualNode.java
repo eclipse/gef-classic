@@ -84,8 +84,9 @@ public class VirtualNode extends Node {
 	 */
 	public int omega() {
 		Edge e = (Edge) data;
-		if (e.source.rank + 1 < rank && rank < e.target.rank)
+		if (e.source.rank + 1 < rank && rank < e.target.rank) {
 			return 8 * e.weight;
+		}
 		return 2 * e.weight;
 	}
 
@@ -95,8 +96,10 @@ public class VirtualNode extends Node {
 	@Override
 	public String toString() {
 		if (data instanceof Edge)
+		 {
 			return "VN[" + (((Edge) data).vNodes.indexOf(this) + 1) //$NON-NLS-1$
 					+ "](" + data + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		return super.toString();
 	}
 

@@ -63,8 +63,9 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	 */
 	@Override
 	public Color getLocalBackgroundColor() {
-		if (super.getLocalBackgroundColor() == null)
+		if (super.getLocalBackgroundColor() == null) {
 			return getForegroundColor();
+		}
 		return super.getLocalBackgroundColor();
 	}
 
@@ -78,8 +79,9 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	public PointList getPoints() {
 		if (points == null) {
 			points = new PointList();
-			for (int i = 0; i < template.size(); i++)
+			for (int i = 0; i < template.size(); i++) {
 				points.addPoint(transform.getTransformed(template.getPoint(i)));
+			}
 		}
 		return points;
 	}

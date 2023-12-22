@@ -83,8 +83,9 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	public void activate() {
 		super.activate();
 		getRulerProvider().addRulerChangeListener(listener);
-		if (getZoomManager() != null)
+		if (getZoomManager() != null) {
 			getZoomManager().addZoomListener(zoomListener);
+		}
 	}
 
 	/*
@@ -122,36 +123,42 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	 */
 	@Override
 	public void deactivate() {
-		if (getZoomManager() != null)
+		if (getZoomManager() != null) {
 			getZoomManager().removeZoomListener(zoomListener);
+		}
 		getRulerProvider().removeRulerChangeListener(listener);
-		if (getGuideLineFigure().getParent() != null)
+		if (getGuideLineFigure().getParent() != null) {
 			getGuideLineFigure().getParent().remove(getGuideLineFigure());
+		}
 		super.deactivate();
 	}
 
 	@Override
 	protected AccessibleEditPart getAccessibleEditPart() {
-		if (accPart == null)
+		if (accPart == null) {
 			accPart = new AccessibleGraphicalEditPart() {
 				@Override
 				public void getDescription(AccessibleEvent e) {
-					if (getRulerProvider() != null)
+					if (getRulerProvider() != null) {
 						getRulerProvider().getAccGuideDescription(e, getModel());
+					}
 				}
 
 				@Override
 				public void getName(AccessibleEvent e) {
-					if (getRulerProvider() != null)
+					if (getRulerProvider() != null) {
 						getRulerProvider().getAccGuideName(e, getModel());
+					}
 				}
 
 				@Override
 				public void getValue(AccessibleControlEvent e) {
-					if (getRulerProvider() != null)
+					if (getRulerProvider() != null) {
 						getRulerProvider().getAccGuideValue(e, getModel());
+					}
 				}
 			};
+		}
 		return accPart;
 	}
 
@@ -190,8 +197,9 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 		return new DragEditPartsTracker(this) {
 			@Override
 			protected Cursor calculateCursor() {
-				if (isInState(STATE_INVALID))
+				if (isInState(STATE_INVALID)) {
 					return Cursors.NO;
+				}
 				return getCurrentCursor();
 			}
 
@@ -267,21 +275,24 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 			if (getSelected() != SELECTED_NONE || hasFocus()) {
 				int minDistance = -1;
 				for (GuideEditPart guide : getParent().getChildren()) {
-					if (guide == this)
+					if (guide == this) {
 						continue;
+					}
 					int posDiff = Math.abs(thisPos - getRulerProvider().getGuidePosition(guide.getModel()));
 					if (minDistance == -1 || posDiff < minDistance) {
 						minDistance = posDiff;
 						nextSelection = guide;
 					}
 				}
-				if (nextSelection == null)
+				if (nextSelection == null) {
 					nextSelection = getParent();
+				}
 			}
 		}
 		super.removeNotify();
-		if (nextSelection != null)
+		if (nextSelection != null) {
 			getViewer().select(nextSelection);
+		}
 	}
 
 	public void setCurrentCursor(Cursor c) {

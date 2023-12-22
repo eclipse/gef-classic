@@ -88,8 +88,9 @@ public class DelegatingLayout extends AbstractLayout {
 	@Override
 	public void setConstraint(IFigure figure, Object constraint) {
 		super.setConstraint(figure, constraint);
-		if (constraint != null)
+		if (constraint != null) {
 			constraints.put(figure, constraint);
+		}
 	}
 
 }

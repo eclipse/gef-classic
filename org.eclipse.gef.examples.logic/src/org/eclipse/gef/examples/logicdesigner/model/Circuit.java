@@ -37,8 +37,9 @@ public class Circuit extends LogicDiagram {
 
 	@Override
 	public void update() {
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 8; i++) {
 			setOutput(TERMINALS_OUT[i], getInput(TERMINALS_IN[i]));
+		}
 	}
 
 }

@@ -82,8 +82,9 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 */
 	@Override
 	public final void invalidate(IFigure container) {
-		if (Animation.isInitialRecording())
+		if (Animation.isInitialRecording()) {
 			Animation.hookAnimator(container, this);
+		}
 	}
 
 	/**
@@ -93,8 +94,9 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 */
 	@Override
 	public final boolean layout(IFigure container) {
-		if (Animation.isAnimating())
+		if (Animation.isAnimating()) {
 			return Animation.hookPlayback(container, this);
+		}
 		return false;
 	}
 
@@ -107,8 +109,9 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	protected boolean playback(IFigure container) {
 		Map initial = (Map) Animation.getInitialState(this, container);
 		Map ending = (Map) Animation.getFinalState(this, container);
-		if (initial == null)
+		if (initial == null) {
 			return false;
+		}
 
 		float progress = Animation.getProgress();
 		float ssergorp = 1 - progress;
@@ -120,8 +123,9 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 			rect2 = (Rectangle) ending.get(child);
 
 			// TODO need to change this to hide the figure until the end.
-			if (rect1 == null)
+			if (rect1 == null) {
 				continue;
+			}
 			child.setBounds(new Rectangle(Math.round(progress * rect2.x + ssergorp * rect1.x),
 					Math.round(progress * rect2.y + ssergorp * rect1.y),
 					Math.round(progress * rect2.width + ssergorp * rect1.width),
@@ -137,8 +141,9 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 */
 	@Override
 	public final void postLayout(IFigure container) {
-		if (Animation.isFinalRecording())
+		if (Animation.isFinalRecording()) {
 			Animation.hookNeedsCapture(container, this);
+		}
 	}
 
 	/**

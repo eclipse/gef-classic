@@ -13,6 +13,7 @@
 package org.eclipse.gef.examples.text.requests;
 
 import org.eclipse.draw2d.geometry.Dimension;
+
 import org.eclipse.gef.examples.text.TextLocation;
 
 /**

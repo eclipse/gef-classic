@@ -126,8 +126,9 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	 *             <code>false</code> otherwise.
 	 */
 	public void setHorizontal(boolean flag) {
-		if (horizontal == flag)
+		if (horizontal == flag) {
 			return;
+		}
 		invalidate();
 		horizontal = flag;
 		updateTransposerEnabledState();

@@ -1024,17 +1024,19 @@ public class SWTGraphics extends Graphics {
 		elementsNeedUpdate = true;
 
 		checkSharedClipping();
-		if (currentState.relativeClip != null)
+		if (currentState.relativeClip != null) {
 			currentState.relativeClip.scale(horizontal, vertical);
+		}
 	}
 
 	private void setAffineMatrix(float[] m) {
-		if (!elementsNeedUpdate && currentState.affineMatrix == m)
+		if (!elementsNeedUpdate && currentState.affineMatrix == m) {
 			return;
+		}
 		currentState.affineMatrix = m;
-		if (m != null)
+		if (m != null) {
 			transform.setElements(m[0], m[1], m[2], m[3], m[4], m[5]);
-		else if (transform != null) {
+		} else if (transform != null) {
 			transform.dispose();
 			transform = null;
 			elementsNeedUpdate = false;
@@ -1052,8 +1054,9 @@ public class SWTGraphics extends Graphics {
 	@Override
 	public void setAlpha(int alpha) {
 		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
-		if (currentState.alpha != alpha)
+		if (currentState.alpha != alpha) {
 			gc.setAlpha(this.currentState.alpha = alpha);
+		}
 	}
 
 	/**
@@ -1272,8 +1275,8 @@ public class SWTGraphics extends Graphics {
 	public void setLineDash(float[] value) {
 		if (value != null) {
 			// validate dash values
-			for (int i = 0; i < value.length; i++) {
-				if (value[i] <= 0) {
+			for (float element : value) {
+				if (element <= 0) {
 					SWT.error(SWT.ERROR_INVALID_ARGUMENT);
 				}
 			}
@@ -1385,8 +1388,9 @@ public class SWTGraphics extends Graphics {
 	 */
 	@Override
 	public void translate(int dx, int dy) {
-		if (dx == 0 && dy == 0)
+		if (dx == 0 && dy == 0) {
 			return;
+		}
 		if (transform != null) {
 			// Flush clipping, pattern, etc. before applying transform
 			checkGC();
@@ -1398,8 +1402,9 @@ public class SWTGraphics extends Graphics {
 			translateY += dy;
 		}
 		checkSharedClipping();
-		if (currentState.relativeClip != null)
+		if (currentState.relativeClip != null) {
 			currentState.relativeClip.translate(-dx, -dy);
+		}
 	}
 
 	/**
@@ -1417,13 +1422,15 @@ public class SWTGraphics extends Graphics {
 		elementsNeedUpdate = true;
 		gc.setTransform(transform);
 		checkSharedClipping();
-		if (currentState.relativeClip != null)
+		if (currentState.relativeClip != null) {
 			currentState.relativeClip.translate(-dx, -dy);
+		}
 	}
 
 	private void translatePointArray(int[] points, int translateX, int translateY) {
-		if (translateX == 0 && translateY == 0)
+		if (translateX == 0 && translateY == 0) {
 			return;
+		}
 		for (int i = 0; (i + 1) < points.length; i += 2) {
 			points[i] += translateX;
 			points[i + 1] += translateY;
@@ -1492,8 +1499,8 @@ public class SWTGraphics extends Graphics {
 
 	static void loadPath(Region region, float[] points, byte[] types) {
 		int start = 0, end = 0;
-		for (int i = 0; i < types.length; i++) {
-			switch (types[i]) {
+		for (byte type : types) {
+			switch (type) {
 			case SWT.PATH_MOVE_TO: {
 				if (start != end) {
 					int n = 0;

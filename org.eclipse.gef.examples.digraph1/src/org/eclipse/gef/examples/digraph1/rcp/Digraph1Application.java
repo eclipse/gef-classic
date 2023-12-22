@@ -13,9 +13,10 @@
 
 package org.eclipse.gef.examples.digraph1.rcp;
 
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
@@ -43,12 +44,14 @@ public class Digraph1Application implements IApplication {
 	@Override
 	public void stop() {
 		final IWorkbench workbench = PlatformUI.getWorkbench();
-		if (workbench == null)
+		if (workbench == null) {
 			return;
+		}
 		final Display display = workbench.getDisplay();
 		display.syncExec(() -> {
-			if (!display.isDisposed())
+			if (!display.isDisposed()) {
 				workbench.close();
+			}
 		});
 	}
 

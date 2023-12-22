@@ -28,10 +28,11 @@ public class AddCommand extends org.eclipse.gef.commands.Command {
 
 	@Override
 	public void execute() {
-		if (index < 0)
+		if (index < 0) {
 			parent.addChild(child);
-		else
+		} else {
 			parent.addChild(child, index);
+		}
 	}
 
 	public LogicDiagram getParent() {
@@ -40,10 +41,11 @@ public class AddCommand extends org.eclipse.gef.commands.Command {
 
 	@Override
 	public void redo() {
-		if (index < 0)
+		if (index < 0) {
 			parent.addChild(child);
-		else
+		} else {
 			parent.addChild(child, index);
+		}
 	}
 
 	public void setChild(LogicSubpart subpart) {

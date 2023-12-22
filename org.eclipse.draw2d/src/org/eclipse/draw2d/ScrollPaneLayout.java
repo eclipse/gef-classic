@@ -63,15 +63,19 @@ public class ScrollPaneLayout extends AbstractHintLayout {
 		int reservedWidth = insets.getWidth();
 		int reservedHeight = insets.getHeight();
 
-		if (scrollpane.getVerticalScrollBarVisibility() != ScrollPane.NEVER)
+		if (scrollpane.getVerticalScrollBarVisibility() != ScrollPane.NEVER) {
 			reservedWidth += vBar.getPreferredSize().width;
-		if (scrollpane.getHorizontalScrollBarVisibility() != ScrollPane.NEVER)
+		}
+		if (scrollpane.getHorizontalScrollBarVisibility() != ScrollPane.NEVER) {
 			reservedHeight += hBar.getPreferredSize().height;
+		}
 
-		if (wHint > -1)
+		if (wHint > -1) {
 			wHint = Math.max(0, wHint - reservedWidth);
-		if (hHint > -1)
+		}
+		if (hHint > -1) {
 			hHint = Math.max(0, hHint - reservedHeight);
+		}
 
 		return scrollpane.getViewport().getPreferredSize(wHint, hHint).getExpanded(reservedWidth, reservedHeight);
 	}
@@ -102,14 +106,16 @@ public class ScrollPaneLayout extends AbstractHintLayout {
 
 		int vStepInc = vBar.getStepIncrement();
 		int vPageInc = vBar.getRangeModel().getExtent() - vStepInc;
-		if (vPageInc < vStepInc)
+		if (vPageInc < vStepInc) {
 			vPageInc = vStepInc;
+		}
 		vBar.setPageIncrement(vPageInc);
 
 		int hStepInc = hBar.getStepIncrement();
 		int hPageInc = hBar.getRangeModel().getExtent() - hStepInc;
-		if (hPageInc < hStepInc)
+		if (hPageInc < hStepInc) {
 			hPageInc = hStepInc;
+		}
 		hBar.setPageIncrement(hPageInc);
 	}
 

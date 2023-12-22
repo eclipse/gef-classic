@@ -49,8 +49,9 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 */
 	@Override
 	protected Cursor calculateCursor() {
-		if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG))
+		if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG)) {
 			return getDefaultCursor();
+		}
 		return super.calculateCursor();
 	}
 
@@ -87,12 +88,13 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 * Show the source drag feedback for the drag occurring within the viewer.
 	 */
 	protected void eraseSourceFeedback() {
-		if (!isShowingFeedback())
+		if (!isShowingFeedback()) {
 			return;
+		}
 		setFlag(FLAG_SOURCE_FEEDBACK, false);
 		List editParts = getOperationSet();
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart editPart = (EditPart) editParts.get(i);
+		for (Object editPart2 : editParts) {
+			EditPart editPart = (EditPart) editPart2;
 			editPart.eraseSourceFeedback(getSourceRequest());
 		}
 	}
@@ -103,8 +105,9 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 * @return the source request
 	 */
 	protected Request getSourceRequest() {
-		if (sourceRequest == null)
+		if (sourceRequest == null) {
 			sourceRequest = createSourceRequest();
+		}
 		return sourceRequest;
 	}
 
@@ -119,8 +122,9 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 		if (button != 1) {
 			setState(STATE_INVALID);
 			handleInvalidInput();
-		} else
+		} else {
 			stateTransition(STATE_INITIAL, STATE_DRAG);
+		}
 		return true;
 	}
 
@@ -182,8 +186,9 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	protected boolean handleKeyDown(KeyEvent e) {
 		if (acceptArrowKey(e)) {
 			accStepIncrement();
-			if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+			if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 				setStartLocation(getLocation());
+			}
 			switch (e.keyCode) {
 			case SWT.ARROW_DOWN:
 				placeMouseInViewer(getLocation().getTranslated(0, accGetStep()));
@@ -193,14 +198,16 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 				break;
 			case SWT.ARROW_RIGHT:
 				int stepping = accGetStep();
-				if (isCurrentViewerMirrored())
+				if (isCurrentViewerMirrored()) {
 					stepping = -stepping;
+				}
 				placeMouseInViewer(getLocation().getTranslated(stepping, 0));
 				break;
 			case SWT.ARROW_LEFT:
 				int step = -accGetStep();
-				if (isCurrentViewerMirrored())
+				if (isCurrentViewerMirrored()) {
 					step = -step;
+				}
 				placeMouseInViewer(getLocation().getTranslated(step, 0));
 				break;
 			}
@@ -243,8 +250,8 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 */
 	protected void showSourceFeedback() {
 		List editParts = getOperationSet();
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart editPart = (EditPart) editParts.get(i);
+		for (Object editPart2 : editParts) {
+			EditPart editPart = (EditPart) editPart2;
 			editPart.showSourceFeedback(getSourceRequest());
 		}
 		setFlag(FLAG_SOURCE_FEEDBACK, true);

@@ -147,8 +147,9 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	 * @see #createPaletteViewerProvider()
 	 */
 	protected final PaletteViewerProvider getPaletteViewerProvider() {
-		if (provider == null)
+		if (provider == null) {
 			provider = createPaletteViewerProvider();
+		}
 		return provider;
 	}
 
@@ -188,8 +189,9 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 		@Override
 		public void createControl(Composite parent) {
 			super.createControl(parent);
-			if (splitter != null)
+			if (splitter != null) {
 				splitter.setExternalViewer(viewer);
+			}
 		}
 
 		/**
@@ -197,8 +199,9 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 		 */
 		@Override
 		public void dispose() {
-			if (splitter != null)
+			if (splitter != null) {
 				splitter.setExternalViewer(null);
+			}
 			super.dispose();
 		}
 

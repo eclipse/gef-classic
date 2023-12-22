@@ -72,8 +72,9 @@ public class EditDomain {
 	 */
 	public void addViewer(EditPartViewer viewer) {
 		viewer.setEditDomain(this);
-		if (!viewers.contains(viewer))
+		if (!viewers.contains(viewer)) {
 			viewers.add(viewer);
+		}
 	}
 
 	/**
@@ -84,8 +85,9 @@ public class EditDomain {
 	 */
 	public void focusGained(FocusEvent event, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.focusGained(event, viewer);
+		}
 	}
 
 	/**
@@ -96,8 +98,9 @@ public class EditDomain {
 	 */
 	public void focusLost(FocusEvent event, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.focusLost(event, viewer);
+		}
 	}
 
 	/**
@@ -127,8 +130,9 @@ public class EditDomain {
 	 * @return The default Tool for this domain
 	 */
 	public Tool getDefaultTool() {
-		if (defaultTool == null)
+		if (defaultTool == null) {
 			defaultTool = new SelectionTool();
+		}
 		return defaultTool;
 	}
 
@@ -146,10 +150,11 @@ public class EditDomain {
 		PaletteViewer paletteViewer = getPaletteViewer();
 		if (paletteViewer != null) {
 			ToolEntry entry = paletteViewer.getActiveTool();
-			if (entry != null)
+			if (entry != null) {
 				setActiveTool(entry.createTool());
-			else
+			} else {
 				setActiveTool(getDefaultTool());
+			}
 		}
 	}
 
@@ -161,8 +166,9 @@ public class EditDomain {
 	 */
 	public void keyDown(KeyEvent keyEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.keyDown(keyEvent, viewer);
+		}
 	}
 
 	/**
@@ -174,8 +180,9 @@ public class EditDomain {
 	 */
 	public void keyTraversed(TraverseEvent traverseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.keyTraversed(traverseEvent, viewer);
+		}
 	}
 
 	/**
@@ -186,8 +193,9 @@ public class EditDomain {
 	 */
 	public void keyUp(KeyEvent keyEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.keyUp(keyEvent, viewer);
+		}
 	}
 
 	/**
@@ -202,8 +210,9 @@ public class EditDomain {
 			if (paletteRoot.getDefaultEntry() != null) {
 				paletteViewer.setActiveTool(paletteRoot.getDefaultEntry());
 				return;
-			} else
+			} else {
 				paletteViewer.setActiveTool(null);
+			}
 		}
 		setActiveTool(getDefaultTool());
 	}
@@ -216,8 +225,9 @@ public class EditDomain {
 	 */
 	public void mouseDoubleClick(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.mouseDoubleClick(mouseEvent, viewer);
+		}
 	}
 
 	/**
@@ -228,8 +238,9 @@ public class EditDomain {
 	 */
 	public void mouseDown(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.mouseDown(mouseEvent, viewer);
+		}
 	}
 
 	/**
@@ -240,8 +251,9 @@ public class EditDomain {
 	 */
 	public void mouseDrag(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.mouseDrag(mouseEvent, viewer);
+		}
 	}
 
 	/**
@@ -252,8 +264,9 @@ public class EditDomain {
 	 */
 	public void mouseHover(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.mouseHover(mouseEvent, viewer);
+		}
 	}
 
 	/**
@@ -264,8 +277,9 @@ public class EditDomain {
 	 */
 	public void mouseMove(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.mouseMove(mouseEvent, viewer);
+		}
 	}
 
 	/**
@@ -276,8 +290,9 @@ public class EditDomain {
 	 */
 	public void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.mouseUp(mouseEvent, viewer);
+		}
 	}
 
 	/**
@@ -288,8 +303,9 @@ public class EditDomain {
 	 */
 	public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.mouseWheelScrolled(event, viewer);
+		}
 	}
 
 	/**
@@ -300,8 +316,9 @@ public class EditDomain {
 	 */
 	public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.nativeDragFinished(event, viewer);
+		}
 	}
 
 	/**
@@ -312,8 +329,9 @@ public class EditDomain {
 	 */
 	public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.nativeDragStarted(event, viewer);
+		}
 	}
 
 	/**
@@ -324,8 +342,9 @@ public class EditDomain {
 	 * @param viewer the Viewer being removed
 	 */
 	public void removeViewer(EditPartViewer viewer) {
-		if (viewers.remove(viewer))
+		if (viewers.remove(viewer)) {
 			viewer.setEditDomain(null);
+		}
 	}
 
 	/**
@@ -360,8 +379,9 @@ public class EditDomain {
 	 * @param root the palette's root
 	 */
 	public void setPaletteRoot(PaletteRoot root) {
-		if (paletteRoot == root)
+		if (paletteRoot == root) {
 			return;
+		}
 		paletteRoot = root;
 		if (getPaletteViewer() != null) {
 			getPaletteViewer().setPaletteRoot(paletteRoot);
@@ -375,10 +395,12 @@ public class EditDomain {
 	 * @param palette the PaletteViewer
 	 */
 	public void setPaletteViewer(PaletteViewer palette) {
-		if (palette == paletteViewer)
+		if (palette == paletteViewer) {
 			return;
-		if (paletteViewer != null)
+		}
+		if (paletteViewer != null) {
 			paletteViewer.removePaletteListener(paletteListener);
+		}
 		paletteViewer = palette;
 		if (paletteViewer != null) {
 			palette.addPaletteListener(paletteListener);
@@ -396,8 +418,9 @@ public class EditDomain {
 	 * @param tool the Tool
 	 */
 	public void setActiveTool(Tool tool) {
-		if (activeTool != null)
+		if (activeTool != null) {
 			activeTool.deactivate();
+		}
 		activeTool = tool;
 		if (activeTool != null) {
 			activeTool.setEditDomain(this);
@@ -413,8 +436,9 @@ public class EditDomain {
 	 */
 	public void viewerEntered(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.viewerEntered(mouseEvent, viewer);
+		}
 	}
 
 	/**
@@ -425,8 +449,9 @@ public class EditDomain {
 	 */
 	public void viewerExited(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
-		if (tool != null)
+		if (tool != null) {
 			tool.viewerExited(mouseEvent, viewer);
+		}
 	}
 
 }

@@ -61,8 +61,9 @@ public class PaletteAnimator extends LayoutAnimator {
 		int autoCollapseMode = prefs.getAutoCollapseSetting();
 
 		// Collapse never
-		if (autoCollapseMode == PaletteViewerPreferences.COLLAPSE_NEVER)
+		if (autoCollapseMode == PaletteViewerPreferences.COLLAPSE_NEVER) {
 			return;
+		}
 
 		DrawerFigure drawer;
 
@@ -70,8 +71,9 @@ public class PaletteAnimator extends LayoutAnimator {
 		if (autoCollapseMode == PaletteViewerPreferences.COLLAPSE_ALWAYS) {
 			for (Iterator iter = drawers.iterator(); iter.hasNext();) {
 				drawer = (DrawerFigure) iter.next();
-				if (drawer != openDrawer)
+				if (drawer != openDrawer) {
 					drawer.setExpanded(false);
+				}
 			}
 			return;
 		}
@@ -84,11 +86,13 @@ public class PaletteAnimator extends LayoutAnimator {
 		for (IFigure sibling : openDrawer.getParent().getChildren()) {
 			int height = sibling.getPreferredSize(wHint, -1).height;
 			requiredHeight += height;
-			if (!(sibling instanceof DrawerFigure) || sibling == openDrawer)
+			if (!(sibling instanceof DrawerFigure) || sibling == openDrawer) {
 				continue;
+			}
 			drawer = (DrawerFigure) sibling;
-			if (drawer.isExpanded() && !drawer.isPinnedOpen())
+			if (drawer.isExpanded() && !drawer.isPinnedOpen()) {
 				closable.add(drawer);
+			}
 		}
 
 		// Start closing until requiredHeight <= available
@@ -106,8 +110,9 @@ public class PaletteAnimator extends LayoutAnimator {
 	 */
 	@Override
 	public void playbackStarting(IFigure figure) {
-		if (figure instanceof DrawerFigure)
+		if (figure instanceof DrawerFigure) {
 			((DrawerFigure) figure).setAnimating(true);
+		}
 	}
 
 	/**
@@ -125,8 +130,9 @@ public class PaletteAnimator extends LayoutAnimator {
 	@Override
 	public void init(IFigure figure) {
 		if (figure instanceof DrawerFigure drawer) {
-			if (drawer.isExpanded())
+			if (drawer.isExpanded()) {
 				autoCollapse(drawer);
+			}
 			return;
 		}
 		super.init(figure);
@@ -137,8 +143,9 @@ public class PaletteAnimator extends LayoutAnimator {
 	 */
 	@Override
 	public void tearDown(IFigure figure) {
-		if (figure instanceof DrawerFigure)
+		if (figure instanceof DrawerFigure) {
 			((DrawerFigure) figure).setAnimating(false);
+		}
 	}
 
 }

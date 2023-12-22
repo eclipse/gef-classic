@@ -42,8 +42,9 @@ public final class GEFPlugin extends AbstractUIPlugin {
 	 * @return the default GEFPlugin singleton
 	 */
 	public static GEFPlugin getDefault() {
-		if (singleton == null)
+		if (singleton == null) {
 			singleton = new GEFPlugin();
+		}
 		return singleton;
 	}
 

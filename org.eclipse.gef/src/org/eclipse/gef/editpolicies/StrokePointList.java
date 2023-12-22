@@ -34,8 +34,9 @@ public class StrokePointList {
 
 		Point p = list.getPoint(0);
 		path.moveTo(p.x, p.y);
-		for (int i = 1; i < list.size(); i++)
+		for (int i = 1; i < list.size(); i++) {
 			path.lineTo((p = list.getPoint(i)).x, p.y);
+		}
 		BasicStroke stroke = new BasicStroke(offset * 2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f);
 		Shape stroked = stroke.createStrokedShape(path);
 		Area area = new Area(stroked);
@@ -46,8 +47,9 @@ public class StrokePointList {
 		int largestSegmentSize = 0;
 
 		while (!iter.isDone()) {
-			if (currentSegment == null)
+			if (currentSegment == null) {
 				currentSegment = new PointList(list.size() * 2);
+			}
 			int type = iter.currentSegment(segment);
 			currentSegment.addPoint(Math.round(segment[0]), Math.round(segment[1]));
 			iter.next();

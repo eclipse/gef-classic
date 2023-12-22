@@ -30,21 +30,24 @@ abstract class SpanningTreeVisitor extends GraphVisitor {
 	}
 
 	protected Node getTreeHead(Edge edge) {
-		if (getParentEdge(edge.source) == edge)
+		if (getParentEdge(edge.source) == edge) {
 			return edge.target;
+		}
 		return edge.source;
 	}
 
 	Node getTreeParent(Node node) {
 		Edge e = getParentEdge(node);
-		if (e == null)
+		if (e == null) {
 			return null;
+		}
 		return e.opposite(node);
 	}
 
 	protected Node getTreeTail(Edge edge) {
-		if (getParentEdge(edge.source) == edge)
+		if (getParentEdge(edge.source) == edge) {
 			return edge.source;
+		}
 		return edge.target;
 	}
 

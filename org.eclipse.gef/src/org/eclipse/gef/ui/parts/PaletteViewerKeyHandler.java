@@ -92,8 +92,9 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 				return;
 			} else if (stackPart instanceof PaletteStackEditPart && stackPart.getChildren().contains(palettePart)) {
 				// we only want to add the top level item to the navlist
-				if (((PaletteStack) stackPart.getModel()).getActiveEntry().equals(palettePart.getModel()))
+				if (((PaletteStack) stackPart.getModel()).getActiveEntry().equals(palettePart.getModel())) {
 					navList.add(palettePart);
+				}
 			} else if (stackPart instanceof PinnablePaletteStackEditPart
 					&& stackPart.getChildren().contains(palettePart)) {
 				// we only want to add the top level item to the navlist unless
@@ -109,8 +110,9 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 		}
 
 		for (EditPart ep : palettePart.getChildren()) {
-			if (ep instanceof IPaletteStackEditPart)
+			if (ep instanceof IPaletteStackEditPart) {
 				stackPart = ep;
+			}
 			buildNavigationList(ep, exclusion, navList, stackPart);
 		}
 	}
@@ -154,8 +156,9 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 		if (parent instanceof GroupEditPart || parent instanceof IPaletteStackEditPart) {
 			EditPart grandParent = parent.getParent();
 			buildNavigationList(grandParent, grandParent, siblingsList, grandParent);
-		} else
+		} else {
 			buildNavigationList(parent, parent, siblingsList, parent);
+		}
 		return siblingsList;
 	}
 
@@ -220,18 +223,22 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 			return true;
 		}
 		if (acceptIntoExpandedDrawer(event)) {
-			if (navigateIntoExpandedDrawer(event))
+			if (navigateIntoExpandedDrawer(event)) {
 				return true;
+			}
 		}
-		if (super.keyPressed(event))
+		if (super.keyPressed(event)) {
 			return true;
+		}
 		if (acceptSetFocusOnDrawer(event)) {
-			if (navigateToDrawer(event))
+			if (navigateToDrawer(event)) {
 				return true;
+			}
 		}
 		if (acceptNextContainer(event)) {
-			if (navigateToNextContainer(event))
+			if (navigateToNextContainer(event)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -252,8 +259,9 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	 */
 	@Override
 	protected void navigateTo(EditPart part, KeyEvent event) {
-		if (part == null)
+		if (part == null) {
 			return;
+		}
 		if (part instanceof IPaletteStackEditPart) {
 			PaletteEntry activeEntry = ((PaletteStack) part.getModel()).getActiveEntry();
 			part = (EditPart) getViewer().getEditPartRegistry().get(activeEntry);
@@ -286,8 +294,9 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 					if (part instanceof GroupEditPart && !part.getChildren().isEmpty()) {
 						EditPart child = part.getChildren().get(0);
 						navigateTo(child, event);
-					} else
+					} else {
 						navigateTo(part, event);
+					}
 					return true;
 				}
 				return false;

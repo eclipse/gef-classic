@@ -16,11 +16,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.ui.IPartService;
+
+import org.eclipse.gef.examples.text.model.Style;
 
 /**
  * @author Pratik Shah
@@ -31,8 +33,9 @@ public class ChangeFontContributionItem extends StyleComboContributionItem {
 	private static final String[] FONT_NAMES;
 	static {
 		Set<String> set = new HashSet<>();
-		for (FontData font : Display.getCurrent().getFontList(null, true))
+		for (FontData font : Display.getCurrent().getFontList(null, true)) {
 			set.add(font.getName());
+		}
 		FONT_NAMES = new String[set.size()];
 		set.toArray(FONT_NAMES);
 		Arrays.sort(FONT_NAMES);
@@ -55,10 +58,11 @@ public class ChangeFontContributionItem extends StyleComboContributionItem {
 	@Override
 	protected void handleWidgetSelected(SelectionEvent e) {
 		int index = findIndexOf(combo.getText());
-		if (index >= 0 && !getItems()[index].equals(styleService.getStyle(getProperty())))
+		if (index >= 0 && !getItems()[index].equals(styleService.getStyle(getProperty()))) {
 			styleService.setStyle(getProperty(), getItems()[index]);
-		else
+		} else {
 			refresh();
+		}
 	}
 
 }

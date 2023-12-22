@@ -72,10 +72,11 @@ public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvid
 			// return yesIcon;
 			// if(((DefaultCommandStack)stack).canRedoCommand(command))
 			// return noIcon;
-			if (command.canUndo())
+			if (command.canUndo()) {
 				return yesIcon;
-			else
+			} else {
 				return noIcon;
+			}
 		}
 		return null;
 	}
@@ -95,21 +96,28 @@ public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvid
 	@Override
 	public String getText(Object o) {
 		if (o instanceof CommandStack)
+		 {
 			return "Command Stack";//$NON-NLS-1$
-		if (o instanceof Command) {
-			if (getLabelStyle() == NORMAL_LABEL_STYLE)
-				if (((Command) o).getLabel() == null)
-					return "";//$NON-NLS-1$
-				else
-					return ((Command) o).getLabel();
-			if (getLabelStyle() == DEBUG_LABEL_STYLE)
-				if (((Command) o).getDebugLabel() == null)
-					return "";//$NON-NLS-1$
-				else
-					return ((Command) o).getDebugLabel();
 		}
-		if (o instanceof Command)
+		if (o instanceof Command) {
+			if (getLabelStyle() == NORMAL_LABEL_STYLE) {
+				if (((Command) o).getLabel() == null) {
+					return "";//$NON-NLS-1$
+				} else {
+					return ((Command) o).getLabel();
+				}
+			}
+			if (getLabelStyle() == DEBUG_LABEL_STYLE) {
+				if (((Command) o).getDebugLabel() == null) {
+					return "";//$NON-NLS-1$
+				} else {
+					return ((Command) o).getDebugLabel();
+				}
+			}
+		}
+		if (o instanceof Command) {
 			return ((Command) o).getLabel();
+		}
 		return "???";//$NON-NLS-1$
 	}
 

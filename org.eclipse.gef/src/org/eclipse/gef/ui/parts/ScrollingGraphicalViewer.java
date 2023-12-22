@@ -91,15 +91,17 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 		Point topLeft = exposeRegion.getTopLeft();
 		Point bottomRight = exposeRegion.getBottomRight().translate(viewportSize.getNegated());
 		Point finalLocation = new Point();
-		if (viewportSize.width < exposeRegion.width)
+		if (viewportSize.width < exposeRegion.width) {
 			finalLocation.x = Math.min(bottomRight.x, Math.max(topLeft.x, port.getViewLocation().x));
-		else
+		} else {
 			finalLocation.x = Math.min(topLeft.x, Math.max(bottomRight.x, port.getViewLocation().x));
+		}
 
-		if (viewportSize.height < exposeRegion.height)
+		if (viewportSize.height < exposeRegion.height) {
 			finalLocation.y = Math.min(bottomRight.y, Math.max(topLeft.y, port.getViewLocation().y));
-		else
+		} else {
 			finalLocation.y = Math.min(topLeft.y, Math.max(bottomRight.y, port.getViewLocation().y));
+		}
 
 		getFigureCanvas().scrollSmoothTo(finalLocation.x, finalLocation.y);
 	}
@@ -110,12 +112,14 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 	 */
 	@Override
 	protected void hookRootFigure() {
-		if (getFigureCanvas() == null)
+		if (getFigureCanvas() == null) {
 			return;
-		if (rootFigure instanceof Viewport)
+		}
+		if (rootFigure instanceof Viewport) {
 			getFigureCanvas().setViewport((Viewport) rootFigure);
-		else
+		} else {
 			getFigureCanvas().setContents(rootFigure);
+		}
 	}
 
 }

@@ -82,8 +82,9 @@ public class ImageFigure extends AbstractImageFigure {
 	 */
 	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
-		if (getInsets() == NO_INSETS)
+		if (getInsets() == NO_INSETS) {
 			return size;
+		}
 		Insets i = getInsets();
 		return size.getExpanded(i.getWidth(), i.getHeight());
 	}
@@ -95,8 +96,9 @@ public class ImageFigure extends AbstractImageFigure {
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
 
-		if (getImage() == null)
+		if (getImage() == null) {
 			return;
+		}
 
 		int x, y;
 		Rectangle area = getBounds().getShrinked(getInsets());
@@ -153,13 +155,15 @@ public class ImageFigure extends AbstractImageFigure {
 	 * @param image The Image to be displayed. It can be <code>null</code>.
 	 */
 	public void setImage(Image image) {
-		if (img == image)
+		if (img == image) {
 			return;
+		}
 		img = image;
-		if (img != null)
+		if (img != null) {
 			size = new Rectangle(image.getBounds()).getSize();
-		else
+		} else {
 			size = new Dimension();
+		}
 		revalidate();
 		notifyImageChanged();
 		repaint();

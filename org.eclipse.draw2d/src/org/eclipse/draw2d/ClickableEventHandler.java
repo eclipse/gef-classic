@@ -33,16 +33,18 @@ class ClickableEventHandler extends MouseMotionListener.Stub
 
 	@Override
 	public void figureMoved(IFigure source) {
-		if (lastEvent == null)
+		if (lastEvent == null) {
 			return;
+		}
 		mouseDragged(lastEvent);
 	}
 
 	@Override
 	public void handleStateChanged(ChangeEvent change) {
 		Clickable clickable = (Clickable) change.getSource();
-		if (change.getPropertyName() == ButtonModel.MOUSEOVER_PROPERTY && !clickable.isRolloverEnabled())
+		if (change.getPropertyName() == ButtonModel.MOUSEOVER_PROPERTY && !clickable.isRolloverEnabled()) {
 			return;
+		}
 		clickable.repaint();
 	}
 
@@ -82,8 +84,9 @@ class ClickableEventHandler extends MouseMotionListener.Stub
 
 	@Override
 	public void mousePressed(MouseEvent me) {
-		if (me.button != 1)
+		if (me.button != 1) {
 			return;
+		}
 		lastEvent = me;
 		Clickable click = (Clickable) me.getSource();
 		ButtonModel model = click.getModel();
@@ -95,11 +98,13 @@ class ClickableEventHandler extends MouseMotionListener.Stub
 
 	@Override
 	public void mouseReleased(MouseEvent me) {
-		if (me.button != 1)
+		if (me.button != 1) {
 			return;
+		}
 		ButtonModel model = ((Clickable) me.getSource()).getModel();
-		if (!model.isPressed())
+		if (!model.isPressed()) {
 			return;
+		}
 		model.setPressed(false);
 		model.setArmed(false);
 		me.consume();

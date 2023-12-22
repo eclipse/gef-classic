@@ -78,8 +78,9 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	 */
 	@Override
 	public Object getConstraint(Connection connection) {
-		if (next() != null)
+		if (next() != null) {
 			return next().getConstraint(connection);
+		}
 		return null;
 	}
 
@@ -100,18 +101,22 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	 */
 	@Override
 	public void invalidate(Connection conn) {
-		if (next() != null)
+		if (next() != null) {
 			next().invalidate(conn);
-		if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null)
+		}
+		if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null) {
 			return;
+		}
 		HashKey connectionKey = new HashKey(conn);
 		List<Connection> connectionList = connections.get(connectionKey);
 		int affected = connections.remove(connectionKey, conn);
 		if (affected != -1) {
-			for (int i = affected; i < connectionList.size(); i++)
+			for (int i = affected; i < connectionList.size(); i++) {
 				connectionList.get(i).revalidate();
-		} else
+			}
+		} else {
 			connections.removeValue(conn);
+		}
 
 	}
 
@@ -130,17 +135,20 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	 */
 	@Override
 	public void remove(Connection conn) {
-		if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null)
+		if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null) {
 			return;
+		}
 		HashKey connectionKey = new HashKey(conn);
 		List<Connection> connectionList = connections.get(connectionKey);
 		if (connectionList != null) {
 			int index = connections.remove(connectionKey, conn);
-			for (int i = index + 1; i < connectionList.size(); i++)
+			for (int i = index + 1; i < connectionList.size(); i++) {
 				connectionList.get(i).revalidate();
+			}
 		}
-		if (next() != null)
+		if (next() != null) {
 			next().remove(conn);
+		}
 	}
 
 	/**
@@ -152,9 +160,9 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	 */
 	@Override
 	public void route(Connection conn) {
-		if (next() != null)
+		if (next() != null) {
 			next().route(conn);
-		else {
+		} else {
 			conn.getPoints().removeAllPoints();
 			setEndPoints(conn);
 		}
@@ -193,8 +201,9 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	@Override
 	public void setConstraint(Connection connection, Object constraint) {
 		invalidate(connection);
-		if (next() != null)
+		if (next() != null) {
 			next().setConstraint(connection, constraint);
+		}
 	}
 
 	/**

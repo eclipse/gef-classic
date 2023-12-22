@@ -89,8 +89,9 @@ public class Cursors {
 	 * @return The appropriate directional cursor
 	 */
 	public static Cursor getDirectionalCursor(int direction, boolean isMirrored) {
-		if (isMirrored && (direction & PositionConstants.EAST_WEST) != 0)
+		if (isMirrored && (direction & PositionConstants.EAST_WEST) != 0) {
 			direction = direction ^ PositionConstants.EAST_WEST;
+		}
 		switch (direction) {
 		case PositionConstants.NORTH:
 			return SIZEN;

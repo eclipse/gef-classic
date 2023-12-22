@@ -54,10 +54,11 @@ public class RulerDragTracker extends SimpleDragTracker {
 
 	@Override
 	protected Command getCommand() {
-		if (isCreationValid() && !isDelete())
+		if (isCreationValid() && !isDelete()) {
 			return source.getRulerProvider().getCreateGuideCommand(getCurrentPosition());
-		else
+		} else {
 			return UnexecutableCommand.INSTANCE;
+		}
 	}
 
 	@Override
@@ -92,12 +93,13 @@ public class RulerDragTracker extends SimpleDragTracker {
 
 	@Override
 	protected Cursor getDefaultCursor() {
-		if (isDelete())
+		if (isDelete()) {
 			return super.getDefaultCursor();
-		else if (isCreationValid())
+		} else if (isCreationValid()) {
 			return source.isHorizontal() ? SharedCursors.SIZEE : SharedCursors.SIZEN;
-		else
+		} else {
 			return SharedCursors.NO;
+		}
 	}
 
 	@Override
@@ -117,8 +119,9 @@ public class RulerDragTracker extends SimpleDragTracker {
 	}
 
 	protected boolean isCreationValid() {
-		if (getState() == STATE_INVALID)
+		if (getState() == STATE_INVALID) {
 			return false;
+		}
 		int position = getCurrentPosition();
 		Iterator guides = source.getRulerProvider().getGuides().iterator();
 		while (guides.hasNext()) {

@@ -52,10 +52,11 @@ public class ApplyMultiStyle extends MiniEdit {
 
 	@Override
 	public void rollback() {
-		if (Style.PROPERTY_ALIGNMENT.equals(styleID))
+		if (Style.PROPERTY_ALIGNMENT.equals(styleID)) {
 			style.setAlignment(oldValue);
-		else if (Style.PROPERTY_ORIENTATION.equals(styleID))
+		} else if (Style.PROPERTY_ORIENTATION.equals(styleID)) {
 			style.setOrientation(oldValue);
+		}
 	}
 
 }

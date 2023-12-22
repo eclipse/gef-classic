@@ -94,9 +94,11 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 */
 	boolean acceptLeaveConnection(KeyEvent event) {
 		int key = event.keyCode;
-		if (getFocusEditPart() instanceof ConnectionEditPart)
-			if ((key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT) || (key == SWT.ARROW_DOWN) || (key == SWT.ARROW_LEFT))
+		if (getFocusEditPart() instanceof ConnectionEditPart) {
+			if ((key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT) || (key == SWT.ARROW_DOWN) || (key == SWT.ARROW_LEFT)) {
 				return true;
+			}
+		}
 		return false;
 	}
 
@@ -138,14 +140,17 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		List connections = new ArrayList(node.getSourceConnections());
 		connections.addAll(node.getTargetConnections());
 		connections = getValidNavigationTargets(connections);
-		if (connections.isEmpty())
+		if (connections.isEmpty()) {
 			return null;
-		if (forward)
+		}
+		if (forward) {
 			counter++;
-		else
+		} else {
 			counter--;
-		while (counter < 0)
+		}
+		while (counter < 0) {
 			counter += connections.size();
+		}
 		counter %= connections.size();
 		return (ConnectionEditPart) connections.get(counter % connections.size());
 	}
@@ -183,13 +188,15 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		Iterator iter = getValidNavigationTargets(siblings).iterator();
 		while (iter.hasNext()) {
 			epCurrent = (GraphicalEditPart) iter.next();
-			if (epCurrent == exclude)
+			if (epCurrent == exclude) {
 				continue;
+			}
 			figure = epCurrent.getFigure();
 			pCurrent = getNavigationPoint(figure);
 			figure.translateToAbsolute(pCurrent);
-			if (pStart.getPosition(pCurrent) != direction)
+			if (pStart.getPosition(pCurrent) != direction) {
 				continue;
+			}
 
 			int d = pCurrent.getDistanceOrthogonal(pStart);
 			if (d < distance) {
@@ -215,8 +222,9 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * viewer but has not been garbage collected yet.
 	 */
 	private GraphicalEditPart getCachedNode() {
-		if (cachedNode == null)
+		if (cachedNode == null) {
 			return null;
+		}
 		return cachedNode.get();
 	}
 
@@ -240,8 +248,9 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 */
 	protected List getNavigationSiblings() {
 		EditPart focusPart = getFocusEditPart();
-		if (focusPart.getParent() != null)
+		if (focusPart.getParent() != null) {
 			return focusPart.getParent().getChildren();
+		}
 		List<EditPart> list = new ArrayList<>(1);
 		list.add(focusPart);
 		return list;
@@ -299,37 +308,45 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 
 		switch (event.keyCode) {
 		case SWT.ARROW_LEFT:
-			if (navigateNextSibling(event, isViewerMirrored() ? PositionConstants.EAST : PositionConstants.WEST))
+			if (navigateNextSibling(event, isViewerMirrored() ? PositionConstants.EAST : PositionConstants.WEST)) {
 				return true;
+			}
 			break;
 		case SWT.ARROW_RIGHT:
-			if (navigateNextSibling(event, isViewerMirrored() ? PositionConstants.WEST : PositionConstants.EAST))
+			if (navigateNextSibling(event, isViewerMirrored() ? PositionConstants.WEST : PositionConstants.EAST)) {
 				return true;
+			}
 			break;
 		case SWT.ARROW_UP:
-			if (navigateNextSibling(event, PositionConstants.NORTH))
+			if (navigateNextSibling(event, PositionConstants.NORTH)) {
 				return true;
+			}
 			break;
 		case SWT.ARROW_DOWN:
-			if (navigateNextSibling(event, PositionConstants.SOUTH))
+			if (navigateNextSibling(event, PositionConstants.SOUTH)) {
 				return true;
+			}
 			break;
 
 		case SWT.HOME:
-			if (navigateJumpSibling(event, PositionConstants.WEST))
+			if (navigateJumpSibling(event, PositionConstants.WEST)) {
 				return true;
+			}
 			break;
 		case SWT.END:
-			if (navigateJumpSibling(event, PositionConstants.EAST))
+			if (navigateJumpSibling(event, PositionConstants.EAST)) {
 				return true;
+			}
 			break;
 		case SWT.PAGE_DOWN:
-			if (navigateJumpSibling(event, PositionConstants.SOUTH))
+			if (navigateJumpSibling(event, PositionConstants.SOUTH)) {
 				return true;
+			}
 			break;
 		case SWT.PAGE_UP:
-			if (navigateJumpSibling(event, PositionConstants.NORTH))
+			if (navigateJumpSibling(event, PositionConstants.NORTH)) {
 				return true;
+			}
 		}
 		return super.keyPressed(event);
 	}
@@ -374,8 +391,8 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		int current;
 		GraphicalEditPart closestPart = null;
 
-		for (int i = 0; i < childList.size(); i++) {
-			GraphicalEditPart child = (GraphicalEditPart) childList.get(i);
+		for (Object element : childList) {
+			GraphicalEditPart child = (GraphicalEditPart) element;
 
 			Rectangle childBounds = child.getFigure().getBounds();
 			current = (childBounds.x - tl.x) + (childBounds.y - tl.y);
@@ -384,8 +401,9 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 				closestPart = child;
 			}
 		}
-		if (closestPart != null)
+		if (closestPart != null) {
 			navigateTo(closestPart, event);
+		}
 	}
 
 	/**
@@ -424,8 +442,9 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		Point pStart = getNavigationPoint(figure);
 		figure.translateToAbsolute(pStart);
 		EditPart next = findSibling(list, pStart, direction, epStart);
-		if (next == null)
+		if (next == null) {
 			return false;
+		}
 		navigateTo(next, event);
 		return true;
 	}
@@ -434,8 +453,9 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * Navigates to the parent of the currently focused EditPart.
 	 */
 	void navigateOut(KeyEvent event) {
-		if (getFocusEditPart() == null || getFocusEditPart() == getViewer().getContents())
+		if (getFocusEditPart() == null || getFocusEditPart() == getViewer().getContents()) {
 			return;
+		}
 
 		EditPart editPart = getFocusEditPart().getParent();
 		while (editPart != null && editPart != getViewer().getContents() && !isValidNavigationTarget(editPart)) {
@@ -454,10 +474,11 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	void navigateOutOfConnection(KeyEvent event) {
 		GraphicalEditPart cached = getCachedNode();
 		ConnectionEditPart conn = (ConnectionEditPart) getFocusEditPart();
-		if (cached != null && (cached == conn.getSource() || cached == conn.getTarget()))
+		if (cached != null && (cached == conn.getSource() || cached == conn.getTarget())) {
 			navigateTo(cached, event);
-		else
+		} else {
 			navigateTo(conn.getSource(), event);
+		}
 	}
 
 	/**
@@ -467,15 +488,17 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * @param event the KeyEvent that triggered this traversal
 	 */
 	protected void navigateTo(EditPart part, KeyEvent event) {
-		if (part == null)
+		if (part == null) {
 			return;
+		}
 		if ((event.stateMask & SWT.SHIFT) != 0) {
 			getViewer().appendSelection(part);
 			getViewer().setFocus(part);
-		} else if ((event.stateMask & SWT.CONTROL) != 0)
+		} else if ((event.stateMask & SWT.CONTROL) != 0) {
 			getViewer().setFocus(part);
-		else
+		} else {
 			getViewer().select(part);
+		}
 		getViewer().reveal(part);
 	}
 
@@ -488,18 +511,20 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	protected void processSelect(KeyEvent event) {
 		EditPart part = getViewer().getFocusEditPart();
 		if (part != getViewer().getContents()) {
-			if ((event.stateMask & SWT.CTRL) != 0 && part.getSelected() != EditPart.SELECTED_NONE)
+			if ((event.stateMask & SWT.CTRL) != 0 && part.getSelected() != EditPart.SELECTED_NONE) {
 				getViewer().deselect(part);
-			else
+			} else {
 				getViewer().appendSelection(part);
+			}
 
 			getViewer().setFocus(part);
 		}
 	}
 
 	void scrollViewer(KeyEvent event) {
-		if (!(getViewer().getControl() instanceof FigureCanvas))
+		if (!(getViewer().getControl() instanceof FigureCanvas)) {
 			return;
+		}
 		FigureCanvas figCanvas = (FigureCanvas) getViewer().getControl();
 		Point loc = figCanvas.getViewport().getViewLocation();
 		Rectangle area = figCanvas.getViewport().getClientArea(Rectangle.SINGLETON).scale(.1);
@@ -511,24 +536,27 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 			figCanvas.scrollToY(loc.y - area.height);
 			break;
 		case SWT.ARROW_LEFT:
-			if (isViewerMirrored())
+			if (isViewerMirrored()) {
 				figCanvas.scrollToX(loc.x + area.width);
-			else
+			} else {
 				figCanvas.scrollToX(loc.x - area.width);
+			}
 			break;
 		case SWT.ARROW_RIGHT:
-			if (isViewerMirrored())
+			if (isViewerMirrored()) {
 				figCanvas.scrollToX(loc.x - area.width);
-			else
+			} else {
 				figCanvas.scrollToX(loc.x + area.width);
+			}
 		}
 	}
 
 	private void setCachedNode(GraphicalEditPart node) {
-		if (node == null)
+		if (node == null) {
 			cachedNode = null;
-		else
+		} else {
 			cachedNode = new WeakReference<>(node);
+		}
 	}
 
 }

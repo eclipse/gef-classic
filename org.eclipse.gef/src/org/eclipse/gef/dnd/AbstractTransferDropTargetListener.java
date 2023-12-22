@@ -87,8 +87,9 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 				.map(ep -> ((GraphicalEditPart) ep).getFigure()).collect(Collectors.toList());
 		EditPart ep = getViewer().findObjectAtExcluding(getDropLocation(), exclusionFigures,
 				editpart -> editpart.getTargetEditPart(getTargetRequest()) != null);
-		if (ep != null)
+		if (ep != null) {
 			ep = ep.getTargetEditPart(getTargetRequest());
+		}
 		return ep;
 	}
 
@@ -158,8 +159,9 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 		if (testAndSet(event)) {
 			resetHover();
 		} else {
-			if (hovering)
+			if (hovering) {
 				return;
+			}
 			long currentTime = event.time;
 			if (hoverStartTime == -1) {
 				hoverStartTime = currentTime;
@@ -268,8 +270,9 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * @return the target Request
 	 */
 	protected Request getTargetRequest() {
-		if (request == null)
+		if (request == null) {
 			request = createTargetRequest();
+		}
 		return request;
 	}
 
@@ -318,8 +321,9 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 		if (exposeHelper != null) {
 			// If the expose helper does not wish to continue, set helper to
 			// null.
-			if (!exposeHelper.step(getDropLocation()))
+			if (!exposeHelper.step(getDropLocation())) {
 				exposeHelper = null;
+			}
 		}
 	}
 
@@ -337,12 +341,14 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 
 		if (getTargetEditPart() != null) {
 			Command command = getCommand();
-			if (command != null && command.canExecute())
+			if (command != null && command.canExecute()) {
 				getViewer().getEditDomain().getCommandStack().execute(command);
-			else
+			} else {
 				getCurrentEvent().detail = DND.DROP_NONE;
-		} else
+			}
+		} else {
 			getCurrentEvent().detail = DND.DROP_NONE;
+		}
 	}
 
 	/**
@@ -390,21 +396,22 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 */
 	@Override
 	public boolean isEnabled(DropTargetEvent event) {
-		for (int i = 0; i < event.dataTypes.length; i++) {
-			if (getTransfer().isSupportedType(event.dataTypes[i])) {
+		for (TransferData dataType : event.dataTypes) {
+			if (getTransfer().isSupportedType(dataType)) {
 				setCurrentEvent(event);
-				event.currentDataType = event.dataTypes[i];
+				event.currentDataType = dataType;
 				updateTargetRequest();
 				EditPart oldTarget = target;
 				updateTargetEditPart();
 				boolean result;
-				if (target == null)
+				if (target == null) {
 					result = false;
-				else if (askForCommand) {
+				} else if (askForCommand) {
 					Command command = getCommand();
 					result = command != null && command.canExecute();
-				} else
+				} else {
 					result = true;
+				}
 				request = null;
 				target = oldTarget;
 				return result;
@@ -474,11 +481,13 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 */
 	protected void setTargetEditPart(EditPart ep) {
 		if (ep != target) {
-			if (target != null)
+			if (target != null) {
 				handleExitingEditPart();
+			}
 			target = ep;
-			if (target != null)
+			if (target != null) {
 				handleEnteredEditPart();
+			}
 		}
 	}
 
@@ -523,8 +532,9 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 */
 	private boolean testAndSet(DropTargetEvent event) {
 		boolean result = prevMouseLoc == null || !(prevMouseLoc.x == event.x && prevMouseLoc.y == event.y);
-		if (prevMouseLoc == null)
+		if (prevMouseLoc == null) {
 			prevMouseLoc = new Point();
+		}
 		prevMouseLoc.x = event.x;
 		prevMouseLoc.y = event.y;
 		return result;
@@ -549,8 +559,9 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * {@link #setAutoexposeHelper(AutoexposeHelper)}.
 	 */
 	protected void updateAutoexposeHelper() {
-		if (exposeHelper != null)
+		if (exposeHelper != null) {
 			return;
+		}
 		AutoexposeHelper.Search search;
 		search = new AutoexposeHelper.Search(getDropLocation());
 		getViewer().findObjectAtExcluding(getDropLocation(), Collections.emptyList(), search);

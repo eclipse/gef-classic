@@ -87,8 +87,9 @@ public class LogicGuide implements Serializable {
 	 * @param alignment -1 is left or top; 0, center; 1, right or bottom
 	 */
 	public void attachPart(LogicSubpart part, int alignment) {
-		if (getMap().containsKey(part) && getAlignment(part) == alignment)
+		if (getMap().containsKey(part) && getAlignment(part) == alignment) {
 			return;
+		}
 
 		getMap().put(part, Integer.valueOf(alignment));
 		LogicGuide parent = isHorizontal() ? part.getHorizontalGuide() : part.getVerticalGuide();
@@ -137,8 +138,9 @@ public class LogicGuide implements Serializable {
 	 *      EditPart, Object)
 	 */
 	public int getAlignment(LogicSubpart part) {
-		if (getMap().get(part) != null)
+		if (getMap().get(part) != null) {
 			return getMap().get(part).intValue();
+		}
 		return -2;
 	}
 

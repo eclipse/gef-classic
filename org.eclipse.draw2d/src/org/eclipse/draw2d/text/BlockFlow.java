@@ -110,19 +110,23 @@ public class BlockFlow extends FlowFigure {
 	 * @return the effective alignment
 	 */
 	public int getHorizontalAligment() {
-		if (alignment != PositionConstants.NONE)
+		if (alignment != PositionConstants.NONE) {
 			return alignment;
+		}
 		IFigure parent = getParent();
-		while (parent != null && !(parent instanceof BlockFlow))
+		while (parent != null && !(parent instanceof BlockFlow)) {
 			parent = parent.getParent();
-		if (parent != null)
+		}
+		if (parent != null) {
 			return ((BlockFlow) parent).getHorizontalAligment();
+		}
 		return PositionConstants.LEFT;
 	}
 
 	int getLeftMargin() {
-		if (getBorder() instanceof FlowBorder)
+		if (getBorder() instanceof FlowBorder) {
 			return ((FlowBorder) getBorder()).getLeftMargin();
+		}
 		return 0;
 	}
 
@@ -159,19 +163,23 @@ public class BlockFlow extends FlowFigure {
 	 * @since 3.1
 	 */
 	public int getOrientation() {
-		if (orientation != SWT.NONE)
+		if (orientation != SWT.NONE) {
 			return orientation;
+		}
 		IFigure parent = getParent();
-		while (parent != null && !(parent instanceof BlockFlow))
+		while (parent != null && !(parent instanceof BlockFlow)) {
 			parent = parent.getParent();
-		if (parent != null)
+		}
+		if (parent != null) {
 			return ((BlockFlow) parent).getOrientation();
+		}
 		return isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.LEFT_TO_RIGHT;
 	}
 
 	int getRightMargin() {
-		if (getBorder() instanceof FlowBorder)
+		if (getBorder() instanceof FlowBorder) {
 			return ((FlowBorder) getBorder()).getRightMargin();
+		}
 		return 0;
 	}
 
@@ -197,8 +205,9 @@ public class BlockFlow extends FlowFigure {
 			Rectangle where = getBlockBox().toRectangle();
 			where.crop(new Insets(getTopMargin(), getLeftMargin(), getBottomMargin(), getRightMargin()));
 			((FlowBorder) getBorder()).paint(this, graphics, where, SWT.LEAD | SWT.TRAIL);
-		} else
+		} else {
 			super.paintBorder(graphics);
+		}
 		if (selectionStart != -1) {
 			graphics.restoreState();
 			graphics.setXORMode(true);
@@ -261,8 +270,9 @@ public class BlockFlow extends FlowFigure {
 	public void setHorizontalAligment(int value) {
 		value &= PositionConstants.LEFT | PositionConstants.CENTER | PositionConstants.RIGHT
 				| PositionConstants.ALWAYS_LEFT | PositionConstants.ALWAYS_RIGHT;
-		if (value == alignment)
+		if (value == alignment) {
 			return;
+		}
 		alignment = value;
 		revalidate();
 	}
@@ -283,8 +293,9 @@ public class BlockFlow extends FlowFigure {
 	 */
 	public void setOrientation(int orientation) {
 		orientation &= SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT;
-		if (this.orientation == orientation)
+		if (this.orientation == orientation) {
 			return;
+		}
 		this.orientation = orientation;
 		revalidateBidi(this);
 	}
@@ -306,8 +317,9 @@ public class BlockFlow extends FlowFigure {
 	public void validate() {
 		if (!bidiValid) {
 			BidiProcessor.INSTANCE.setOrientation(getOrientation());
-			if (getOrientation() == SWT.LEFT_TO_RIGHT && isMirrored())
+			if (getOrientation() == SWT.LEFT_TO_RIGHT && isMirrored()) {
 				BidiProcessor.INSTANCE.addControlChar(BidiChars.LRE);
+			}
 			super.contributeBidi(BidiProcessor.INSTANCE);
 			BidiProcessor.INSTANCE.process();
 			bidiValid = true;

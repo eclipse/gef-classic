@@ -23,10 +23,12 @@ public class LogicLabelCommand extends Command {
 
 	public LogicLabelCommand(LogicLabel l, String s) {
 		label = l;
-		if (s != null)
+		if (s != null) {
 			newName = s;
-		else
+		}
+		else {
 			newName = ""; //$NON-NLS-1$
+		}
 	}
 
 	@Override

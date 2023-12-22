@@ -76,8 +76,9 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 	 * @param command the command to execute
 	 */
 	protected void execute(Command command) {
-		if (command == null || !command.canExecute())
+		if (command == null || !command.canExecute()) {
 			return;
+		}
 		getCommandStack().execute(command);
 	}
 
@@ -118,8 +119,9 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 	 */
 	@Override
 	public boolean isEnabled() {
-		if (lazyEnablement)
+		if (lazyEnablement) {
 			setEnabled(calculateEnabled());
+		}
 		return super.isEnabled();
 	}
 

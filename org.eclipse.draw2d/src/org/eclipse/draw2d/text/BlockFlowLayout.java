@@ -47,24 +47,27 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	}
 
 	private void addBelowPreviousLine(CompositeBox line) {
-		if (previousLine == null)
+		if (previousLine == null) {
 			line.setLineTop(line.getTopMargin());
-		else
+		} else {
 			line.setLineTop(previousLine.getBaseline() + previousLine.getDescent()
 					+ Math.max(previousLine.getBottomMargin(), line.getTopMargin()));
+		}
 
 		int alignment = getBlockFlow().getHorizontalAligment();
 		if (alignment == PositionConstants.LEFT || alignment == PositionConstants.RIGHT) {
 			int orientation = getBlockFlow().getOrientation();
-			if (alignment == PositionConstants.LEFT)
+			if (alignment == PositionConstants.LEFT) {
 				alignment = orientation == SWT.LEFT_TO_RIGHT ? PositionConstants.ALWAYS_LEFT
 						: PositionConstants.ALWAYS_RIGHT;
-			else
+			} else {
 				alignment = orientation == SWT.LEFT_TO_RIGHT ? PositionConstants.ALWAYS_RIGHT
 						: PositionConstants.ALWAYS_LEFT;
+			}
 		}
-		if (alignment != PositionConstants.CENTER && getBlockFlow().isMirrored())
+		if (alignment != PositionConstants.CENTER && getBlockFlow().isMirrored()) {
 			alignment = (PositionConstants.ALWAYS_LEFT | PositionConstants.ALWAYS_RIGHT) & ~alignment;
+		}
 
 		switch (alignment) {
 		case PositionConstants.ALWAYS_RIGHT:
@@ -139,8 +142,9 @@ public class BlockFlowLayout extends FlowContainerLayout {
 			blockBox.width += insets.getWidth();
 		}
 
-		if (getContext() != null)
+		if (getContext() != null) {
 			getContext().addLine(blockBox);
+		}
 
 		if (blockInvalid) {
 			blockInvalid = false;
@@ -153,8 +157,9 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	 */
 	@Override
 	public void endLine() {
-		if (currentLine == null || !currentLine.isOccupied())
+		if (currentLine == null || !currentLine.isOccupied()) {
 			return;
+		}
 		addCurrentLine();
 		currentLine = null;
 	}
@@ -200,12 +205,15 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	public void getWidthLookahead(FlowFigure child, int result[]) {
 		List<? extends IFigure> children = getFlowFigure().getChildren();
 		int index = -1;
-		if (child != null)
+		if (child != null) {
 			index = children.indexOf(child);
+		}
 
-		for (int i = index + 1; i < children.size(); i++)
-			if (((FlowFigure) children.get(i)).addLeadingWordRequirements(result))
+		for (int i = index + 1; i < children.size(); i++) {
+			if (((FlowFigure) children.get(i)).addLeadingWordRequirements(result)) {
 				return;
+			}
+		}
 	}
 
 	/**
@@ -232,8 +240,9 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	 */
 	protected void setupBlock() {
 		int recommended = getContextWidth();
-		if (recommended == Integer.MAX_VALUE)
+		if (recommended == Integer.MAX_VALUE) {
 			recommended = -1;
+		}
 		BlockFlow bf = getBlockFlow();
 		if (recommended > 0) {
 			int borderCorrection = bf.getInsets().getWidth() + bf.getLeftMargin() + bf.getRightMargin();

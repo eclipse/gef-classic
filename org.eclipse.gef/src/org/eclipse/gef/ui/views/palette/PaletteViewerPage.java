@@ -71,8 +71,9 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 	 */
 	@Override
 	public void dispose() {
-		if (provider.getEditDomain().getPaletteViewer() == viewer)
+		if (provider.getEditDomain().getPaletteViewer() == viewer) {
 			provider.getEditDomain().setPaletteViewer(null);
+		}
 		super.dispose();
 		viewer = null;
 	}
@@ -82,12 +83,14 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 	 */
 	@Override
 	public <T> T getAdapter(final Class<T> adapter) {
-		if (adapter == EditPart.class && viewer != null)
+		if (adapter == EditPart.class && viewer != null) {
 			return adapter.cast(viewer.getEditPartRegistry().get(viewer.getPaletteRoot()));
+		}
 		if (adapter == IFigure.class && viewer != null) {
 			Object obj = viewer.getEditPartRegistry().get(viewer.getPaletteRoot());
-			if (obj instanceof GraphicalEditPart)
+			if (obj instanceof GraphicalEditPart) {
 				return adapter.cast(((GraphicalEditPart) obj).getFigure());
+			}
 		}
 		return null;
 	}

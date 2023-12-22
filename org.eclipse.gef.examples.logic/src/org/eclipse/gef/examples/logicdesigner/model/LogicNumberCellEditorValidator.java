@@ -21,8 +21,9 @@ public class LogicNumberCellEditorValidator implements ICellEditorValidator {
 	private static LogicNumberCellEditorValidator instance;
 
 	public static LogicNumberCellEditorValidator instance() {
-		if (instance == null)
+		if (instance == null) {
 			instance = new LogicNumberCellEditorValidator();
+		}
 		return instance;
 	}
 

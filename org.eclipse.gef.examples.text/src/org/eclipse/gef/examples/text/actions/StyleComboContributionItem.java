@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.text.actions;
 
-import org.eclipse.gef.examples.text.TextEditor;
-import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -24,10 +22,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+
+import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
+
+import org.eclipse.gef.examples.text.TextEditor;
 
 /**
  * @author Pratik Shah
@@ -40,16 +42,18 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	protected StyleService styleService;
 	protected IPartService partService;
 	protected StyleListener styleListener = styleID -> {
-		if (styleID == null || styleID.equals(getProperty()))
+		if (styleID == null || styleID.equals(getProperty())) {
 			refresh();
+		}
 	};
 
 	protected IPartListener2 partListener = new IPartListener2() {
 		@Override
 		public void partActivated(IWorkbenchPartReference partRef) {
 			IWorkbenchPart part = partRef.getPart(false);
-			if (part instanceof TextEditor)
+			if (part instanceof TextEditor) {
 				setStyleService(part.getAdapter(StyleService.class));
+			}
 		}
 
 		@Override
@@ -133,8 +137,9 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	 */
 	@Override
 	public void dispose() {
-		if (styleService != null)
+		if (styleService != null) {
 			styleService.removeStyleListener(styleListener);
+		}
 		partService.removePartListener(partListener);
 	}
 
@@ -155,8 +160,9 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 
 	protected int findIndexOf(String text) {
 		for (int i = 0; i < getItems().length; i++) {
-			if (getItems()[i].equalsIgnoreCase(text))
+			if (getItems()[i].equalsIgnoreCase(text)) {
 				return i;
+			}
 		}
 		return -1;
 	}
@@ -168,38 +174,46 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	protected abstract void handleWidgetSelected(SelectionEvent e);
 
 	protected void refresh() {
-		if (combo == null)
+		if (combo == null) {
 			return;
+		}
 
 		boolean enablement = true;
-		if (styleService == null)
+		if (styleService == null) {
 			enablement = false;
-		else {
-			if (!styleService.getStyleState(getProperty()).equals(StyleService.STATE_EDITABLE))
+		} else {
+			if (!styleService.getStyleState(getProperty()).equals(StyleService.STATE_EDITABLE)) {
 				// we want the combo disabled, but still want to update the
 				// value
 				enablement = false;
+			}
 			Object style = styleService.getStyle(getProperty());
 			String value = style.toString();
 			if (StyleService.UNDEFINED.equals(style))
+			 {
 				value = ""; //$NON-NLS-1$
+			}
 			int index = findIndexOf(value);
-			if (index >= 0)
+			if (index >= 0) {
 				combo.select(index);
-			else
+			} else {
 				combo.setText(value);
+			}
 		}
 		combo.setEnabled(enablement);
 	}
 
 	protected void setStyleService(StyleService service) {
-		if (styleService == service)
+		if (styleService == service) {
 			return;
-		if (styleService != null)
+		}
+		if (styleService != null) {
 			styleService.removeStyleListener(styleListener);
+		}
 		styleService = service;
-		if (styleService != null)
+		if (styleService != null) {
 			styleService.addStyleListener(styleListener);
+		}
 		refresh();
 	}
 

@@ -57,8 +57,9 @@ class Obstacle extends Rectangle {
 	}
 
 	private void growVertex(Vertex vertex) {
-		if (vertex.totalCount > 0)
+		if (vertex.totalCount > 0) {
 			vertex.grow();
+		}
 	}
 
 	/**
@@ -106,8 +107,9 @@ class Obstacle extends Rectangle {
 	}
 
 	private void shrinkVertex(Vertex vertex) {
-		if (vertex.totalCount > 0)
+		if (vertex.totalCount > 0) {
 			vertex.shrink();
+		}
 	}
 
 	/**

@@ -14,6 +14,7 @@
 package org.eclipse.gef.examples.digraph2.editor;
 
 import org.eclipse.gef.GraphicalViewer;
+
 import org.eclipse.gef.examples.digraph1.editor.Digraph1GraphicalEditor;
 import org.eclipse.gef.examples.digraph2.factory.Digraph2EditPartFactory;
 import org.eclipse.gef.examples.digraph2.model.Digraph2Graph;

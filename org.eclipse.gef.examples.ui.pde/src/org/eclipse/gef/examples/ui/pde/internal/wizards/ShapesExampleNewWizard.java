@@ -15,6 +15,7 @@ package org.eclipse.gef.examples.ui.pde.internal.wizards;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+
 import org.eclipse.gef.examples.ui.pde.internal.GefExamplesPlugin;
 import org.eclipse.gef.examples.ui.pde.internal.l10n.Messages;
 

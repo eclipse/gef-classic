@@ -63,8 +63,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	@Override
 	public Rectangle getClientArea(Rectangle rect) {
 		super.getClientArea(rect);
-		if (useGraphicsTranslate())
+		if (useGraphicsTranslate()) {
 			rect.translate(getViewLocation());
+		}
 		return rect;
 	}
 
@@ -141,8 +142,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	private void localRevalidate() {
 		invalidate();
-		if (getLayoutManager() != null)
+		if (getLayoutManager() != null) {
 			getLayoutManager().invalidate();
+		}
 		getUpdateManager().addInvalidFigure(this);
 	}
 
@@ -161,8 +163,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 			} finally {
 				g.translate(p.x, p.y);
 			}
-		} else
+		} else {
 			super.paintClientArea(g);
+		}
 	}
 
 	/**
@@ -203,8 +206,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 * @since 2.0
 	 */
 	protected void readjustScrollBars() {
-		if (getContents() == null)
+		if (getContents() == null) {
 			return;
+		}
 		getVerticalRangeModel().setAll(0, getClientArea().height, getContents().getBounds().height);
 		getHorizontalRangeModel().setAll(0, getClientArea().width, getContents().getBounds().width);
 	}
@@ -216,13 +220,16 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 * @since 2.0
 	 */
 	public void setContents(IFigure figure) {
-		if (view == figure)
+		if (view == figure) {
 			return;
-		if (view != null)
+		}
+		if (view != null) {
 			remove(view);
+		}
 		view = figure;
-		if (view != null)
+		if (view != null) {
 			add(figure);
+		}
 	}
 
 	/**
@@ -265,8 +272,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 * @since 2.0
 	 */
 	public void setHorizontalRangeModel(RangeModel rangeModel) {
-		if (horiztonalRangeModel != null)
+		if (horiztonalRangeModel != null) {
 			horiztonalRangeModel.removePropertyChangeListener(this);
+		}
 		horiztonalRangeModel = rangeModel;
 		horiztonalRangeModel.addPropertyChangeListener(this);
 	}
@@ -298,8 +306,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 * @since 2.0
 	 */
 	public void setVerticalRangeModel(RangeModel rangeModel) {
-		if (verticalRangeModel != null)
+		if (verticalRangeModel != null) {
 			verticalRangeModel.removePropertyChangeListener(this);
+		}
 		verticalRangeModel = rangeModel;
 		verticalRangeModel.addPropertyChangeListener(this);
 	}
@@ -312,10 +321,12 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 * @since 2.0
 	 */
 	public void setViewLocation(int x, int y) {
-		if (getHorizontalRangeModel().getValue() != x)
+		if (getHorizontalRangeModel().getValue() != x) {
 			getHorizontalRangeModel().setValue(x);
-		if (getVerticalRangeModel().getValue() != y)
+		}
+		if (getVerticalRangeModel().getValue() != y) {
 			getVerticalRangeModel().setValue(y);
+		}
 	}
 
 	/**
@@ -333,8 +344,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 */
 	@Override
 	public void translateFromParent(Translatable t) {
-		if (useTranslate)
+		if (useTranslate) {
 			t.performTranslate(getHorizontalRangeModel().getValue(), getVerticalRangeModel().getValue());
+		}
 		super.translateFromParent(t);
 	}
 
@@ -343,8 +355,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 */
 	@Override
 	public void translateToParent(Translatable t) {
-		if (useTranslate)
+		if (useTranslate) {
 			t.performTranslate(-getHorizontalRangeModel().getValue(), -getVerticalRangeModel().getValue());
+		}
 		super.translateToParent(t);
 	}
 

@@ -113,8 +113,9 @@ public final class AlignmentAction extends SelectionAction {
 	 */
 	protected Rectangle calculateAlignmentRectangle(Request request) {
 		List editparts = getOperationSet(request);
-		if (editparts == null || editparts.isEmpty())
+		if (editparts == null || editparts.isEmpty()) {
 			return null;
+		}
 		GraphicalEditPart part = (GraphicalEditPart) editparts.get(editparts.size() - 1);
 		Rectangle rect = new PrecisionRectangle(part.getFigure().getBounds());
 		part.getFigure().translateToAbsolute(rect);
@@ -128,8 +129,9 @@ public final class AlignmentAction extends SelectionAction {
 	protected boolean calculateEnabled() {
 		operationSet = null;
 		Command cmd = createAlignmentCommand();
-		if (cmd == null)
+		if (cmd == null) {
 			return false;
+		}
 		return cmd.canExecute();
 	}
 
@@ -138,13 +140,14 @@ public final class AlignmentAction extends SelectionAction {
 		request.setAlignmentRectangle(calculateAlignmentRectangle(request));
 		request.setAlignment(alignment);
 		List editparts = getOperationSet(request);
-		if (editparts.size() < 2)
+		if (editparts.size() < 2) {
 			return null;
+		}
 
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel(getText());
-		for (int i = 0; i < editparts.size(); i++) {
-			EditPart editpart = (EditPart) editparts.get(i);
+		for (Object editpart2 : editparts) {
+			EditPart editpart = (EditPart) editpart2;
 			command.add(editpart.getCommand(request));
 		}
 		return command;
@@ -166,21 +169,25 @@ public final class AlignmentAction extends SelectionAction {
 	 * @return the list of parts which will be aligned
 	 */
 	protected List getOperationSet(Request request) {
-		if (operationSet != null)
+		if (operationSet != null) {
 			return operationSet;
+		}
 		List editparts = new ArrayList(getSelectedObjects());
-		if (editparts.isEmpty() || !(editparts.get(0) instanceof GraphicalEditPart))
+		if (editparts.isEmpty() || !(editparts.get(0) instanceof GraphicalEditPart)) {
 			return Collections.EMPTY_LIST;
+		}
 		Object primary = editparts.get(editparts.size() - 1);
 		editparts = ToolUtilities.getSelectionWithoutDependants(editparts);
 		ToolUtilities.filterEditPartsUnderstanding(editparts, request);
-		if (editparts.size() < 2 || !editparts.contains(primary))
+		if (editparts.size() < 2 || !editparts.contains(primary)) {
 			return Collections.EMPTY_LIST;
+		}
 		EditPart parent = ((EditPart) editparts.get(0)).getParent();
 		for (int i = 1; i < editparts.size(); i++) {
 			EditPart part = (EditPart) editparts.get(i);
-			if (part.getParent() != parent)
+			if (part.getParent() != parent) {
 				return Collections.EMPTY_LIST;
+			}
 		}
 		return editparts;
 	}

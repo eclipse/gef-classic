@@ -46,8 +46,9 @@ public class SingleEditCommand extends ExampleTextCommand {
 	@Override
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
 		ModelLocation loc = edit.getResultingLocation();
-		if (loc != null)
+		if (loc != null) {
 			return new SelectionRange(lookupModel(viewer, loc.model), loc.offset);
+		}
 		return getUndoSelectionRange(viewer);
 	}
 

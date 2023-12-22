@@ -47,16 +47,18 @@ public class FanRouter extends AutomaticRouter {
 		Point start = points.getFirstPoint();
 		Point end = points.getLastPoint();
 
-		if (start.equals(end))
+		if (start.equals(end)) {
 			return;
+		}
 
 		Point midPoint = new Point((end.x + start.x) / 2, (end.y + start.y) / 2);
 		int position = end.getPosition(start);
 		Ray ray;
-		if (position == PositionConstants.SOUTH || position == PositionConstants.EAST)
+		if (position == PositionConstants.SOUTH || position == PositionConstants.EAST) {
 			ray = new Ray(start, end);
-		else
+		} else {
 			ray = new Ray(end, start);
+		}
 		double length = ray.length();
 
 		double xSeparation = separation * ray.x / length;
@@ -71,8 +73,9 @@ public class FanRouter extends AutomaticRouter {
 			bendPoint = new Point(midPoint.x + (index / 2) * ySeparation,
 					midPoint.y + (index / 2) * (-1 * xSeparation));
 		}
-		if (!bendPoint.equals(midPoint))
+		if (!bendPoint.equals(midPoint)) {
 			points.insertPoint(bendPoint, 1);
+		}
 	}
 
 	/**

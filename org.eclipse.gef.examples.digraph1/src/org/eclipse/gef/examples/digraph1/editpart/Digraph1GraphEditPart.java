@@ -18,8 +18,10 @@ import java.util.List;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
+
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+
 import org.eclipse.gef.examples.digraph1.model.Digraph1Graph;
 import org.eclipse.gef.examples.digraph1.model.Digraph1Node;
 import org.eclipse.gef.examples.digraph1.policy.Digraph1XYLayoutEditPolicy;

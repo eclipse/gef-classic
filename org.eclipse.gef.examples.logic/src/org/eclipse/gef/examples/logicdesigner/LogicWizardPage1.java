@@ -86,8 +86,9 @@ public class LogicWizardPage1 extends WizardNewFileCreationPage implements Selec
 	@Override
 	protected InputStream getInitialContents() {
 		LogicDiagram ld = new LogicDiagram();
-		if (modelSelected == 2)
+		if (modelSelected == 2) {
 			ld = (LogicDiagram) LogicDiagramFactory.createLargeModel();
+		}
 		ByteArrayInputStream bais = null;
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -107,15 +108,18 @@ public class LogicWizardPage1 extends WizardNewFileCreationPage implements Selec
 	public boolean finish() {
 		IFile newFile = createNewFile();
 		if (newFile == null)
+		 {
 			return false; // ie.- creation was unsuccessful
+		}
 
 		// Since the file resource was created fine, open it for editing
 		// iff requested by the user
 		try {
 			IWorkbenchWindow dwindow = workbench.getActiveWorkbenchWindow();
 			IWorkbenchPage page = dwindow.getActivePage();
-			if (page != null)
+			if (page != null) {
 				IDE.openEditor(page, newFile, true);
+			}
 		} catch (org.eclipse.ui.PartInitException e) {
 			e.printStackTrace();
 			return false;

@@ -60,11 +60,13 @@ public class ToolTipHelper extends PopUpHelper {
 		Dimension tipSize = getLightweightSystem().getRootFigure().getPreferredSize().getExpanded(getShellTrimSize());
 
 		// Adjust location if tip is going to fall outside display
-		if (preferredLocation.y + tipSize.height > clientArea.height)
+		if (preferredLocation.y + tipSize.height > clientArea.height) {
 			preferredLocation.y = eventY - tipSize.height;
+		}
 
-		if (preferredLocation.x + tipSize.width > clientArea.width)
+		if (preferredLocation.x + tipSize.width > clientArea.width) {
 			preferredLocation.x -= (preferredLocation.x + tipSize.width) - clientArea.width;
+		}
 
 		return preferredLocation;
 	}
@@ -180,8 +182,9 @@ public class ToolTipHelper extends PopUpHelper {
 		if (isShowing() && figureUnderMouse != currentTipSource) {
 			hide();
 			displayToolTipNear(figureUnderMouse, tip, eventX, eventY);
-		} else if (!isShowing() && figureUnderMouse != currentTipSource)
+		} else if (!isShowing() && figureUnderMouse != currentTipSource) {
 			currentTipSource = null;
+		}
 	}
 
 }

@@ -57,8 +57,9 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 	@Override
 	public void exposeDescendant(EditPart part) {
 		Viewport port = findViewport(owner);
-		if (port == null)
+		if (port == null) {
 			return;
+		}
 		IFigure target = ((GraphicalEditPart) part).getFigure();
 
 		/*
@@ -68,8 +69,9 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 		 */
 		Rectangle exposeRegion = target.getBounds().getCopy();
 		target.translateToAbsolute(exposeRegion);
-		if (exposeMargin != null)
+		if (exposeMargin != null) {
 			exposeRegion.expand(exposeMargin);
+		}
 		port.getContents().translateToRelative(exposeRegion);
 
 		Point offset = port.getContents().getBounds().getLocation();
@@ -83,15 +85,17 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 		Point bottomRight = exposeRegion.getBottomRight().translate(viewportSize.getNegated());
 
 		Point finalLocation = new Point();
-		if (viewportSize.width < exposeRegion.width)
+		if (viewportSize.width < exposeRegion.width) {
 			finalLocation.x = Math.min(bottomRight.x, Math.max(topLeft.x, port.getViewLocation().x));
-		else
+		} else {
 			finalLocation.x = Math.min(topLeft.x, Math.max(bottomRight.x, port.getViewLocation().x));
+		}
 
-		if (viewportSize.height < exposeRegion.height)
+		if (viewportSize.height < exposeRegion.height) {
 			finalLocation.y = Math.min(bottomRight.y, Math.max(topLeft.y, port.getViewLocation().y));
-		else
+		} else {
 			finalLocation.y = Math.min(topLeft.y, Math.max(bottomRight.y, port.getViewLocation().y));
+		}
 
 		Point startLocation = port.getViewLocation();
 
@@ -156,8 +160,9 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 	 */
 	public void setMinimumFrameCount(int minimumFrameCount) {
 		this.minimumFrameCount = minimumFrameCount;
-		if (getMaximumFrameCount() < minimumFrameCount)
+		if (getMaximumFrameCount() < minimumFrameCount) {
 			setMaximumFrameCount(minimumFrameCount);
+		}
 	}
 
 }

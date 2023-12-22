@@ -80,8 +80,9 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	 */
 	@Override
 	public void dispose() {
-		if (commandStack != null)
+		if (commandStack != null) {
 			commandStack.removeCommandStackEventListener(commandStackListener);
+		}
 		super.dispose();
 	}
 
@@ -94,8 +95,9 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	 */
 	protected CommandStack getCommandStack() {
 		// only the root has, and is listening too, the command stack
-		if (getParent() != null)
+		if (getParent() != null) {
 			return ((UndoablePropertySheetEntry) getParent()).getCommandStack();
+		}
 		return commandStack;
 	}
 
@@ -105,15 +107,16 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	@Override
 	public void resetPropertyValue() {
 		CompoundCommand cc = new CompoundCommand();
-		if (getParent() == null)
+		if (getParent() == null) {
 			// root does not have a default value
 			return;
+		}
 
 		// Use our parent's values to reset our values.
 		boolean change = false;
 		Object[] objects = getParent().getValues();
-		for (int i = 0; i < objects.length; i++) {
-			IPropertySource source = getPropertySource(objects[i]);
+		for (Object object : objects) {
+			IPropertySource source = getPropertySource(object);
 			if (source.isPropertySet(getDescriptor().getId())) {
 				SetPropertyValueCommand restoreCmd = new SetPropertyValueCommand(getDescriptor().getDisplayName(),
 						source, getDescriptor().getId(), SetPropertyValueCommand.DEFAULT_VALUE);
@@ -147,9 +150,9 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 		}
 
 		// inform our parent
-		if (getParent() != null)
+		if (getParent() != null) {
 			((UndoablePropertySheetEntry) getParent()).valueChanged(this, command);
-		else {
+		} else {
 			// I am the root entry
 			commandStack.execute(command);
 		}

@@ -129,8 +129,9 @@ public class PaletteView extends PageBookView {
 	@Override
 	protected IWorkbenchPart getBootstrapPart() {
 		IWorkbenchPage page = getSite().getPage();
-		if (page != null)
+		if (page != null) {
 			return page.getActiveEditor();
+		}
 		return null;
 	}
 

@@ -100,8 +100,9 @@ public class TestModelUtil extends TestCase {
 	private static void compareList(List<ModelElement> result, Object[] array) {
 		Object[] compare = result.toArray();
 		assertEquals(array.length, compare.length);
-		for (int i = 0; i < compare.length; i++)
+		for (int i = 0; i < compare.length; i++) {
 			assertEquals(compare[i], array[i]);
+		}
 	}
 
 }

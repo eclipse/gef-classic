@@ -15,10 +15,11 @@ package org.eclipse.gef.examples.text.edit;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
+import org.eclipse.swt.widgets.TreeItem;
+
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.ModelElement;
 import org.eclipse.gef.examples.text.model.Style;
-import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * @since 3.1
@@ -36,8 +37,9 @@ public class ContainerTreePart extends ExampleTreePart {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("children")) //$NON-NLS-1$
+		if (evt.getPropertyName().equals("children")) { //$NON-NLS-1$
 			refreshChildren();
+		}
 	}
 
 	@Override
@@ -70,15 +72,25 @@ public class ContainerTreePart extends ExampleTreePart {
 		case Container.TYPE_INLINE:
 			Style style = getModel().getStyle();
 			if (style.isSet(Style.PROPERTY_FONT_SIZE))
+			 {
 				label.append("<FONT SIZE>"); //$NON-NLS-1$
+			}
 			if (style.isSet(Style.PROPERTY_BOLD))
+			 {
 				label.append("<B>"); //$NON-NLS-1$
+			}
 			if (style.isSet(Style.PROPERTY_ITALIC))
+			 {
 				label.append("<I>"); //$NON-NLS-1$
+			}
 			if (style.isSet(Style.PROPERTY_UNDERLINE))
+			 {
 				label.append("<U>"); //$NON-NLS-1$
+			}
 			if (style.isSet(Style.PROPERTY_FONT))
+			 {
 				label.append("<FONT>"); //$NON-NLS-1$
+			}
 			break;
 		case Container.TYPE_PARAGRAPH:
 			label.append("Paragraph"); //$NON-NLS-1$

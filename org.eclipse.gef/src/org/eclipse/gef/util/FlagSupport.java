@@ -41,10 +41,11 @@ public class FlagSupport {
 	 * @param value the new value
 	 */
 	protected void setFlag(int flag, boolean value) {
-		if (value)
+		if (value) {
 			flags |= flag;
-		else
+		} else {
 			flags &= ~flag;
+		}
 	}
 
 }

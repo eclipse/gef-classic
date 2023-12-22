@@ -104,9 +104,11 @@ public class DNDTest {
 		shell.setSize(300, 200);
 		shell.open();
 		Display display = Display.getDefault();
-		while (!shell.isDisposed())
-			if (!display.readAndDispatch())
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
+		}
 	}
 
 }

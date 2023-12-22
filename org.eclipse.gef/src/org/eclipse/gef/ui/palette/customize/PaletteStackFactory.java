@@ -40,8 +40,9 @@ public class PaletteStackFactory extends PaletteEntryFactory {
 	 */
 	@Override
 	public boolean canCreate(PaletteEntry selected) {
-		if (!(selected instanceof ToolEntry) || selected.getParent() instanceof PaletteStack)
+		if (!(selected instanceof ToolEntry) || selected.getParent() instanceof PaletteStack) {
 			return false;
+		}
 		return super.canCreate(selected);
 	}
 

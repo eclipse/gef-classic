@@ -59,8 +59,9 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 	 */
 	@Override
 	protected boolean handleButtonUp(int button) {
-		if (isInState(STATE_CONNECTION_STARTED))
+		if (isInState(STATE_CONNECTION_STARTED)) {
 			handleCreateConnection();
+		}
 		setState(STATE_TERMINAL);
 		handleFinished();
 		return true;
@@ -84,8 +85,9 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 	 */
 	@Override
 	protected void handleFinished() {
-		if (getDomain().getActiveTool() == this)
+		if (getDomain().getActiveTool() == this) {
 			super.handleFinished();
+		}
 	}
 
 }

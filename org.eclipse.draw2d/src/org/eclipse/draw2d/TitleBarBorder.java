@@ -141,10 +141,12 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 		int textWidth = getTextExtents(figure).width;
 		int freeSpace = rec.width - padding.getWidth() - textWidth;
 
-		if (getTextAlignment() == PositionConstants.CENTER)
+		if (getTextAlignment() == PositionConstants.CENTER) {
 			freeSpace /= 2;
-		if (getTextAlignment() != PositionConstants.LEFT)
+		}
+		if (getTextAlignment() != PositionConstants.LEFT) {
 			x += freeSpace;
+		}
 
 		g.setFont(getFont(figure));
 		g.setForegroundColor(getTextColor());

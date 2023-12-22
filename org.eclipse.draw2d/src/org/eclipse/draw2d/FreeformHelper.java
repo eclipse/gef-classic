@@ -33,23 +33,26 @@ class FreeformHelper implements FreeformListener {
 	}
 
 	public Rectangle getFreeformExtent() {
-		if (freeformExtent != null)
+		if (freeformExtent != null) {
 			return freeformExtent;
+		}
 		Rectangle r;
 		for (IFigure child : host.getChildren()) {
-			if (child instanceof FreeformFigure)
+			if (child instanceof FreeformFigure) {
 				r = ((FreeformFigure) child).getFreeformExtent();
-			else
+			} else {
 				r = child.getBounds();
-			if (freeformExtent == null)
+			}
+			if (freeformExtent == null) {
 				freeformExtent = r.getCopy();
-			else
+			} else {
 				freeformExtent.union(r);
+			}
 		}
 		Insets insets = host.getInsets();
-		if (freeformExtent == null)
+		if (freeformExtent == null) {
 			freeformExtent = new Rectangle(0, 0, insets.getWidth(), insets.getHeight());
-		else {
+		} else {
 			host.translateToParent(freeformExtent);
 			freeformExtent.expand(insets);
 		}
@@ -58,19 +61,21 @@ class FreeformHelper implements FreeformListener {
 
 	public void hookChild(IFigure child) {
 		invalidate();
-		if (child instanceof FreeformFigure)
+		if (child instanceof FreeformFigure) {
 			((FreeformFigure) child).addFreeformListener(this);
-		else
+		} else {
 			child.addFigureListener(figureListener);
+		}
 	}
 
 	void invalidate() {
 		freeformExtent = null;
 		host.fireExtentChanged();
-		if (host.getParent() != null)
+		if (host.getParent() != null) {
 			host.getParent().revalidate();
-		else
+		} else {
 			host.revalidate();
+		}
 	}
 
 	@Override
@@ -85,17 +90,19 @@ class FreeformHelper implements FreeformListener {
 		bounds = bounds.getCopy();
 		host.translateFromParent(bounds);
 		for (IFigure child : host.getChildren()) {
-			if (child instanceof FreeformFigure)
+			if (child instanceof FreeformFigure) {
 				((FreeformFigure) child).setFreeformBounds(bounds);
+			}
 		}
 	}
 
 	public void unhookChild(IFigure child) {
 		invalidate();
-		if (child instanceof FreeformFigure)
+		if (child instanceof FreeformFigure) {
 			((FreeformFigure) child).removeFreeformListener(this);
-		else
+		} else {
 			child.removeFigureListener(figureListener);
+		}
 	}
 
 }

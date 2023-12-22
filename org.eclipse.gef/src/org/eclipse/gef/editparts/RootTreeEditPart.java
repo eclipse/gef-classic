@@ -138,14 +138,16 @@ public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart
 	@Override
 	public void setContents(EditPart editpart) {
 		if (contents != null) {
-			if (getWidget() != null)
+			if (getWidget() != null) {
 				((Tree) getWidget()).removeAll();
+			}
 			removeChild(contents);
 		}
 		contents = (TreeEditPart) editpart;
 
-		if (contents != null)
+		if (contents != null) {
 			addChild(contents, -1);
+		}
 	}
 
 	/**
@@ -166,8 +168,9 @@ public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart
 	@Override
 	public void setWidget(Widget w) {
 		widget = w;
-		if (contents != null)
+		if (contents != null) {
 			contents.setWidget(w);
+		}
 	}
 
 }

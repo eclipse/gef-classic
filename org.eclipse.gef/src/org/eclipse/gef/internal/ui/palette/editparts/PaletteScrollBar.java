@@ -112,9 +112,9 @@ public final class PaletteScrollBar extends ScrollBar {
 			@Override
 			protected void paintFigure(Graphics g) {
 				// paint background
-				if (!getModel().isMouseOver())
+				if (!getModel().isMouseOver()) {
 					g.drawImage(TRANSPARENCY, new Rectangle(0, 0, 1, 1), getBounds());
-				else {
+				} else {
 					g.setBackgroundColor(getModel().isArmed() ? PaletteColorUtil.getSelectedColor()
 							: PaletteColorUtil.getHoverColor());
 					g.fillRectangle(getBounds());
@@ -153,8 +153,9 @@ public final class PaletteScrollBar extends ScrollBar {
 	@Override
 	public IFigure findFigureAt(int x, int y, TreeSearch search) {
 		IFigure result = super.findFigureAt(x, y, search);
-		if (result != this)
+		if (result != this) {
 			return result;
+		}
 		return null;
 	}
 

@@ -20,9 +20,11 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
+
 import org.eclipse.gef.examples.digraph1.editpart.Digraph1NodeEditPart;
 import org.eclipse.gef.examples.digraph2.figure.Digraph2ConnectionAnchor;
 import org.eclipse.gef.examples.digraph2.figure.Digraph2NodeFigure;

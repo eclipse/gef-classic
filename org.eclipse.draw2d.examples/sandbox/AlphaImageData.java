@@ -36,9 +36,11 @@ public class AlphaImageData {
 		shell.addListener(SWT.Paint, event -> event.gc.drawImage(image, 0, 0, 1, 1, 40, 40, 40, 40));
 
 		shell.open();
-		while (!shell.isDisposed())
-			if (!display.readAndDispatch())
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
+		}
 	}
 
 }

@@ -35,8 +35,9 @@ public abstract class ConnectionEditPolicy extends AbstractEditPolicy {
 	 */
 	@Override
 	public Command getCommand(Request request) {
-		if (REQ_DELETE.equals(request.getType()))
+		if (REQ_DELETE.equals(request.getType())) {
 			return getDeleteCommand((GroupRequest) request);
+		}
 		return null;
 	}
 

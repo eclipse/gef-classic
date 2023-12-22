@@ -75,8 +75,8 @@ public class DebugGEF extends ViewPart {
 	 */
 	protected void fillActions() {
 		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
-		for (int i = 0; i < actions.size(); i++) {
-			mgr.add((IAction) actions.get(i));
+		for (Object action : actions) {
+			mgr.add((IAction) action);
 		}
 	}
 
@@ -89,8 +89,9 @@ public class DebugGEF extends ViewPart {
 	 * actions.
 	 */
 	protected void makeActions() {
-		if (actions == null)
+		if (actions == null) {
 			actions = new ArrayList();
+		}
 		DebugGEFAction action = null;
 		action = new DebugGEFAction(DebugGEFAction.DEBUG_DND, getDescriptor("icons/debugDND.gif")); //$NON-NLS-1$
 		action.setToolTipText("Drag and Drop"); //$NON-NLS-1$
@@ -134,8 +135,9 @@ public class DebugGEF extends ViewPart {
 	 */
 	@Override
 	public void setFocus() {
-		if (text != null)
+		if (text != null) {
 			text.setFocus();
+		}
 	}
 
 }

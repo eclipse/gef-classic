@@ -66,8 +66,9 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 			cachedMinimumHint.width = w;
 			cachedMinimumHint.height = h;
 		}
-		if (minimumSize == null)
+		if (minimumSize == null) {
 			minimumSize = calculateMinimumSize(container, w, h);
+		}
 		return minimumSize;
 	}
 

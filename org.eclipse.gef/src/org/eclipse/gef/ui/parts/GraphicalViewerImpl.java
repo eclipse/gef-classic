@@ -119,8 +119,9 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * @param fe the focusEvent received by this viewer's control
 	 */
 	protected void handleFocusGained(FocusEvent fe) {
-		if (focusPart != null)
+		if (focusPart != null) {
 			focusPart.setFocus(true);
+		}
 	}
 
 	/**
@@ -131,8 +132,9 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * @param fe the focusEvent received by this viewer's control
 	 */
 	protected void handleFocusLost(FocusEvent fe) {
-		if (focusPart != null)
+		if (focusPart != null) {
 			focusPart.setFocus(false);
+		}
 	}
 
 	/**
@@ -141,15 +143,17 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	@Override
 	public Handle findHandleAt(Point p) {
 		LayerManager layermanager = (LayerManager) getEditPartRegistry().get(LayerManager.ID);
-		if (layermanager == null)
+		if (layermanager == null) {
 			return null;
+		}
 		List<IFigure> list = new ArrayList<>(3);
 		list.add(layermanager.getLayer(LayerConstants.PRIMARY_LAYER));
 		list.add(layermanager.getLayer(LayerConstants.CONNECTION_LAYER));
 		list.add(layermanager.getLayer(LayerConstants.FEEDBACK_LAYER));
 		IFigure handle = getLightweightSystem().getRootFigure().findFigureAtExcluding(p.x, p.y, list);
-		if (handle instanceof Handle)
+		if (handle instanceof Handle) {
 			return (Handle) handle;
+		}
 		return null;
 	}
 
@@ -181,8 +185,9 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 			part = (EditPart) getVisualPartMap().get(figure);
 			figure = figure.getParent();
 		}
-		if (part == null)
+		if (part == null) {
 			return getContents();
+		}
 		return part;
 	}
 
@@ -310,18 +315,21 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 */
 	@Override
 	public void reveal(EditPart part) {
-		if (part == null)
+		if (part == null) {
 			return;
+		}
 		EditPart current = part.getParent();
 		while (current != null) {
 			ExposeHelper helper = current.getAdapter(ExposeHelper.class);
-			if (helper != null)
+			if (helper != null) {
 				helper.exposeDescendant(part);
+			}
 			current = current.getParent();
 		}
 		AccessibleEditPart acc = part.getAdapter(AccessibleEditPart.class);
-		if (acc != null)
+		if (acc != null) {
 			getControl().getAccessible().setFocus(acc.getAccessibleID());
+		}
 	}
 
 	/**
@@ -332,13 +340,14 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	@Override
 	public void setContextMenu(MenuManager contextMenu) {
 		super.setContextMenu(contextMenu);
-		if (contextMenu != null)
+		if (contextMenu != null) {
 			contextMenu.addMenuListener(new IMenuListener() {
 				@Override
 				public void menuAboutToShow(IMenuManager manager) {
 					flush();
 				}
 			});
+		}
 	}
 
 	/**
@@ -346,8 +355,9 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 */
 	@Override
 	public void setCursor(Cursor newCursor) {
-		if (getEventDispatcher() != null)
+		if (getEventDispatcher() != null) {
 			getEventDispatcher().setOverrideCursor(newCursor);
+		}
 	}
 
 	/**
@@ -365,8 +375,9 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 			public void dragStart(DragSourceEvent event) {
 				// If the EventDispatcher has captured the mouse, don't perform
 				// native drag.
-				if (getEventDispatcher().isCaptured())
+				if (getEventDispatcher().isCaptured()) {
 					event.doit = false;
+				}
 				if (event.doit) {
 					// A drag is going to occur, tell the EditDomain
 					getEventDispatcher().dispatchNativeDragStarted(event, GraphicalViewerImpl.this);
@@ -390,8 +401,9 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 		 * listeners, this should be *the* last listener because all other listeners are
 		 * hooked in super().
 		 */
-		if (source != null)
+		if (source != null) {
 			getDragSource().addDragListener(new TheLastListener());
+		}
 	}
 
 	/**
@@ -484,8 +496,9 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 			EditPart part = viewer.getFocusEditPart();
 			do {
 				MouseWheelHelper helper = part.getAdapter(MouseWheelHelper.class);
-				if (helper != null)
+				if (helper != null) {
 					helper.handleMouseWheelScrolled(event);
+				}
 				part = part.getParent();
 			} while (event.doit && part != null);
 		}

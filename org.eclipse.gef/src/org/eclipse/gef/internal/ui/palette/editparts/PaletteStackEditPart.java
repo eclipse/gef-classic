@@ -63,10 +63,11 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	private ChangeListener clickableListener = new ChangeListener() {
 		@Override
 		public void handleStateChanged(ChangeEvent event) {
-			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
+			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY)) {
 				arrowFigure.getModel().setMouseOver(activeFigure.getModel().isMouseOver());
-			else if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
+			} else if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY)) {
 				arrowFigure.getModel().setArmed(activeFigure.getModel().isArmed());
+			}
 		}
 	};
 
@@ -74,10 +75,12 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	private ChangeListener clickableArrowListener = new ChangeListener() {
 		@Override
 		public void handleStateChanged(ChangeEvent event) {
-			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
+			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY)) {
 				activeFigure.getModel().setMouseOver(arrowFigure.getModel().isMouseOver());
-			if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
+			}
+			if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY)) {
 				activeFigure.getModel().setArmed(arrowFigure.getModel().isArmed());
+			}
 		}
 	};
 
@@ -89,12 +92,15 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 		@Override
 		public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
 			if (getStack().getChildren().contains(tool)) {
-				if (!arrowFigure.getModel().isSelected())
+				if (!arrowFigure.getModel().isSelected()) {
 					arrowFigure.getModel().setSelected(true);
-				if (!getStack().getActiveEntry().equals(tool))
+				}
+				if (!getStack().getActiveEntry().equals(tool)) {
 					getStack().setActiveEntry(tool);
-			} else
+				}
+			} else {
 				arrowFigure.getModel().setSelected(false);
+			}
 		}
 	};
 
@@ -155,8 +161,9 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	}
 
 	private void checkActiveEntrySync() {
-		if (activeFigure == null)
+		if (activeFigure == null) {
 			activeEntryChanged(null, getStack().getActiveEntry());
+		}
 	}
 
 	/**
@@ -168,8 +175,9 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 		Figure figure = new Figure() {
 			@Override
 			public Dimension getPreferredSize(int wHint, int hHint) {
-				if (PaletteStackEditPart.this.getChildren().isEmpty())
+				if (PaletteStackEditPart.this.getChildren().isEmpty()) {
 					return EMPTY_DIMENSION;
+				}
 				return super.getPreferredSize(wHint, hHint);
 			}
 		};
@@ -197,8 +205,9 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	 */
 	@Override
 	public void deactivate() {
-		if (activeFigure != null)
+		if (activeFigure != null) {
 			activeFigure.removeChangeListener(clickableListener);
+		}
 		arrowFigure.removeActionListener(actionListener);
 		arrowFigure.removeChangeListener(clickableArrowListener);
 		getPaletteViewer().removePaletteListener(paletteListener);
@@ -262,10 +271,11 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY))
+		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY)) {
 			activeEntryChanged(event.getOldValue(), event.getNewValue());
-		else
+		} else {
 			super.propertyChange(event);
+		}
 	}
 
 	/**
@@ -286,8 +296,9 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	public void showTargetFeedback(Request request) {
 		// if menu is showing, don't show feedback. this is a fix
 		// for the occasion when show is called after forced erase
-		if (menu != null && !menu.isDisposed() && menu.isVisible())
+		if (menu != null && !menu.isDisposed() && menu.isVisible()) {
 			return;
+		}
 		getChildren().forEach(part -> part.showTargetFeedback(request));
 		super.showTargetFeedback(request);
 	}
@@ -329,8 +340,9 @@ class StackMenuListener implements MenuListener {
 	public void menuHidden(MenuEvent e) {
 		d.asyncExec(() -> {
 			if (menu != null) {
-				if (!menu.isDisposed())
+				if (!menu.isDisposed()) {
 					menu.dispose();
+				}
 				menu = null;
 			}
 		});

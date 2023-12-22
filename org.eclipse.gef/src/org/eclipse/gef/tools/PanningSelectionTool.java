@@ -67,10 +67,12 @@ public class PanningSelectionTool extends SelectionTool {
 	 */
 	@Override
 	protected String getDebugNameForState(int state) {
-		if (state == PAN)
+		if (state == PAN) {
 			return "Pan Initial"; //$NON-NLS-1$
-		else if (state == PAN_IN_PROGRESS)
+		} else if (state == PAN_IN_PROGRESS)
+		 {
 			return "Pan In Progress"; //$NON-NLS-1$
+		}
 		return super.getDebugNameForState(state);
 	}
 
@@ -82,8 +84,9 @@ public class PanningSelectionTool extends SelectionTool {
 	 */
 	@Override
 	protected Cursor getDefaultCursor() {
-		if (isInState(PAN | PAN_IN_PROGRESS))
+		if (isInState(PAN | PAN_IN_PROGRESS)) {
 			return SharedCursors.HAND;
+		}
 		return super.getDefaultCursor();
 	}
 
@@ -105,9 +108,9 @@ public class PanningSelectionTool extends SelectionTool {
 	 */
 	@Override
 	protected boolean handleButtonUp(int which) {
-		if (which == 1 && isSpaceBarDown && stateTransition(PAN_IN_PROGRESS, PAN))
+		if (which == 1 && isSpaceBarDown && stateTransition(PAN_IN_PROGRESS, PAN)) {
 			return true;
-		else if (which == 1 && stateTransition(PAN_IN_PROGRESS, STATE_INITIAL)) {
+		} else if (which == 1 && stateTransition(PAN_IN_PROGRESS, STATE_INITIAL)) {
 			refreshCursor();
 			return true;
 		}
@@ -149,16 +152,18 @@ public class PanningSelectionTool extends SelectionTool {
 	protected boolean handleKeyDown(KeyEvent e) {
 		if (acceptSpaceBar(e)) {
 			isSpaceBarDown = true;
-			if (stateTransition(STATE_INITIAL, PAN))
+			if (stateTransition(STATE_INITIAL, PAN)) {
 				refreshCursor();
+			}
 			return true;
 		} else {
 			if (stateTransition(PAN, STATE_INITIAL)) {
 				refreshCursor();
 				isSpaceBarDown = false;
 				return true;
-			} else if (isInState(PAN_IN_PROGRESS))
+			} else if (isInState(PAN_IN_PROGRESS)) {
 				isSpaceBarDown = false;
+			}
 		}
 
 		return super.handleKeyDown(e);
@@ -171,8 +176,9 @@ public class PanningSelectionTool extends SelectionTool {
 	protected boolean handleKeyUp(KeyEvent e) {
 		if (acceptSpaceBar(e)) {
 			isSpaceBarDown = false;
-			if (stateTransition(PAN, STATE_INITIAL))
+			if (stateTransition(PAN, STATE_INITIAL)) {
 				refreshCursor();
+			}
 			return true;
 		}
 

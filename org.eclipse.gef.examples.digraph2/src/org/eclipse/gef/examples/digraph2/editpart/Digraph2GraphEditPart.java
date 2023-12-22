@@ -15,7 +15,9 @@ package org.eclipse.gef.examples.digraph2.editpart;
 
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.ManhattanConnectionRouter;
+
 import org.eclipse.gef.LayerConstants;
+
 import org.eclipse.gef.examples.digraph1.editpart.Digraph1GraphEditPart;
 
 /**

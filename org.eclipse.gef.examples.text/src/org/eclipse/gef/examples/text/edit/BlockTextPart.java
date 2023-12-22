@@ -16,6 +16,7 @@ package org.eclipse.gef.examples.text.edit;
 import java.beans.PropertyChangeEvent;
 
 import org.eclipse.draw2d.text.BlockFlow;
+
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.Style;
 
@@ -31,10 +32,11 @@ public class BlockTextPart extends CompoundTextPart {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
-		if (Style.PROPERTY_ALIGNMENT.equals(property) || Style.PROPERTY_ORIENTATION.equals(property))
+		if (Style.PROPERTY_ALIGNMENT.equals(property) || Style.PROPERTY_ORIENTATION.equals(property)) {
 			refreshVisuals();
-		else
+		} else {
 			super.propertyChange(evt);
+		}
 	}
 
 	@Override

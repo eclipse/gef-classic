@@ -161,23 +161,26 @@ public class AligningBendpointLocator extends AbstractLocator {
 		case BEGINNING:
 			Point first = points.getFirstPoint();
 			Point next = points.getPoint(1);
-			if (first.x <= next.x)
+			if (first.x <= next.x) {
 				position |= PositionConstants.EAST;
-			else
+			} else {
 				position |= PositionConstants.WEST;
+			}
 			break;
 		case END:
 			Point last = points.getLastPoint();
 			int s = points.size();
 			Point before = points.getPoint(s - 1);
-			if (last.x <= before.x)
+			if (last.x <= before.x) {
 				position |= PositionConstants.EAST;
-			else
+			} else {
 				position |= PositionConstants.WEST;
+			}
 			break;
 		}
-		if (position == 0)
+		if (position == 0) {
 			position = PositionConstants.CENTER;
+		}
 		switch (vertical) {
 		case ABOVE:
 			position |= PositionConstants.NORTH;

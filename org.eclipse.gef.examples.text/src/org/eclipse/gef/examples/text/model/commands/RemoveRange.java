@@ -55,14 +55,16 @@ public class RemoveRange extends MiniEdit {
 			removedFrom = new Container[removed.length];
 
 			for (int i = remove.size() - 1; i >= 0; i--) {
-				removed[i] = (ModelElement) remove.get(i);
+				removed[i] = remove.get(i);
 				removedFrom[i] = removed[i].getContainer();
 			}
 
-			if (so > 0)
+			if (so > 0) {
 				clipBeginning = new RemoveText(begin, so, begin.size());
-			if (eo < end.size())
+			}
+			if (eo < end.size()) {
 				clipEnding = new RemoveText(end, 0, eo);
+			}
 		}
 	}
 
@@ -74,10 +76,12 @@ public class RemoveRange extends MiniEdit {
 				removalIndices[i] = removedFrom[i].remove(removed[i]);
 			}
 		}
-		if (clipBeginning != null)
+		if (clipBeginning != null) {
 			clipBeginning.apply();
-		if (clipEnding != null)
+		}
+		if (clipEnding != null) {
 			clipEnding.apply();
+		}
 	}
 
 	@Override
@@ -100,14 +104,18 @@ public class RemoveRange extends MiniEdit {
 
 	@Override
 	public void rollback() {
-		if (removed != null)
-			for (int i = 0; i < removed.length; i++)
+		if (removed != null) {
+			for (int i = 0; i < removed.length; i++) {
 				removedFrom[i].add(removed[i], removalIndices[i]);
+			}
+		}
 
-		if (clipBeginning != null)
+		if (clipBeginning != null) {
 			clipBeginning.rollback();
-		if (clipEnding != null)
+		}
+		if (clipEnding != null) {
 			clipEnding.rollback();
+		}
 	}
 
 }

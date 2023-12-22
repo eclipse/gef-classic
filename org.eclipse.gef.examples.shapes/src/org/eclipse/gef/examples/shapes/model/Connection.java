@@ -109,9 +109,10 @@ public class Connection extends ModelElement {
 	@Override
 	public Object getPropertyValue(Object id) {
 		if (id.equals(LINESTYLE_PROP)) {
-			if (getLineStyle() == Graphics.LINE_DASH)
+			if (getLineStyle() == Graphics.LINE_DASH) {
 				// Dashed is the second value in the combo dropdown
 				return Integer.valueOf(1);
+			}
 			// Solid is the first value in the combo dropdown
 			return Integer.valueOf(0);
 		}
@@ -194,10 +195,11 @@ public class Connection extends ModelElement {
 	 */
 	@Override
 	public void setPropertyValue(Object id, Object value) {
-		if (id.equals(LINESTYLE_PROP))
+		if (id.equals(LINESTYLE_PROP)) {
 			setLineStyle(Integer.valueOf(1).equals(value) ? Graphics.LINE_DASH : Graphics.LINE_SOLID);
-		else
+		} else {
 			super.setPropertyValue(id, value);
+		}
 	}
 
 }

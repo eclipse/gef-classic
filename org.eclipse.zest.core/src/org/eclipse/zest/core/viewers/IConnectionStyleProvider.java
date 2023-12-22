@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.zest.core.viewers;
 
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.graphics.Color;
+
 import org.eclipse.ui.services.IDisposable;
+
+import org.eclipse.draw2d.IFigure;
 
 /**
  * An extension to label providers, to supply styles for connections based upon

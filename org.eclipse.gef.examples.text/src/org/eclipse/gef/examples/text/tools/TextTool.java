@@ -17,7 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ST;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Caret;
+
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.UpdateListener;
@@ -25,6 +35,7 @@ import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.CaretInfo;
+
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
@@ -33,6 +44,9 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEventListener;
+import org.eclipse.gef.tools.SelectionTool;
+import org.eclipse.gef.tools.ToolUtilities;
+
 import org.eclipse.gef.examples.text.AppendableCommand;
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
@@ -47,16 +61,6 @@ import org.eclipse.gef.examples.text.edit.TextStyleManager;
 import org.eclipse.gef.examples.text.requests.CaretRequest;
 import org.eclipse.gef.examples.text.requests.SearchResult;
 import org.eclipse.gef.examples.text.requests.TextRequest;
-import org.eclipse.gef.tools.SelectionTool;
-import org.eclipse.gef.tools.ToolUtilities;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ST;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Caret;
 
 /**
  * @since 3.1
@@ -127,8 +131,9 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	protected Cursor calculateCursor() {
 		EditPart target = getTargetEditPart();
 		if (target instanceof TextEditPart textTarget) {
-			if (textTarget.acceptsCaret())
+			if (textTarget.acceptsCaret()) {
 				return Cursors.IBEAM;
+			}
 		}
 		return super.calculateCursor();
 	}
@@ -157,10 +162,11 @@ public class TextTool extends SelectionTool implements StyleProvider {
 
 		if (action == ST.PAGE_DOWN || action == ST.SELECT_PAGE_DOWN || action == ST.PAGE_UP
 				|| action == ST.SELECT_PAGE_UP || action == ST.SELECT_LINE_DOWN || action == ST.LINE_DOWN
-				|| action == ST.SELECT_LINE_UP || action == ST.LINE_UP)
+				|| action == ST.SELECT_LINE_UP || action == ST.LINE_UP) {
 			recordCaretLocation();
-		else
+		} else {
 			discardCaretLocation();
+		}
 
 		switch (action) {
 		case ST.SELECT_TEXT_START:
@@ -257,13 +263,15 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			doUnindent();
 			break;
 		case SWT.TAB:
-			if (!doIndent())
+			if (!doIndent()) {
 				doTyping(event);
+			}
 			break;
 		// ENTER
 		case SWT.CR:
-			if (!doNewline())
+			if (!doNewline()) {
 				doTyping(event);
+			}
 			break;
 		default:
 			event.doit = true;
@@ -279,12 +287,14 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		setTextInputMode(MODE_BS);
 		SelectionRange range = getSelectionRange();
 		if (range.isEmpty()) {
-			if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range, pendingCommand)))
+			if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range, pendingCommand))) {
 				return true;
+			}
 			doSelect(CaretRequest.COLUMN, false, false, null);
 			return false;
-		} else
+		} else {
 			return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
+		}
 	}
 
 	private boolean doDelete() {
@@ -292,12 +302,14 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		SelectionRange range = getSelectionRange();
 
 		if (range.isEmpty()) {
-			if (handleTextEdit(new TextRequest(TextRequest.REQ_DELETE, range, pendingCommand)))
+			if (handleTextEdit(new TextRequest(TextRequest.REQ_DELETE, range, pendingCommand))) {
 				return true;
+			}
 			doSelect(CaretRequest.COLUMN, true, false, null);
 			return false;
-		} else
+		} else {
 			return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
+		}
 	}
 
 	/**
@@ -307,10 +319,11 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		setTextInputMode(0);
 		SelectionRange range = getSelectionRange();
 		TextRequest edit;
-		if (range.isEmpty())
+		if (range.isEmpty()) {
 			edit = new TextRequest(TextRequest.REQ_INDENT, range);
-		else
+		} else {
 			return false;
+		}
 		return handleTextEdit(edit);
 	}
 
@@ -351,10 +364,11 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			}
 		}
 
-		if (action == 0)
+		if (action == 0) {
 			doTyping(event);
-		else
+		} else {
 			doAction(action, event);
+		}
 	}
 
 	/**
@@ -380,29 +394,34 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		SelectionRange range = getSelectionRange();
 		if (range == null) {
 			if (viewer.getContents() instanceof TextEditPart tep) {
-				if (tep.acceptsCaret())
+				if (tep.acceptsCaret()) {
 					tep.getTextLocation(search, result);
+				}
 			}
 		} else {
 			TextLocation caretLocation = getCaretLocation();
-			if (loc == null)
+			if (loc == null) {
 				search.setLocation(new Point(xCaptured ? caretXLoc : getCaretBounds().x, getCaretInfo().getBaseline()));
+			}
 			search.where = caretLocation;
 			caretLocation.part.getTextLocation(search, result);
 			// isForward = range.isForward;
 		}
 
-		if (result.location == null)
+		if (result.location == null) {
 			return;
+		}
 		if (append) {
 			TextLocation otherEnd = isForward ? range.begin : range.end;
-			if (TextUtilities.isForward(otherEnd, result.location))
+			if (TextUtilities.isForward(otherEnd, result.location)) {
 				range = new SelectionRange(otherEnd, result.location, true, result.trailing);
-			else
+			} else {
 				range = new SelectionRange(result.location, otherEnd, false, result.trailing);
+			}
 			viewer.setSelectionRange(range);
-		} else
+		} else {
 			viewer.setSelectionRange(new SelectionRange(result.location, result.location, isForward, result.trailing));
+		}
 	}
 
 	private void doTraversePage(boolean isForward, boolean appendSelection) {
@@ -410,10 +429,11 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		Point loc = caretBounds.getCenter();
 		loc.x = caretXLoc;
 		int viewerHeight = getTextualViewer().getControl().getBounds().height - caretBounds.height;
-		if (isForward)
+		if (isForward) {
 			loc.y += viewerHeight;
-		else
+		} else {
 			loc.y -= viewerHeight;
+		}
 		doSelect(CaretRequest.LOCATION, isForward, appendSelection, loc);
 	}
 
@@ -454,16 +474,18 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		setTextInputMode(0);
 		SelectionRange range = getSelectionRange();
 		TextRequest edit;
-		if (range.isEmpty())
+		if (range.isEmpty()) {
 			edit = new TextRequest(TextRequest.REQ_UNINDENT, range);
-		else
+		} else {
 			return false;
+		}
 		return handleTextEdit(edit);
 	}
 
 	private void fireStyleChanges() {
-		if (listener != null)
+		if (listener != null) {
 			listener.styleChanged(null);
+		}
 	}
 
 	private void flushStyles() {
@@ -476,8 +498,9 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		if (getCurrentViewer() != null) {
 			Canvas canvas = (Canvas) getCurrentViewer().getControl();
 			caret = canvas.getCaret();
-			if (caret == null)
+			if (caret == null) {
 				caret = new Caret(canvas, 0);
+			}
 		}
 		return caret;
 	}
@@ -492,20 +515,23 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	}
 
 	public TextLocation getCaretLocation() {
-		if (getSelectionRange().isForward)
+		if (getSelectionRange().isForward) {
 			return getSelectionRange().end;
+		}
 		return getSelectionRange().begin;
 	}
 
 	public TextEditPart getCaretOwner() {
-		if (getSelectionRange() != null)
+		if (getSelectionRange() != null) {
 			return getCaretLocation().part;
+		}
 		return null;
 	}
 
 	private SelectionRange getSelectionRange() {
-		if (getCurrentViewer() instanceof GraphicalTextViewer)
+		if (getCurrentViewer() instanceof GraphicalTextViewer) {
 			return getTextualViewer().getSelectionRange();
+		}
 		return null;
 	}
 
@@ -513,8 +539,9 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		EditPartViewer viewer = getCurrentViewer();
 		if (viewer != null) {
 			EditPart root = viewer.getRootEditPart();
-			if (root instanceof GraphicalEditPart gep)
+			if (root instanceof GraphicalEditPart gep) {
 				return gep.getFigure().getUpdateManager();
+			}
 		}
 		return null;
 	}
@@ -523,19 +550,23 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		TextRequest req = new TextRequest(TextRequest.REQ_STYLE, getSelectionRange());
 		req.setStyles(new String[] { styleID }, new Object[] { null });
 		EditPart target = getTextTarget(req);
-		if (target == null)
+		if (target == null) {
 			return StyleService.UNDEFINED;
+		}
 		TextStyleManager manager = target.getAdapter(TextStyleManager.class);
-		if (isState)
+		if (isState) {
 			return manager.getStyleState(styleID, getSelectionRange());
+		}
 		return manager.getStyleValue(styleID, getSelectionRange());
 	}
 
 	@Override
 	public Object getStyle(String styleID) {
-		for (int i = 0; i < styleKeys.size(); i++)
-			if (styleID.equals(styleKeys.get(i)))
+		for (int i = 0; i < styleKeys.size(); i++) {
+			if (styleID.equals(styleKeys.get(i))) {
 				return styleValues.get(i);
+			}
+		}
 		return getSelectionStyle(styleID, false);
 	}
 
@@ -546,8 +577,9 @@ public class TextTool extends SelectionTool implements StyleProvider {
 
 	private TextEditPart getTextTarget(Request request) {
 		SelectionRange range = getSelectionRange();
-		if (range == null)
+		if (range == null) {
 			return null;
+		}
 		EditPart target;
 		EditPart candidate = ToolUtilities.findCommonAncestor(range.begin.part, range.end.part);
 
@@ -577,26 +609,30 @@ public class TextTool extends SelectionTool implements StyleProvider {
 
 	@Override
 	protected boolean handleFocusGained() {
-		if (getSelectionRange() == null)
+		if (getSelectionRange() == null) {
 			doSelect(CaretRequest.DOCUMENT, false, false, null);
+		}
 		return super.handleFocusGained();
 	}
 
 	@Override
 	protected boolean handleKeyDown(KeyEvent e) {
-		if (isInState(STATE_INITIAL) && getTextualViewer().isTextSelected())
+		if (isInState(STATE_INITIAL) && getTextualViewer().isTextSelected()) {
 			doKeyDown(e);
+		}
 
-		if (e.doit)
+		if (e.doit) {
 			return super.handleKeyDown(e);
+		}
 		return true;
 	}
 
 	@Override
 	protected void handleKeyTraversed(TraverseEvent event) {
 		if ((event.detail == SWT.TRAVERSE_TAB_PREVIOUS || event.detail == SWT.TRAVERSE_TAB_NEXT)
-				&& (event.stateMask & SWT.CTRL) == 0)
+				&& (event.stateMask & SWT.CTRL) == 0) {
 			event.doit = false;
+		}
 	}
 
 	@Override
@@ -610,23 +646,28 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		EditPart target = getTextTarget(edit);
 
 		Command insert = null;
-		if (target != null)
+		if (target != null) {
 			insert = target.getCommand(edit);
+		}
 
-		if (insert == null)
+		if (insert == null) {
 			return false;
+		}
 
 		if (pendingCommand == null || insert != pendingCommand) {
-			if (!insert.canExecute())
+			if (!insert.canExecute()) {
 				return false;
+			}
 			executeCommand(insert);
-			if (insert instanceof AppendableCommand)
+			if (insert instanceof AppendableCommand) {
 				pendingCommand = (AppendableCommand) insert;
-			else
+			} else {
 				pendingCommand = null;
+			}
 		} else {
-			if (!pendingCommand.canExecutePending())
+			if (!pendingCommand.canExecutePending()) {
 				return false;
+			}
 			pendingCommand.executePending();
 			GraphicalTextViewer viewer = getTextualViewer();
 			viewer.setSelectionRange(((TextCommand) pendingCommand).getExecuteSelectionRange(viewer));
@@ -697,13 +738,15 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	}
 
 	void queueCaretRefresh(boolean revealAfterwards) {
-		if (!getCaret().isVisible())
+		if (!getCaret().isVisible()) {
 			return;
+		}
 		if (caretRefresh == null) {
 			caretRefresh = new CaretRefresh(revealAfterwards);
 			getUpdateManager().runWithUpdate(caretRefresh);
-		} else
+		} else {
 			caretRefresh.enableReveal(revealAfterwards);
+		}
 	}
 
 	@Override
@@ -714,8 +757,9 @@ public class TextTool extends SelectionTool implements StyleProvider {
 
 	@Override
 	public void setDragTracker(DragTracker newDragTracker) {
-		if (getDragTracker() == newDragTracker)
+		if (getDragTracker() == newDragTracker) {
 			return;
+		}
 		setTextInputMode(0);
 		super.setDragTracker(newDragTracker);
 	}
@@ -756,20 +800,24 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	@Override
 	public void setViewer(EditPartViewer viewer) {
 		EditPartViewer currentViewer = getCurrentViewer();
-		if (viewer == currentViewer || viewer == null)
+		if (viewer == currentViewer || viewer == null) {
 			return;
+		}
 
 		if (currentViewer != null) {
-			if (caretRefresh != null)
+			if (caretRefresh != null) {
 				getUpdateManager().performUpdate();
+			}
 			currentViewer.getEditDomain().getCommandStack().removeCommandStackEventListener(commandListener);
 			currentViewer.removeSelectionChangedListener(selectionListener);
 			UpdateManager manager = getUpdateManager();
-			if (manager != null)
+			if (manager != null) {
 				manager.removeUpdateListener(updateListener);
+			}
 			currentViewer.setProperty(KEY_OVERWRITE, overwrite ? Boolean.TRUE : Boolean.FALSE);
-			if (styleService != null)
+			if (styleService != null) {
 				styleService.setStyleProvider(null);
+			}
 			setTextInputMode(0);
 			setTargetRequest(null);
 		}
@@ -779,12 +827,14 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			viewer.getEditDomain().getCommandStack().addCommandStackEventListener(commandListener);
 			viewer.addSelectionChangedListener(selectionListener);
 			UpdateManager manager = getUpdateManager();
-			if (manager != null)
+			if (manager != null) {
 				manager.addUpdateListener(updateListener);
+			}
 			Boolean bool = (Boolean) viewer.getProperty(KEY_OVERWRITE);
 			overwrite = bool != null && bool.booleanValue();
-			if (styleService != null)
+			if (styleService != null) {
 				styleService.setStyleProvider(this);
+			}
 		}
 	}
 
@@ -793,10 +843,12 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	 * @param mode the new input mode
 	 */
 	private void setTextInputMode(int mode) {
-		if (textInputMode != mode)
+		if (textInputMode != mode) {
 			pendingCommand = null;
-		if (textInputMode != MODE_TYPE)
+		}
+		if (textInputMode != MODE_TYPE) {
 			flushStyles();
+		}
 		textInputMode = mode;
 	}
 
@@ -816,13 +868,15 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		public void run() {
 			refreshCaret();
 			caretRefresh = null;
-			if (reveal)
+			if (reveal) {
 				getTextualViewer().revealCaret();
+			}
 		}
 
 		public void refreshCaret() {
-			if (getCaretOwner() == null)
+			if (getCaretOwner() == null) {
 				return;
+			}
 			CaretInfo info = getCaretInfo();
 			getCaret().setBounds(info.getX(), info.getY(), overwrite ? info.getHeight() / 2 : 1, info.getHeight());
 		}

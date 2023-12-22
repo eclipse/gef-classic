@@ -19,12 +19,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.swt.SWT;
+
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.swt.SWT;
 import org.eclipse.zest.core.viewers.IFigureProvider;
 import org.eclipse.zest.core.viewers.INestedContentProvider;
 import org.eclipse.zest.core.widgets.Graph;
@@ -32,6 +32,8 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.IContainer;
+
+import org.eclipse.draw2d.IFigure;
 
 /**
  * Base class that can be used for model factories. Offers facilities to style
@@ -232,8 +234,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 				if (childNodes == null) {
 					return node;
 				}
-				for (int i = 0; i < childNodes.length; i++) {
-					GraphNode childNode = viewer.addGraphModelNode((IContainer) node, childNodes[i]);
+				for (Object childNode2 : childNodes) {
+					GraphNode childNode = viewer.addGraphModelNode((IContainer) node, childNode2);
 					styleItem(childNode);
 				}
 				((IContainer) node).applyLayout();
@@ -299,8 +301,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 */
 	@Override
 	public void update(GraphItem[] items) {
-		for (int i = 0; i < items.length; i++) {
-			styleItem(items[i]);
+		for (GraphItem item : items) {
+			styleItem(item);
 		}
 	}
 
@@ -318,8 +320,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		Map oldMap = viewer.getNodesMap();
 		HashMap nodesMap = new HashMap();
 		// have to copy the Map data accross so that it doesn't get overwritten
-		for (Iterator keys = oldMap.keySet().iterator(); keys.hasNext();) {
-			Object key = keys.next();
+		for (Object key : oldMap.keySet()) {
 			nodesMap.put(key, oldMap.get(key));
 		}
 		clearGraph(graph);
@@ -328,18 +329,17 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		GraphNode[] nodes = getNodesArray(graph);
 		// save a little time, go with the smallest list as the primary list
 		if (nodes.length < nodesMap.keySet().size()) {
-			for (int i = 0; i < nodes.length; i++) {
-				GraphNode oldNode = (GraphNode) nodesMap.get(nodes[i].getData());
+			for (GraphNode node : nodes) {
+				GraphNode oldNode = (GraphNode) nodesMap.get(node.getData());
 				if (oldNode != null) {
-					nodes[i].setLocation(oldNode.getLocation().x, oldNode.getLocation().y);
+					node.setLocation(oldNode.getLocation().x, oldNode.getLocation().y);
 					if (oldNode.isSizeFixed()) {
-						nodes[i].setSize(oldNode.getSize().width, oldNode.getSize().height);
+						node.setSize(oldNode.getSize().width, oldNode.getSize().height);
 					}
 				}
 			}
 		} else {
-			for (Iterator i = nodesMap.keySet().iterator(); i.hasNext();) {
-				Object key = i.next();
+			for (Object key : nodesMap.keySet()) {
 				GraphNode node = viewer.getGraphModelNode(key);
 				if (node != null) {
 					GraphNode oldNode = (GraphNode) nodesMap.get(key);
@@ -360,12 +360,12 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	public void clearGraph(Graph graph) {
 		graph.setSelection(null);
 		Object[] nodeElements = viewer.getNodeElements();
-		for (int i = 0; i < nodeElements.length; i++) {
-			viewer.removeGraphModelNode(nodeElements[i]);
+		for (Object nodeElement : nodeElements) {
+			viewer.removeGraphModelNode(nodeElement);
 		}
 		Object[] connectionElements = viewer.getConnectionElements();
-		for (int i = 0; i < connectionElements.length; i++) {
-			viewer.removeGraphModelConnection(connectionElements[i]);
+		for (Object connectionElement : connectionElements) {
+			viewer.removeGraphModelConnection(connectionElement);
 		}
 	}
 
@@ -391,8 +391,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 */
 	protected boolean filterElement(Object parent, Object element) {
 		ViewerFilter[] filters = getViewer().getFilters();
-		for (int i = 0; i < filters.length; i++) {
-			boolean selected = filters[i].select(viewer, parent, element);
+		for (ViewerFilter filter : filters) {
+			boolean selected = filter.select(viewer, parent, element);
 			if (!selected) {
 				return true;
 			}
@@ -409,8 +409,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	protected Object[] filter(Object parent, Object[] elements) {
 		Object[] result = elements;
 		ViewerFilter[] filters = getViewer().getFilters();
-		for (int i = 0; i < filters.length; i++) {
-			result = filters[i].filter(viewer, parent, result);
+		for (ViewerFilter filter : filters) {
+			result = filter.filter(viewer, parent, result);
 		}
 		return result;
 	}
@@ -434,7 +434,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 */
 	protected GraphNode[] getNodesArray(Graph graph) {
 		GraphNode[] nodesArray = new GraphNode[graph.getNodes().size()];
-		nodesArray = (GraphNode[]) graph.getNodes().toArray(nodesArray);
+		nodesArray = graph.getNodes().toArray(nodesArray);
 		return nodesArray;
 	}
 
@@ -446,7 +446,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 */
 	protected GraphConnection[] getConnectionArray(Graph graph) {
 		GraphConnection[] connectionArray = new GraphConnection[graph.getConnections().size()];
-		connectionArray = (GraphConnection[]) graph.getConnections().toArray(connectionArray);
+		connectionArray = graph.getConnections().toArray(connectionArray);
 		return connectionArray;
 	}
 }

@@ -93,8 +93,9 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 		public void propertyChange(PropertyChangeEvent evt) {
 			String property = evt.getPropertyName();
 			if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN) || property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
-					|| property.equals(SnapToGrid.PROPERTY_GRID_VISIBLE))
+					|| property.equals(SnapToGrid.PROPERTY_GRID_VISIBLE)) {
 				refreshGridLayer();
+			}
 		}
 	};
 
@@ -154,8 +155,9 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	 */
 	@Override
 	public <T> T getAdapter(final Class<T> adapter) {
-		if (adapter == AutoexposeHelper.class)
+		if (adapter == AutoexposeHelper.class) {
 			return adapter.cast(new ViewportAutoexposeHelper(this));
+		}
 		return super.getAdapter(adapter);
 	}
 
@@ -190,13 +192,16 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	 */
 	@Override
 	public IFigure getLayer(Object key) {
-		if (innerLayers == null)
+		if (innerLayers == null) {
 			return null;
+		}
 		IFigure layer = innerLayers.getLayer(key);
-		if (layer != null)
+		if (layer != null) {
 			return layer;
-		if (printableLayers == null)
+		}
+		if (printableLayers == null) {
 			return null;
+		}
 		return printableLayers.getLayer(key);
 	}
 
@@ -218,8 +223,9 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	 * @return the layered pane containing all printable content
 	 */
 	protected LayeredPane getPrintableLayers() {
-		if (printableLayers == null)
+		if (printableLayers == null) {
 			printableLayers = createPrintableLayers();
+		}
 		return printableLayers;
 	}
 
@@ -237,8 +243,9 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 		boolean visible = false;
 		GridLayer grid = (GridLayer) getLayer(GRID_LAYER);
 		Boolean val = (Boolean) getViewer().getProperty(SnapToGrid.PROPERTY_GRID_VISIBLE);
-		if (val != null)
+		if (val != null) {
 			visible = val.booleanValue();
+		}
 		grid.setOrigin((Point) getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
 		grid.setSpacing((Dimension) getViewer().getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
 		grid.setVisible(visible);

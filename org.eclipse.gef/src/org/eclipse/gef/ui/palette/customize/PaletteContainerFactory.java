@@ -36,11 +36,13 @@ public abstract class PaletteContainerFactory extends PaletteEntryFactory {
 	 */
 	@Override
 	protected PaletteContainer determineContainerForNewEntry(PaletteEntry selected) {
-		if (selected instanceof PaletteRoot)
+		if (selected instanceof PaletteRoot) {
 			return (PaletteContainer) selected;
+		}
 		PaletteContainer current = selected.getParent();
-		while (!(current instanceof PaletteRoot))
+		while (!(current instanceof PaletteRoot)) {
 			current = current.getParent();
+		}
 		return current;
 	}
 

@@ -47,8 +47,9 @@ public class NestElementCommand extends ExampleTextCommand {
 
 	@Override
 	public boolean canExecute() {
-		if (index == 0)
+		if (index == 0) {
 			return false;
+		}
 		return run.getContainer().getChildren().get(index - 1) instanceof Container;
 	}
 

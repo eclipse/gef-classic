@@ -40,8 +40,9 @@ public class CreateGuideCommand extends Command {
 
 	@Override
 	public void execute() {
-		if (guide == null)
+		if (guide == null) {
 			guide = new LogicGuide(!parent.isHorizontal());
+		}
 		guide.setPosition(position);
 		parent.addGuide(guide);
 	}

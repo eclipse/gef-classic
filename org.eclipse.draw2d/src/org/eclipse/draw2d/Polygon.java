@@ -34,8 +34,9 @@ public class Polygon extends Polyline {
 	 */
 	@Override
 	public boolean containsPoint(int x, int y) {
-		if (!getBounds().contains(x, y))
+		if (!getBounds().contains(x, y)) {
 			return false;
+		}
 		return shapeContainsPoint(x, y) || childrenContainsPoint(x, y);
 	}
 

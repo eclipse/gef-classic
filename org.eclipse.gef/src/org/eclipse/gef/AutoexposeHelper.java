@@ -95,8 +95,9 @@ public interface AutoexposeHelper {
 		@Override
 		public boolean evaluate(EditPart editpart) {
 			result = editpart.getAdapter(AutoexposeHelper.class);
-			if (result != null && result.detect(where))
+			if (result != null && result.detect(where)) {
 				return true;
+			}
 			result = null;
 			return false;
 		}

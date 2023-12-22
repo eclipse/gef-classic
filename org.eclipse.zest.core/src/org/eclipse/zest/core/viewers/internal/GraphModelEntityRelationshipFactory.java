@@ -73,8 +73,8 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	private void createModelRelationships(Graph model) {
 		GraphNode[] modelNodes = getNodesArray(model);
 		List listOfNodes = new ArrayList();
-		for (int i = 0; i < modelNodes.length; i++) {
-			listOfNodes.add(modelNodes[i]);
+		for (GraphNode modelNode : modelNodes) {
+			listOfNodes.add(modelNode);
 		}
 
 		for (int i = 0; i < listOfNodes.size(); i++) {
@@ -87,13 +87,13 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 		modelNodes = (GraphNode[]) listOfNodes.toArray(new GraphNode[listOfNodes.size()]);
 
 		IGraphEntityRelationshipContentProvider content = getCastedContent();
-		for (int i = 0; i < modelNodes.length; i++) {
-			for (int j = 0; j < modelNodes.length; j++) {
-				Object[] rels = content.getRelationships(modelNodes[i].getData(), modelNodes[j].getData());
+		for (GraphNode modelNode : modelNodes) {
+			for (GraphNode modelNode2 : modelNodes) {
+				Object[] rels = content.getRelationships(modelNode.getData(), modelNode2.getData());
 				if (rels != null) {
 					rels = filter(getViewer().getInput(), rels);
-					for (int r = 0; r < rels.length; r++) {
-						createConnection(model, rels[r], modelNodes[i].getData(), modelNodes[j].getData());
+					for (Object rel : rels) {
+						createConnection(model, rel, modelNode.getData(), modelNode2.getData());
 					}
 				}
 			}
@@ -107,8 +107,8 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 * @param nodes the external nodes.
 	 */
 	private void createModelNodes(Graph model, Object[] nodes) {
-		for (int i = 0; i < nodes.length; i++) {
-			createNode(model, nodes[i]);
+		for (Object node : nodes) {
+			createNode(model, node);
 		}
 	}
 

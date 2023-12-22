@@ -57,8 +57,9 @@ public class MatchSizeAction extends SelectionAction {
 	@Override
 	protected boolean calculateEnabled() {
 		Command cmd = createMatchSizeCommand(getSelectedObjects());
-		if (cmd == null)
+		if (cmd == null) {
 			return false;
+		}
 		return cmd.canExecute();
 	}
 
@@ -69,15 +70,18 @@ public class MatchSizeAction extends SelectionAction {
 	 * @return The command to resize the selected objects.
 	 */
 	private Command createMatchSizeCommand(List objects) {
-		if (objects.isEmpty())
+		if (objects.isEmpty()) {
 			return null;
-		if (!(objects.get(0) instanceof GraphicalEditPart))
+		}
+		if (!(objects.get(0) instanceof GraphicalEditPart)) {
 			return null;
+		}
 
 		GraphicalEditPart primarySelection = getPrimarySelectionEditPart(getSelectedObjects());
 
-		if (primarySelection == null)
+		if (primarySelection == null) {
 			return null;
+		}
 
 		GraphicalEditPart part = null;
 		ChangeBoundsRequest request = null;
@@ -90,8 +94,8 @@ public class MatchSizeAction extends SelectionAction {
 				primarySelection.getFigure().getBounds().getCopy());
 		primarySelection.getFigure().translateToAbsolute(precisePrimaryBounds);
 
-		for (int i = 0; i < objects.size(); i++) {
-			part = (GraphicalEditPart) objects.get(i);
+		for (Object object : objects) {
+			part = (GraphicalEditPart) object;
 			if (!part.equals(primarySelection)) {
 				request = new ChangeBoundsRequest(RequestConstants.REQ_RESIZE);
 
@@ -105,8 +109,9 @@ public class MatchSizeAction extends SelectionAction {
 				request.setSizeDelta(preciseDimension);
 
 				cmd = part.getCommand(request);
-				if (cmd != null)
+				if (cmd != null) {
 					command.add(cmd);
+				}
 			}
 		}
 
@@ -130,10 +135,11 @@ public class MatchSizeAction extends SelectionAction {
 
 	private GraphicalEditPart getPrimarySelectionEditPart(List editParts) {
 		GraphicalEditPart part = null;
-		for (int i = 0; i < editParts.size(); i++) {
-			part = (GraphicalEditPart) editParts.get(i);
-			if (part.getSelected() == EditPart.SELECTED_PRIMARY)
+		for (Object editPart : editParts) {
+			part = (GraphicalEditPart) editPart;
+			if (part.getSelected() == EditPart.SELECTED_PRIMARY) {
 				return part;
+			}
 		}
 		return null;
 	}

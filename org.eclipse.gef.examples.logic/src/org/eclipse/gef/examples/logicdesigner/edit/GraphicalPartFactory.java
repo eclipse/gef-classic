@@ -30,24 +30,23 @@ public class GraphicalPartFactory implements EditPartFactory {
 	public EditPart createEditPart(EditPart context, Object model) {
 		EditPart child = null;
 
-		if (model instanceof LogicFlowContainer)
+		if (model instanceof LogicFlowContainer) {
 			child = new LogicFlowContainerEditPart();
-		else if (model instanceof Wire)
+		} else if (model instanceof Wire) {
 			child = new WireEditPart();
-		else if (model instanceof LED)
+		} else if (model instanceof LED) {
 			child = new LEDEditPart();
-		else if (model instanceof LogicLabel)
+		} else if (model instanceof LogicLabel) {
 			child = new LogicLabelEditPart();
-		else if (model instanceof Circuit)
+		} else if (model instanceof Circuit) {
 			child = new CircuitEditPart();
-		else if (model instanceof Gate)
+		} else if (model instanceof Gate) {
 			child = new GateEditPart();
-		else if (model instanceof SimpleOutput)
+		} else if (model instanceof SimpleOutput) {
 			child = new OutputEditPart();
-		// Note that subclasses of LogicDiagram have already been matched above,
-		// like Circuit
-		else if (model instanceof LogicDiagram)
+		} else if (model instanceof LogicDiagram) {
 			child = new LogicDiagramEditPart();
+		}
 
 		if (child != null) {
 			child.setModel(model);

@@ -115,8 +115,7 @@ public class SimpleNode implements LayoutEntity {
 		SimpleRelationship[] a_listOfRels = (SimpleRelationship[]) this.listOfRels
 				.toArray(new SimpleRelationship[size]);
 		LinkedList listOfRelatedEntities = new LinkedList();
-		for (int i = 0; i < a_listOfRels.length; i++) {
-			SimpleRelationship rel = a_listOfRels[i];
+		for (SimpleRelationship rel : a_listOfRels) {
 			if (rel.sourceEntity != this && rel.destinationEntity != this) {
 				throw new RuntimeException("Problem, we have a relationship and we are not the source or the dest");
 			}

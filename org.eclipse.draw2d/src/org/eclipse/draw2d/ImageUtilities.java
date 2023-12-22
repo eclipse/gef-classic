@@ -73,10 +73,11 @@ public class ImageUtilities {
 
 		ImageData srcData = srcImage.getImageData();
 		ImageData destData;
-		if (srcData.depth < 8)
+		if (srcData.depth < 8) {
 			destData = rotatePixelByPixel(srcData);
-		else
+		} else {
 			destData = rotateOptimized(srcData);
+		}
 
 		return new Image(display, destData);
 	}

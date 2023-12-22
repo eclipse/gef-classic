@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
@@ -270,8 +269,9 @@ public class DrawerFigure extends Figure {
 		collapseToggle.addMouseMotionListener(new MouseMotionListener.Stub() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				if (!drawerLabel.getBounds().contains(e.getLocation()))
+				if (!drawerLabel.getBounds().contains(e.getLocation())) {
 					return;
+				}
 				if (skipNextEvent) {
 					skipNextEvent = false;
 					return;
@@ -379,15 +379,16 @@ public class DrawerFigure extends Figure {
 
 	protected void handleExpandStateChanged() {
 		if (isExpanded()) {
-			if (scrollpane.getParent() != this)
+			if (scrollpane.getParent() != this) {
 				add(scrollpane);
+			}
 		} else {
-			if (scrollpane.getParent() == this)
+			if (scrollpane.getParent() == this) {
 				remove(scrollpane);
+			}
 
 			// collapse all pinnable palette stack children that aren't pinned
-			for (Iterator iterator = getContentPane().getChildren().iterator(); iterator.hasNext();) {
-				Object child = iterator.next();
+			for (Object child : getContentPane().getChildren()) {
 				if (child instanceof PinnablePaletteStackFigure
 						&& !((PinnablePaletteStackFigure) child).isPinnedOpen()) {
 					((PinnablePaletteStackFigure) child).setExpanded(false);

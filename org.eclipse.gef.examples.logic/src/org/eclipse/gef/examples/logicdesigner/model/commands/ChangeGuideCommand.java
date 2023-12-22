@@ -49,8 +49,9 @@ public class ChangeGuideCommand extends Command {
 	public void execute() {
 		// Cache the old values
 		oldGuide = horizontal ? part.getHorizontalGuide() : part.getVerticalGuide();
-		if (oldGuide != null)
+		if (oldGuide != null) {
 			oldAlign = oldGuide.getAlignment(part);
+		}
 
 		redo();
 	}

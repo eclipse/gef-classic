@@ -87,12 +87,12 @@ class VirtualNodeCreation extends RevertableChange {
 		edge.start = edges[0].start;
 		edge.end = edges[edges.length - 1].end;
 		edge.vNodes = new NodeList();
-		for (int i = 0; i < edges.length; i++) {
-			graph.removeEdge(edges[i]);
+		for (Edge edge2 : edges) {
+			graph.removeEdge(edge2);
 		}
-		for (int i = 0; i < nodes.length; i++) {
-			edge.vNodes.add(nodes[i]);
-			graph.removeNode(nodes[i]);
+		for (Node node : nodes) {
+			edge.vNodes.add(node);
+			graph.removeNode(node);
 		}
 		edge.source.outgoing.add(edge);
 		edge.target.incoming.add(edge);

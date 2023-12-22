@@ -17,19 +17,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Caret;
+
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+
 import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.swt.widgets.Caret;
 
 /**
  * @since 3.1
@@ -48,16 +51,18 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	 *             Use getSelectionModel() instead.
 	 */
 	public SelectionRange getSelectionRange() {
-		if (selectionModel != null)
+		if (selectionModel != null) {
 			return selectionModel.getSelectionRange();
+		}
 		return null;
 	}
 
 	public void revealCaret() {
 		Assert.isNotNull(getControl(), "The control has not been created yet.");
 		Caret caret = getFigureCanvas().getCaret();
-		if (caret == null || !caret.isVisible())
+		if (caret == null || !caret.isVisible()) {
 			return;
+		}
 		// @TODO:Pratik you should expose the text location first (it might not
 		// be visible)
 		Viewport port = getFigureCanvas().getViewport();
@@ -66,14 +71,16 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 		port.getContents().translateToRelative(exposeRegion);
 		if (!view.contains(exposeRegion)) {
 			int x = view.x, y = view.y;
-			if (exposeRegion.x < view.x)
+			if (exposeRegion.x < view.x) {
 				x = exposeRegion.x;
-			else if (exposeRegion.right() > view.right())
+			} else if (exposeRegion.right() > view.right()) {
 				x = view.x + exposeRegion.right() - view.right();
-			if (exposeRegion.y < view.y)
+			}
+			if (exposeRegion.y < view.y) {
 				y = exposeRegion.y;
-			else if (exposeRegion.bottom() > view.bottom())
+			} else if (exposeRegion.bottom() > view.bottom()) {
 				y = view.y + exposeRegion.bottom() - view.bottom();
+			}
 			getFigureCanvas().scrollTo(x, y);
 		}
 	}
@@ -95,9 +102,10 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 		// clear the
 		// selected editparts.
 		SelectionModel newModel = null;
-		if (newRange != null)
+		if (newRange != null) {
 			newModel = createSelectionModel(null, newRange,
 					selectionModel == null ? null : selectionModel.getSelectedEditParts(), null);
+		}
 		setSelectionModel(newModel);
 	}
 
@@ -121,18 +129,21 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 
 	@Override
 	public void appendSelection(EditPart editpart) {
-		if (focusPart != editpart)
+		if (focusPart != editpart) {
 			setFocus(null);
-		if (selectionModel != null)
+		}
+		if (selectionModel != null) {
 			setSelectionModel(selectionModel.getAppendedSelection(editpart));
-		else
+		} else {
 			select(editpart);
+		}
 	}
 
 	@Override
 	public void deselect(EditPart editpart) {
-		if (selectionModel != null)
+		if (selectionModel != null) {
 			setSelectionModel(selectionModel.getExcludedSelection(editpart));
+		}
 	}
 
 	@Override
@@ -142,8 +153,9 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 
 	@Override
 	public void select(EditPart editpart) {
-		if (focusPart != editpart)
+		if (focusPart != editpart) {
 			setFocus(null);
+		}
 		ArrayList<EditPart> list = new ArrayList<>();
 		list.add(editpart);
 		setSelectionModel(createSelectionModel(null, null, list, null));
@@ -158,16 +170,18 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 		getEditDomain().getCommandStack().addCommandStackEventListener(new CommandStackEventListener() {
 			@Override
 			public void stackChanged(CommandStackEvent event) {
-				if (!(event.getCommand() instanceof TextCommand) || getSelectionRange() == null)
+				if (!(event.getCommand() instanceof TextCommand) || getSelectionRange() == null) {
 					return;
+				}
 				TextCommand command = (TextCommand) event.getCommand();
 				if (command != null) {
-					if (event.getDetail() == CommandStack.POST_EXECUTE)
+					if (event.getDetail() == CommandStack.POST_EXECUTE) {
 						setSelectionRange(command.getExecuteSelectionRange(GraphicalTextViewer.this));
-					else if (event.getDetail() == CommandStack.POST_REDO)
+					} else if (event.getDetail() == CommandStack.POST_REDO) {
 						setSelectionRange(command.getRedoSelectionRange(GraphicalTextViewer.this));
-					else if (event.getDetail() == CommandStack.POST_UNDO)
+					} else if (event.getDetail() == CommandStack.POST_UNDO) {
 						setSelectionRange(command.getUndoSelectionRange(GraphicalTextViewer.this));
+					}
 				}
 			}
 		});
@@ -175,23 +189,26 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 
 	@Override
 	public void setSelection(ISelection newSelection) {
-		if (newSelection != null)
+		if (newSelection != null) {
 			setSelectionModel(createSelectionModel(newSelection, null, null, null));
-		else
+		} else {
 			setSelectionModel(null);
+		}
 	}
 
 	@Override
 	public ISelection getSelection() {
-		if (selectionModel != null)
+		if (selectionModel != null) {
 			return selectionModel.getSelection();
+		}
 		return new StructuredSelection(getContents());
 	}
 
 	private static SelectionModel createSelectionModel(ISelection selection, SelectionRange range, List<EditPart> parts,
 			EditPart container) {
-		if (selection instanceof IStructuredSelection)
+		if (selection instanceof IStructuredSelection) {
 			return new SelectionModel(selection);
+		}
 		return new SelectionModel(range, parts, container);
 	}
 
@@ -212,8 +229,9 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	 */
 	@Override
 	protected List<EditPart> primGetSelectedEditParts() {
-		if (selectionModel != null)
+		if (selectionModel != null) {
 			return selectionModel.getSelectedEditParts();
+		}
 		return Collections.emptyList();
 	}
 

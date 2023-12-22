@@ -134,8 +134,9 @@ public class LineBorder extends AbstractBorder {
 		tempRect.shrink(getWidth() / 2, getWidth() / 2);
 		graphics.setLineWidth(getWidth());
 		graphics.setLineStyle(getStyle());
-		if (getColor() != null)
+		if (getColor() != null) {
 			graphics.setForegroundColor(getColor());
+		}
 		graphics.drawRectangle(tempRect);
 	}
 

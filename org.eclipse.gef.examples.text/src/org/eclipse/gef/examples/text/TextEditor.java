@@ -21,10 +21,23 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.EventObject;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IKeyBindingService;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.PositionConstants;
+
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
@@ -37,6 +50,13 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.tools.SelectionTool;
+import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.parts.ContentOutlinePage;
+import org.eclipse.gef.ui.parts.GraphicalEditor;
+import org.eclipse.gef.ui.parts.TreeViewer;
+
 import org.eclipse.gef.examples.text.actions.BooleanStyleAction;
 import org.eclipse.gef.examples.text.actions.MultiStyleAction;
 import org.eclipse.gef.examples.text.actions.StyleService;
@@ -55,22 +75,6 @@ import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.tools.TextTool;
-import org.eclipse.gef.tools.SelectionTool;
-import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.parts.ContentOutlinePage;
-import org.eclipse.gef.ui.parts.GraphicalEditor;
-import org.eclipse.gef.ui.parts.TreeViewer;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IKeyBindingService;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 /**
  * @since 3.1
@@ -122,8 +126,9 @@ public class TextEditor extends GraphicalEditor {
 			treeViewer.setEditPartFactory(new EditPartFactory() {
 				@Override
 				public EditPart createEditPart(EditPart context, Object model) {
-					if (model instanceof Container cont)
+					if (model instanceof Container cont) {
 						return new ContainerTreePart(cont);
+					}
 					return new TextRunTreePart(model);
 				}
 			});
@@ -219,10 +224,12 @@ public class TextEditor extends GraphicalEditor {
 
 	@Override
 	public <T> T getAdapter(final Class<T> type) {
-		if (type == IContentOutlinePage.class)
+		if (type == IContentOutlinePage.class) {
 			return type.cast(createOutlinePage());
-		if (type == StyleService.class)
+		}
+		if (type == StyleService.class) {
 			return type.cast(styleService);
+		}
 		return super.getAdapter(type);
 	}
 
@@ -278,12 +285,13 @@ public class TextEditor extends GraphicalEditor {
 				TextCommand command = (TextCommand) event.getCommand();
 				if (command != null) {
 					GraphicalTextViewer textViewer = (GraphicalTextViewer) getGraphicalViewer();
-					if (event.getDetail() == CommandStack.POST_EXECUTE)
+					if (event.getDetail() == CommandStack.POST_EXECUTE) {
 						textViewer.setSelectionRange(command.getExecuteSelectionRange(textViewer));
-					else if (event.getDetail() == CommandStack.POST_REDO)
+					} else if (event.getDetail() == CommandStack.POST_REDO) {
 						textViewer.setSelectionRange(command.getRedoSelectionRange(textViewer));
-					else if (event.getDetail() == CommandStack.POST_UNDO)
+					} else if (event.getDetail() == CommandStack.POST_UNDO) {
 						textViewer.setSelectionRange(command.getUndoSelectionRange(textViewer));
+					}
 				}
 			}
 		});

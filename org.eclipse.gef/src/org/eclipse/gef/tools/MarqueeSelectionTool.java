@@ -126,8 +126,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 					@Override
 					public void run() {
 						offset++;
-						if (offset > 5)
+						if (offset > 5) {
 							offset = 0;
+						}
 
 						schedulePaint = true;
 						repaint();
@@ -237,8 +238,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 	@Override
 	protected void applyProperty(Object key, Object value) {
 		if (PROPERTY_MARQUEE_BEHAVIOR.equals(key)) {
-			if (value instanceof Integer)
+			if (value instanceof Integer) {
 				setMarqueeBehavior(((Integer) value).intValue());
+			}
 			return;
 		}
 		super.applyProperty(key, value);
@@ -380,8 +382,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 	}
 
 	private void eraseTargetFeedback() {
-		if (selectedEditParts == null)
+		if (selectedEditParts == null) {
 			return;
+		}
 		Iterator oldEditParts = selectedEditParts.iterator();
 		while (oldEditParts.hasNext()) {
 			EditPart editPart = (EditPart) oldEditParts.next();
@@ -446,8 +449,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 	}
 
 	private Request getTargetRequest() {
-		if (targetRequest == null)
+		if (targetRequest == null) {
 			targetRequest = createTargetRequest();
+		}
 		return targetRequest;
 	}
 
@@ -456,19 +460,21 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 */
 	@Override
 	protected boolean handleButtonDown(int button) {
-		if (!isCurrentViewerGraphical())
+		if (!isCurrentViewerGraphical()) {
 			return true;
+		}
 		if (button != 1) {
 			setState(STATE_INVALID);
 			handleInvalidInput();
 		}
 		if (stateTransition(STATE_INITIAL, STATE_DRAG_IN_PROGRESS)) {
-			if (getCurrentInput().isModKeyDown(SWT.MOD1))
+			if (getCurrentInput().isModKeyDown(SWT.MOD1)) {
 				setSelectionMode(TOGGLE_MODE);
-			else if (getCurrentInput().isShiftKeyDown())
+			} else if (getCurrentInput().isShiftKeyDown()) {
 				setSelectionMode(APPEND_MODE);
-			else
+			} else {
 				setSelectionMode(DEFAULT_MODE);
+			}
 		}
 		return true;
 	}
@@ -535,10 +541,12 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 */
 	@Override
 	protected boolean handleKeyDown(KeyEvent e) {
-		if (super.handleKeyDown(e))
+		if (super.handleKeyDown(e)) {
 			return true;
-		if (getCurrentViewer().getKeyHandler() != null)
+		}
+		if (getCurrentViewer().getKeyHandler() != null) {
 			return getCurrentViewer().getKeyHandler().keyPressed(e);
+		}
 		return false;
 	}
 
@@ -713,10 +721,11 @@ public class MarqueeSelectionTool extends AbstractTool {
 		Collection editPartsToDeselect = new HashSet();
 		for (Iterator iterator = marqueeSelectedEditParts.iterator(); iterator.hasNext();) {
 			EditPart affectedEditPart = (EditPart) iterator.next();
-			if (affectedEditPart.getSelected() == EditPart.SELECTED_NONE || getCurrentSelectionMode() != TOGGLE_MODE)
+			if (affectedEditPart.getSelected() == EditPart.SELECTED_NONE || getCurrentSelectionMode() != TOGGLE_MODE) {
 				editPartsToSelect.add(affectedEditPart);
-			else
+			} else {
 				editPartsToDeselect.add(affectedEditPart);
+			}
 		}
 
 		// include the current viewer selection, if not in DEFAULT mode.
@@ -744,7 +753,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 		if (type != BEHAVIOR_CONNECTIONS_TOUCHED && type != BEHAVIOR_CONNECTIONS_CONTAINED
 				&& type != BEHAVIOR_NODES_TOUCHED && type != BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS
 				&& type != BEHAVIOR_NODES_CONTAINED && type != BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS)
+		 {
 			throw new IllegalArgumentException("Invalid marquee behaviour specified."); //$NON-NLS-1$
+		}
 		marqueeBehavior = type;
 	}
 
@@ -757,13 +768,15 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 */
 	@Override
 	public void setViewer(EditPartViewer viewer) {
-		if (viewer == getCurrentViewer())
+		if (viewer == getCurrentViewer()) {
 			return;
+		}
 		super.setViewer(viewer);
-		if (viewer instanceof GraphicalViewer)
+		if (viewer instanceof GraphicalViewer) {
 			setDefaultCursor(Cursors.CROSS);
-		else
+		} else {
 			setDefaultCursor(Cursors.NO);
+		}
 	}
 
 	private void showMarqueeFeedback() {

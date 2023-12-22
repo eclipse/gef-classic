@@ -45,18 +45,21 @@ class BufferedGraphicsSource implements GraphicsSource {
 	 */
 	@Override
 	public void flushGraphics(Rectangle region) {
-		if (inUse.isEmpty())
+		if (inUse.isEmpty()) {
 			return;
+		}
 
 		boolean restoreCaret = false;
 		Canvas canvas = null;
 		if (control instanceof Canvas) {
 			canvas = (Canvas) control;
 			Caret caret = canvas.getCaret();
-			if (caret != null)
+			if (caret != null) {
 				restoreCaret = caret.isVisible();
-			if (restoreCaret)
+			}
+			if (restoreCaret) {
 				caret.setVisible(false);
+			}
 		}
 		/*
 		 * The imageBuffer may be null if double-buffering was not successful.
@@ -72,8 +75,9 @@ class BufferedGraphicsSource implements GraphicsSource {
 		controlGC.dispose();
 		controlGC = null;
 
-		if (restoreCaret)
+		if (restoreCaret) {
 			canvas.getCaret().setVisible(true);
+		}
 	}
 
 	/**
@@ -81,14 +85,16 @@ class BufferedGraphicsSource implements GraphicsSource {
 	 */
 	@Override
 	public Graphics getGraphics(Rectangle region) {
-		if (control == null || control.isDisposed())
+		if (control == null || control.isDisposed()) {
 			return null;
+		}
 
 		org.eclipse.swt.graphics.Point ptSWT = control.getSize();
 		inUse = new Rectangle(0, 0, ptSWT.x, ptSWT.y);
 		inUse.intersect(region);
-		if (inUse.isEmpty())
+		if (inUse.isEmpty()) {
 			return null;
+		}
 
 		/*
 		 * Bugzilla 53632 - Attempts to create large images on some platforms will fail.

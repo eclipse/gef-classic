@@ -41,12 +41,14 @@ public class LabeledContainer extends Figure {
 	}
 
 	private static LabeledBorder findLabeledBorder(Border border) {
-		if (border instanceof LabeledBorder)
+		if (border instanceof LabeledBorder) {
 			return (LabeledBorder) border;
+		}
 		if (border instanceof CompoundBorder cb) {
 			LabeledBorder labeled = findLabeledBorder(cb.getInnerBorder());
-			if (labeled == null)
+			if (labeled == null) {
 				labeled = findLabeledBorder(cb.getOuterBorder());
+			}
 			return labeled;
 		}
 		return null;

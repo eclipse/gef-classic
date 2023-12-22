@@ -26,10 +26,12 @@ public class LEDEditPolicy extends LogicElementEditPolicy {
 
 	@Override
 	public Command getCommand(Request request) {
-		if (INCREMENT_REQUEST.equals(request.getType()))
+		if (INCREMENT_REQUEST.equals(request.getType())) {
 			return getIncrementDecrementCommand(true);
-		if (DECREMENT_REQUEST.equals(request.getType()))
+		}
+		if (DECREMENT_REQUEST.equals(request.getType())) {
 			return getIncrementDecrementCommand(false);
+		}
 		return super.getCommand(request);
 	}
 
@@ -57,12 +59,14 @@ public class LEDEditPolicy extends LogicElementEditPolicy {
 		public void execute() {
 			int value = child.getValue();
 			if (isIncrement) {
-				if (value == 15)
+				if (value == 15) {
 					value = -1;
+				}
 				child.setValue(value + 1);
 			} else {
-				if (value == 0)
+				if (value == 0) {
 					value = 16;
+				}
 				child.setValue(value - 1);
 			}
 		}

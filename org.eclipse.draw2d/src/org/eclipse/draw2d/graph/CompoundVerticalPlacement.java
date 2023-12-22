@@ -28,8 +28,8 @@ class CompoundVerticalPlacement extends VerticalPlacement {
 	void visit(DirectedGraph dg) {
 		CompoundDirectedGraph g = (CompoundDirectedGraph) dg;
 		super.visit(g);
-		for (int i = 0; i < g.subgraphs.size(); i++) {
-			Subgraph s = (Subgraph) g.subgraphs.get(i);
+		for (Node element : g.subgraphs) {
+			Subgraph s = (Subgraph) element;
 			s.y = s.head.y;
 			s.height = s.tail.height + s.tail.y - s.y;
 		}

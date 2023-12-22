@@ -113,11 +113,13 @@ public class BorderLayout extends AbstractHintLayout {
 	@Override
 	protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint) {
 		int minWHint = 0, minHHint = 0;
-		if (wHint < 0)
+		if (wHint < 0) {
 			minWHint = -1;
+		}
 
-		if (hHint < 0)
+		if (hHint < 0) {
 			minHHint = -1;
+		}
 
 		Insets border = figure.getInsets();
 		wHint = Math.max(minWHint, wHint - border.getWidth());
@@ -214,10 +216,12 @@ public class BorderLayout extends AbstractHintLayout {
 			area.width -= rect.width + hGap;
 		}
 		if (center != null && center.isVisible()) {
-			if (area.width < 0)
+			if (area.width < 0) {
 				area.width = 0;
-			if (area.height < 0)
+			}
+			if (area.height < 0) {
 				area.height = 0;
+			}
 			center.setBounds(area);
 		}
 	}

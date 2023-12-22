@@ -209,8 +209,9 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * @return the action registry
 	 */
 	protected ActionRegistry getActionRegistry() {
-		if (actionRegistry == null)
+		if (actionRegistry == null) {
 			actionRegistry = new ActionRegistry();
+		}
 		return actionRegistry;
 	}
 
@@ -231,16 +232,21 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 					getActionRegistry().getAction(ActionFactory.UNDO.getId()),
 					getActionRegistry().getAction(ActionFactory.REDO.getId())));
 		}
-		if (type == GraphicalViewer.class)
+		if (type == GraphicalViewer.class) {
 			return type.cast(getGraphicalViewer());
-		if (type == CommandStack.class)
+		}
+		if (type == CommandStack.class) {
 			return type.cast(getCommandStack());
-		if (type == ActionRegistry.class)
+		}
+		if (type == ActionRegistry.class) {
 			return type.cast(getActionRegistry());
-		if (type == EditPart.class && getGraphicalViewer() != null)
+		}
+		if (type == EditPart.class && getGraphicalViewer() != null) {
 			return type.cast(getGraphicalViewer().getRootEditPart());
-		if (type == IFigure.class && getGraphicalViewer() != null)
+		}
+		if (type == IFigure.class && getGraphicalViewer() != null) {
 			return type.cast(((GraphicalEditPart) getGraphicalViewer().getRootEditPart()).getFigure());
+		}
 		return super.getAdapter(type);
 	}
 
@@ -304,8 +310,9 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * @return the syncrhonizer
 	 */
 	protected SelectionSynchronizer getSelectionSynchronizer() {
-		if (synchronizer == null)
+		if (synchronizer == null) {
 			synchronizer = new SelectionSynchronizer();
+		}
 		return synchronizer;
 	}
 
@@ -400,8 +407,9 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		// If not the active editor, ignore selection changed.
-		if (this.equals(getSite().getPage().getActiveEditor()))
+		if (this.equals(getSite().getPage().getActiveEditor())) {
 			updateActions(selectionActions);
+		}
 	}
 
 	/**
@@ -454,8 +462,9 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 		Iterator iter = actionIds.iterator();
 		while (iter.hasNext()) {
 			IAction action = registry.getAction(iter.next());
-			if (action instanceof UpdateAction)
+			if (action instanceof UpdateAction) {
 				((UpdateAction) action).update();
+			}
 		}
 	}
 

@@ -52,8 +52,7 @@ public class HorizontalTreeLayoutAlgorithm extends TreeLayoutAlgorithm {
 	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider) {
 		// swap x->y and width->height
-		for (int i = 0; i < entitiesToLayout.length; i++) {
-			InternalNode entity = entitiesToLayout[i];
+		for (InternalNode entity : entitiesToLayout) {
 			entity.setInternalLocation(entity.getInternalY(), entity.getInternalX());
 			entity.setInternalSize(entity.getInternalWidth(), entity.getInternalHeight());
 		}
@@ -62,14 +61,15 @@ public class HorizontalTreeLayoutAlgorithm extends TreeLayoutAlgorithm {
 
 	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
-		if (asynchronous && continueous)
+		if (asynchronous && continueous) {
 			return false;
-		else if (asynchronous && !continueous)
+		} else if (asynchronous && !continueous) {
 			return true;
-		else if (!asynchronous && continueous)
+		} else if (!asynchronous && continueous) {
 			return false;
-		else if (!asynchronous && !continueous)
+		} else if (!asynchronous && !continueous) {
 			return true;
+		}
 
 		return false;
 	}

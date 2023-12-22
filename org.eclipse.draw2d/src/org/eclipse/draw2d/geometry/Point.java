@@ -201,8 +201,9 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 		long i = p.x() - x;
 		long j = p.y() - y;
 		long result = i * i + j * j;
-		if (result > Integer.MAX_VALUE)
+		if (result > Integer.MAX_VALUE) {
 			return Integer.MAX_VALUE;
+		}
 		return (int) result;
 	}
 
@@ -239,12 +240,14 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 		int dx = p.x() - x;
 		int dy = p.y() - y;
 		if (Math.abs(dx) > Math.abs(dy)) {
-			if (dx < 0)
+			if (dx < 0) {
 				return PositionConstants.WEST;
+			}
 			return PositionConstants.EAST;
 		}
-		if (dy < 0)
+		if (dy < 0) {
 			return PositionConstants.NORTH;
+		}
 		return PositionConstants.SOUTH;
 	}
 

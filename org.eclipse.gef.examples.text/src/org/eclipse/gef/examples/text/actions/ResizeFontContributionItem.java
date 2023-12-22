@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.text.actions;
 
-import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.swt.events.SelectionEvent;
+
 import org.eclipse.ui.IPartService;
+
+import org.eclipse.gef.examples.text.model.Style;
 
 /**
  * @author Pratik Shah
@@ -46,11 +48,12 @@ public class ResizeFontContributionItem extends StyleComboContributionItem {
 			fontSize = Integer.parseInt(combo.getText());
 		} catch (NumberFormatException nfe) {
 		}
-		if (fontSize != null && !fontSize.equals(styleService.getStyle(getProperty())))
+		if (fontSize != null && !fontSize.equals(styleService.getStyle(getProperty()))) {
 			// No refresh required
 			styleService.setStyle(getProperty(), fontSize);
-		else
+		} else {
 			refresh();
+		}
 	}
 
 }

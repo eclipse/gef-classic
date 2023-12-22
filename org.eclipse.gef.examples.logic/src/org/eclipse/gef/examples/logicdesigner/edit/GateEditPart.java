@@ -59,7 +59,7 @@ public class GateEditPart extends OutputEditPart {
 
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
-		if (key == AccessibleAnchorProvider.class)
+		if (key == AccessibleAnchorProvider.class) {
 			return key.cast(new DefaultAccessibleAnchorProvider() {
 				@Override
 				public List<Point> getSourceAnchorLocations() {
@@ -77,6 +77,7 @@ public class GateEditPart extends OutputEditPart {
 					return list;
 				}
 			});
+		}
 		return super.getAdapter(key);
 	}
 

@@ -53,8 +53,9 @@ public class ToggleGridAction extends Action {
 	@Override
 	public boolean isChecked() {
 		Boolean val = (Boolean) diagramViewer.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
-		if (val != null)
+		if (val != null) {
 			return val.booleanValue();
+		}
 		return false;
 	}
 

@@ -47,8 +47,9 @@ public class PromoteElementCommand extends ExampleTextCommand {
 		oldParent.remove(run);
 		run.setType(newParent.getChildType());
 		newParent.add(run, where);
-		if (oldParent.getChildren().isEmpty())
+		if (oldParent.getChildren().isEmpty()) {
 			oldParent.getContainer().remove(oldParent);
+		}
 	}
 
 	@Override

@@ -122,12 +122,15 @@ public class DefaultRangeModel implements RangeModel {
 		maximum = max;
 		minimum = min;
 		extent = ext;
-		if (oldMax != max)
+		if (oldMax != max) {
 			firePropertyChange(PROPERTY_MAXIMUM, oldMax, max);
-		if (oldExtent != ext)
+		}
+		if (oldExtent != ext) {
 			firePropertyChange(PROPERTY_EXTENT, oldExtent, ext);
-		if (oldMin != min)
+		}
+		if (oldMin != min) {
 			firePropertyChange(PROPERTY_MINIMUM, oldMin, min);
+		}
 		setValue(getValue());
 	}
 
@@ -139,8 +142,9 @@ public class DefaultRangeModel implements RangeModel {
 	 */
 	@Override
 	public void setExtent(int extent) {
-		if (this.extent == extent)
+		if (this.extent == extent) {
 			return;
+		}
 		int oldValue = this.extent;
 		this.extent = extent;
 		firePropertyChange(PROPERTY_EXTENT, oldValue, extent);
@@ -155,8 +159,9 @@ public class DefaultRangeModel implements RangeModel {
 	 */
 	@Override
 	public void setMaximum(int maximum) {
-		if (this.maximum == maximum)
+		if (this.maximum == maximum) {
 			return;
+		}
 		int oldValue = this.maximum;
 		this.maximum = maximum;
 		firePropertyChange(PROPERTY_MAXIMUM, oldValue, maximum);
@@ -171,8 +176,9 @@ public class DefaultRangeModel implements RangeModel {
 	 */
 	@Override
 	public void setMinimum(int minimum) {
-		if (this.minimum == minimum)
+		if (this.minimum == minimum) {
 			return;
+		}
 		int oldValue = this.minimum;
 		this.minimum = minimum;
 		firePropertyChange(PROPERTY_MINIMUM, oldValue, minimum);
@@ -190,8 +196,9 @@ public class DefaultRangeModel implements RangeModel {
 	@Override
 	public void setValue(int value) {
 		value = Math.max(getMinimum(), Math.min(getMaximum() - getExtent(), value));
-		if (this.value == value)
+		if (this.value == value) {
 			return;
+		}
 		int oldValue = this.value;
 		this.value = value;
 		firePropertyChange(PROPERTY_VALUE, oldValue, value);

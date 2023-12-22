@@ -83,8 +83,9 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	 */
 	@Override
 	public EditPart getTargetEditPart(Request request) {
-		if (RequestConstants.REQ_SELECTION.equals(request.getType()))
+		if (RequestConstants.REQ_SELECTION.equals(request.getType())) {
 			return getHost();
+		}
 		return null;
 	}
 
@@ -116,13 +117,15 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	 * @param value <code>true</code> if the EditPolicy should show focus
 	 */
 	protected void setFocus(boolean value) {
-		if (focus == value)
+		if (focus == value) {
 			return;
+		}
 		focus = value;
-		if (focus)
+		if (focus) {
 			showFocus();
-		else
+		} else {
 			hideFocus();
+		}
 	}
 
 	/**
@@ -133,15 +136,17 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	 * @param type the type of selection the EditPolicy should display
 	 */
 	protected void setSelectedState(int type) {
-		if (state == type)
+		if (state == type) {
 			return;
+		}
 		state = type;
-		if (type == EditPart.SELECTED_PRIMARY)
+		if (type == EditPart.SELECTED_PRIMARY) {
 			showPrimarySelection();
-		else if (type == EditPart.SELECTED)
+		} else if (type == EditPart.SELECTED) {
 			showSelection();
-		else
+		} else {
 			hideSelection();
+		}
 	}
 
 	/**

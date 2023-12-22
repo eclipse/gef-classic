@@ -133,8 +133,9 @@ public class CircuitFigure extends NodeFigure implements HandleBounds, IScrollab
 
 	@Override
 	public void validate() {
-		if (isValid())
+		if (isValid()) {
 			return;
+		}
 		layoutConnectionAnchors();
 		super.validate();
 	}

@@ -88,8 +88,9 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 	 */
 	@Override
 	protected DragTracker createDragTracker() {
-		if (isFixed())
+		if (isFixed()) {
 			return null;
+		}
 		ConnectionEndpointTracker tracker;
 		tracker = new ConnectionEndpointTracker((ConnectionEditPart) getOwner());
 		if (endPoint == ConnectionLocator.SOURCE) {

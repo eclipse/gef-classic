@@ -51,8 +51,9 @@ class Segment {
 				/ (getLength() * otherSegment.getLength());
 		double sin = (((start.x - end.x) * (otherSegment.end.y - otherSegment.start.y))
 				- ((start.y - end.y) * (otherSegment.end.x - otherSegment.start.x)));
-		if (sin < 0.0)
+		if (sin < 0.0) {
 			return (1 + cos);
+		}
 
 		return -(1 + cos);
 	}
@@ -79,10 +80,11 @@ class Segment {
 	 * @return number representing sign of the slope
 	 */
 	double getSlope() {
-		if (end.x - start.x >= 0)
+		if (end.x - start.x >= 0) {
 			return (end.y - start.y);
-		else
+		} else {
 			return -(end.y - start.y);
+		}
 	}
 
 	/**

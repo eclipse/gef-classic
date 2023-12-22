@@ -36,18 +36,18 @@ public class FigureFactory {
 		conn.addRoutingListener(RoutingAnimator.getDefault());
 		PolygonDecoration arrow;
 
-		if (wire == null || wire.getSource() instanceof SimpleOutput)
+		if (wire == null || wire.getSource() instanceof SimpleOutput) {
 			arrow = null;
-		else {
+		} else {
 			arrow = new PolygonDecoration();
 			arrow.setTemplate(PolygonDecoration.INVERTED_TRIANGLE_TIP);
 			arrow.setScale(5, 2.5);
 		}
 		conn.setSourceDecoration(arrow);
 
-		if (wire == null || wire.getTarget() instanceof SimpleOutput)
+		if (wire == null || wire.getTarget() instanceof SimpleOutput) {
 			arrow = null;
-		else {
+		} else {
 			arrow = new PolygonDecoration();
 			arrow.setTemplate(PolygonDecoration.INVERTED_TRIANGLE_TIP);
 			arrow.setScale(5, 2.5);

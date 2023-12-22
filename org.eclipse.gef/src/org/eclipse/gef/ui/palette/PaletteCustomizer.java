@@ -93,12 +93,14 @@ public abstract class PaletteCustomizer {
 			return true;
 		} else {
 			// The given entry is the last child in its parent.
-			if (parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION || parent.getParent() == null)
+			if (parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION || parent.getParent() == null) {
 				return false;
+			}
 
 			// try to place in grand parent
-			if (canAdd(parent.getParent(), entry))
+			if (canAdd(parent.getParent(), entry)) {
 				return true;
+			}
 
 			// walk parent siblings till we find one it can go into.
 			List children = parent.getParent().getChildren();
@@ -108,8 +110,9 @@ public abstract class PaletteCustomizer {
 			for (int i = parentIndex + 1; i < children.size(); i++) {
 				parentSibling = (PaletteEntry) children.get(i);
 				if (parentSibling instanceof PaletteContainer) {
-					if (canAdd((PaletteContainer) parentSibling, entry))
+					if (canAdd((PaletteContainer) parentSibling, entry)) {
 						return true;
+					}
 				}
 			}
 
@@ -143,12 +146,14 @@ public abstract class PaletteCustomizer {
 			return true;
 		} else {
 			// The given entry is the first child in its parent
-			if (parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION || parent.getParent() == null)
+			if (parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION || parent.getParent() == null) {
 				return false;
+			}
 
 			// try to place in grand parent
-			if (canAdd(parent.getParent(), entry))
+			if (canAdd(parent.getParent(), entry)) {
 				return true;
+			}
 
 			// walk parent siblings till we find one it can go into.
 			List children = parent.getParent().getChildren();
@@ -158,8 +163,9 @@ public abstract class PaletteCustomizer {
 			for (int i = parentIndex - 1; i >= 0; i--) {
 				parentSibling = (PaletteEntry) children.get(i);
 				if (parentSibling instanceof PaletteContainer) {
-					if (canAdd((PaletteContainer) parentSibling, entry))
+					if (canAdd((PaletteContainer) parentSibling, entry)) {
 						return true;
+					}
 				}
 			}
 
@@ -229,17 +235,18 @@ public abstract class PaletteCustomizer {
 			PaletteContainer newParent = parent.getParent();
 			int insertionIndex = 0;
 
-			if (canAdd(newParent, entry))
+			if (canAdd(newParent, entry)) {
 				insertionIndex = newParent.getChildren().indexOf(parent) + 1;
-			else {
+			} else {
 				List parents = newParent.getChildren();
 
 				for (int i = parents.indexOf(parent) + 1; i < parents.size(); i++) {
 					parentSibling = (PaletteEntry) parents.get(i);
 					if (parentSibling instanceof PaletteContainer) {
 						newParent = (PaletteContainer) parentSibling;
-						if (canAdd(newParent, entry))
+						if (canAdd(newParent, entry)) {
 							break;
+						}
 					}
 				}
 			}
@@ -268,9 +275,9 @@ public abstract class PaletteCustomizer {
 			PaletteContainer newParent = parent.getParent();
 			int insertionIndex = 0;
 
-			if (canAdd(newParent, entry))
+			if (canAdd(newParent, entry)) {
 				insertionIndex = newParent.getChildren().indexOf(parent);
-			else {
+			} else {
 				List parents = newParent.getChildren();
 
 				for (int i = parents.indexOf(parent) - 1; i >= 0; i--) {

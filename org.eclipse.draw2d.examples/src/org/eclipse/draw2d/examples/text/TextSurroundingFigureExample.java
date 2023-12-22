@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.text;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Ellipse;
 import org.eclipse.draw2d.FigureCanvas;
@@ -22,10 +27,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.text.FlowAdapter;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.TextFlow;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 public class TextSurroundingFigureExample {
 

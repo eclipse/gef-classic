@@ -47,14 +47,15 @@ public class VerticalLayoutAlgorithm extends GridLayoutAlgorithm {
 
 	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
-		if (asynchronous && continueous)
+		if (asynchronous && continueous) {
 			return false;
-		else if (asynchronous && !continueous)
+		} else if (asynchronous && !continueous) {
 			return true;
-		else if (!asynchronous && continueous)
+		} else if (!asynchronous && continueous) {
 			return false;
-		else if (!asynchronous && !continueous)
+		} else if (!asynchronous && !continueous) {
 			return true;
+		}
 
 		return false;
 	}

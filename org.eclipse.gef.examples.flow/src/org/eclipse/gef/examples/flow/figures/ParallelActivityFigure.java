@@ -53,8 +53,9 @@ public class ParallelActivityFigure extends SubgraphFigure {
 
 	@Override
 	public void setSelected(boolean selected) {
-		if (this.selected == selected)
+		if (this.selected == selected) {
 			return;
+		}
 		this.selected = selected;
 		if (!selected) {
 			getHeader().setForegroundColor(null);

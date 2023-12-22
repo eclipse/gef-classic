@@ -111,14 +111,16 @@ public class ResizeTracker extends SimpleDragTracker {
 	public void activate() {
 		super.activate();
 		if (owner != null) {
-			if (getTargetEditPart() != null)
+			if (getTargetEditPart() != null) {
 				snapToHelper = getTargetEditPart().getAdapter(SnapToHelper.class);
+			}
 
 			IFigure figure = owner.getFigure();
-			if (figure instanceof HandleBounds)
+			if (figure instanceof HandleBounds) {
 				sourceRect = new PrecisionRectangle(((HandleBounds) figure).getHandleBounds());
-			else
+			} else {
 				sourceRect = new PrecisionRectangle(figure.getBounds());
+			}
 			figure.translateToAbsolute(sourceRect);
 		}
 	}
@@ -173,10 +175,12 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * {@link #getTargetEditPart() target} to erase target feedback.
 	 */
 	protected void eraseTargetFeedback() {
-		if (!getFlag(FLAG_TARGET_FEEDBACK))
+		if (!getFlag(FLAG_TARGET_FEEDBACK)) {
 			return;
-		if (getTargetEditPart() != null)
+		}
+		if (getTargetEditPart() != null) {
 			getTargetEditPart().eraseTargetFeedback(getSourceRequest());
+		}
 		setFlag(FLAG_TARGET_FEEDBACK, false);
 	}
 
@@ -189,8 +193,8 @@ public class ResizeTracker extends SimpleDragTracker {
 		EditPart part;
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Resize Handle Tracker");//$NON-NLS-1$
-		for (int i = 0; i < editparts.size(); i++) {
-			part = (EditPart) editparts.get(i);
+		for (Object editpart : editparts) {
+			part = (EditPart) editpart;
 			command.add(part.getCommand(getSourceRequest()));
 		}
 		return command.unwrap();
@@ -247,8 +251,9 @@ public class ResizeTracker extends SimpleDragTracker {
 	 *         constructor}.
 	 */
 	protected GraphicalEditPart getTargetEditPart() {
-		if (owner != null)
+		if (owner != null) {
 			return (GraphicalEditPart) owner.getParent();
+		}
 		return null;
 	}
 
@@ -289,8 +294,9 @@ public class ResizeTracker extends SimpleDragTracker {
 	 */
 	protected void showTargetFeedback() {
 		setFlag(FLAG_TARGET_FEEDBACK, true);
-		if (getTargetEditPart() != null)
+		if (getTargetEditPart() != null) {
 			getTargetEditPart().showTargetFeedback(getSourceRequest());
+		}
 	}
 
 	/**
@@ -316,29 +322,34 @@ public class ResizeTracker extends SimpleDragTracker {
 			int origWidth = owner.getFigure().getBounds().width;
 			float ratio = 1;
 
-			if (origWidth != 0 && origHeight != 0)
+			if (origWidth != 0 && origHeight != 0) {
 				ratio = ((float) origHeight / (float) origWidth);
+			}
 
 			if (getResizeDirection() == PositionConstants.SOUTH_EAST) {
-				if (d.height > (d.width * ratio))
+				if (d.height > (d.width * ratio)) {
 					d.width = (int) (d.height / ratio);
-				else
+				} else {
 					d.height = (int) (d.width * ratio);
+				}
 			} else if (getResizeDirection() == PositionConstants.NORTH_WEST) {
-				if (d.height < (d.width * ratio))
+				if (d.height < (d.width * ratio)) {
 					d.width = (int) (d.height / ratio);
-				else
+				} else {
 					d.height = (int) (d.width * ratio);
+				}
 			} else if (getResizeDirection() == PositionConstants.NORTH_EAST) {
-				if (-(d.height) > (d.width * ratio))
+				if (-(d.height) > (d.width * ratio)) {
 					d.width = -(int) (d.height / ratio);
-				else
+				} else {
 					d.height = -(int) (d.width * ratio);
+				}
 			} else if (getResizeDirection() == PositionConstants.SOUTH_WEST) {
-				if (-(d.height) < (d.width * ratio))
+				if (-(d.height) < (d.width * ratio)) {
 					d.width = -(int) (d.height / ratio);
-				else
+				} else {
 					d.height = -(int) (d.width * ratio);
+				}
 			}
 		}
 
@@ -386,16 +397,16 @@ public class ResizeTracker extends SimpleDragTracker {
 
 			snapToHelper.snapRectangle(request, request.getResizeDirection(), rect, result);
 			if (request.isCenteredResize()) {
-				if (result.preciseX() != 0.0)
+				if (result.preciseX() != 0.0) {
 					result.setPreciseWidth(result.preciseWidth() - result.preciseX());
-				else if (result.preciseWidth() != 0.0) {
+				} else if (result.preciseWidth() != 0.0) {
 					result.setPreciseX(-result.preciseWidth());
 					result.setPreciseWidth(result.preciseWidth() * 2.0);
 				}
 
-				if (result.preciseY() != 0.0)
+				if (result.preciseY() != 0.0) {
 					result.setPreciseHeight(result.preciseHeight() - result.preciseY());
-				else if (result.preciseHeight() != 0.0) {
+				} else if (result.preciseHeight() != 0.0) {
 					result.setPreciseY(-result.preciseHeight());
 					result.setPreciseHeight(result.preciseHeight() * 2.0);
 				}

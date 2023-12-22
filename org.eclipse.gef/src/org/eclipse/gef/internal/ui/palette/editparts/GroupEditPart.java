@@ -55,8 +55,9 @@ public class GroupEditPart extends PaletteEditPart {
 	@Override
 	protected void refreshVisuals() {
 		int layout = getLayoutSetting();
-		if (cachedLayout == layout)
+		if (cachedLayout == layout) {
 			return;
+		}
 		cachedLayout = layout;
 		LayoutManager manager;
 		if (layout == PaletteViewerPreferences.LAYOUT_COLUMNS) {
