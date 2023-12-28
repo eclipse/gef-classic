@@ -32,7 +32,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class LineRoot extends LineBox {
 
 	private int baseline;
-	private boolean isMirrored;
+	private final boolean isMirrored;
 
 	/**
 	 * Constructor
@@ -56,7 +56,7 @@ public class LineRoot extends LineBox {
 	private void bidiCommit() {
 		int xLocation = getX();
 		BidiLevelNode root = new BidiLevelNode();
-		List branches = new ArrayList();
+		List<FlowBox> branches = new ArrayList<>();
 		// branches does not include this LineRoot; all the non-leaf child
 		// fragments of a
 		// parent will be listed before the parent itself in this list
@@ -75,9 +75,9 @@ public class LineRoot extends LineBox {
 		layoutNestedLines(branches);
 	}
 
-	private void buildBidiTree(FlowBox box, BidiLevelNode node, List branches) {
-		if (box instanceof LineBox) {
-			List children = ((LineBox) box).getFragments();
+	private void buildBidiTree(FlowBox box, BidiLevelNode node, List<FlowBox> branches) {
+		if (box instanceof LineBox lineBox) {
+			List children = lineBox.getFragments();
 			for (Object child : children) {
 				buildBidiTree((FlowBox) child, node, branches);
 			}
@@ -125,8 +125,8 @@ public class LineRoot extends LineBox {
 	 */
 	private void contiguousCommit(FlowBox box, int x) {
 		box.setX(x);
-		if (box instanceof LineBox) {
-			List fragments = ((LineBox) box).getFragments();
+		if (box instanceof LineBox lineBox) {
+			List fragments = lineBox.getFragments();
 			int i = isMirrored ? fragments.size() - 1 : 0;
 			while (i >= 0 && i < fragments.size()) {
 				FlowBox child = (FlowBox) fragments.get(i);
@@ -283,8 +283,8 @@ public class LineRoot extends LineBox {
 	}
 
 	private static class Result {
-		private int index;
-		private LineBox parent;
+		private final int index;
+		private final LineBox parent;
 
 		private Result(LineBox box, int i) {
 			parent = box;

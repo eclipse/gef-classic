@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class LayeredPane extends Layer {
 
-	private List layerKeys = new ArrayList();
+	private final List<Object> layerKeys = new ArrayList<>();
 
 	/**
 	 * Constructs a new layered pane with no layers in it.
@@ -61,7 +61,8 @@ public class LayeredPane extends Layer {
 	 */
 	public void addLayerAfter(Layer layer, Object key, Object after) {
 		int index = layerKeys.indexOf(after);
-		add(layer, key, ++index);
+		index++;
+		add(layer, key, index);
 	}
 
 	/**
@@ -133,6 +134,7 @@ public class LayeredPane extends Layer {
 	 * @param layer the layer to be removed
 	 * @since 2.0
 	 */
+	@Deprecated
 	public void removeLayer(IFigure layer) {
 		remove(layer);
 	}

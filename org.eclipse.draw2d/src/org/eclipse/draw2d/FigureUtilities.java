@@ -13,6 +13,7 @@
 package org.eclipse.draw2d;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -69,6 +70,7 @@ public class FigureUtilities {
 	 * @deprecated do not mess with this GC
 	 * @return the GC
 	 */
+	@Deprecated
 	protected static GC getGC() {
 		if (gc == null) {
 			gc = new GC(new Shell());
@@ -179,7 +181,9 @@ public class FigureUtilities {
 	 * @since 2.0
 	 */
 	public static Color lighter(Color rgb) {
-		int r = rgb.getRed(), g = rgb.getGreen(), b = rgb.getBlue();
+		int r = rgb.getRed();
+		int g = rgb.getGreen();
+		int b = rgb.getBlue();
 
 		return new Color(null, Math.max(2, Math.min((int) (r / RGB_VALUE_MULTIPLIER), 255)),
 				Math.max(2, Math.min((int) (g / RGB_VALUE_MULTIPLIER), 255)),
@@ -239,7 +243,10 @@ public class FigureUtilities {
 	 * @since 2.0
 	 */
 	public static void paintEtchedBorder(Graphics g, Rectangle r, Color shadow, Color highlight) {
-		int x = r.x, y = r.y, w = r.width, h = r.height;
+		int x = r.x;
+		int y = r.y;
+		int w = r.width;
+		int h = r.height;
 
 		g.setLineStyle(Graphics.LINE_SOLID);
 		g.setLineWidth(1);
@@ -316,7 +323,9 @@ public class FigureUtilities {
 	 * @since 2.0
 	 */
 	public static void paintEtchedBorder(Graphics g, Rectangle r) {
-		Color rgb = g.getBackgroundColor(), shadow = darker(rgb), highlight = lighter(rgb);
+		Color rgb = g.getBackgroundColor();
+		Color shadow = darker(rgb);
+		Color highlight = lighter(rgb);
 		paintEtchedBorder(g, r, shadow, highlight);
 	}
 
@@ -351,8 +360,8 @@ public class FigureUtilities {
 		if (l == r) {
 			return l;
 		}
-		ArrayList left = new ArrayList();
-		ArrayList right = new ArrayList();
+		List<IFigure> left = new ArrayList<>();
+		List<IFigure> right = new ArrayList<>();
 		while (l != null) {
 			left.add(l);
 			l = l.getParent();
@@ -365,9 +374,9 @@ public class FigureUtilities {
 			return null;
 		}
 
-		for (int i = 0; i < left.size(); i++) {
-			if (right.contains(left.get(i))) {
-				return (IFigure) left.get(i);
+		for (IFigure lFigure : left) {
+			if (right.contains(lFigure)) {
+				return lFigure;
 			}
 		}
 		return null;

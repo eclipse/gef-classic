@@ -28,7 +28,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class XYLayout extends AbstractLayout {
 
 	/** The layout contraints */
-	protected Map constraints = new HashMap();
+	protected Map<IFigure, Rectangle> constraints = new HashMap<>();
 
 	/**
 	 * Calculates and returns the preferred size of the input figure. Since in
@@ -44,7 +44,7 @@ public class XYLayout extends AbstractLayout {
 	protected Dimension calculatePreferredSize(IFigure f, int wHint, int hHint) {
 		Rectangle rect = new Rectangle();
 		for (IFigure child : f.getChildren()) {
-			Rectangle r = (Rectangle) constraints.get(child);
+			Rectangle r = constraints.get(child);
 			if (r == null) {
 				continue;
 			}
@@ -135,8 +135,8 @@ public class XYLayout extends AbstractLayout {
 	@Override
 	public void setConstraint(IFigure figure, Object newConstraint) {
 		super.setConstraint(figure, newConstraint);
-		if (newConstraint != null) {
-			constraints.put(figure, newConstraint);
+		if (newConstraint instanceof Rectangle rect) {
+			constraints.put(figure, rect);
 		}
 	}
 

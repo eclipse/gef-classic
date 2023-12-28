@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -34,9 +34,11 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class PolylineConnection extends Polyline implements Connection, AnchorListener {
 
-	private ConnectionAnchor startAnchor, endAnchor;
+	private ConnectionAnchor startAnchor;
+	private ConnectionAnchor endAnchor;
 	private ConnectionRouter connectionRouter = ConnectionRouter.NULL;
-	private RotatableDecoration startArrow, endArrow;
+	private RotatableDecoration startArrow;
+	private RotatableDecoration endArrow;
 
 	{
 		setLayoutManager(new DelegatingLayout());
@@ -105,8 +107,8 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 */
 	@Override
 	public ConnectionRouter getConnectionRouter() {
-		if (connectionRouter instanceof RoutingNotifier) {
-			return ((RoutingNotifier) connectionRouter).realRouter;
+		if (connectionRouter instanceof RoutingNotifier routingNotifier) {
+			return routingNotifier.realRouter;
 		}
 		return connectionRouter;
 	}
@@ -121,9 +123,8 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	public Object getRoutingConstraint() {
 		if (getConnectionRouter() != null) {
 			return getConnectionRouter().getConstraint(this);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -246,8 +247,8 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 		ConnectionRouter oldRouter = getConnectionRouter();
 		if (oldRouter != cr) {
 			connectionRouter.remove(this);
-			if (connectionRouter instanceof RoutingNotifier) {
-				((RoutingNotifier) connectionRouter).realRouter = cr;
+			if (connectionRouter instanceof RoutingNotifier routingNotifier) {
+				routingNotifier.realRouter = cr;
 			} else {
 				connectionRouter = cr;
 			}
@@ -362,7 +363,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	final class RoutingNotifier implements ConnectionRouter {
 
 		ConnectionRouter realRouter;
-		List listeners = new ArrayList(1);
+		List<RoutingListener> listeners = new ArrayList<>(1);
 
 		RoutingNotifier(ConnectionRouter router, RoutingListener listener) {
 			realRouter = router;
@@ -376,42 +377,32 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 
 		@Override
 		public void invalidate(Connection connection) {
-			for (Object listener : listeners) {
-				((RoutingListener) listener).invalidate(connection);
-			}
-
+			listeners.forEach(listener -> listener.invalidate(connection));
 			realRouter.invalidate(connection);
 		}
 
 		@Override
 		public void route(Connection connection) {
 			boolean consumed = false;
-			for (Object listener : listeners) {
-				consumed |= ((RoutingListener) listener).route(connection);
+			for (RoutingListener listener : listeners) {
+				consumed |= listener.route(connection);
 			}
-
 			if (!consumed) {
 				realRouter.route(connection);
 			}
 
-			for (Object listener : listeners) {
-				((RoutingListener) listener).postRoute(connection);
-			}
+			listeners.forEach(listener -> listener.postRoute(connection));
 		}
 
 		@Override
 		public void remove(Connection connection) {
-			for (Object listener : listeners) {
-				((RoutingListener) listener).remove(connection);
-			}
+			listeners.forEach(listener -> listener.remove(connection));
 			realRouter.remove(connection);
 		}
 
 		@Override
 		public void setConstraint(Connection connection, Object constraint) {
-			for (Object listener : listeners) {
-				((RoutingListener) listener).setConstraint(connection, constraint);
-			}
+			listeners.forEach(listener -> listener.setConstraint(connection, constraint));
 			realRouter.setConstraint(connection, constraint);
 		}
 

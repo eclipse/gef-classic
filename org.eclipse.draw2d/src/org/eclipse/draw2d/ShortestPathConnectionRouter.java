@@ -53,13 +53,13 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 		}
 	}
 
-	private final Map constraintMap = new HashMap();
+	private final Map<Connection, Object> constraintMap = new HashMap<>();
 	private Map<IFigure, Rectangle> figuresToBounds;
-	private Map connectionToPaths;
+	private Map<Connection, Path> connectionToPaths;
 	private boolean isDirty;
 	private ShortestPathRouter algorithm = new ShortestPathRouter();
 	private final IFigure container;
-	private final Set staleConnections = new HashSet();
+	private final Set<Connection> staleConnections = new HashSet<>();
 	private final LayoutListener listener = new LayoutTracker();
 
 	private final FigureListener figureListener = source -> {
@@ -161,20 +161,20 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 		if (staleConnections.isEmpty()) {
 			return;
 		}
-		((Connection) staleConnections.iterator().next()).revalidate();
+		staleConnections.iterator().next().revalidate();
 	}
 
 	private void processStaleConnections() {
-		Iterator iter = staleConnections.iterator();
+		Iterator<Connection> iter = staleConnections.iterator();
 		if (iter.hasNext() && connectionToPaths == null) {
-			connectionToPaths = new HashMap();
+			connectionToPaths = new HashMap<>();
 			hookAll();
 		}
 
 		while (iter.hasNext()) {
-			Connection conn = (Connection) iter.next();
+			Connection conn = iter.next();
 
-			Path path = (Path) connectionToPaths.get(conn);
+			Path path = connectionToPaths.get(conn);
 			if (path == null) {
 				path = new Path(conn);
 				connectionToPaths.put(conn, path);
@@ -183,7 +183,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 
 			List constraint = (List) getConstraint(conn);
 			if (constraint == null) {
-				constraint = Collections.EMPTY_LIST;
+				constraint = Collections.emptyList();
 			}
 
 			Point start = conn.getSourceAnchor().getReferencePoint().getCopy();
@@ -217,7 +217,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 		}
 		try {
 			ignoreInvalidate = true;
-			((Connection) connectionToPaths.keySet().iterator().next()).revalidate();
+			connectionToPaths.keySet().iterator().next().revalidate();
 		} finally {
 			ignoreInvalidate = false;
 		}
@@ -233,7 +233,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 		if (connectionToPaths == null) {
 			return;
 		}
-		Path path = (Path) connectionToPaths.remove(connection);
+		Path path = connectionToPaths.remove(connection);
 		algorithm.removePath(path);
 		isDirty = true;
 		if (connectionToPaths.isEmpty()) {
@@ -269,22 +269,20 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 			ignoreInvalidate = true;
 			processStaleConnections();
 			isDirty = false;
-			List updated = algorithm.solve();
+			List<? extends Path> updated = algorithm.solve();
 			Connection current;
-			for (Object element : updated) {
-				Path path = (Path) element;
+			for (Path path : updated) {
 				current = (Connection) path.data;
 				current.revalidate();
 
 				PointList points = path.getPoints().getCopy();
-				Point ref1, ref2, start, end;
-				ref1 = new PrecisionPoint(points.getPoint(1));
-				ref2 = new PrecisionPoint(points.getPoint(points.size() - 2));
+				Point ref1 = new PrecisionPoint(points.getPoint(1));
+				Point ref2 = new PrecisionPoint(points.getPoint(points.size() - 2));
 				current.translateToAbsolute(ref1);
 				current.translateToAbsolute(ref2);
 
-				start = current.getSourceAnchor().getLocation(ref1).getCopy();
-				end = current.getTargetAnchor().getLocation(ref2).getCopy();
+				Point start = current.getSourceAnchor().getLocation(ref1).getCopy();
+				Point end = current.getTargetAnchor().getLocation(ref2).getCopy();
 
 				current.translateToRelative(start);
 				current.translateToRelative(end);
@@ -303,14 +301,14 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	 *         routings.
 	 * @since 3.5
 	 */
-	public List getPathsAfterRouting() {
+	public List<? extends Path> getPathsAfterRouting() {
 		if (isDirty) {
 			processStaleConnections();
 			isDirty = false;
 			return algorithm.solve();
 
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	/**
@@ -318,8 +316,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	 */
 	@Override
 	public void setConstraint(Connection connection, Object constraint) {
-		// Connection.setConstraint() already calls revalidate, so we know that
-		// a
+		// Connection.setConstraint() already calls revalidate, so we know that a
 		// route() call will follow.
 		staleConnections.add(connection);
 		constraintMap.put(connection, constraint);
