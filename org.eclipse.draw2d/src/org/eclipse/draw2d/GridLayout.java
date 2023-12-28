@@ -119,13 +119,12 @@ public class GridLayout extends AbstractHintLayout {
 	public int verticalSpacing = 5;
 
 	/** The layout contraints */
-	protected Map constraints = new HashMap();
+	protected Map<IFigure, Object> constraints = new HashMap<>();
 
 	/**
 	 * Default Constructor
 	 */
 	public GridLayout() {
-		super();
 	}
 
 	/**
@@ -505,7 +504,8 @@ public class GridLayout extends AbstractHintLayout {
 								if (flush == null) {
 									flush = new GridData[container.getChildren().size()];
 								}
-								flush[flushLength++] = data;
+								flush[flushLength] = data;
+								flushLength++;
 							}
 						}
 					}

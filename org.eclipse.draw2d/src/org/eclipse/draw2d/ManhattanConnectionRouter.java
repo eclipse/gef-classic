@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -28,18 +28,19 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public final class ManhattanConnectionRouter extends AbstractRouter {
 
-	private Map rowsUsed = new HashMap();
-	private Map colsUsed = new HashMap();
-	// private Hashtable offsets = new Hashtable(7);
-
-	private Map reservedInfo = new HashMap();
+	private final Map<Integer, Integer> rowsUsed = new HashMap<>();
+	private final Map<Integer, Integer> colsUsed = new HashMap<>();
+	private final Map<Connection, ReservedInfo> reservedInfo = new HashMap<>();
 
 	private class ReservedInfo {
-		public List reservedRows = new ArrayList(2);
-		public List reservedCols = new ArrayList(2);
+		public List<Integer> reservedRows = new ArrayList<>(2);
+		public List<Integer> reservedCols = new ArrayList<>(2);
 	}
 
-	private static Ray UP = new Ray(0, -1), DOWN = new Ray(0, 1), LEFT = new Ray(-1, 0), RIGHT = new Ray(1, 0);
+	private static final Ray UP = new Ray(0, -1);
+	private static final Ray DOWN = new Ray(0, 1);
+	private static final Ray LEFT = new Ray(-1, 0);
+	private static final Ray RIGHT = new Ray(1, 0);
 
 	/**
 	 * @see ConnectionRouter#invalidate(Connection)
@@ -99,12 +100,12 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	 * @return the direction from <i>r</i> to <i>p</i>
 	 */
 	protected Ray getDirection(Rectangle r, Point p) {
-		int i, distance = Math.abs(r.x - p.x);
+		int distance = Math.abs(r.x - p.x);
 		Ray direction;
 
 		direction = LEFT;
 
-		i = Math.abs(r.y - p.y);
+		int i = Math.abs(r.y - p.y);
 		if (i <= distance) {
 			distance = i;
 			direction = UP;
@@ -118,7 +119,6 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 
 		i = Math.abs(r.right() - p.x);
 		if (i < distance) {
-			distance = i;
 			direction = RIGHT;
 		}
 
@@ -192,10 +192,10 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 		return getDirection(rect, p);
 	}
 
-	protected void processPositions(Ray start, Ray end, List positions, boolean horizontal, Connection conn) {
+	protected void processPositions(Ray start, Ray end, List<Integer> positions, boolean horizontal, Connection conn) {
 		removeReservedLines(conn);
 
-		int pos[] = new int[positions.size() + 2];
+		int[] pos = new int[positions.size() + 2];
 		if (horizontal) {
 			pos[0] = start.x;
 		} else {
@@ -203,36 +203,37 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 		}
 		int i;
 		for (i = 0; i < positions.size(); i++) {
-			pos[i + 1] = ((Integer) positions.get(i)).intValue();
+			pos[i + 1] = positions.get(i).intValue();
 		}
 		if (horizontal == (positions.size() % 2 == 1)) {
-			pos[++i] = end.x;
+			i++;
+			pos[i] = end.x;
 		} else {
-			pos[++i] = end.y;
+			i++;
+			pos[i] = end.y;
 		}
 
 		PointList points = new PointList();
 		points.addPoint(new Point(start.x, start.y));
 		Point p;
-		int current, prev, min, max;
 		boolean adjust;
 		for (i = 2; i < pos.length - 1; i++) {
 			horizontal = !horizontal;
-			prev = pos[i - 1];
-			current = pos[i];
+			int prev = pos[i - 1];
+			int current = pos[i];
 
 			adjust = (i != pos.length - 2);
 			if (horizontal) {
 				if (adjust) {
-					min = pos[i - 2];
-					max = pos[i + 2];
+					int min = pos[i - 2];
+					int max = pos[i + 2];
 					pos[i] = current = getRowNear(conn, current, min, max);
 				}
 				p = new Point(prev, current);
 			} else {
 				if (adjust) {
-					min = pos[i - 2];
-					max = pos[i + 2];
+					int min = pos[i - 2];
+					int max = pos[i + 2];
 					pos[i] = current = getColumnNear(conn, current, min, max);
 				}
 				p = new Point(current, prev);
@@ -252,7 +253,7 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	}
 
 	protected void removeReservedLines(Connection connection) {
-		ReservedInfo rInfo = (ReservedInfo) reservedInfo.get(connection);
+		ReservedInfo rInfo = reservedInfo.get(connection);
 		if (rInfo == null) {
 			return;
 		}
@@ -267,20 +268,12 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	}
 
 	protected void reserveColumn(Connection connection, Integer column) {
-		ReservedInfo info = (ReservedInfo) reservedInfo.get(connection);
-		if (info == null) {
-			info = new ReservedInfo();
-			reservedInfo.put(connection, info);
-		}
+		ReservedInfo info = reservedInfo.computeIfAbsent(connection, dummy -> new ReservedInfo());
 		info.reservedCols.add(column);
 	}
 
 	protected void reserveRow(Connection connection, Integer row) {
-		ReservedInfo info = (ReservedInfo) reservedInfo.get(connection);
-		if (info == null) {
-			info = new ReservedInfo();
-			reservedInfo.put(connection, info);
-		}
+		ReservedInfo info = reservedInfo.computeIfAbsent(connection, dummy -> new ReservedInfo());
 		info.reservedRows.add(row);
 	}
 
@@ -306,7 +299,7 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 		Ray startNormal = getStartDirection(conn);
 		Ray endNormal = getEndDirection(conn);
 
-		List positions = new ArrayList(5);
+		List<Integer> positions = new ArrayList<>(5);
 		boolean horizontal = startNormal.isHorizontal();
 		if (horizontal) {
 			positions.add(Integer.valueOf(start.y));

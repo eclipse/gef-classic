@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,7 +13,6 @@
 package org.eclipse.draw2d;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -31,7 +30,7 @@ import org.eclipse.swt.widgets.Display;
  */
 public class PrinterGraphics extends ScaledGraphics {
 
-	Map imageCache = new HashMap();
+	Map<Image, Image> imageCache = new HashMap<>();
 
 	Printer printer;
 
@@ -52,7 +51,7 @@ public class PrinterGraphics extends ScaledGraphics {
 	}
 
 	private Image printerImage(Image image) {
-		Image result = (Image) imageCache.get(image);
+		Image result = imageCache.get(image);
 		if (result != null) {
 			return result;
 		}
@@ -69,10 +68,7 @@ public class PrinterGraphics extends ScaledGraphics {
 	public void dispose() {
 		super.dispose();
 
-		// Dispose printer images
-		Iterator iter = imageCache.values().iterator();
-		while (iter.hasNext()) {
-			Image printerImage = ((Image) iter.next());
+		for (Image printerImage : imageCache.values()) {
 			printerImage.dispose();
 		}
 
@@ -117,7 +113,7 @@ public class PrinterGraphics extends ScaledGraphics {
 	public void setLineAttributes(LineAttributes attributes) {
 		if (attributes.style == SWT.LINE_CUSTOM && attributes.dash != null && attributes.dash.length > 0) {
 			float[] newDashes = new float[attributes.dash.length];
-			float printerDot = (float) (printer.getDPI().y / Display.getCurrent().getDPI().y + 0.0000001);
+			float printerDot = (float) printer.getDPI().y / Display.getCurrent().getDPI().y + 0.0000001f;
 			for (int i = 0; i < attributes.dash.length; i++) {
 				newDashes[i] = attributes.dash[i] * printerDot;
 			}

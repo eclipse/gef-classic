@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,7 +14,6 @@ package org.eclipse.draw2d;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -47,41 +46,8 @@ public class ScaledGraphics extends Graphics {
 		int height;
 	}
 
-	static class FontKey {
-		Font font;
-		int height;
+	static record FontKey(Font font, int height) {
 
-		protected FontKey() {
-		}
-
-		protected FontKey(Font font, int height) {
-			this.font = font;
-			this.height = height;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (obj == null || getClass() != obj.getClass()) {
-				return false;
-			}
-
-			FontKey fontKey = (FontKey) obj;
-			return (fontKey.font.equals(font) && fontKey.height == height);
-		}
-
-		@Override
-		public int hashCode() {
-			return font.hashCode() ^ height;
-		}
-
-		protected void setValues(Font font, int height) {
-			this.font = font;
-			this.height = height;
-		}
 	}
 
 	/**
@@ -177,17 +143,15 @@ public class ScaledGraphics extends Graphics {
 	}
 
 	private boolean allowText = true;
-	// private static final Point PT = new Point();
-	private final Map fontCache = new HashMap();
-	private final Map fontDataCache = new HashMap();
-	private final FontKey fontKey = new FontKey();
+	private final Map<FontKey, Font> fontCache = new HashMap<>();
+	private final Map<Font, FontData> fontDataCache = new HashMap<>();
 	private double fractionalX;
 	private double fractionalY;
 	private final Graphics graphics;
 	private final FontHeightCache localCache = new FontHeightCache();
 	private Font localFont;
 	private float localLineWidth;
-	private final List stack = new ArrayList();
+	private final List<State> stack = new ArrayList<>();
 	private int stackPointer = 0;
 	private final FontHeightCache targetCache = new FontHeightCache();
 
@@ -263,10 +227,7 @@ public class ScaledGraphics extends Graphics {
 			popState();
 		}
 
-		// Dispose fonts
-		Iterator iter = fontCache.values().iterator();
-		while (iter.hasNext()) {
-			Font font = ((Font) iter.next());
+		for (Font font : fontCache.values()) {
 			font.dispose();
 		}
 
@@ -531,7 +492,7 @@ public class ScaledGraphics extends Graphics {
 	}
 
 	Font getCachedFont(FontKey key) {
-		Font font = (Font) fontCache.get(key);
+		Font font = fontCache.get(key);
 		if (font != null) {
 			return font;
 		}
@@ -544,12 +505,7 @@ public class ScaledGraphics extends Graphics {
 	}
 
 	FontData getCachedFontData(Font f) {
-		FontData data = (FontData) fontDataCache.get(f);
-		if (data == null) {
-			data = f.getFontData()[0];
-			fontDataCache.put(f, data);
-		}
-		return data;
+		return fontDataCache.computeIfAbsent(f, font -> font.getFontData()[0]);
 	}
 
 	/** @see Graphics#getClip(Rectangle) */
@@ -688,7 +644,7 @@ public class ScaledGraphics extends Graphics {
 	public void popState() {
 		graphics.popState();
 		stackPointer--;
-		restoreLocalState((State) stack.get(stackPointer));
+		restoreLocalState(stack.get(stackPointer));
 	}
 
 	/** @see Graphics#pushState() */
@@ -696,7 +652,7 @@ public class ScaledGraphics extends Graphics {
 	public void pushState() {
 		State s;
 		if (stack.size() > stackPointer) {
-			s = (State) stack.get(stackPointer);
+			s = stack.get(stackPointer);
 			s.setValues(zoom, fractionalX, fractionalY, getLocalFont(), localLineWidth);
 		} else {
 			stack.add(new State(zoom, fractionalX, fractionalY, getLocalFont(), localLineWidth));
@@ -718,7 +674,7 @@ public class ScaledGraphics extends Graphics {
 	@Override
 	public void restoreState() {
 		graphics.restoreState();
-		restoreLocalState((State) stack.get(stackPointer - 1));
+		restoreLocalState(stack.get(stackPointer - 1));
 	}
 
 	/** @see Graphics#rotate(float) */
@@ -978,8 +934,7 @@ public class ScaledGraphics extends Graphics {
 		FontData data = getCachedFontData(f);
 		int zoomedFontHeight = zoomFontHeight(data.getHeight());
 		allowText = zoomedFontHeight > 0;
-		fontKey.setValues(f, zoomedFontHeight);
-		return getCachedFont(fontKey);
+		return getCachedFont(new FontKey(f, zoomedFontHeight));
 	}
 
 	int zoomFontHeight(int height) {

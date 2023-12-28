@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -88,7 +88,10 @@ public class SWTGraphics extends Graphics {
 
 	static class RectangleClipping implements Clipping {
 
-		private float top, left, bottom, right;
+		private float top;
+		private float left;
+		private float bottom;
+		private float right;
 
 		RectangleClipping(float left, float top, float right, float bottom) {
 			this.left = left;
@@ -167,15 +170,16 @@ public class SWTGraphics extends Graphics {
 	 * Contains the entire state of the Graphics.
 	 */
 	static class State extends LazyState implements Cloneable {
-		float affineMatrix[];
+		float[] affineMatrix;
 		int alpha;
 		Pattern bgPattern;
-		int dx, dy;
+		int dx;
+		int dy;
 
 		Pattern fgPattern;
 
 		@Override
-		public Object clone() throws CloneNotSupportedException {
+		public State clone() throws CloneNotSupportedException {
 			State clone = (State) super.clone();
 			clone.lineAttributes = SWTGraphics.clone(clone.lineAttributes);
 			return clone;
@@ -247,10 +251,10 @@ public class SWTGraphics extends Graphics {
 	private final State currentState = new State();
 
 	private boolean elementsNeedUpdate;
-	private GC gc;
+	private final GC gc;
 
 	private boolean sharedClipping;
-	private List stack = new ArrayList();
+	private final List<State> stack = new ArrayList<>();
 
 	private int stackPointer = 0;
 	Transform transform;
@@ -273,7 +277,8 @@ public class SWTGraphics extends Graphics {
 	 */
 	protected final void checkFill() {
 		if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null) {
-			gc.setBackground(appliedState.bgColor = currentState.bgColor);
+			appliedState.bgColor = currentState.bgColor;
+			gc.setBackground(appliedState.bgColor);
 		}
 		checkGC();
 	}
@@ -308,7 +313,8 @@ public class SWTGraphics extends Graphics {
 		LineAttributes lineAttributes = currentState.lineAttributes;
 		if (!appliedState.lineAttributes.equals(lineAttributes)) {
 			if (getAdvanced()) {
-				gc.setLineAttributes(clone(lineAttributes)); // Clone lineAttributes because on Windows hi-dpi the line width may be increased
+				gc.setLineAttributes(clone(lineAttributes)); // Clone lineAttributes because on Windows hi-dpi the line
+																// width may be increased
 			} else {
 				gc.setLineWidth((int) lineAttributes.width);
 				gc.setLineCap(lineAttributes.cap);
@@ -322,7 +328,8 @@ public class SWTGraphics extends Graphics {
 		}
 
 		if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null) {
-			gc.setBackground(appliedState.bgColor = currentState.bgColor);
+			appliedState.bgColor = currentState.bgColor;
+			gc.setBackground(appliedState.bgColor);
 		}
 	}
 
@@ -351,7 +358,8 @@ public class SWTGraphics extends Graphics {
 	protected final void checkText() {
 		checkPaint();
 		if (!appliedState.font.equals(currentState.font)) {
-			gc.setFont(appliedState.font = currentState.font);
+			appliedState.font = currentState.font;
+			gc.setFont(appliedState.font);
 		}
 	}
 
@@ -690,9 +698,8 @@ public class SWTGraphics extends Graphics {
 		if (currentState.relativeClip != null) {
 			currentState.relativeClip.getBoundingBox(rect);
 			return rect;
-		} else {
-			throw new IllegalStateException("Clipping can no longer be queried due to transformations"); //$NON-NLS-1$
 		}
+		throw new IllegalStateException("Clipping can no longer be queried due to transformations"); //$NON-NLS-1$
 	}
 
 	/**
@@ -856,7 +863,7 @@ public class SWTGraphics extends Graphics {
 	@Override
 	public void popState() {
 		stackPointer--;
-		restoreState((State) stack.get(stackPointer));
+		restoreState(stack.get(stackPointer));
 	}
 
 	/**
@@ -876,10 +883,11 @@ public class SWTGraphics extends Graphics {
 
 			if (elementsNeedUpdate) {
 				elementsNeedUpdate = false;
-				transform.getElements(currentState.affineMatrix = new float[6]);
+				currentState.affineMatrix = new float[6];
+				transform.getElements(currentState.affineMatrix);
 			}
 			if (stack.size() > stackPointer) {
-				s = (State) stack.get(stackPointer);
+				s = stack.get(stackPointer);
 				s.copyFrom(currentState);
 			} else {
 				stack.add(currentState.clone());
@@ -933,7 +941,7 @@ public class SWTGraphics extends Graphics {
 	 */
 	@Override
 	public void restoreState() {
-		restoreState((State) stack.get(stackPointer - 1));
+		restoreState(stack.get(stackPointer - 1));
 	}
 
 	/**
@@ -1055,7 +1063,8 @@ public class SWTGraphics extends Graphics {
 	public void setAlpha(int alpha) {
 		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
 		if (currentState.alpha != alpha) {
-			gc.setAlpha(this.currentState.alpha = alpha);
+			currentState.alpha = alpha;
+			gc.setAlpha(currentState.alpha);
 		}
 	}
 
@@ -1367,7 +1376,7 @@ public class SWTGraphics extends Graphics {
 		// Flush any clipping changes before shearing
 		checkGC();
 		initTransform(true);
-		float matrix[] = new float[6];
+		float[] matrix = new float[6];
 		transform.getElements(matrix);
 		transform.setElements(matrix[0] + matrix[2] * vert, matrix[1] + matrix[3] * vert, matrix[0] * horz + matrix[2],
 				matrix[1] * horz + matrix[3], matrix[4], matrix[5]);
@@ -1506,7 +1515,8 @@ public class SWTGraphics extends Graphics {
 					int n = 0;
 					int[] temp = new int[end - start];
 					for (int k = start; k < end; k++) {
-						temp[n++] = Math.round(points[k]);
+						temp[n] = Math.round(points[k]);
+						n++;
 					}
 					region.add(temp);
 				}
@@ -1523,7 +1533,8 @@ public class SWTGraphics extends Graphics {
 					int n = 0;
 					int[] temp = new int[end - start];
 					for (int k = start; k < end; k++) {
-						temp[n++] = Math.round(points[k]);
+						temp[n] = Math.round(points[k]);
+						n++;
 					}
 					region.add(temp);
 				}
@@ -1536,7 +1547,8 @@ public class SWTGraphics extends Graphics {
 			int n = 0;
 			int[] temp = new int[end - start];
 			for (int k = start; k < end; k++) {
-				temp[n++] = Math.round(points[k]);
+				temp[n] = Math.round(points[k]);
+				n++;
 			}
 			region.add(temp);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -45,56 +45,28 @@ import java.util.Set;
  */
 public class Animation {
 
-	static class AnimPair {
-
-		final Animator animator;
-		final IFigure figure;
-
-		AnimPair(Animator animator, IFigure figure) {
-			this.animator = animator;
-			this.figure = figure;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (obj == null || getClass() != obj.getClass()) {
-				return false;
-			}
-
-			AnimPair pair = (AnimPair) obj;
-			return pair.animator == animator && pair.figure == figure;
-		}
-
-		@Override
-		public int hashCode() {
-			return animator.hashCode() ^ figure.hashCode();
-		}
+	static record AnimPair(Animator animator, IFigure figure) {
 	}
 
 	private static final int DEFAULT_DELAY = 250;
-	private static Set figureAnimators;
-	private static Map finalStates;
+	private static Set<AnimPair> figureAnimators;
+	private static Map<AnimPair, Object> finalStates;
+	private static Map<AnimPair, Object> initialStates;
 
-	private static Map initialStates;
 	private static final int PLAYBACK = 3;
 	private static float progress;
 	private static final int RECORD_FINAL = 2;
 
 	private static final int RECORD_INITIAL = 1;
-	private static long startTime;
 	private static int state;
-	private static Set toCapture;
+	private static Set<AnimPair> toCapture;
 
 	private static UpdateManager updateManager;
 
 	private static void capture() {
-		Iterator keys = figureAnimators.iterator();
+		Iterator<AnimPair> keys = figureAnimators.iterator();
 		while (keys.hasNext()) {
-			AnimPair pair = (AnimPair) keys.next();
+			AnimPair pair = keys.next();
 			if (toCapture.contains(pair)) {
 				pair.animator.capture(pair.figure);
 			} else {
@@ -105,9 +77,7 @@ public class Animation {
 
 	static void cleanup() {
 		if (figureAnimators != null) {
-			Iterator keys = figureAnimators.iterator();
-			while (keys.hasNext()) {
-				AnimPair pair = (AnimPair) keys.next();
+			for (AnimPair pair : figureAnimators) {
 				pair.animator.tearDown(pair.figure);
 			}
 		}
@@ -132,7 +102,7 @@ public class Animation {
 		capture();
 		state = PLAYBACK;
 		progress = 0.1f;
-		startTime = System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();
 
 		notifyPlaybackStarting();
 
@@ -153,7 +123,7 @@ public class Animation {
 	}
 
 	private static void findUpdateManager() {
-		AnimPair pair = (AnimPair) figureAnimators.iterator().next();
+		AnimPair pair = figureAnimators.iterator().next();
 		updateManager = pair.figure.getUpdateManager();
 	}
 
@@ -241,19 +211,17 @@ public class Animation {
 	public static boolean markBegin() {
 		if (state == 0) {
 			state = RECORD_INITIAL;
-			initialStates = new HashMap();
-			finalStates = new HashMap();
-			figureAnimators = new HashSet();
-			toCapture = new HashSet();
+			initialStates = new HashMap<>();
+			finalStates = new HashMap<>();
+			figureAnimators = new HashSet<>();
+			toCapture = new HashSet<>();
 			return true;
 		}
 		return false;
 	}
 
 	private static void notifyPlaybackStarting() {
-		Iterator keys = figureAnimators.iterator();
-		while (keys.hasNext()) {
-			AnimPair pair = (AnimPair) keys.next();
+		for (AnimPair pair : figureAnimators) {
 			pair.animator.playbackStarting(pair.figure);
 		}
 	}
@@ -296,9 +264,8 @@ public class Animation {
 	}
 
 	private static void step() {
-		Iterator iter = initialStates.keySet().iterator();
-		while (iter.hasNext()) {
-			((AnimPair) iter.next()).figure.revalidate();
+		for (AnimPair element : initialStates.keySet()) {
+			element.figure.revalidate();
 		}
 	}
 
