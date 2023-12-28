@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.parts;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -65,12 +62,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 		createGraphicalViewer(splitter);
 		splitter.maintainSize(getPaletteViewer().getControl());
 		splitter.setFixedSize(getInitialPaletteSize());
-		splitter.addFixedSizeChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				handlePaletteResized(((Splitter) evt.getSource()).getFixedSize());
-			}
-		});
+		splitter.addFixedSizeChangeListener(evt -> handlePaletteResized(((Splitter) evt.getSource()).getFixedSize()));
 	}
 
 	/**

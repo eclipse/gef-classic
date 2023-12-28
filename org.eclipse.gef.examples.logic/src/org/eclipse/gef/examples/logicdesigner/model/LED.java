@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
+import java.util.Arrays;
+
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
@@ -51,10 +53,7 @@ public class LED extends LogicSubpart {
 		PropertyDescriptor pValueProp = new TextPropertyDescriptor(P_VALUE, LogicMessages.PropertyDescriptor_LED_Value);
 		pValueProp.setValidator(LogicNumberCellEditorValidator.instance());
 		if (descriptors != null) {
-			newDescriptors = new IPropertyDescriptor[descriptors.length + 1];
-			for (int i = 0; i < descriptors.length; i++) {
-				newDescriptors[i] = descriptors[i];
-			}
+			newDescriptors = Arrays.copyOf(descriptors, descriptors.length + 1);
 			newDescriptors[descriptors.length] = pValueProp;
 		} else {
 			newDescriptors = new IPropertyDescriptor[] { pValueProp };

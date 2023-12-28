@@ -23,8 +23,6 @@ import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.ChangeEvent;
-import org.eclipse.draw2d.ChangeListener;
 import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.CompoundBorder;
@@ -71,13 +69,15 @@ public class DrawerFigure extends Figure {
 	protected static final Border TOOLTIP_BORDER = new CompoundBorder(new SchemeBorder(SchemeBorder.SCHEMES.RAISED),
 			new MarginBorder(1));
 	private Toggle collapseToggle;
-	private Label drawerLabel, tipLabel;
+	private Label drawerLabel;
+	private Label tipLabel;
 
 	private boolean addedScrollpane = false;
 	private int layoutMode = -1;
 	private PinFigure pinFigure;
 	private ScrollPane scrollpane;
-	private boolean showPin = true, skipNextEvent;
+	private boolean showPin = true;
+	private boolean skipNextEvent;
 	private EditPartTipHelper tipHelper;
 
 	/**
@@ -89,17 +89,13 @@ public class DrawerFigure extends Figure {
 			super(contents);
 			setSelected(true);
 			setRequestFocusEnabled(true);
-			addChangeListener(new ChangeListener() {
-
-				@Override
-				public void handleStateChanged(ChangeEvent e) {
-					if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
-						Animation.markBegin();
-						handleExpandStateChanged();
-						Animation.run(150);
-					} else if (e.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY)) {
-						repaint();
-					}
+			addChangeListener(e -> {
+				if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
+					Animation.markBegin();
+					handleExpandStateChanged();
+					Animation.run(150);
+				} else if (e.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY)) {
+					repaint();
 				}
 			});
 		}
@@ -120,18 +116,18 @@ public class DrawerFigure extends Figure {
 			g.drawLine(r.getTopLeft(), r.getTopRight());
 			g.setForegroundColor(ColorConstants.listBackground);
 			g.drawLine(r.getTopLeft().getTranslated(0, 1), r.getTopRight().getTranslated(0, 1));
-			r.crop(new Insets(2, 0, 0, 0));
+			r.shrink(new Insets(2, 0, 0, 0));
 			if (isExpanded()) {
 				g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_65);
 				g.drawLine(r.getLocation(), r.getTopRight());
-				r.crop(new Insets(1, 0, 0, 0));
+				r.shrink(new Insets(1, 0, 0, 0));
 			}
 
 			// draw bottom border of drawer figure
 			if (!isExpanded()) {
 				g.setForegroundColor(ColorConstants.listBackground);
 				g.drawLine(r.getBottomLeft().getTranslated(0, -1), r.getBottomRight().getTranslated(0, -1));
-				r.crop(new Insets(0, 0, 1, 0));
+				r.shrink(new Insets(0, 0, 1, 0));
 			}
 
 			paintToggleGradient(g, r);
@@ -388,10 +384,10 @@ public class DrawerFigure extends Figure {
 			}
 
 			// collapse all pinnable palette stack children that aren't pinned
-			for (Object child : getContentPane().getChildren()) {
-				if (child instanceof PinnablePaletteStackFigure
-						&& !((PinnablePaletteStackFigure) child).isPinnedOpen()) {
-					((PinnablePaletteStackFigure) child).setExpanded(false);
+			for (IFigure child : getContentPane().getChildren()) {
+				if (child instanceof PinnablePaletteStackFigure pinablePaletteStackFigure
+						&& !pinablePaletteStackFigure.isPinnedOpen()) {
+					pinablePaletteStackFigure.setExpanded(false);
 				}
 			}
 

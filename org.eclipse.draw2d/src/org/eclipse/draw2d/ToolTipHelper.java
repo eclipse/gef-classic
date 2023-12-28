@@ -110,12 +110,7 @@ public class ToolTipHelper extends PopUpHelper {
 			timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
-					Display.getDefault().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							hide();
-						}
-					});
+					Display.getDefault().asyncExec(() -> hide());
 				}
 			}, hideDelay);
 		}

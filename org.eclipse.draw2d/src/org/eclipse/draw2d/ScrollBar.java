@@ -29,6 +29,7 @@ import org.eclipse.draw2d.geometry.Transposer;
  */
 public class ScrollBar extends Figure implements Orientable, PropertyChangeListener {
 
+	private static final String PROPERTY_VALUE = "value"; //$NON-NLS-1$
 	private static final int ORIENTATION_FLAG = Figure.MAX_FLAG << 1;
 	/** @see Figure#MAX_FLAG */
 	protected static final int MAX_FLAG = ORIENTATION_FLAG;
@@ -37,8 +38,10 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	private RangeModel rangeModel = null;
 	private IFigure thumb;
-	private Clickable pageUp, pageDown;
-	private Clickable buttonUp, buttonDown;
+	private Clickable pageUp;
+	private Clickable pageDown;
+	private Clickable buttonUp;
+	private Clickable buttonDown;
 	/**
 	 * Listens to mouse events on the scrollbar to take care of scrolling.
 	 */
@@ -115,14 +118,11 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		clickable.setBackgroundColor(COLOR_TRACK);
 		clickable.setRequestFocusEnabled(false);
 		clickable.setFocusTraversable(false);
-		clickable.addChangeListener(new ChangeListener() {
-			@Override
-			public void handleStateChanged(ChangeEvent evt) {
-				if (clickable.getModel().isArmed()) {
-					clickable.setBackgroundColor(ColorConstants.black);
-				} else {
-					clickable.setBackgroundColor(COLOR_TRACK);
-				}
+		clickable.addChangeListener(evt -> {
+			if (clickable.getModel().isArmed()) {
+				clickable.setBackgroundColor(ColorConstants.black);
+			} else {
+				clickable.setBackgroundColor(COLOR_TRACK);
 			}
 		});
 		return clickable;
@@ -325,23 +325,19 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		if (event.getSource() instanceof RangeModel) {
 			setEnabled(getRangeModel().isEnabled());
 			if (RangeModel.PROPERTY_VALUE.equals(event.getPropertyName())) {
-				firePropertyChange("value", event.getOldValue(), //$NON-NLS-1$
-						event.getNewValue());
+				firePropertyChange(PROPERTY_VALUE, event.getOldValue(), event.getNewValue());
 				revalidate();
 			}
 			if (RangeModel.PROPERTY_MINIMUM.equals(event.getPropertyName())) {
-				firePropertyChange("value", event.getOldValue(), //$NON-NLS-1$
-						event.getNewValue());
+				firePropertyChange(PROPERTY_VALUE, event.getOldValue(), event.getNewValue());
 				revalidate();
 			}
 			if (RangeModel.PROPERTY_MAXIMUM.equals(event.getPropertyName())) {
-				firePropertyChange("value", event.getOldValue(), //$NON-NLS-1$
-						event.getNewValue());
+				firePropertyChange(PROPERTY_VALUE, event.getOldValue(), event.getNewValue());
 				revalidate();
 			}
 			if (RangeModel.PROPERTY_EXTENT.equals(event.getPropertyName())) {
-				firePropertyChange("value", event.getOldValue(), //$NON-NLS-1$
-						event.getNewValue());
+				firePropertyChange(PROPERTY_VALUE, event.getOldValue(), event.getNewValue());
 				revalidate();
 			}
 		}
@@ -382,16 +378,11 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		}
 		buttonDown = down;
 		if (buttonDown != null) {
-			if (buttonDown instanceof Orientable) {
-				((Orientable) buttonDown).setDirection(isHorizontal() ? Orientable.EAST : Orientable.SOUTH);
+			if (buttonDown instanceof Orientable orientable) {
+				orientable.setDirection(isHorizontal() ? Orientable.EAST : Orientable.SOUTH);
 			}
 			buttonDown.setFiringMethod(Clickable.REPEAT_FIRING);
-			buttonDown.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					stepDown();
-				}
-			});
+			buttonDown.addActionListener(e -> stepDown());
 			add(buttonDown, ScrollBarLayout.DOWN_ARROW);
 		}
 	}
@@ -409,16 +400,11 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		}
 		buttonUp = up;
 		if (up != null) {
-			if (up instanceof Orientable) {
-				((Orientable) up).setDirection(isHorizontal() ? Orientable.WEST : Orientable.NORTH);
+			if (up instanceof Orientable orientable) {
+				orientable.setDirection(isHorizontal() ? Orientable.WEST : Orientable.NORTH);
 			}
 			buttonUp.setFiringMethod(Clickable.REPEAT_FIRING);
-			buttonUp.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					stepUp();
-				}
-			});
+			buttonUp.addActionListener(e -> stepUp());
 			add(buttonUp, ScrollBarLayout.UP_ARROW);
 		}
 	}
@@ -532,12 +518,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		pageDown = down;
 		if (pageDown != null) {
 			pageDown.setFiringMethod(Clickable.REPEAT_FIRING);
-			pageDown.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					pageDown();
-				}
-			});
+			pageDown.addActionListener(event -> pageDown());
 			add(down, ScrollBarLayout.PAGE_DOWN);
 		}
 	}
@@ -557,12 +538,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		pageUp = up;
 		if (pageUp != null) {
 			pageUp.setFiringMethod(Clickable.REPEAT_FIRING);
-			pageUp.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					pageUp();
-				}
-			});
+			pageUp.addActionListener(event -> pageUp());
 			add(pageUp, ScrollBarLayout.PAGE_UP);
 		}
 	}
@@ -654,6 +630,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		protected boolean armed;
 
 		public ThumbDragger() {
+			// constructor needed for public access
 		}
 
 		@Override

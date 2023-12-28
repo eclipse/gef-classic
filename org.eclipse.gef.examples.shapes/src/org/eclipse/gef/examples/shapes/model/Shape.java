@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
 
-import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
@@ -53,32 +52,32 @@ public abstract class Shape extends ModelElement {
 	 * ID for the Height property value (used for by the corresponding property
 	 * descriptor).
 	 */
-	private static final String HEIGHT_PROP = "Shape.Height";
+	private static final String HEIGHT_PROP = "Shape.Height"; //$NON-NLS-1$
 	/** Property ID to use when the location of this shape is modified. */
-	public static final String LOCATION_PROP = "Shape.Location";
+	public static final String LOCATION_PROP = "Shape.Location"; //$NON-NLS-1$
 	private static final long serialVersionUID = 1;
 	/** Property ID to use then the size of this shape is modified. */
-	public static final String SIZE_PROP = "Shape.Size";
+	public static final String SIZE_PROP = "Shape.Size"; //$NON-NLS-1$
 	/** Property ID to use when the list of outgoing connections is modified. */
-	public static final String SOURCE_CONNECTIONS_PROP = "Shape.SourceConn";
+	public static final String SOURCE_CONNECTIONS_PROP = "Shape.SourceConn"; //$NON-NLS-1$
 	/** Property ID to use when the list of incoming connections is modified. */
-	public static final String TARGET_CONNECTIONS_PROP = "Shape.TargetConn";
+	public static final String TARGET_CONNECTIONS_PROP = "Shape.TargetConn"; //$NON-NLS-1$
 	/**
 	 * ID for the Width property value (used for by the corresponding property
 	 * descriptor).
 	 */
-	private static final String WIDTH_PROP = "Shape.Width";
+	private static final String WIDTH_PROP = "Shape.Width"; //$NON-NLS-1$
 
 	/**
 	 * ID for the X property value (used for by the corresponding property
 	 * descriptor).
 	 */
-	private static final String XPOS_PROP = "Shape.xPos";
+	private static final String XPOS_PROP = "Shape.xPos"; //$NON-NLS-1$
 	/**
 	 * ID for the Y property value (used for by the corresponding property
 	 * descriptor).
 	 */
-	private static final String YPOS_PROP = "Shape.yPos";
+	private static final String YPOS_PROP = "Shape.yPos"; //$NON-NLS-1$
 
 	/*
 	 * Initializes the property descriptors array.
@@ -90,23 +89,19 @@ public abstract class Shape extends ModelElement {
 	 * @see #setPropertyValue(Object, Object)
 	 */
 	static {
-		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(XPOS_PROP, "X"), // id and
-																								// description pair
+		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(XPOS_PROP, "X"), // id and description pair
 				new TextPropertyDescriptor(YPOS_PROP, "Y"), new TextPropertyDescriptor(WIDTH_PROP, "Width"),
 				new TextPropertyDescriptor(HEIGHT_PROP, "Height"), };
 		// use a custom cell editor validator for all four array entries
 		for (IPropertyDescriptor descriptor : descriptors) {
-			((PropertyDescriptor) descriptor).setValidator(new ICellEditorValidator() {
-				@Override
-				public String isValid(Object value) {
-					int intValue = -1;
-					try {
-						intValue = Integer.parseInt((String) value);
-					} catch (NumberFormatException exc) {
-						return "Not a number";
-					}
-					return (intValue >= 0) ? null : "Value must be >=  0";
+			((PropertyDescriptor) descriptor).setValidator(value -> {
+				int intValue = -1;
+				try {
+					intValue = Integer.parseInt((String) value);
+				} catch (NumberFormatException exc) {
+					return "Not a number";
 				}
+				return (intValue >= 0) ? null : "Value must be >=  0";
 			});
 		}
 	} // static
@@ -122,13 +117,13 @@ public abstract class Shape extends ModelElement {
 	}
 
 	/** Location of this shape. */
-	private Point location = new Point(0, 0);
+	private final Point location = new Point(0, 0);
 	/** Size of this shape. */
-	private Dimension size = new Dimension(50, 50);
+	private final Dimension size = new Dimension(50, 50);
 	/** List of outgoing Connections. */
-	private List<Connection> sourceConnections = new ArrayList<>();
+	private final List<Connection> sourceConnections = new ArrayList<>();
 	/** List of incoming Connections. */
-	private List<Connection> targetConnections = new ArrayList<>();
+	private final List<Connection> targetConnections = new ArrayList<>();
 
 	/**
 	 * Add an incoming or outgoing connection to this shape.

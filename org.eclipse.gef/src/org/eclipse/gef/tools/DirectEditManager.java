@@ -66,7 +66,7 @@ public abstract class DirectEditManager {
 	private CellEditorLocator locator;
 	private GraphicalEditPart source;
 	private CellEditor ce;
-	private Class editorType;
+	private final Class editorType;
 	private boolean committing = false;
 	private Object feature;
 
@@ -153,8 +153,8 @@ public abstract class DirectEditManager {
 	 */
 	protected CellEditor createCellEditorOn(Composite composite) {
 		try {
-			Constructor constructor = editorType.getConstructor(new Class[] { Composite.class });
-			return (CellEditor) constructor.newInstance(new Object[] { composite });
+			Constructor constructor = editorType.getConstructor(Composite.class);
+			return (CellEditor) constructor.newInstance(composite);
 		} catch (Exception e) {
 			return null;
 		}
@@ -269,17 +269,10 @@ public abstract class DirectEditManager {
 		controlListener = new ControlAdapter() {
 			@Override
 			public void controlMoved(ControlEvent e) {
-				// This must be handled async because during scrolling, the
-				// CellEditor moves
-				// first, but then afterwards the viewport Scrolls, which would
-				// cause the
-				// shadow to move twice
-				Display.getCurrent().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						placeCellEditorFrame();
-					}
-				});
+				// This must be handled async because during scrolling, the CellEditor moves
+				// first, but then afterwards the viewport Scrolls, which would cause the shadow
+				// to move twice
+				Display.getCurrent().asyncExec(() -> placeCellEditorFrame());
 			}
 
 			@Override

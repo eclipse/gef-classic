@@ -24,7 +24,6 @@ import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.zest.layouts.constraints.BasicEdgeConstraints;
-import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * This snippet shows how to use the findFigureAt to get the figure under the
@@ -59,20 +58,16 @@ public class LayoutExample {
 
 		SpringLayoutAlgorithm springLayoutAlgorithm = new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 
-		ConstraintAdapter constraintAdapters = new ConstraintAdapter() {
-
-			@Override
-			public void populateConstraint(Object object, LayoutConstraint constraint) {
-				if (constraint instanceof BasicEdgeConstraints basicEdgeConstraints) {
-					GraphConnection connection = (GraphConnection) object;
-					if (connection.getSource().getText().equals("Root")) {
-						basicEdgeConstraints.weight = 1;
-					} else {
-						basicEdgeConstraints.weight = -1;
-					}
+		ConstraintAdapter constraintAdapters = (object, constraint) -> {
+			if (constraint instanceof BasicEdgeConstraints basicEdgeConstraints) {
+				GraphConnection connection = (GraphConnection) object;
+				if (connection.getSource().getText().equals("Root")) {
+					basicEdgeConstraints.weight = 1;
+				} else {
+					basicEdgeConstraints.weight = -1;
 				}
-
 			}
+
 		};
 
 		g.addConstraintAdapter(constraintAdapters);

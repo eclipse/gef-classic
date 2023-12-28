@@ -42,19 +42,14 @@ public class EditDomain {
 	private PaletteViewer paletteViewer;
 	private PaletteRoot paletteRoot;
 	private Tool activeTool;
-	private List viewers = new ArrayList();
+	private final List<EditPartViewer> viewers = new ArrayList<>();
 	private CommandStack commandStack = new CommandStack();
 
 	/**
 	 * Listens to the PaletteViewer for changes in selection, and sets the Domain's
 	 * Tool accordingly.
 	 */
-	private PaletteListener paletteListener = new PaletteListener() {
-		@Override
-		public void activeToolChanged(PaletteViewer viewer, ToolEntry tool) {
-			handlePaletteToolChanged();
-		}
-	};
+	private final PaletteListener paletteListener = (viewer, tool) -> handlePaletteToolChanged();
 
 	/**
 	 * Constructs an EditDomain and loads the default tool.
@@ -210,9 +205,8 @@ public class EditDomain {
 			if (paletteRoot.getDefaultEntry() != null) {
 				paletteViewer.setActiveTool(paletteRoot.getDefaultEntry());
 				return;
-			} else {
-				paletteViewer.setActiveTool(null);
 			}
+			paletteViewer.setActiveTool(null);
 		}
 		setActiveTool(getDefaultTool());
 	}

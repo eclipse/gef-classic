@@ -12,11 +12,8 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.palette;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -27,8 +24,6 @@ import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -55,8 +50,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
@@ -72,8 +65,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.XMLMemento;
 
-import org.eclipse.draw2d.ActionEvent;
-import org.eclipse.draw2d.ActionListener;
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ButtonBorder;
@@ -136,14 +127,14 @@ public class FlyoutPaletteComposite extends Composite {
 	 */
 	public static final int STATE_PINNED_OPEN = 4;
 
-	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-	private Composite paletteContainer;
+	private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+	private final Composite paletteContainer;
 	private PaletteViewer pViewer, externalViewer;
 	private IMemento capturedPaletteState;
 	private Control graphicalControl;
-	private Composite sash;
-	private PaletteViewerProvider provider;
-	private FlyoutPreferences prefs;
+	private final Composite sash;
+	private final PaletteViewerProvider provider;
+	private final FlyoutPreferences prefs;
 	private Point cachedBounds = new Point(0, 0);
 	/*
 	 * Fix for Bug# 71525 transferFocus is used to transfer focus from the button in
@@ -201,33 +192,27 @@ public class FlyoutPaletteComposite extends Composite {
 		setDockLocation(prefs.getDockLocation());
 		updateState(page);
 
-		addListener(SWT.Resize, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				Rectangle area = getClientArea();
-				/*
-				 * @TODO:Pratik Sometimes, the editor is resized to 1,1 or 0,0 (depending on the
-				 * platform) when the editor is closed or maximized. We have to ignore such
-				 * resizes. See Bug# 62748
-				 */
-				if (area.width > minWidth) {
-					layout(true);
-				}
+		addListener(SWT.Resize, event -> {
+			Rectangle area = getClientArea();
+			/*
+			 * @TODO:Pratik Sometimes, the editor is resized to 1,1 or 0,0 (depending on the
+			 * platform) when the editor is closed or maximized. We have to ignore such
+			 * resizes. See Bug# 62748
+			 */
+			if (area.width > minWidth) {
+				layout(true);
 			}
 		});
 
-		listeners.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				String property = evt.getPropertyName();
-				if (property.equals(PROPERTY_PALETTE_WIDTH)) {
-					prefs.setPaletteWidth(paletteWidth);
-				} else if (property.equals(PROPERTY_DOCK_LOCATION)) {
-					prefs.setDockLocation(dock);
-				} else if (property.equals(PROPERTY_STATE)) {
-					if (paletteState == STATE_COLLAPSED || paletteState == STATE_PINNED_OPEN) {
-						prefs.setPaletteState(paletteState);
-					}
+		listeners.addPropertyChangeListener(evt -> {
+			String property = evt.getPropertyName();
+			if (property.equals(PROPERTY_PALETTE_WIDTH)) {
+				prefs.setPaletteWidth(paletteWidth);
+			} else if (property.equals(PROPERTY_DOCK_LOCATION)) {
+				prefs.setDockLocation(dock);
+			} else if (property.equals(PROPERTY_STATE)) {
+				if (paletteState == STATE_COLLAPSED || paletteState == STATE_PINNED_OPEN) {
+					prefs.setPaletteState(paletteState);
 				}
 			}
 		});
@@ -244,7 +229,7 @@ public class FlyoutPaletteComposite extends Composite {
 		}
 	}
 
-	private IMemento capturePaletteState(PaletteViewer viewer) {
+	private static IMemento capturePaletteState(PaletteViewer viewer) {
 		IMemento memento = XMLMemento.createWriteRoot("paletteState"); //$NON-NLS-1$
 		try {
 			viewer.saveState(memento);
@@ -318,7 +303,7 @@ public class FlyoutPaletteComposite extends Composite {
 	}
 
 	// Will return false if the ancestor or descendant is null
-	private boolean isDescendantOf(Control ancestor, Control descendant) {
+	private static boolean isDescendantOf(Control ancestor, Control descendant) {
 		if (ancestor == null || descendant == null) {
 			return false;
 		}
@@ -364,7 +349,8 @@ public class FlyoutPaletteComposite extends Composite {
 		 * Fix for Bug# 65892 Laying out only when necessary helps reduce flicker on GTK
 		 * in the case where the flyout palette is being resized past its maximum size.
 		 */
-		if (paletteState == cachedState && pWidth == cachedSize && cachedLocation == dock && cachedBounds == getSize()) {
+		if (paletteState == cachedState && pWidth == cachedSize && cachedLocation == dock
+				&& cachedBounds == getSize()) {
 			return;
 		}
 		cachedState = paletteState;
@@ -443,12 +429,9 @@ public class FlyoutPaletteComposite extends Composite {
 
 	private void hookIntoWorkbench(final IWorkbenchWindow window) {
 		window.addPerspectiveListener(perspectiveListener);
-		addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				window.removePerspectiveListener(perspectiveListener);
-				perspectiveListener = null;
-			}
+		addDisposeListener(e -> {
+			window.removePerspectiveListener(perspectiveListener);
+			perspectiveListener = null;
 		});
 	}
 
@@ -521,22 +504,16 @@ public class FlyoutPaletteComposite extends Composite {
 		Assert.isTrue(graphicalViewer.getParent() == this);
 		Assert.isTrue(graphicalControl == null);
 		graphicalControl = graphicalViewer;
-		addListenerToCtrlHierarchy(graphicalControl, SWT.MouseEnter, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				if (!isInState(STATE_EXPANDED)) {
-					return;
-				}
-				Display.getCurrent().timerExec(250, new Runnable() {
-					@Override
-					public void run() {
-						if (isDescendantOf(graphicalControl, Display.getCurrent().getCursorControl())
-								&& isInState(STATE_EXPANDED)) {
-							setState(STATE_COLLAPSED);
-						}
-					}
-				});
+		addListenerToCtrlHierarchy(graphicalControl, SWT.MouseEnter, event -> {
+			if (!isInState(STATE_EXPANDED)) {
+				return;
 			}
+			Display.getCurrent().timerExec(250, () -> {
+				if (isDescendantOf(graphicalControl, Display.getCurrent().getCursorControl())
+						&& isInState(STATE_EXPANDED)) {
+					setState(STATE_COLLAPSED);
+				}
+			});
 		});
 	}
 
@@ -614,9 +591,7 @@ public class FlyoutPaletteComposite extends Composite {
 		int oldState = paletteState;
 		paletteState = newState;
 		switch (paletteState) {
-		case STATE_EXPANDED:
-		case STATE_COLLAPSED:
-		case STATE_PINNED_OPEN:
+		case STATE_EXPANDED, STATE_COLLAPSED, STATE_PINNED_OPEN:
 			if (pViewer == null) {
 				pViewer = provider.createPaletteViewer(paletteContainer);
 				if (externalViewer != null) {
@@ -741,7 +716,7 @@ public class FlyoutPaletteComposite extends Composite {
 	}
 
 	private class Sash extends Composite {
-		private Control button;
+		private final Control button;
 
 		public Sash(Composite parent, int style) {
 			super(parent, style);
@@ -757,26 +732,13 @@ public class FlyoutPaletteComposite extends Composite {
 				}
 			});
 
-			addListener(SWT.Paint, new Listener() {
-				@Override
-				public void handleEvent(Event event) {
-					paintSash(event.gc);
-				}
-			});
+			addListener(SWT.Paint, event -> paintSash(event.gc));
 
-			addListener(SWT.Resize, new Listener() {
-				@Override
-				public void handleEvent(Event event) {
-					layout(true);
-				}
-			});
+			addListener(SWT.Resize, event -> layout(true));
 
-			listeners.addPropertyChangeListener(new PropertyChangeListener() {
-				@Override
-				public void propertyChange(PropertyChangeEvent evt) {
-					if (evt.getPropertyName().equals(PROPERTY_STATE)) {
-						updateState();
-					}
+			listeners.addPropertyChangeListener(evt -> {
+				if (evt.getPropertyName().equals(PROPERTY_STATE)) {
+					updateState();
 				}
 			});
 		}
@@ -964,64 +926,56 @@ public class FlyoutPaletteComposite extends Composite {
 			final Tracker tracker = new Tracker(Display.getDefault(), SWT.NULL);
 			tracker.setRectangles(new Rectangle[] { origBounds });
 			tracker.setStippled(true);
-			tracker.addListener(SWT.Move, new Listener() {
-				@Override
-				public void handleEvent(final Event evt) {
-					Display.getCurrent().syncExec(new Runnable() {
-						@Override
-						public void run() {
-							Control ctrl = Display.getCurrent().getCursorControl();
-							Point pt = flyout.toControl(evt.x, evt.y);
-							switchDock = isDescendantOf(graphicalControl, ctrl)
-									&& ((dock == PositionConstants.WEST && pt.x > threshold - 10)
-											|| (dock == PositionConstants.EAST && pt.x < threshold + 10));
-							boolean invalid = false;
-							if (!switchDock) {
-								invalid = !isDescendantOf(FlyoutPaletteComposite.this, ctrl);
-							}
-							if (switchDock) {
-								if (dock == PositionConstants.WEST) {
-									threshold = Math.max(threshold, pt.x);
-									threshold = Math.min(threshold, switchThreshold);
-								} else {
-									threshold = Math.min(threshold, pt.x);
-									threshold = Math.max(threshold, switchThreshold);
-								}
-							}
-							Rectangle placeHolder = origBounds;
-							if (switchDock) {
-								if (dock == PositionConstants.EAST) {
-									placeHolder = new Rectangle(0, 0, origBounds.width, origBounds.height);
-								} else {
-									placeHolder = new Rectangle(flyoutBounds.width - origBounds.width, 0,
-											origBounds.width, origBounds.height);
-								}
-								placeHolder = Display.getCurrent().map(flyout, null, placeHolder);
-							}
-							// update the cursor
-							int cursor;
-							if (invalid) {
-								cursor = DragCursors.INVALID;
-							} else if ((!switchDock && dock == PositionConstants.EAST)
-									|| (switchDock && dock == PositionConstants.WEST)) {
-								cursor = DragCursors.RIGHT;
-							} else {
-								cursor = DragCursors.LEFT;
-							}
-							if (isMirrored()) {
-								if (cursor == DragCursors.RIGHT) {
-									cursor = DragCursors.LEFT;
-								} else if (cursor == DragCursors.LEFT) {
-									cursor = DragCursors.RIGHT;
-								}
-							}
-							tracker.setCursor(DragCursors.getCursor(cursor));
-							// update the rectangle only if it has changed
-							if (!tracker.getRectangles()[0].equals(placeHolder)) {
-								tracker.setRectangles(new Rectangle[] { placeHolder });
-							}
-						}
-					});
+			tracker.addListener(SWT.Move, evt -> {
+				Control ctrl = Display.getCurrent().getCursorControl();
+				Point pt = flyout.toControl(evt.x, evt.y);
+				switchDock = isDescendantOf(graphicalControl, ctrl)
+						&& ((dock == PositionConstants.WEST && pt.x > threshold - 10)
+								|| (dock == PositionConstants.EAST && pt.x < threshold + 10));
+				boolean invalid = false;
+				if (!switchDock) {
+					invalid = !isDescendantOf(FlyoutPaletteComposite.this, ctrl);
+				}
+				if (switchDock) {
+					if (dock == PositionConstants.WEST) {
+						threshold = Math.max(threshold, pt.x);
+						threshold = Math.min(threshold, switchThreshold);
+					} else {
+						threshold = Math.min(threshold, pt.x);
+						threshold = Math.max(threshold, switchThreshold);
+					}
+				}
+				Rectangle placeHolder = origBounds;
+				if (switchDock) {
+					if (dock == PositionConstants.EAST) {
+						placeHolder = new Rectangle(0, 0, origBounds.width, origBounds.height);
+					} else {
+						placeHolder = new Rectangle(flyoutBounds.width - origBounds.width, 0, origBounds.width,
+								origBounds.height);
+					}
+					placeHolder = Display.getCurrent().map(flyout, null, placeHolder);
+				}
+				// update the cursor
+				int cursor;
+				if (invalid) {
+					cursor = DragCursors.INVALID;
+				} else if ((!switchDock && dock == PositionConstants.EAST)
+						|| (switchDock && dock == PositionConstants.WEST)) {
+					cursor = DragCursors.RIGHT;
+				} else {
+					cursor = DragCursors.LEFT;
+				}
+				if (isMirrored()) {
+					if (cursor == DragCursors.RIGHT) {
+						cursor = DragCursors.LEFT;
+					} else if (cursor == DragCursors.LEFT) {
+						cursor = DragCursors.RIGHT;
+					}
+				}
+				tracker.setCursor(DragCursors.getCursor(cursor));
+				// update the rectangle only if it has changed
+				if (!tracker.getRectangles()[0].equals(placeHolder)) {
+					tracker.setRectangles(new Rectangle[] { placeHolder });
 				}
 			});
 			if (tracker.open()) {
@@ -1075,25 +1029,17 @@ public class FlyoutPaletteComposite extends Composite {
 			super(parent, style);
 			createComponents();
 
-			listeners.addPropertyChangeListener(new PropertyChangeListener() {
-				@Override
-				public void propertyChange(PropertyChangeEvent evt) {
-					if (evt.getPropertyName().equals(PROPERTY_STATE)) {
-						updateState();
-					} else if (evt.getPropertyName().equals(PROPERTY_DOCK_LOCATION)) {
-						if (getVisible()) {
-							layout(true);
-						}
+			listeners.addPropertyChangeListener(evt -> {
+				if (evt.getPropertyName().equals(PROPERTY_STATE)) {
+					updateState();
+				} else if (evt.getPropertyName().equals(PROPERTY_DOCK_LOCATION)) {
+					if (getVisible()) {
+						layout(true);
 					}
 				}
 			});
 
-			addListener(SWT.Resize, new Listener() {
-				@Override
-				public void handleEvent(Event event) {
-					layout(true);
-				}
-			});
+			addListener(SWT.Resize, event -> layout(true));
 
 			updateState();
 		}
@@ -1242,26 +1188,20 @@ public class FlyoutPaletteComposite extends Composite {
 			final ArrowButton b = new ArrowButton(getArrowDirection());
 			b.setRolloverEnabled(true);
 			b.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
-			b.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					transferFocus = true;
-					if (isInState(STATE_COLLAPSED)) {
-						setState(STATE_PINNED_OPEN);
-					} else {
-						setState(STATE_COLLAPSED);
-					}
+			b.addActionListener(event -> {
+				transferFocus = true;
+				if (isInState(STATE_COLLAPSED)) {
+					setState(STATE_PINNED_OPEN);
+				} else {
+					setState(STATE_COLLAPSED);
 				}
 			});
-			listeners.addPropertyChangeListener(new PropertyChangeListener() {
-				@Override
-				public void propertyChange(PropertyChangeEvent evt) {
-					if (evt.getPropertyName().equals(PROPERTY_STATE)) {
-						b.setDirection(getArrowDirection());
-						setToolTipText(getButtonTooltipText());
-					} else if (evt.getPropertyName().equals(PROPERTY_DOCK_LOCATION)) {
-						b.setDirection(getArrowDirection());
-					}
+			listeners.addPropertyChangeListener(evt -> {
+				if (evt.getPropertyName().equals(PROPERTY_STATE)) {
+					b.setDirection(getArrowDirection());
+					setToolTipText(getButtonTooltipText());
+				} else if (evt.getPropertyName().equals(PROPERTY_DOCK_LOCATION)) {
+					b.setDirection(getArrowDirection());
 				}
 			});
 			lws.setContents(b);
@@ -1294,7 +1234,7 @@ public class FlyoutPaletteComposite extends Composite {
 
 		private class ArrowButton extends Button {
 
-			private Triangle triangle;
+			private final Triangle triangle;
 
 			/**
 			 * Creates a new instance
@@ -1303,7 +1243,6 @@ public class FlyoutPaletteComposite extends Composite {
 			 *                  or PositionConstants.LEFT)
 			 */
 			public ArrowButton(int direction) {
-				super();
 				setDirection(direction);
 
 				triangle = new Triangle();
@@ -1396,22 +1335,16 @@ public class FlyoutPaletteComposite extends Composite {
 			manager.add(new ResizeAction());
 			manager.add(mgr);
 			setMenu(manager.createContextMenu(this));
-			mgr.addMenuListener(new IMenuListener() {
-				@Override
-				public void menuAboutToShow(IMenuManager menuMgr) {
-					IContributionItem[] items = menuMgr.getItems();
-					for (IContributionItem item : items) {
-						((ActionContributionItem) item).update();
-					}
+			mgr.addMenuListener(menuMgr -> {
+				IContributionItem[] items = menuMgr.getItems();
+				for (IContributionItem item : items) {
+					((ActionContributionItem) item).update();
 				}
 			});
 
-			addDisposeListener(new DisposeListener() {
-				@Override
-				public void widgetDisposed(DisposeEvent e) {
-					FONT_MGR.unregister(TitleCanvas.this);
-					manager.dispose();
-				}
+			addDisposeListener(e -> {
+				FONT_MGR.unregister(TitleCanvas.this);
+				manager.dispose();
 			});
 		}
 
@@ -1457,7 +1390,7 @@ public class FlyoutPaletteComposite extends Composite {
 	}
 
 	private class ChangeDockAction extends Action {
-		private int position;
+		private final int position;
 
 		/**
 		 * Constructor
@@ -1495,14 +1428,11 @@ public class FlyoutPaletteComposite extends Composite {
 
 	private static class FontManager {
 		private final String fontName = getFontType();
-		private List registrants = new ArrayList();
+		private final List<Control> registrants = new ArrayList<>();
 		private Font titleFont;
-		private final IPropertyChangeListener fontListener = new IPropertyChangeListener() {
-			@Override
-			public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
-				if (fontName.equals(event.getProperty())) {
-					handleFontChanged();
-				}
+		private final IPropertyChangeListener fontListener = event -> {
+			if (fontName.equals(event.getProperty())) {
+				handleFontChanged();
 			}
 		};
 
@@ -1528,9 +1458,7 @@ public class FlyoutPaletteComposite extends Composite {
 			}
 			Font oldFont = titleFont;
 			titleFont = createTitleFont();
-			for (Iterator iter = registrants.iterator(); iter.hasNext();) {
-				((Control) iter.next()).setFont(titleFont);
-			}
+			registrants.forEach(registrant -> registrant.setFont(titleFont));
 			oldFont.dispose();
 		}
 
@@ -1571,7 +1499,7 @@ public class FlyoutPaletteComposite extends Composite {
 		private static final String PALETTE_SIZE = "org.eclipse.gef.psize"; //$NON-NLS-1$
 		private static final String PALETTE_STATE = "org.eclipse.gef.pstate"; //$NON-NLS-1$
 
-		private Preferences prefs;
+		private final Preferences prefs;
 
 		private DefaultFlyoutPreferences(Preferences preferences) {
 			prefs = preferences;

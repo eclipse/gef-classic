@@ -13,6 +13,7 @@
 package org.eclipse.zest.layouts.exampleUses;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -21,11 +22,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -54,6 +52,7 @@ import org.eclipse.zest.layouts.LayoutBendPoint;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.AbstractLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
@@ -83,72 +82,49 @@ public class SimpleSWTExample {
 	private static final Color RELATIONSHIP_COLOR = new Color(Display.getDefault(), 192, 192, 225);
 	private static final Color RELATIONSHIP_HIGHLIGHT_COLOR = new Color(Display.getDefault(), 255, 200, 125);
 
-	private static final String[] NAMES = new String[] { "Peggy", "Rob", "Ian", "Chris", "Simon", "Wendy", "Steven",
-			"Kim", "Neil", "Dave", "John", "Suzanne", "Jody", "Casey", "Bjorn", "Peter", "Erin", "Lisa", "Jennie",
-			"Liz", "Bert", "Ryan", "Nick", "Amy", "Lee", "Me", "You", "Max", "NCI", "OWL", "Ed", "Jamie", "Protege",
-			"Matt", "Bryan", "Pete", "Sam", "Bob", "Katie", "Bill", "Josh", "Davor", "Ken", "Jacob", "Norm", "Jim",
-			"Maya", "Jill", "Kit", "Jo", "Joe", "Andrew", "Charles", "Pat", "Patrick", "Jeremy", "Mike", "Michael",
-			"Patricia", "Marg", "Terry", "Emily", "Ben", "Holly", "Joanna", "Joanne", "Evan", "Tom", "Dan", "Eric",
-			"Corey", "Meghan", "Kevin", "Nina", "Ron", "Daniel", "David", "Jeff", "Nathan", "Amanda", "Phil", "Tricia",
-			"Steph", "Stewart", "Stuart", "Bull", "Lintern", "Callendar", "Thompson", "Rigby", "Adam", "Judith",
-			"Cynthia", "Sarah", "Sara", "Roger", "Andy", "Kris", "Mark", "Shane", "Spence", "Ivy", "Ivanna", "Julie",
-			"Justin", "Emile", "Toby", "Robin", "Rich", "Kathy", "Cathy", "Nicky", "Ricky", "Danny", "Anne", "Ann",
-			"Jen", "Robert", "Calvin", "Alvin", "Scott", "Kumar" };
-
-	// private static final boolean RENDER_HIGH_QUALITY = true;
+	@SuppressWarnings("nls")
+	private static final String[] NAMES = { "Peggy", "Rob", "Ian", "Chris", "Simon", "Wendy", "Steven", "Kim", "Neil",
+			"Dave", "John", "Suzanne", "Jody", "Casey", "Bjorn", "Peter", "Erin", "Lisa", "Jennie", "Liz", "Bert",
+			"Ryan", "Nick", "Amy", "Lee", "Me", "You", "Max", "NCI", "OWL", "Ed", "Jamie", "Protege", "Matt", "Bryan",
+			"Pete", "Sam", "Bob", "Katie", "Bill", "Josh", "Davor", "Ken", "Jacob", "Norm", "Jim", "Maya", "Jill",
+			"Kit", "Jo", "Joe", "Andrew", "Charles", "Pat", "Patrick", "Jeremy", "Mike", "Michael", "Patricia", "Marg",
+			"Terry", "Emily", "Ben", "Holly", "Joanna", "Joanne", "Evan", "Tom", "Dan", "Eric", "Corey", "Meghan",
+			"Kevin", "Nina", "Ron", "Daniel", "David", "Jeff", "Nathan", "Amanda", "Phil", "Tricia", "Steph", "Stewart",
+			"Stuart", "Bull", "Lintern", "Callendar", "Thompson", "Rigby", "Adam", "Judith", "Cynthia", "Sarah", "Sara",
+			"Roger", "Andy", "Kris", "Mark", "Shane", "Spence", "Ivy", "Ivanna", "Julie", "Justin", "Emile", "Toby",
+			"Robin", "Rich", "Kathy", "Cathy", "Nicky", "Ricky", "Danny", "Anne", "Ann", "Jen", "Robert", "Calvin",
+			"Alvin", "Scott", "Kumar" };
 
 	private static final int INITIAL_PANEL_WIDTH = 800;
 	private static final int INITIAL_PANEL_HEIGHT = 600;
 	private static final double INITIAL_NODE_WIDTH = 20;
 	private static final double INITIAL_NODE_HEIGHT = 15;
 
-	protected static ArrayList algorithms = new ArrayList();
-	{
-		algorithms.add(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
-		algorithms.add(new TreeLayoutAlgorithm(LayoutStyles.NONE));
-		algorithms.add(new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE));
-		algorithms.add(new RadialLayoutAlgorithm(LayoutStyles.NONE));
-		algorithms.add(new GridLayoutAlgorithm(LayoutStyles.NONE));
-		algorithms.add(new HorizontalLayoutAlgorithm(LayoutStyles.NONE));
-		algorithms.add(new VerticalLayoutAlgorithm(LayoutStyles.NONE));
-	}
+	protected static ArrayList<AbstractLayoutAlgorithm> algorithms = new ArrayList<>(
+			Arrays.asList(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING),
+					new TreeLayoutAlgorithm(LayoutStyles.NONE), new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE),
+					new RadialLayoutAlgorithm(LayoutStyles.NONE), new GridLayoutAlgorithm(LayoutStyles.NONE),
+					new HorizontalLayoutAlgorithm(LayoutStyles.NONE), new VerticalLayoutAlgorithm(LayoutStyles.NONE)));
 
-	protected static ArrayList algorithmNames = new ArrayList();
-	{
-		algorithmNames.add("Spring");
-		algorithmNames.add("Fade");
-		algorithmNames.add("Tree - V");
-		algorithmNames.add("Tree - H");
-		algorithmNames.add("Radial");
-		algorithmNames.add("Grid");
-		algorithmNames.add("Horizontal");
-		algorithmNames.add("Vertical");
-	}
+	@SuppressWarnings("nls")
+	protected static ArrayList<String> algorithmNames = new ArrayList<>(
+			Arrays.asList("Spring", "Fade", "Tree - V", "Tree - H", "Radial", "Grid", "Horizontal", "Vertical"));
 
-	protected static ArrayList algorithmAnimates = new ArrayList();
-	{
-		algorithmAnimates.add(Boolean.TRUE);
-		algorithmAnimates.add(Boolean.TRUE);
-		algorithmAnimates.add(Boolean.FALSE);
-		algorithmAnimates.add(Boolean.FALSE);
-		algorithmAnimates.add(Boolean.FALSE);
-		algorithmAnimates.add(Boolean.FALSE);
-		algorithmAnimates.add(Boolean.FALSE);
-		algorithmAnimates.add(Boolean.FALSE);
-	}
+	protected static ArrayList<Boolean> algorithmAnimates = new ArrayList<>(Arrays.asList(Boolean.TRUE, Boolean.TRUE,
+			Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE));
 
 	// private long updateGUICount = 0;
 	private boolean animate = true;
 	private static boolean continuous = false;
 	private static boolean asynchronously = false;
 
-	private Shell mainShell;
+	private final Shell mainShell;
 	private Composite mainComposite;
 	private List entities;
 	private List relationships;
 
-	private ToolBar toolBar;
-	private Label lblProgress;
+	private final ToolBar toolBar;
+	private final Label lblProgress;
 
 	private LayoutAlgorithm currentLayoutAlgorithm;
 	protected SimpleNode selectedEntity;
@@ -161,9 +137,11 @@ public class SimpleSWTExample {
 	public SimpleSWTExample(Display display) {
 		mainShell = new Shell(display);
 		mainShell.addControlListener(new ControlListener() {
+			@Override
 			public void controlMoved(ControlEvent e) {
 			}
 
+			@Override
 			public void controlResized(ControlEvent e) {
 				mainShell.layout(true);
 			}
@@ -181,18 +159,19 @@ public class SimpleSWTExample {
 		progressGridData.widthHint = 300;
 		lblProgress = new Label(mainShell, SWT.NONE);
 		lblProgress.setLayoutData(progressGridData);
-		lblProgress.setText("Progress: ");
+		lblProgress.setText("Progress: "); //$NON-NLS-1$
 
 		for (int i = 0; i < algorithms.size(); i++) {
-			final LayoutAlgorithm algorithm = (LayoutAlgorithm) algorithms.get(i);
-			String algorithmName = (String) algorithmNames.get(i);
-			final boolean algorithmAnimate = ((Boolean) algorithmAnimates.get(i)).booleanValue();
+			final LayoutAlgorithm algorithm = algorithms.get(i);
+			String algorithmName = algorithmNames.get(i);
+			final boolean algorithmAnimate = algorithmAnimates.get(i).booleanValue();
 			ToolItem algorithmButton = new ToolItem(toolBar, SWT.PUSH);
 			algorithmButton.setText(algorithmName);
 
 			new ToolItem(toolBar, SWT.SEPARATOR);
 
 			algorithmButton.addSelectionListener(new SelectionListener() {
+				@Override
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					currentLayoutAlgorithm = algorithm;
 					algorithm.setEntityAspectRatio((double) mainComposite.getClientArea().width
@@ -201,51 +180,60 @@ public class SimpleSWTExample {
 					performLayout(false);
 				}
 
+				@Override
 				public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 				}
 			});
 		}
 
 		ToolItem redrawButton = new ToolItem(toolBar, SWT.PUSH);
-		redrawButton.setText("Redraw");
+		redrawButton.setText("Redraw"); //$NON-NLS-1$
 		redrawButton.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				mainComposite.redraw();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 
 		ToolItem stopButton = new ToolItem(toolBar, SWT.PUSH);
-		stopButton.setText("Stop");
+		stopButton.setText("Stop"); //$NON-NLS-1$
 		stopButton.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				currentLayoutAlgorithm.stop();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 
 		ToolItem continuousButton = new ToolItem(toolBar, SWT.CHECK);
-		continuousButton.setText("Continuous");
+		continuousButton.setText("Continuous"); //$NON-NLS-1$
 		continuousButton.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				setContinuous();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 
 		ToolItem asynchronousButton = new ToolItem(toolBar, SWT.CHECK);
-		asynchronousButton.setText("Asynchronous");
+		asynchronousButton.setText("Asynchronous"); //$NON-NLS-1$
 		asynchronousButton.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				setAsynchronously();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
@@ -287,7 +275,7 @@ public class SimpleSWTExample {
 		}
 
 		if (currentLayoutAlgorithm.isRunning()) {
-			throw new RuntimeException("Layout is already running");
+			throw new RuntimeException("Layout is already running"); //$NON-NLS-1$
 		}
 		if (placeRandomly) {
 			placeRandomly();
@@ -304,7 +292,7 @@ public class SimpleSWTExample {
 				public static final int UPDATE_GUI = 4;
 
 				private int progressState = -1;
-				private ProgressEvent e;
+				private final ProgressEvent e;
 
 				public progressSync(int progressState, final ProgressEvent e) {
 					this.progressState = progressState;
@@ -312,6 +300,7 @@ public class SimpleSWTExample {
 
 				}
 
+				@Override
 				public void run() {
 
 					switch (progressState) {
@@ -320,7 +309,7 @@ public class SimpleSWTExample {
 							pmd = new ProgressMonitorDialog(getShell());
 							progressMonitor = pmd.getProgressMonitor();
 							pmd.open();
-							progressMonitor.beginTask("Layout Running...", e.getTotalNumberOfSteps());
+							progressMonitor.beginTask("Layout Running...", e.getTotalNumberOfSteps()); //$NON-NLS-1$
 						}
 						break;
 
@@ -350,6 +339,7 @@ public class SimpleSWTExample {
 
 			}
 
+			@Override
 			public void progressUpdated(final ProgressEvent e) {
 				if (asynchronously) {
 					if (!mainComposite.isDisposed()) {
@@ -367,6 +357,7 @@ public class SimpleSWTExample {
 
 			}
 
+			@Override
 			public void progressStarted(ProgressEvent e) {
 				if (asynchronously) {
 					if (!mainComposite.isDisposed()) {
@@ -380,6 +371,7 @@ public class SimpleSWTExample {
 
 			}
 
+			@Override
 			public void progressEnded(ProgressEvent e) {
 				if (asynchronously) {
 					if (!mainComposite.isDisposed()) {
@@ -427,43 +419,41 @@ public class SimpleSWTExample {
 		mainComposite.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
 		mainComposite.setLayout(null);
 
-		mainComposite.addMouseMoveListener(new MouseMoveListener() {
+		mainComposite.addMouseMoveListener(e -> {
 
-			public void mouseMove(MouseEvent e) {
+			if (selectedEntity == null) {
+				// Nothing selected, lets use a mouse hover
+				SimpleNode oldEntity = hoverEntity;
+				hoverEntity = null;
 
-				if (selectedEntity == null) {
-					// Nothing selected, lets use a mouse hover
-					SimpleNode oldEntity = hoverEntity;
-					hoverEntity = null;
-
-					for (Iterator iter = entities.iterator(); iter.hasNext() && selectedEntity == null;) {
-						SimpleNode entity = (SimpleNode) iter.next();
-						double x = entity.getX();
-						double y = entity.getY();
-						double w = entity.getWidth();
-						double h = entity.getHeight();
-						Rectangle rect = new Rectangle((int) x, (int) y, (int) w, (int) h);
-						if (rect.contains(e.x, e.y)) {
-							hoverEntity = entity;
-							hoverEntity.ignoreInLayout(true);
-							hoverEntity.setSelected();
-							break;
-						}
-					}
-					if (oldEntity != null && oldEntity != hoverEntity) {
-						oldEntity.ignoreInLayout(false);
-						oldEntity.setUnSelected();
+				for (Iterator iter = entities.iterator(); iter.hasNext() && selectedEntity == null;) {
+					SimpleNode entity = (SimpleNode) iter.next();
+					double x = entity.getX();
+					double y = entity.getY();
+					double w = entity.getWidth();
+					double h = entity.getHeight();
+					Rectangle rect = new Rectangle((int) x, (int) y, (int) w, (int) h);
+					if (rect.contains(e.x, e.y)) {
+						hoverEntity = entity;
+						hoverEntity.ignoreInLayout(true);
+						hoverEntity.setSelected();
+						break;
 					}
 				}
-
+				if (oldEntity != null && oldEntity != hoverEntity) {
+					oldEntity.ignoreInLayout(false);
+					oldEntity.setUnSelected();
+				}
 			}
 
 		});
 		mainComposite.addMouseListener(new MouseListener() {
 
+			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 			}
 
+			@Override
 			public void mouseDown(MouseEvent e) {
 				selectedEntity = null;
 				hoverEntity = null;
@@ -490,13 +480,14 @@ public class SimpleSWTExample {
 				}
 			}
 
+			@Override
 			public void mouseUp(MouseEvent e) {
 				if (selectedEntity != null) {
 					selectedEntity.ignoreInLayout(false);
 					selectedEntity.setUnSelected();
 					List relatedNodes = selectedEntity.getRelatedEntities();
-					for (Iterator iter = relatedNodes.iterator(); iter.hasNext();) {
-						SimpleNode element = (SimpleNode) iter.next();
+					for (Object relatedNode : relatedNodes) {
+						SimpleNode element = (SimpleNode) relatedNode;
 						element.setUnSelected();
 					}
 					SimpleRelationship[] rels = selectedEntity.getRelationships();
@@ -511,25 +502,20 @@ public class SimpleSWTExample {
 		});
 
 		// stops the algorithm when the window is closed
-		mainComposite.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				if (currentLayoutAlgorithm != null) {
-					currentLayoutAlgorithm.stop();
-				}
+		mainComposite.addDisposeListener(e -> {
+			if (currentLayoutAlgorithm != null) {
+				currentLayoutAlgorithm.stop();
 			}
 		});
 
-		mainComposite.addMouseMoveListener(new MouseMoveListener() {
+		mainComposite.addMouseMoveListener(e -> {
+			if (selectedEntity != null && mouseDownPoint != null) {
+				double dx = e.x - mouseDownPoint.x;
+				double dy = e.y - mouseDownPoint.y;
 
-			public void mouseMove(MouseEvent e) {
-				if (selectedEntity != null && mouseDownPoint != null) {
-					double dx = e.x - mouseDownPoint.x;
-					double dy = e.y - mouseDownPoint.y;
-
-					selectedEntity.setLocation(selectedEntityPositionAtMouseDown.x + dx,
-							selectedEntityPositionAtMouseDown.y + dy);
-					mainComposite.redraw();
-				}
+				selectedEntity.setLocation(selectedEntityPositionAtMouseDown.x + dx,
+						selectedEntityPositionAtMouseDown.y + dy);
+				mainComposite.redraw();
 			}
 		});
 	}
@@ -607,7 +593,7 @@ public class SimpleSWTExample {
 		}
 		String id = NAMES[(int) idCount];
 		if (repeats > 0) {
-			id += "_" + repeats;
+			id += "_" + repeats; //$NON-NLS-1$
 		}
 		idCount++;
 		return id;
@@ -615,8 +601,8 @@ public class SimpleSWTExample {
 
 	/** Places nodes randomly on the screen **/
 	private void placeRandomly() {
-		for (Iterator iter = entities.iterator(); iter.hasNext();) {
-			SimpleNode simpleNode = (SimpleNode) iter.next();
+		for (Object element : entities) {
+			SimpleNode simpleNode = (SimpleNode) element;
 			double x = Math.random() * INITIAL_PANEL_WIDTH - INITIAL_NODE_WIDTH;
 			double y = Math.random() * INITIAL_PANEL_HEIGHT - INITIAL_NODE_HEIGHT;
 			simpleNode.setLocationInLayout(x, y);
@@ -666,14 +652,14 @@ public class SimpleSWTExample {
 
 		long lastPaint;
 
+		@Override
 		public void paintControl(PaintEvent e) {
 			Date date = new Date();
 			long currentTime = date.getTime();
 			if (currentTime - lastPaint < 40) {
 				return;
-			} else {
-				lastPaint = currentTime;
 			}
+			lastPaint = currentTime;
 			if (Display.getDefault() == null || e.width == 0 || e.height == 0) {
 				return;
 			}
@@ -697,8 +683,8 @@ public class SimpleSWTExample {
 			GC gcBuffer = new GC(imageBuffer);
 
 			// paint the relationships
-			for (Iterator iter = relationships.iterator(); iter.hasNext();) {
-				SimpleRelationship rel = (SimpleRelationship) iter.next();
+			for (Object relationship : relationships) {
+				SimpleRelationship rel = (SimpleRelationship) relationship;
 				SimpleNode src = (SimpleNode) rel.getSourceInLayout();
 				SimpleNode dest = (SimpleNode) rel.getDestinationInLayout();
 
@@ -727,8 +713,8 @@ public class SimpleSWTExample {
 			}
 
 			// paint the nodes
-			for (Iterator iter = entities.iterator(); iter.hasNext();) {
-				SimpleNode entity = (SimpleNode) iter.next();
+			for (Object element : entities) {
+				SimpleNode entity = (SimpleNode) element;
 
 				String name = entity.toString();
 				Point textSize = gcBuffer.stringExtent(name);
@@ -786,7 +772,7 @@ public class SimpleSWTExample {
 		 * @return the last bendpoint entity or null if there are no bendpoints
 		 */
 		private SimpleNode drawBendPoints(SimpleRelationship rel, GC gcBuffer) {
-			final String DUMMY_TITLE = "dummy";
+			final String DUMMY_TITLE = "dummy"; //$NON-NLS-1$
 			LayoutBendPoint[] bendPoints = (rel).getBendPoints();
 			LayoutBendPoint bp;
 			SimpleNode startEntity = (SimpleNode) rel.getSourceInLayout();

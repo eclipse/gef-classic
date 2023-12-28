@@ -65,6 +65,13 @@ public class XYScaledGraphics extends ScaledGraphics {
 
 		@Override
 		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (obj == null || getClass() != obj.getClass()) {
+				return false;
+			}
 			return (((FontKey) obj).font.equals(font) && ((FontKey) obj).height == height);
 		}
 
@@ -146,18 +153,18 @@ public class XYScaledGraphics extends ScaledGraphics {
 
 	private boolean allowText = true;
 	// private static final Point PT = new Point();
-	private Map fontCache = new HashMap();
-	private Map fontDataCache = new HashMap();
-	private FontKey fontKey = new FontKey();
+	private final Map fontCache = new HashMap();
+	private final Map fontDataCache = new HashMap();
+	private final FontKey fontKey = new FontKey();
 	private double fractionalX;
 	private double fractionalY;
-	private Graphics graphics;
-	private FontHeightCache localCache = new FontHeightCache();
+	private final Graphics graphics;
+	private final FontHeightCache localCache = new FontHeightCache();
 	private Font localFont;
 	private int localLineWidth;
-	private List stack = new ArrayList();
+	private final List stack = new ArrayList();
 	private int stackPointer = 0;
-	private FontHeightCache targetCache = new FontHeightCache();
+	private final FontHeightCache targetCache = new FontHeightCache();
 
 	double xZoom = 1.0;
 	double yZoom = 1.0;
@@ -789,9 +796,8 @@ public class XYScaledGraphics extends ScaledGraphics {
 		double tmp = Math.min(yZoom, xZoom);
 		if (tmp < MAX_TEXT_SIZE) {
 			return (int) (tmp * height);
-		} else {
-			return (int) (height * tmp);
 		}
+		return (int) (height * tmp);
 	}
 
 	int zoomLineWidth(int w) {

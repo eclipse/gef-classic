@@ -24,6 +24,13 @@ public class DisplayIndependentPoint {
 
 	@Override
 	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 		DisplayIndependentPoint that = (DisplayIndependentPoint) o;
 		return (this.x == that.x && this.y == that.y);
 	}

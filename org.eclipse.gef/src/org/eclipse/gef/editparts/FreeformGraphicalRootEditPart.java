@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.draw2d.ConnectionLayer;
@@ -88,14 +87,11 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 
 	private LayeredPane innerLayers;
 	private LayeredPane printableLayers;
-	private PropertyChangeListener gridListener = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			String property = evt.getPropertyName();
-			if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN) || property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
-					|| property.equals(SnapToGrid.PROPERTY_GRID_VISIBLE)) {
-				refreshGridLayer();
-			}
+	private final PropertyChangeListener gridListener = evt -> {
+		String property = evt.getPropertyName();
+		if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN) || property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
+				|| property.equals(SnapToGrid.PROPERTY_GRID_VISIBLE)) {
+			refreshGridLayer();
 		}
 	};
 

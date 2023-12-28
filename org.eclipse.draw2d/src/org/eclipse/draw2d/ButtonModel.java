@@ -75,7 +75,7 @@ public class ButtonModel {
 	 */
 	protected ButtonGroup group = null;
 
-	private EventListenerList listeners = new EventListenerList();
+	private final EventListenerList listeners = new EventListenerList();
 
 	/**
 	 * Listens to button state transitions and fires action performed events based
@@ -287,9 +287,8 @@ public class ButtonModel {
 	public boolean isSelected() {
 		if (group == null) {
 			return (state & SELECTED_FLAG) != 0;
-		} else {
-			return group.isSelected(this);
 		}
+		return group.isSelected(this);
 	}
 
 	/**
@@ -373,13 +372,10 @@ public class ButtonModel {
 		if (firingBehavior != null) {
 			removeStateTransitionListener(firingBehavior);
 		}
-		switch (type) {
-		case REPEAT_FIRING_BEHAVIOR:
-			firingBehavior = new RepeatFiringBehavior();
-			break;
-		default:
-			firingBehavior = new DefaultFiringBehavior();
-		}
+		firingBehavior = switch (type) {
+		case REPEAT_FIRING_BEHAVIOR -> new RepeatFiringBehavior();
+		default -> new DefaultFiringBehavior();
+		};
 		addStateTransitionListener(firingBehavior);
 	}
 
@@ -494,9 +490,11 @@ public class ButtonModel {
 	}
 
 	class RepeatFiringBehavior extends ButtonStateTransitionListener {
-		protected static final int INITIAL_DELAY = 250, STEP_DELAY = 40;
+		protected static final int INITIAL_DELAY = 250;
+		protected static final int STEP_DELAY = 40;
 
-		protected int stepDelay = INITIAL_DELAY, initialDelay = STEP_DELAY;
+		protected int stepDelay = INITIAL_DELAY;
+		protected int initialDelay = STEP_DELAY;
 
 		protected Timer timer;
 
@@ -544,7 +542,7 @@ public class ButtonModel {
 
 	class Task extends TimerTask {
 
-		private Timer timer;
+		private final Timer timer;
 
 		public Task(Timer timer) {
 			this.timer = timer;
@@ -552,14 +550,11 @@ public class ButtonModel {
 
 		@Override
 		public void run() {
-			org.eclipse.swt.widgets.Display.getDefault().syncExec(new Runnable() {
-				@Override
-				public void run() {
-					if (!isEnabled()) {
-						timer.cancel();
-					}
-					fireActionPerformed();
+			org.eclipse.swt.widgets.Display.getDefault().syncExec(() -> {
+				if (!isEnabled()) {
+					timer.cancel();
 				}
+				fireActionPerformed();
 			});
 		}
 	}

@@ -15,8 +15,6 @@ package org.eclipse.gef.ui.palette.customize;
 import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.FontData;
@@ -48,11 +46,14 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
  */
 public class PaletteSettingsDialog extends Dialog {
 
-	private PaletteViewerPreferences prefs;
+	private final PaletteViewerPreferences prefs;
 	private Label fontName;
 	private PageBook book;
-	private Control columnsPanel, detailsPanel, iconsPanel, listPanel;
-	private HashMap widgets = new HashMap();
+	private Control columnsPanel;
+	private Control detailsPanel;
+	private Control iconsPanel;
+	private Control listPanel;
+	private final HashMap widgets = new HashMap();
 
 	/**
 	 * A HashMap to cache the various settings displayed in this dialog
@@ -118,34 +119,49 @@ public class PaletteSettingsDialog extends Dialog {
 	protected void buttonPressed(int buttonId) {
 		Button b = getButton(buttonId);
 
-		if (FONT_CHANGE_ID == buttonId) {
+		switch (buttonId) {
+		case FONT_CHANGE_ID:
 			handleChangeFontPressed();
-		} else if (COLLAPSE_ALWAYS_ID == buttonId) {
+			break;
+		case COLLAPSE_ALWAYS_ID:
 			handleAutoCollapseSettingChanged(PaletteViewerPreferences.COLLAPSE_ALWAYS);
-		} else if (COLLAPSE_NEVER_ID == buttonId) {
+			break;
+		case COLLAPSE_NEVER_ID:
 			handleAutoCollapseSettingChanged(PaletteViewerPreferences.COLLAPSE_NEVER);
-		} else if (COLLAPSE_NEEDED_ID == buttonId) {
+			break;
+		case COLLAPSE_NEEDED_ID:
 			handleAutoCollapseSettingChanged(PaletteViewerPreferences.COLLAPSE_AS_NEEDED);
-		} else if (LAYOUT_COLUMNS_VIEW_ID == buttonId) {
+			break;
+		case LAYOUT_COLUMNS_VIEW_ID:
 			handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_COLUMNS);
-		} else if (LAYOUT_ICONS_VIEW_ID == buttonId) {
+			break;
+		case LAYOUT_ICONS_VIEW_ID:
 			handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_ICONS);
-		} else if (LAYOUT_LIST_VIEW_ID == buttonId) {
+			break;
+		case LAYOUT_LIST_VIEW_ID:
 			handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_LIST);
-		} else if (LAYOUT_DETAILS_VIEW_ID == buttonId) {
+			break;
+		case LAYOUT_DETAILS_VIEW_ID:
 			handleLayoutSettingChanged(PaletteViewerPreferences.LAYOUT_DETAILS);
-		} else if (LAYOUT_DETAILS_ICON_SIZE_ID == buttonId) {
+			break;
+		case LAYOUT_DETAILS_ICON_SIZE_ID:
 			handleIconSizeChanged(b.getSelection());
-		} else if (LAYOUT_COLUMNS_ICON_SIZE_ID == buttonId) {
+			break;
+		case LAYOUT_COLUMNS_ICON_SIZE_ID:
 			handleIconSizeChanged(b.getSelection());
-		} else if (LAYOUT_ICONS_ICON_SIZE_ID == buttonId) {
+			break;
+		case LAYOUT_ICONS_ICON_SIZE_ID:
 			handleIconSizeChanged(b.getSelection());
-		} else if (LAYOUT_LIST_ICON_SIZE_ID == buttonId) {
+			break;
+		case LAYOUT_LIST_ICON_SIZE_ID:
 			handleIconSizeChanged(b.getSelection());
-		} else if (DEFAULT_FONT_ID == buttonId) {
+			break;
+		case DEFAULT_FONT_ID:
 			handleDefaultFontRequested();
-		} else {
+			break;
+		default:
 			super.buttonPressed(buttonId);
+			break;
 		}
 	}
 
@@ -234,13 +250,10 @@ public class PaletteSettingsDialog extends Dialog {
 
 		if (descriptor != null) {
 			button.setImage(new Image(parent.getDisplay(), descriptor.getImageData()));
-			button.addDisposeListener(new DisposeListener() {
-				@Override
-				public void widgetDisposed(DisposeEvent e) {
-					Image img = ((Button) e.getSource()).getImage();
-					if (img != null && !img.isDisposed()) {
-						img.dispose();
-					}
+			button.addDisposeListener(e -> {
+				Image img = ((Button) e.getSource()).getImage();
+				if (img != null && !img.isDisposed()) {
+					img.dispose();
 				}
 			});
 		}

@@ -52,9 +52,9 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	private AccessibleEditPart accPart;
 	private GuideLineFigure guideLineFig;
 	private Cursor cursor = null;
-	private ZoomListener zoomListener = zoom -> handleZoomChanged();
+	private final ZoomListener zoomListener = zoom -> handleZoomChanged();
 
-	private RulerChangeListener listener = new RulerChangeListener.Stub() {
+	private final RulerChangeListener listener = new RulerChangeListener.Stub() {
 		@Override
 		public void notifyGuideMoved(Object guide) {
 			if (getModel() == guide) {
@@ -165,15 +165,12 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleHandleProvider.class) {
-			return key.cast(new AccessibleHandleProvider() {
-				@Override
-				public List<Point> getAccessibleHandleLocations() {
-					List<Point> result = new ArrayList<>();
-					Point pt = getFigure().getBounds().getCenter();
-					getFigure().translateToAbsolute(pt);
-					result.add(pt);
-					return result;
-				}
+			return key.cast((AccessibleHandleProvider) () -> {
+				List<Point> result = new ArrayList<>();
+				Point pt = getFigure().getBounds().getCenter();
+				getFigure().translateToAbsolute(pt);
+				result.add(pt);
+				return result;
 			});
 		}
 		return super.getAdapter(key);

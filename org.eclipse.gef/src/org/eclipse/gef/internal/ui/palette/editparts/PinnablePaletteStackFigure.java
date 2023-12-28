@@ -17,7 +17,6 @@ import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.ChangeEvent;
 import org.eclipse.draw2d.ChangeListener;
 import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.Figure;
@@ -55,7 +54,6 @@ public class PinnablePaletteStackFigure extends Figure {
 	class RolloverArrow extends Toggle {
 
 		RolloverArrow() {
-			super();
 			setRolloverEnabled(true);
 			setBorder(null);
 			setOpaque(false);
@@ -173,9 +171,8 @@ public class PinnablePaletteStackFigure extends Figure {
 				Dimension preferredSize = super.calculatePreferredSize(parent, wHint - pinSize.width, hHint);
 				preferredSize.width += pinSize.width;
 				return preferredSize;
-			} else {
-				return super.calculatePreferredSize(parent, wHint, hHint);
 			}
+			return super.calculatePreferredSize(parent, wHint, hHint);
 		}
 
 		@Override
@@ -246,36 +243,31 @@ public class PinnablePaletteStackFigure extends Figure {
 	/**
 	 * listens to selection events on the arrow figure
 	 */
-	private ChangeListener clickableArrowListener = new ChangeListener() {
+	private final ChangeListener clickableArrowListener = event -> {
+		Clickable clickable = (Clickable) event.getSource();
+		if (event.getPropertyName() == ButtonModel.MOUSEOVER_PROPERTY
+				&& getActiveFigure() instanceof ToolEntryToggle teToggle) {
+			teToggle.setShowHoverFeedback(clickable.getModel().isMouseOver());
+		}
+		if (event.getPropertyName() == ButtonModel.SELECTED_PROPERTY) {
 
-		@Override
-		public void handleStateChanged(ChangeEvent event) {
-			Clickable clickable = (Clickable) event.getSource();
-			if (event.getPropertyName() == ButtonModel.MOUSEOVER_PROPERTY
-					&& getActiveFigure() instanceof ToolEntryToggle) {
-				((ToolEntryToggle) getActiveFigure()).setShowHoverFeedback(clickable.getModel().isMouseOver());
-			}
-			if (event.getPropertyName() == ButtonModel.SELECTED_PROPERTY) {
+			Animation.markBegin();
+			handleExpandStateChanged();
+			Animation.run(150);
 
-				Animation.markBegin();
-				handleExpandStateChanged();
-				Animation.run(150);
+			// Now collapse other stacks when they are not pinned open or in
+			// the
+			// case of columns and icons layout mode (where only one stack
+			// can
+			// be expanded at a time for layout reasons).
+			if (isExpanded()) {
+				boolean collapseOtherStacks = (this.layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS
+						|| this.layoutMode == PaletteViewerPreferences.LAYOUT_ICONS);
 
-				// Now collapse other stacks when they are not pinned open or in
-				// the
-				// case of columns and icons layout mode (where only one stack
-				// can
-				// be expanded at a time for layout reasons).
-				if (isExpanded()) {
-					boolean collapseOtherStacks = (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS
-							|| layoutMode == PaletteViewerPreferences.LAYOUT_ICONS);
-
-					for (IFigure child : getParent().getChildren()) {
-						if (child instanceof PinnablePaletteStackFigure && child != PinnablePaletteStackFigure.this) {
-							if (collapseOtherStacks || (((PinnablePaletteStackFigure) child).isExpanded()
-									&& !((PinnablePaletteStackFigure) child).isPinnedOpen())) {
-								((PinnablePaletteStackFigure) child).setExpanded(false);
-							}
+				for (IFigure child : getParent().getChildren()) {
+					if (child instanceof PinnablePaletteStackFigure ppStackFigure && child != this) {
+						if (collapseOtherStacks || (ppStackFigure.isExpanded() && !ppStackFigure.isPinnedOpen())) {
+							ppStackFigure.setExpanded(false);
 						}
 					}
 				}
@@ -283,23 +275,21 @@ public class PinnablePaletteStackFigure extends Figure {
 		}
 	};
 
-	private IFigure headerFigure;
+	private final IFigure headerFigure;
 
 	private IFigure activeToolFigure;
 
-	private PinFigure pinFigure;
+	private final PinFigure pinFigure;
 
-	private RolloverArrow arrowFigure;
+	private final RolloverArrow arrowFigure;
 
-	private IFigure expandablePane;
+	private final IFigure expandablePane;
 
 	private int layoutMode = -1;
 
-	private Rectangle headerBoundsLayoutHint = new Rectangle();
+	private final Rectangle headerBoundsLayoutHint = new Rectangle();
 
 	public PinnablePaletteStackFigure() {
-		super();
-
 		arrowFigure = new RolloverArrow();
 		arrowFigure.addChangeListener(clickableArrowListener);
 
@@ -550,9 +540,8 @@ public class PinnablePaletteStackFigure extends Figure {
 	public Dimension getExpandedContainerPreferredSize(int wHint, int hHint) {
 		if (isExpanded()) {
 			return expandablePane.getPreferredSize(wHint, hHint);
-		} else {
-			return EMPTY_DIMENSION;
 		}
+		return EMPTY_DIMENSION;
 	}
 
 	/**

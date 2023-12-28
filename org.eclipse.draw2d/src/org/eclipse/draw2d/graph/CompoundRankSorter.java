@@ -33,41 +33,15 @@ class CompoundRankSorter extends RankSorter {
 		}
 	}
 
-	static class RowKey {
-		int rank;
-		Subgraph s;
+	static record RowKey(int rank, Subgraph s) {
 
-		RowKey() {
-		}
-
-		RowKey(Subgraph s, int rank) {
-			this.s = s;
-			this.rank = rank;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			RowKey rp = (RowKey) obj;
-			return rp.s == s && rp.rank == rank;
-		}
-
-		@Override
-		public int hashCode() {
-			return s.hashCode() ^ (rank * 31);
-		}
 	}
 
 	boolean init;
-	RowKey key = new RowKey();
-
 	Map<RowKey, RowEntry> map = new HashMap<>();
 
 	void addRowEntry(Subgraph s, int row) {
-		key.s = s;
-		key.rank = row;
-		if (!map.containsKey(key)) {
-			map.put(new RowKey(s, row), new RowEntry());
-		}
+		map.computeIfAbsent(new RowKey(row, s), k -> new RowEntry());
 	}
 
 	@Override
@@ -120,15 +94,12 @@ class CompoundRankSorter extends RankSorter {
 			RowEntry entry = getRowEntry(s, row);
 			double connectivity = entry.contribution / entry.count;
 			result = connectivity * 0.3 + (0.7) * result;
-			s = s.getParent();
 		}
 		return result;
 	}
 
 	RowEntry getRowEntry(Subgraph s, int row) {
-		key.s = s;
-		key.rank = row;
-		return map.get(key);
+		return map.get(new RowKey(row, s));
 	}
 
 	void copyConstraints(NestingTree tree) {

@@ -19,7 +19,6 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 
 /**
@@ -49,16 +48,12 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 		this.undoHandler = undoAction;
 		this.redoHandler = redoAction;
 		this.commandStack = commandStack;
-		this.commandStackEventListener = new CommandStackEventListener() {
-
-			@Override
-			public void stackChanged(CommandStackEvent event) {
-				if (event.getDetail() == CommandStack.PRE_UNDO || event.getDetail() == CommandStack.PRE_REDO) {
-					// ensure the property sheet entry looses its current edit
-					// state, otherwise it may revert the undo/redo operation
-					// within valueChanged when the editor is activated again.
-					refresh();
-				}
+		this.commandStackEventListener = event -> {
+			if (event.getDetail() == CommandStack.PRE_UNDO || event.getDetail() == CommandStack.PRE_REDO) {
+				// ensure the property sheet entry looses its current edit
+				// state, otherwise it may revert the undo/redo operation
+				// within valueChanged when the editor is activated again.
+				refresh();
 			}
 		};
 		commandStack.addCommandStackEventListener(commandStackEventListener);

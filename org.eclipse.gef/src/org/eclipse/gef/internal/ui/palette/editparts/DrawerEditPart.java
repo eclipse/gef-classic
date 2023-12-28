@@ -226,8 +226,8 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	 */
 	@Override
 	public void restoreState(IMemento memento) {
-		setExpanded(Boolean.valueOf(memento.getString(PROPERTY_EXPANSION_STATE)).booleanValue());
-		setPinnedOpen(Boolean.valueOf(memento.getString(PROPERTY_PINNED_STATE)).booleanValue());
+		setExpanded(Boolean.parseBoolean(memento.getString(PROPERTY_EXPANSION_STATE)));
+		setPinnedOpen(Boolean.parseBoolean(memento.getString(PROPERTY_PINNED_STATE)));
 		RangeModel rModel = getDrawerFigure().getScrollpane().getViewport().getVerticalRangeModel();
 		rModel.setMinimum(memento.getInteger(RangeModel.PROPERTY_MINIMUM).intValue());
 		rModel.setMaximum(memento.getInteger(RangeModel.PROPERTY_MAXIMUM).intValue());
@@ -241,8 +241,8 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	 */
 	@Override
 	public void saveState(IMemento memento) {
-		memento.putString(PROPERTY_EXPANSION_STATE, Boolean.valueOf(isExpanded()).toString());
-		memento.putString(PROPERTY_PINNED_STATE, Boolean.valueOf(isPinnedOpen()).toString());
+		memento.putString(PROPERTY_EXPANSION_STATE, Boolean.toString(isExpanded()));
+		memento.putString(PROPERTY_PINNED_STATE, Boolean.toString(isPinnedOpen()));
 		RangeModel rModel = getDrawerFigure().getScrollpane().getViewport().getVerticalRangeModel();
 		memento.putInteger(RangeModel.PROPERTY_MINIMUM, rModel.getMinimum());
 		memento.putInteger(RangeModel.PROPERTY_MAXIMUM, rModel.getMaximum());

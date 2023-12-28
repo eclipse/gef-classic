@@ -122,17 +122,14 @@ public class MarqueeSelectionTool extends AbstractTool {
 			graphics.translate(getLocation().getNegated());
 
 			if (schedulePaint) {
-				Display.getCurrent().timerExec(DELAY, new Runnable() {
-					@Override
-					public void run() {
-						offset++;
-						if (offset > 5) {
-							offset = 0;
-						}
-
-						schedulePaint = true;
-						repaint();
+				Display.getCurrent().timerExec(DELAY, () -> {
+					offset++;
+					if (offset > 5) {
+						offset = 0;
 					}
+
+					schedulePaint = true;
+					repaint();
 				});
 			}
 
@@ -192,6 +189,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * @deprecated use {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS}
 	 *             instead.
 	 */
+	@Deprecated
 	public static final int BEHAVIOR_NODES_AND_CONNECTIONS = BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS;
 
 	static final int DEFAULT_MODE = 0;
@@ -213,7 +211,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 */
 	public static final int DEFAULT_MARQUEE_BEHAVIOR = BEHAVIOR_NODES_CONTAINED;
 
-	private Set allChildren = new HashSet();
+	private final Set allChildren = new HashSet();
 	private int marqueeBehavior = DEFAULT_MARQUEE_BEHAVIOR;
 	private IFigure marqueeRectangleFigure;
 	private int mode;
@@ -273,8 +271,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * @since 3.7
 	 */
 	protected Collection calculateMarqueeSelectedEditParts() {
-		Collection marqueeSelectedEditParts = new HashSet();
-		marqueeSelectedEditParts.addAll(calculatePrimaryMarqueeSelectedEditParts());
+		Collection marqueeSelectedEditParts = new HashSet(calculatePrimaryMarqueeSelectedEditParts());
 		marqueeSelectedEditParts.addAll(calculateSecondaryMarqueeSelectedEditParts(marqueeSelectedEditParts));
 		return marqueeSelectedEditParts;
 	}
@@ -309,8 +306,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 		// process all edit parts and determine which are affected by the
 		// current marquee selection
 		Collection marqueeSelectedEditParts = new ArrayList();
-		for (Iterator iterator = editPartsToProcess.iterator(); iterator.hasNext();) {
-			GraphicalEditPart editPart = (GraphicalEditPart) iterator.next();
+		for (Object element : editPartsToProcess) {
+			GraphicalEditPart editPart = (GraphicalEditPart) element;
 			if (isMarqueeSelectable(editPart) && isPrimaryMarqueeSelectedEditPart(editPart)) {
 				marqueeSelectedEditParts.add(editPart);
 			}
@@ -338,8 +335,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 	private Collection calculateSecondaryMarqueeSelectedEditParts(Collection directlyMarqueeSelectedEditParts) {
 
 		Collection editPartsToProcess = new HashSet();
-		for (Iterator iterator = directlyMarqueeSelectedEditParts.iterator(); iterator.hasNext();) {
-			GraphicalEditPart marqueeSelectedEditPart = (GraphicalEditPart) iterator.next();
+		for (Object directlyMarqueeSelectedEditPart : directlyMarqueeSelectedEditParts) {
+			GraphicalEditPart marqueeSelectedEditPart = (GraphicalEditPart) directlyMarqueeSelectedEditPart;
 			editPartsToProcess.addAll(marqueeSelectedEditPart.getSourceConnections());
 			editPartsToProcess.addAll(marqueeSelectedEditPart.getTargetConnections());
 		}
@@ -347,8 +344,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 		// process all edit parts and decide, whether they are indirectly
 		// affected by marquee selection
 		Collection secondaryMarqueeSelectedEditParts = new HashSet();
-		for (Iterator iterator = editPartsToProcess.iterator(); iterator.hasNext();) {
-			GraphicalEditPart editPart = (GraphicalEditPart) iterator.next();
+		for (Object element : editPartsToProcess) {
+			GraphicalEditPart editPart = (GraphicalEditPart) element;
 			if (isSecondaryMarqueeSelectedEditPart(directlyMarqueeSelectedEditParts, editPart)) {
 				secondaryMarqueeSelectedEditParts.add(editPart);
 			}
@@ -646,11 +643,13 @@ public class MarqueeSelectionTool extends AbstractTool {
 			boolean sourceIncludedInMarqueeSelection = directlyMarqueeSelectedEditParts.contains(source);
 			boolean targetIncludedInMarqueeSelection = directlyMarqueeSelectedEditParts.contains(target);
 
-			if (mode == DEFAULT_MODE) {
+			switch (mode) {
+			case DEFAULT_MODE:
 				// in default mode, select connection if source and
 				// target are included in marqee selection
 				included = sourceIncludedInMarqueeSelection && targetIncludedInMarqueeSelection;
-			} else if (mode == APPEND_MODE) {
+				break;
+			case APPEND_MODE:
 				// in append mode, the current viewer selection is of interest
 				// as well, so select connection if not already selected and
 				// source and target are already selected or will get selected
@@ -659,7 +658,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 								|| sourceIncludedInMarqueeSelection)
 						&& (getCurrentViewer().getSelectedEditParts().contains(target)
 								|| targetIncludedInMarqueeSelection);
-			} else if (mode == TOGGLE_MODE) {
+				break;
+			case TOGGLE_MODE:
 				if (connection.getSelected() == EditPart.SELECTED_NONE) {
 					// connection is currently deselected, include it in the
 					// marquee selection, i.e. select it, if one of
@@ -677,6 +677,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 					included = (source.getSelected() != EditPart.SELECTED_NONE && sourceIncludedInMarqueeSelection)
 							|| (target.getSelected() != EditPart.SELECTED_NONE && targetIncludedInMarqueeSelection);
 				}
+				break;
+			default:
+				break;
 			}
 		}
 		return included;
@@ -719,8 +722,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 		// dependent on the current mode of the tool
 		Collection editPartsToSelect = new LinkedHashSet();
 		Collection editPartsToDeselect = new HashSet();
-		for (Iterator iterator = marqueeSelectedEditParts.iterator(); iterator.hasNext();) {
-			EditPart affectedEditPart = (EditPart) iterator.next();
+		for (Object marqueeSelectedEditPart : marqueeSelectedEditParts) {
+			EditPart affectedEditPart = (EditPart) marqueeSelectedEditPart;
 			if (affectedEditPart.getSelected() == EditPart.SELECTED_NONE || getCurrentSelectionMode() != TOGGLE_MODE) {
 				editPartsToSelect.add(affectedEditPart);
 			} else {
@@ -752,8 +755,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	public void setMarqueeBehavior(int type) {
 		if (type != BEHAVIOR_CONNECTIONS_TOUCHED && type != BEHAVIOR_CONNECTIONS_CONTAINED
 				&& type != BEHAVIOR_NODES_TOUCHED && type != BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS
-				&& type != BEHAVIOR_NODES_CONTAINED && type != BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS)
-		 {
+				&& type != BEHAVIOR_NODES_CONTAINED && type != BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS) {
 			throw new IllegalArgumentException("Invalid marquee behaviour specified."); //$NON-NLS-1$
 		}
 		marqueeBehavior = type;
@@ -788,8 +790,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 	}
 
 	private void showTargetFeedback() {
-		for (Iterator itr = selectedEditParts.iterator(); itr.hasNext();) {
-			EditPart editPart = (EditPart) itr.next();
+		for (Object selectedEditPart : selectedEditParts) {
+			EditPart editPart = (EditPart) selectedEditPart;
 			editPart.showTargetFeedback(getTargetRequest());
 		}
 	}

@@ -13,7 +13,6 @@
 package org.eclipse.gef.internal.ui.palette;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -54,7 +53,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	/**
 	 * The action.
 	 */
-	private IAction action;
+	private final IAction action;
 
 	/**
 	 * The widget created for this item; <code>null</code> before creation and after
@@ -78,11 +77,11 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 		}
 	}
 
-	private ActionListener listener = new ActionListener();
+	private final ActionListener listener = new ActionListener();
 
 	private class ImageCache {
 		/** Map from ImageDescriptor to Entry */
-		private Map entries = new HashMap(11);
+		private final Map<ImageDescriptor, Entry> entries = new HashMap<>(11);
 		private Image missingImage;
 
 		private class Entry {
@@ -102,12 +101,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 		}
 
 		Entry getEntry(ImageDescriptor desc) {
-			Entry entry = (Entry) entries.get(desc);
-			if (entry == null) {
-				entry = new Entry();
-				entries.put(desc, entry);
-			}
-			return entry;
+			return entries.computeIfAbsent(desc, ignore -> new Entry());
 		}
 
 		Image getImage(ImageDescriptor desc) {
@@ -143,10 +137,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 		}
 
 		void dispose() {
-			for (Iterator i = entries.values().iterator(); i.hasNext();) {
-				Entry entry = (Entry) i.next();
-				entry.dispose();
-			}
+			entries.values().forEach(Entry::dispose);
 			entries.clear();
 		}
 	}
@@ -173,12 +164,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 			if (display.getThread() == Thread.currentThread()) {
 				update(e.getProperty());
 			} else {
-				display.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						update(e.getProperty());
-					}
-				});
+				display.asyncExec(() -> update(e.getProperty()));
 			}
 
 		}
@@ -355,13 +341,10 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 			globalImageCache = cache = new ImageCache();
 			Display display = Display.getDefault();
 			if (display != null) {
-				display.disposeExec(new Runnable() {
-					@Override
-					public void run() {
-						if (globalImageCache != null) {
-							globalImageCache.dispose();
-							globalImageCache = null;
-						}
+				display.disposeExec(() -> {
+					if (globalImageCache != null) {
+						globalImageCache.dispose();
+						globalImageCache = null;
 					}
 				});
 			}
@@ -662,7 +645,6 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 						button.setSelection(bv);
 					}
 				}
-				return;
 			}
 		}
 	}
@@ -680,7 +662,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 		ImageCache cache = getImageCache();
 
-		if (widget instanceof ToolItem) {
+		if (widget instanceof ToolItem toolItem) {
 			Image image = cache.getImage(action.getImageDescriptor());
 			Image hoverImage = cache.getImage(action.getHoverImageDescriptor());
 			Image disabledImage = cache.getImage(action.getDisabledImageDescriptor());
@@ -712,13 +694,14 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 				// Assumes that SWT.ToolItem will use platform's default
 				// behavior to show item when it is disabled and a disabled
 				// image has not been set.
-				((ToolItem) widget).setDisabledImage(disabledImage);
+				toolItem.setDisabledImage(disabledImage);
 			}
-			((ToolItem) widget).setHotImage(hoverImage);
-			((ToolItem) widget).setImage(image);
+			toolItem.setHotImage(hoverImage);
+			toolItem.setImage(image);
 
 			return image != null;
-		} else if (widget instanceof Item || widget instanceof Button) {
+		}
+		if (widget instanceof Item || widget instanceof Button) {
 			// Use hover image if there is one, otherwise use regular image.
 			Image image = cache.getImage(action.getHoverImageDescriptor());
 			if (image == null) {
@@ -728,10 +711,10 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 			if (image == null && forceImage) {
 				image = cache.getMissingImage();
 			}
-			if (widget instanceof Item) {
-				((Item) widget).setImage(image);
-			} else if (widget instanceof Button) {
-				((Button) widget).setImage(image);
+			if (widget instanceof Item item) {
+				item.setImage(image);
+			} else if (widget instanceof Button button) {
+				button.setImage(image);
 			}
 			return image != null;
 		}

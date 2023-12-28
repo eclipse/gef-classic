@@ -25,8 +25,6 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -38,7 +36,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -96,8 +93,8 @@ public class SimpleSwingExample {
 	public static HorizontalLayoutAlgorithm HORIZ = new HorizontalLayoutAlgorithm(LayoutStyles.NONE);
 	public static VerticalLayoutAlgorithm VERT = new VerticalLayoutAlgorithm(LayoutStyles.NONE);
 
-	private List algorithms = new ArrayList();
-	private List algorithmNames = new ArrayList();
+	private final List algorithms = new ArrayList();
+	private final List algorithmNames = new ArrayList();
 
 	private static final int INITIAL_PANEL_WIDTH = 700;
 	private static final int INITIAL_PANEL_HEIGHT = 500;
@@ -172,30 +169,19 @@ public class SimpleSwingExample {
 		toolBar.add(btnAsynchronous);
 
 		btnStop = new JButton("Stop");
-		btnStop.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				stop();
-			}
-		});
+		btnStop.addActionListener(e -> stop());
 		toolBar.add(btnStop);
 
 		JButton btnCreateGraph = new JButton("New graph");
-		btnCreateGraph.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				stop();
-				createGraph(true);
-			}
+		btnCreateGraph.addActionListener(e -> {
+			stop();
+			createGraph(true);
 		});
 		toolBar.add(btnCreateGraph);
 		JButton btnCreateTree = new JButton("New tree");
-		btnCreateTree.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				stop();
-				createGraph(false);
-			}
+		btnCreateTree.addActionListener(e -> {
+			stop();
+			createGraph(false);
 		});
 		toolBar.add(btnCreateTree);
 
@@ -209,58 +195,47 @@ public class SimpleSwingExample {
 		mainFrame.repaint();
 
 		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
+			SwingUtilities.invokeAndWait(() -> {
+				SPRING = new SpringLayoutAlgorithm(LayoutStyles.NONE);
+				TREE_VERT = new TreeLayoutAlgorithm(LayoutStyles.NONE);
+				TREE_HORIZ = new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE);
+				RADIAL = new RadialLayoutAlgorithm(LayoutStyles.NONE);
+				GRID = new GridLayoutAlgorithm(LayoutStyles.NONE);
+				HORIZ = new HorizontalLayoutAlgorithm(LayoutStyles.NONE);
+				VERT = new VerticalLayoutAlgorithm(LayoutStyles.NONE);
 
-				@Override
-				public void run() {
-					SPRING = new SpringLayoutAlgorithm(LayoutStyles.NONE);
-					TREE_VERT = new TreeLayoutAlgorithm(LayoutStyles.NONE);
-					TREE_HORIZ = new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE);
-					RADIAL = new RadialLayoutAlgorithm(LayoutStyles.NONE);
-					GRID = new GridLayoutAlgorithm(LayoutStyles.NONE);
-					HORIZ = new HorizontalLayoutAlgorithm(LayoutStyles.NONE);
-					VERT = new VerticalLayoutAlgorithm(LayoutStyles.NONE);
-
-					SPRING.setIterations(1000);
-					// initialize layouts
-					TREE_VERT.setComparator(new Comparator() {
-						@Override
-						public int compare(Object o1, Object o2) {
-							if (o1 instanceof Comparable && o2 instanceof Comparable) {
-								return ((Comparable) o1).compareTo(o2);
-							}
-							return 0;
-						}
-
-					});
-					GRID.setRowPadding(20);
-					addAlgorithm(SPRING, "Spring", false);
-					addAlgorithm(TREE_VERT, "Tree-V", false);
-					addAlgorithm(TREE_HORIZ, "Tree-H", false);
-					addAlgorithm(RADIAL, "Radial", false);
-					addAlgorithm(GRID, "Grid", false);
-					addAlgorithm(HORIZ, "Horiz", false);
-					addAlgorithm(VERT, "Vert", false);
-
-					for (int i = 0; i < algorithms.size(); i++) {
-						final LayoutAlgorithm algorithm = (LayoutAlgorithm) algorithms.get(i);
-						final String algorithmName = (String) algorithmNames.get(i);
-						// final boolean algorithmAnimate =
-						// ((Boolean)algorithmAnimates.get(i)).booleanValue();
-						JButton algorithmButton = new JButton(algorithmName);
-						algorithmButton.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								currentLayoutAlgorithm = algorithm;
-								currentLayoutAlgorithmName = algorithmName;
-								algorithm.setEntityAspectRatio(
-										(double) mainPanel.getWidth() / (double) mainPanel.getHeight());
-								// animate = algorithmAnimate;
-								performLayout();
-							}
-						});
-						toolBar.add(algorithmButton);
+				SPRING.setIterations(1000);
+				// initialize layouts
+				TREE_VERT.setComparator((o1, o2) -> {
+					if (o1 instanceof Comparable && o2 instanceof Comparable) {
+						return ((Comparable) o1).compareTo(o2);
 					}
+					return 0;
+				});
+				GRID.setRowPadding(20);
+				addAlgorithm(SPRING, "Spring", false);
+				addAlgorithm(TREE_VERT, "Tree-V", false);
+				addAlgorithm(TREE_HORIZ, "Tree-H", false);
+				addAlgorithm(RADIAL, "Radial", false);
+				addAlgorithm(GRID, "Grid", false);
+				addAlgorithm(HORIZ, "Horiz", false);
+				addAlgorithm(VERT, "Vert", false);
+
+				for (int i = 0; i < algorithms.size(); i++) {
+					final LayoutAlgorithm algorithm = (LayoutAlgorithm) algorithms.get(i);
+					final String algorithmName = (String) algorithmNames.get(i);
+					// final boolean algorithmAnimate =
+					// ((Boolean)algorithmAnimates.get(i)).booleanValue();
+					JButton algorithmButton = new JButton(algorithmName);
+					algorithmButton.addActionListener(e -> {
+						currentLayoutAlgorithm = algorithm;
+						currentLayoutAlgorithmName = algorithmName;
+						algorithm.setEntityAspectRatio(
+								(double) mainPanel.getWidth() / (double) mainPanel.getHeight());
+						// animate = algorithmAnimate;
+						performLayout();
+					});
+					toolBar.add(algorithmButton);
 				}
 			});
 		} catch (InterruptedException e1) {
@@ -324,17 +299,13 @@ public class SimpleSwingExample {
 			entities.toArray(layoutEntities);
 			final LayoutRelationship[] layoutRelationships = new LayoutRelationship[relationships.size()];
 			relationships.toArray(layoutRelationships);
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0,
-								mainPanel.getWidth(), mainPanel.getHeight(), asynchronous, continuous);
-					} catch (InvalidLayoutConfiguration e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
+			SwingUtilities.invokeLater(() -> {
+				try {
+					currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0,
+							mainPanel.getWidth(), mainPanel.getHeight(), asynchronous, continuous);
+				} catch (InvalidLayoutConfiguration e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
 			});
@@ -488,8 +459,8 @@ public class SimpleSwingExample {
 
 	/** Places nodes randomly on the screen **/
 	private void placeRandomly() {
-		for (Iterator iter = entities.iterator(); iter.hasNext();) {
-			SimpleNode simpleNode = (SimpleNode) iter.next();
+		for (Object element : entities) {
+			SimpleNode simpleNode = (SimpleNode) element;
 			double x = Math.random() * INITIAL_PANEL_WIDTH - INITIAL_NODE_WIDTH;
 			double y = Math.random() * INITIAL_PANEL_HEIGHT - INITIAL_NODE_HEIGHT;
 			simpleNode.setLocationInLayout(x, y);
@@ -504,8 +475,7 @@ public class SimpleSwingExample {
 	 * @return
 	 */
 	private SimpleNode createSimpleNode(String name) {
-		SimpleNode simpleNode = new SimpleNode(name);
-		return simpleNode;
+		return new SimpleNode(name);
 	}
 
 	private void updateGUI() {
@@ -527,8 +497,7 @@ public class SimpleSwingExample {
 			x = -x;
 		}
 		double y = tanTheta * x;
-		Point2D.Double p = new Point2D.Double(x, y);
-		return p;
+		return new Point2D.Double(x, y);
 	}
 
 	public static void main(String[] args) {
@@ -555,13 +524,13 @@ public class SimpleSwingExample {
 			}
 
 			// paint the nodes
-			for (Iterator iter = entities.iterator(); iter.hasNext();) {
-				paintEntity((SimpleNode) iter.next(), g);
+			for (Object element : entities) {
+				paintEntity((SimpleNode) element, g);
 			}
 
 			// paint the relationships
-			for (Iterator iter = relationships.iterator(); iter.hasNext();) {
-				paintRelationship((LayoutRelationship) iter.next(), g);
+			for (Object relationship : relationships) {
+				paintRelationship((LayoutRelationship) relationship, g);
 			}
 		}
 
