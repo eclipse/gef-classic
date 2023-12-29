@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 IBM Corporation and others.
+ * Copyright (c) 2006, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -15,14 +15,13 @@ package org.eclipse.draw2d.test;
 import org.eclipse.swt.widgets.Display;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
 public class ColorConstantTest extends Assert {
 
 	@Test
-	public static void testColorConstantInit() {
+	@SuppressWarnings("static-method")
+	public void testColorConstantInit() {
 		final Boolean[] result = new Boolean[2];
 		result[0] = Boolean.FALSE;
 		result[1] = Boolean.FALSE;

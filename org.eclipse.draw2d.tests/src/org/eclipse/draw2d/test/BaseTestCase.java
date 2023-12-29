@@ -32,6 +32,7 @@ import org.junit.Assert;
 public abstract class BaseTestCase extends Assert {
 
 	protected static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
+	protected static final Font SERIF = new Font(null, "Serif", 8, 0);//$NON-NLS-1$
 
 	public static void assertEquals(Image expected, Image actual) {
 		assertTrue("The given images did not match", //$NON-NLS-1$

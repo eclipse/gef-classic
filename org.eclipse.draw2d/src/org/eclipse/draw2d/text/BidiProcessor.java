@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,11 +14,12 @@ package org.eclipse.draw2d.text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.TextLayout;
 
-import com.ibm.icu.text.Bidi;
+import org.eclipse.draw2d.text.BidiProvider.DefaultBidiProvider;
 
 /**
  * A helper class for a BlockFlow that does Bidi evaluation of all the text in
@@ -53,6 +54,9 @@ public final class BidiProcessor {
 	 * A singleton instance.
 	 */
 	public static final BidiProcessor INSTANCE = new BidiProcessor();
+	private static final BidiProvider BIDI = ServiceLoader.load(BidiProvider.class) //
+			.findFirst() //
+			.orElseGet(DefaultBidiProvider::new);
 
 	private StringBuffer bidiText;
 	private List list = new ArrayList();
@@ -199,7 +203,7 @@ public final class BidiProcessor {
 			char[] chars = new char[bidiText.length()];
 			bidiText.getChars(0, bidiText.length(), chars, 0);
 
-			if (orientation != SWT.RIGHT_TO_LEFT && !Bidi.requiresBidi(chars, 0, chars.length - 1)) {
+			if (orientation != SWT.RIGHT_TO_LEFT && !BIDI.requiresBidi(chars, 0, chars.length - 1)) {
 				return;
 			}
 
