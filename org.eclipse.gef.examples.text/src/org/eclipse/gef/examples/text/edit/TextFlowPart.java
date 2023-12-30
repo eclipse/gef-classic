@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,6 +14,7 @@
 package org.eclipse.gef.examples.text.edit;
 
 import java.beans.PropertyChangeEvent;
+import java.text.BreakIterator;
 
 import org.eclipse.swt.graphics.Font;
 
@@ -31,8 +32,6 @@ import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.requests.CaretRequest;
 import org.eclipse.gef.examples.text.requests.SearchResult;
-
-import com.ibm.icu.text.BreakIterator;
 
 /**
  * @since 3.1
