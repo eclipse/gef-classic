@@ -89,9 +89,8 @@ public class BlockFlow extends FlowFigure {
 
 	int getBottomMargin() {
 		int margin = 0;
-		if (getBorder() instanceof FlowBorder) {
-			FlowBorder border = (FlowBorder) getBorder();
-			return border.getBottomMargin();
+		if (getBorder() instanceof FlowBorder flowBorder) {
+			return flowBorder.getBottomMargin();
 		}
 		List<? extends IFigure> children = getChildren();
 		int childIndex = children.size() - 1;
@@ -124,8 +123,8 @@ public class BlockFlow extends FlowFigure {
 	}
 
 	int getLeftMargin() {
-		if (getBorder() instanceof FlowBorder) {
-			return ((FlowBorder) getBorder()).getLeftMargin();
+		if (getBorder() instanceof FlowBorder flowBorder) {
+			return flowBorder.getLeftMargin();
 		}
 		return 0;
 	}
@@ -177,17 +176,16 @@ public class BlockFlow extends FlowFigure {
 	}
 
 	int getRightMargin() {
-		if (getBorder() instanceof FlowBorder) {
-			return ((FlowBorder) getBorder()).getRightMargin();
+		if (getBorder() instanceof FlowBorder flowBorder) {
+			return flowBorder.getRightMargin();
 		}
 		return 0;
 	}
 
 	int getTopMargin() {
 		int margin = 0;
-		if (getBorder() instanceof FlowBorder) {
-			FlowBorder border = (FlowBorder) getBorder();
-			return border.getTopMargin();
+		if (getBorder() instanceof FlowBorder flowBorder) {
+			return flowBorder.getTopMargin();
 		}
 		List<? extends IFigure> children = getChildren();
 		if (!children.isEmpty() && children.get(0) instanceof BlockFlow) {
@@ -201,10 +199,10 @@ public class BlockFlow extends FlowFigure {
 	 */
 	@Override
 	public void paintBorder(Graphics graphics) {
-		if (getBorder() instanceof FlowBorder) {
+		if (getBorder() instanceof FlowBorder flowBorder) {
 			Rectangle where = getBlockBox().toRectangle();
-			where.crop(new Insets(getTopMargin(), getLeftMargin(), getBottomMargin(), getRightMargin()));
-			((FlowBorder) getBorder()).paint(this, graphics, where, SWT.LEAD | SWT.TRAIL);
+			where.shrink(new Insets(getTopMargin(), getLeftMargin(), getBottomMargin(), getRightMargin()));
+			flowBorder.paint(this, graphics, where, SWT.LEAD | SWT.TRAIL);
 		} else {
 			super.paintBorder(graphics);
 		}
@@ -222,7 +220,7 @@ public class BlockFlow extends FlowFigure {
 	@Override
 	public void postValidate() {
 		Rectangle newBounds = getBlockBox().toRectangle();
-		newBounds.crop(new Insets(getTopMargin(), getLeftMargin(), getBottomMargin(), getRightMargin()));
+		newBounds.shrink(new Insets(getTopMargin(), getLeftMargin(), getBottomMargin(), getRightMargin()));
 		setBounds(newBounds);
 	}
 

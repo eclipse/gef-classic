@@ -82,7 +82,6 @@ public final class PaletteScrollBar extends ScrollBar {
 	protected Label upLabel;
 
 	public PaletteScrollBar() {
-		super();
 	}
 
 	@Override
@@ -178,7 +177,7 @@ public final class PaletteScrollBar extends ScrollBar {
 				Rectangle r = new Rectangle(
 						bounds.getBottom().getTranslated(-(buttonSize.width / 2), -buttonSize.height), buttonSize);
 				getButtonDown().setBounds(transposer.t(r));
-				Rectangle trackBounds = bounds.getCropped(new Insets(buttonSize.height, 0, buttonSize.height, 0));
+				Rectangle trackBounds = bounds.getShrinked(new Insets(buttonSize.height, 0, buttonSize.height, 0));
 				RangeModel model = scrollBar.getRangeModel();
 				getButtonUp().setVisible(model.getValue() != model.getMinimum());
 				getButtonDown().setVisible(model.getValue() != model.getMaximum() - model.getExtent());

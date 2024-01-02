@@ -43,7 +43,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 	private long lastStepTime = 0;
 
 	/** The insets for this helper. */
-	private Insets threshold;
+	private final Insets threshold;
 
 	/**
 	 * Constructs a new helper on the given GraphicalEditPart. The editpart must
@@ -63,8 +63,8 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 	 * its <i>figure</i> inclusively.
 	 *
 	 * @param owner     the GraphicalEditPart that owns the Viewport
-	 * @param threshold the Expose Threshold to use when determing whether or not a
-	 *                  scroll should occur.
+	 * @param threshold the Expose Threshold to use when determining whether or not
+	 *                  a scroll should occur.
 	 */
 	public ViewportAutoexposeHelper(GraphicalEditPart owner, Insets threshold) {
 		super(owner);
@@ -85,7 +85,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 		port.getClientArea(rect);
 		port.translateToParent(rect);
 		port.translateToAbsolute(rect);
-		return rect.contains(where) && !rect.crop(threshold).contains(where);
+		return rect.contains(where) && !rect.shrink(threshold).contains(where);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 		port.getClientArea(rect);
 		port.translateToParent(rect);
 		port.translateToAbsolute(rect);
-		if (!rect.contains(where) || rect.crop(threshold).contains(where)) {
+		if (!rect.contains(where) || rect.shrink(threshold).contains(where)) {
 			return false;
 		}
 
@@ -129,7 +129,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 			return true;
 		}
 
-		rect.crop(threshold);
+		rect.shrink(threshold);
 
 		int region = rect.getPosition(where);
 		Point loc = port.getViewLocation();

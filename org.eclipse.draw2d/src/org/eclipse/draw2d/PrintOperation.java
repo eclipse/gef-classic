@@ -117,8 +117,8 @@ public abstract class PrintOperation {
 		Insets userPreferred = new Insets((printMargin.top * printerDPI.x) / 72, (printMargin.left * printerDPI.x) / 72,
 				(printMargin.bottom * printerDPI.x) / 72, (printMargin.right * printerDPI.x) / 72);
 		Rectangle paperBounds = new Rectangle(printer.getBounds());
-		Rectangle printRegion = paperBounds.getCropped(notAvailable);
-		printRegion.intersect(paperBounds.getCropped(userPreferred));
+		Rectangle printRegion = paperBounds.getShrinked(notAvailable);
+		printRegion.intersect(paperBounds.getShrinked(userPreferred));
 		printRegion.translate(trim.x, trim.y);
 		return printRegion;
 	}

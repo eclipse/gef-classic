@@ -84,7 +84,7 @@ public class ToggleButton extends Toggle {
 	protected void fillCheckeredRectangle(Graphics graphics) {
 		graphics.setBackgroundColor(ColorConstants.button);
 		graphics.setForegroundColor(ColorConstants.buttonLightest);
-		Rectangle rect = getClientArea(Rectangle.SINGLETON).crop(new Insets(1, 1, 0, 0));
+		Rectangle rect = getClientArea(Rectangle.SINGLETON).shrink(new Insets(1, 1, 0, 0));
 		graphics.fillRectangle(rect.x, rect.y, rect.width, rect.height);
 
 		graphics.clipRect(rect);

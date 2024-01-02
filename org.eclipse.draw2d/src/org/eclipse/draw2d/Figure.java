@@ -646,7 +646,7 @@ public class Figure implements IFigure {
 	@Override
 	public Rectangle getClientArea(Rectangle rect) {
 		rect.setBounds(getBounds());
-		rect.crop(getInsets());
+		rect.shrink(getInsets());
 		if (useLocalCoordinates()) {
 			rect.setLocation(0, 0);
 		}
