@@ -105,46 +105,45 @@ public final class Triangle extends Shape implements Orientable {
 		super.validate();
 		Rectangle r = new Rectangle();
 		r.setBounds(getBounds());
-		r.crop(getInsets());
+		r.shrink(getInsets());
 		r.resize(-1, -1);
 		int size;
-		switch (direction & (NORTH | SOUTH)) {
-		case 0: // East or west.
-			size = Math.min(r.height / 2, r.width);
-			r.x += (r.width - size) / 2;
-			break;
-		default: // North or south
+		if ((direction & (NORTH | SOUTH)) != 0) {
+			// North or south
 			size = Math.min(r.height, r.width / 2);
 			r.y += (r.height - size) / 2;
-			break;
+		} else {
+			// East or west.
+			size = Math.min(r.height / 2, r.width);
+			r.x += (r.width - size) / 2;
 		}
 
 		size = Math.max(size, 1); // Size cannot be negative
 
 		Point head, p2, p3;
 
-		switch (direction) {
-		case NORTH:
+		p3 = switch (direction) {
+		case NORTH -> {
 			head = new Point(r.x + r.width / 2, r.y);
 			p2 = new Point(head.x - size, head.y + size);
-			p3 = new Point(head.x + size, head.y + size);
-			break;
-		case SOUTH:
+			yield new Point(head.x + size, head.y + size);
+		}
+		case SOUTH -> {
 			head = new Point(r.x + r.width / 2, r.y + size);
 			p2 = new Point(head.x - size, head.y - size);
-			p3 = new Point(head.x + size, head.y - size);
-			break;
-		case WEST:
+			yield new Point(head.x + size, head.y - size);
+		}
+		case WEST -> {
 			head = new Point(r.x, r.y + r.height / 2);
 			p2 = new Point(head.x + size, head.y - size);
-			p3 = new Point(head.x + size, head.y + size);
-			break;
-		default:
+			yield new Point(head.x + size, head.y + size);
+		}
+		default -> {
 			head = new Point(r.x + size, r.y + r.height / 2);
 			p2 = new Point(head.x - size, head.y - size);
-			p3 = new Point(head.x - size, head.y + size);
-
+			yield new Point(head.x - size, head.y + size);
 		}
+		};
 		triangle.removeAllPoints();
 		triangle.addPoint(head);
 		triangle.addPoint(p2);

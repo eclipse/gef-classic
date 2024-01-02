@@ -115,7 +115,7 @@ public class ScrollPaneSolver {
 		if (!result.showH) {
 			result.insets.bottom = 0;
 		}
-		result.viewportArea = clientArea.getCropped(result.insets);
+		result.viewportArea = clientArea.getShrinked(result.insets);
 		viewport.setBounds(result.viewportArea);
 		return result;
 	}
