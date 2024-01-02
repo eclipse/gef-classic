@@ -12,10 +12,9 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -50,9 +49,10 @@ public class DetailedLabelFigure extends Figure {
 	private static final FontCache FONTCACHE = new FontCache();
 	private static final Border PAGE_BORDER = new MarginBorder(0, 1, 0, 1);
 
-	private SelectableImageFigure image;
-	private FlowPage page;
-	private TextFlow nameText, descText;
+	private final SelectableImageFigure image;
+	private final FlowPage page;
+	private final TextFlow nameText;
+	private final TextFlow descText;
 	private Font boldFont;
 	private boolean selectionState;
 	private int layoutMode = -1;
@@ -181,18 +181,22 @@ public class DetailedLabelFigure extends Figure {
 		}
 
 		BorderLayout layout = (BorderLayout) getLayoutManager();
-		if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
+		switch (layoutMode) {
+		case PaletteViewerPreferences.LAYOUT_COLUMNS:
 			page.setHorizontalAligment(PositionConstants.CENTER);
 			layout.setConstraint(image, BorderLayout.TOP);
 			layout.setConstraint(page, BorderLayout.CENTER);
-		} else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS) {
+			break;
+		case PaletteViewerPreferences.LAYOUT_ICONS:
 			layout.setConstraint(image, BorderLayout.CENTER);
 			remove(page);
-		} else if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST) {
+			break;
+		case PaletteViewerPreferences.LAYOUT_LIST:
 			page.setHorizontalAligment(PositionConstants.LEFT);
 			layout.setConstraint(image, BorderLayout.LEFT);
 			layout.setConstraint(page, BorderLayout.CENTER);
-		} else if (layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+			break;
+		case PaletteViewerPreferences.LAYOUT_DETAILS:
 			/*
 			 * Fix for Bug# 39130 Earlier, descText was only being added to the page if the
 			 * description was not an empty String. Now, it's always added. This fixes the
@@ -206,6 +210,9 @@ public class DetailedLabelFigure extends Figure {
 			page.setHorizontalAligment(PositionConstants.LEFT);
 			layout.setConstraint(image, BorderLayout.LEFT);
 			layout.setConstraint(page, BorderLayout.CENTER);
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -298,11 +305,15 @@ public class DetailedLabelFigure extends Figure {
 	}
 
 	private static class FontCache {
-		private Hashtable table = new Hashtable();
+		private final Map<FontData, FontInfo> table = new HashMap<>();
 
 		private static class FontInfo {
-			private Font boldFont;
+			private final Font boldFont;
 			private int refCount;
+
+			public FontInfo(Font boldFont) {
+				this.boldFont = boldFont;
+			}
 		}
 
 		/*
@@ -311,40 +322,28 @@ public class DetailedLabelFigure extends Figure {
 		 * null pointer exception will be encountered.
 		 */
 		public void checkIn(Font boldFont) {
-			FontInfo info = null;
-			Map.Entry entry = null;
-			Collection values = table.entrySet();
-			for (Iterator iter = values.iterator(); iter.hasNext();) {
-				Map.Entry tempEntry = (Map.Entry) iter.next();
-				FontInfo tempInfo = (FontInfo) tempEntry.getValue();
-				if (tempInfo.boldFont == boldFont) {
-					info = tempInfo;
-					entry = tempEntry;
-					break;
+			Entry<FontData, FontInfo> fontEntry = table.entrySet().stream()
+					.filter(entry -> entry.getValue().boldFont == boldFont).findAny().orElse(null);
+
+			if (fontEntry != null) {
+				FontInfo info = fontEntry.getValue();
+				info.refCount--;
+				if (info.refCount == 0) {
+					boldFont.dispose();
+					table.remove(fontEntry.getKey());
 				}
-			}
-			info.refCount--;
-			if (info.refCount == 0) {
-				boldFont.dispose();
-				table.remove(entry.getKey());
 			}
 		}
 
 		public Font checkOut(Font font) {
-			FontInfo info = null;
 			FontData key = font.getFontData()[0];
-			Object obj = table.get(key);
-			if (obj != null) {
-				info = (FontInfo) obj;
-			} else {
-				info = new FontInfo();
+			FontInfo info = table.computeIfAbsent(key, dummykey -> {
 				FontData[] boldDatas = font.getFontData();
 				for (FontData element : boldDatas) {
 					element.setStyle(SWT.BOLD);
 				}
-				info.boldFont = new Font(Display.getCurrent(), boldDatas);
-				table.put(key, info);
-			}
+				return new FontInfo(new Font(Display.getCurrent(), boldDatas));
+			});
 			info.refCount++;
 			return info.boldFont;
 		}

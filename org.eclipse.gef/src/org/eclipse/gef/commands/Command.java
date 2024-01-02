@@ -51,6 +51,7 @@ public abstract class Command {
 	/**
 	 * @return <code>true</code> if the command can be executed
 	 */
+	@SuppressWarnings("static-method")
 	public boolean canExecute() {
 		return true;
 	}
@@ -60,6 +61,7 @@ public abstract class Command {
 	 *         only be called after <code>execute()</code> or <code>redo()</code>
 	 *         has been called.
 	 */
+	@SuppressWarnings("static-method")
 	public boolean canUndo() {
 		return true;
 	}

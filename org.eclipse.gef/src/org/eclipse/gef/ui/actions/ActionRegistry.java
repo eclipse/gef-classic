@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -30,20 +30,15 @@ public class ActionRegistry {
 	/*
 	 * A hashmap that contains the actions.
 	 */
-	private Map map = new HashMap(15);
+	private final Map<String, IAction> map = new HashMap<>(15);
 
 	/**
 	 * Calls dispose on all actions which implement the {@link Disposable} interface
 	 * so they can perform their own clean-up.
 	 */
 	public void dispose() {
-		Iterator actions = getActions();
-		while (actions.hasNext()) {
-			IAction action = (IAction) actions.next();
-			if (action instanceof Disposable) {
-				((Disposable) action).dispose();
-			}
-		}
+		map.values().stream().filter(Disposable.class::isInstance).map(Disposable.class::cast)
+				.forEach(Disposable::dispose);
 	}
 
 	/**
@@ -53,7 +48,7 @@ public class ActionRegistry {
 	 * @return <code>null</code> or the action with the corresponding ID
 	 */
 	public IAction getAction(Object key) {
-		return (IAction) map.get(key);
+		return map.get(key);
 	}
 
 	/**

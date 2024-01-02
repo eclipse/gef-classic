@@ -101,8 +101,8 @@ public class ToolUtilities {
 		if (ll == rr) {
 			return ll;
 		}
-		ArrayList leftAncestors = new ArrayList();
-		ArrayList rightAncestors = new ArrayList();
+		ArrayList<EditPart> leftAncestors = new ArrayList<>();
+		ArrayList<EditPart> rightAncestors = new ArrayList<>();
 		EditPart l = ll;
 		EditPart r = rr;
 		while (l != null) {
@@ -124,7 +124,7 @@ public class ToolUtilities {
 			ir--;
 		} while (il >= 0 && ir >= 0);
 
-		return (EditPart) leftAncestors.get(il + 1);
+		return leftAncestors.get(il + 1);
 	}
 
 }

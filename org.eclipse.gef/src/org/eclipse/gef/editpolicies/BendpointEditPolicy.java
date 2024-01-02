@@ -63,8 +63,8 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 		getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
 	}
 
-	private List createHandlesForAutomaticBendpoints() {
-		List list = new ArrayList();
+	private List<BendpointCreationHandle> createHandlesForAutomaticBendpoints() {
+		List<BendpointCreationHandle> list = new ArrayList<>();
 		ConnectionEditPart connEP = (ConnectionEditPart) getHost();
 		PointList points = getConnection().getPoints();
 		for (int i = 0; i < points.size() - 1; i++) {

@@ -27,6 +27,7 @@ import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.Handle;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.SharedCursors;
@@ -82,7 +83,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	@Override
 	protected List createSelectionHandles() {
-		List list = new ArrayList();
+		List<Handle> list = new ArrayList<>();
 		createMoveHandle(list);
 		createDragHandle(list, PositionConstants.NORTH_EAST);
 		createDragHandle(list, PositionConstants.NORTH_WEST);
