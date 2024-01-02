@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.PositionConstants;
 
+import org.eclipse.gef.Handle;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.ResizableHandleKit;
@@ -62,7 +63,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 		}
 
 		// resizable in at least one direction
-		List list = new ArrayList();
+		List<Handle> list = new ArrayList<>();
 		createMoveHandle(list);
 		createResizeHandle(list, PositionConstants.NORTH);
 		createResizeHandle(list, PositionConstants.EAST);

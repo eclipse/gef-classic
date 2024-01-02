@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,7 +13,6 @@
 package org.eclipse.gef.ui.palette.editparts;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
@@ -30,8 +29,8 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
  */
 public class PaletteAnimator extends LayoutAnimator {
 
-	private List drawers = new ArrayList();
-	private PaletteViewerPreferences prefs;
+	private final List<DrawerFigure> drawers = new ArrayList<>();
+	private final PaletteViewerPreferences prefs;
 
 	/**
 	 * Constructor for a PaletteAnimator
@@ -65,12 +64,9 @@ public class PaletteAnimator extends LayoutAnimator {
 			return;
 		}
 
-		DrawerFigure drawer;
-
 		// Collapse always
 		if (autoCollapseMode == PaletteViewerPreferences.COLLAPSE_ALWAYS) {
-			for (Iterator iter = drawers.iterator(); iter.hasNext();) {
-				drawer = (DrawerFigure) iter.next();
+			for (DrawerFigure drawer : drawers) {
 				if (drawer != openDrawer) {
 					drawer.setExpanded(false);
 				}
@@ -86,10 +82,9 @@ public class PaletteAnimator extends LayoutAnimator {
 		for (IFigure sibling : openDrawer.getParent().getChildren()) {
 			int height = sibling.getPreferredSize(wHint, -1).height;
 			requiredHeight += height;
-			if (!(sibling instanceof DrawerFigure) || sibling == openDrawer) {
+			if (!(sibling instanceof DrawerFigure drawer) || sibling == openDrawer) {
 				continue;
 			}
-			drawer = (DrawerFigure) sibling;
 			if (drawer.isExpanded() && !drawer.isPinnedOpen()) {
 				closable.add(drawer);
 			}
@@ -97,7 +92,7 @@ public class PaletteAnimator extends LayoutAnimator {
 
 		// Start closing until requiredHeight <= available
 		for (int i = closable.size() - 1; i >= 0 && requiredHeight > availableHeight; i--) {
-			drawer = closable.get(i);
+			DrawerFigure drawer = closable.get(i);
 			int expandedHeight = drawer.getPreferredSize(wHint, -1).height;
 			drawer.setExpanded(false);
 			int collapsedHeight = drawer.getPreferredSize(wHint, -1).height;
@@ -110,8 +105,8 @@ public class PaletteAnimator extends LayoutAnimator {
 	 */
 	@Override
 	public void playbackStarting(IFigure figure) {
-		if (figure instanceof DrawerFigure) {
-			((DrawerFigure) figure).setAnimating(true);
+		if (figure instanceof DrawerFigure drawer) {
+			drawer.setAnimating(true);
 		}
 	}
 
@@ -143,8 +138,8 @@ public class PaletteAnimator extends LayoutAnimator {
 	 */
 	@Override
 	public void tearDown(IFigure figure) {
-		if (figure instanceof DrawerFigure) {
-			((DrawerFigure) figure).setAnimating(false);
+		if (figure instanceof DrawerFigure drawer) {
+			drawer.setAnimating(false);
 		}
 	}
 

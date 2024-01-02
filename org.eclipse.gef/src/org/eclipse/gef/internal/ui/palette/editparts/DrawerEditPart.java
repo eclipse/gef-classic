@@ -112,13 +112,9 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 		return (PaletteDrawer) super.getModel();
 	}
 
-	/**
-	 * Convenience method to get the DrawerFigure for the model drawer.
-	 *
-	 * @return The DrawerFigure created in {@link #createFigure()}
-	 */
-	public DrawerFigure getDrawerFigure() {
-		return (DrawerFigure) getFigure();
+	@Override
+	public DrawerFigure getFigure() {
+		return (DrawerFigure) super.getFigure();
 	}
 
 	/**
@@ -126,17 +122,17 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	 */
 	@Override
 	public IFigure getContentPane() {
-		return getDrawerFigure().getContentPane();
+		return getFigure().getContentPane();
 	}
 
 	@Override
 	public boolean isExpanded() {
-		return getDrawerFigure().isExpanded();
+		return getFigure().isExpanded();
 	}
 
 	@Override
 	public boolean isPinnedOpen() {
-		return getDrawerFigure().isPinnedOpen();
+		return getFigure().isPinnedOpen();
 	}
 
 	/**
@@ -154,7 +150,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	 */
 	@Override
 	public boolean canBePinned() {
-		return getDrawerFigure().isPinShowing();
+		return getFigure().isPinShowing();
 	}
 
 	/**
@@ -191,7 +187,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	 */
 	@Override
 	protected void refreshVisuals() {
-		getDrawerFigure().setToolTip(createToolTip());
+		getFigure().setToolTip(createToolTip());
 
 		ImageDescriptor img = getModel().getSmallIcon();
 		if (img == null && getModel().showDefaultIcon()) {
@@ -199,16 +195,16 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 		}
 		setImageDescriptor(img);
 
-		getDrawerFigure().setTitle(getModel().getLabel());
-		getDrawerFigure().setLayoutMode(getLayoutSetting());
+		getFigure().setTitle(getModel().getLabel());
+		getFigure().setLayoutMode(getLayoutSetting());
 
 		boolean showPin = getPreferenceSource().getAutoCollapseSetting() == PaletteViewerPreferences.COLLAPSE_AS_NEEDED;
-		getDrawerFigure().showPin(showPin);
+		getFigure().showPin(showPin);
 
 		Color background = getModel().getDrawerType().equals(PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE)
 				? PaletteColorUtil.WIDGET_LIST_BACKGROUND
 				: null;
-		getDrawerFigure().getScrollpane().setBackgroundColor(background);
+		getFigure().getScrollpane().setBackgroundColor(background);
 	}
 
 	/**
@@ -228,7 +224,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	public void restoreState(IMemento memento) {
 		setExpanded(Boolean.parseBoolean(memento.getString(PROPERTY_EXPANSION_STATE)));
 		setPinnedOpen(Boolean.parseBoolean(memento.getString(PROPERTY_PINNED_STATE)));
-		RangeModel rModel = getDrawerFigure().getScrollpane().getViewport().getVerticalRangeModel();
+		RangeModel rModel = getFigure().getScrollpane().getViewport().getVerticalRangeModel();
 		rModel.setMinimum(memento.getInteger(RangeModel.PROPERTY_MINIMUM).intValue());
 		rModel.setMaximum(memento.getInteger(RangeModel.PROPERTY_MAXIMUM).intValue());
 		rModel.setExtent(memento.getInteger(RangeModel.PROPERTY_EXTENT).intValue());
@@ -243,7 +239,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	public void saveState(IMemento memento) {
 		memento.putString(PROPERTY_EXPANSION_STATE, Boolean.toString(isExpanded()));
 		memento.putString(PROPERTY_PINNED_STATE, Boolean.toString(isPinnedOpen()));
-		RangeModel rModel = getDrawerFigure().getScrollpane().getViewport().getVerticalRangeModel();
+		RangeModel rModel = getFigure().getScrollpane().getViewport().getVerticalRangeModel();
 		memento.putInteger(RangeModel.PROPERTY_MINIMUM, rModel.getMinimum());
 		memento.putInteger(RangeModel.PROPERTY_MAXIMUM, rModel.getMaximum());
 		memento.putInteger(RangeModel.PROPERTY_EXTENT, rModel.getExtent());
@@ -257,7 +253,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	 * @param expanded <code>true</code> if the drawer is expanded; false otherwise.
 	 */
 	public void setExpanded(boolean expanded) {
-		getDrawerFigure().setExpanded(expanded);
+		getFigure().setExpanded(expanded);
 	}
 
 	/**
@@ -265,12 +261,12 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	 */
 	@Override
 	protected void setImageInFigure(Image image) {
-		getDrawerFigure().setTitleIcon(image);
+		getFigure().setTitleIcon(image);
 	}
 
 	@Override
 	public void setPinnedOpen(boolean pinned) {
-		getDrawerFigure().setPinned(pinned);
+		getFigure().setPinned(pinned);
 	}
 
 	/**
@@ -279,7 +275,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	@Override
 	public void setSelected(int value) {
 		super.setSelected(value);
-		getDrawerFigure().getCollapseToggle().requestFocus();
+		getFigure().getCollapseToggle().requestFocus();
 	}
 
 	/**

@@ -42,7 +42,7 @@ public class SelectionManager {
 
 	private EditPart focusPart;
 	private Runnable notifier;
-	private List selection;
+	private List<EditPart> selection;
 	private EditPartViewer viewer;
 
 	/**
@@ -80,7 +80,7 @@ public class SelectionManager {
 			viewer.setFocus(null);
 		}
 		if (!selection.isEmpty()) {
-			EditPart primary = (EditPart) selection.get(selection.size() - 1);
+			EditPart primary = selection.get(selection.size() - 1);
 			primary.setSelected(EditPart.SELECTED);
 		}
 		// if the editpart is already in the list, re-order it to be the last
@@ -116,7 +116,7 @@ public class SelectionManager {
 			// in the list as the new primary selection, but reverse-search the
 			// list for the first that is (still) selectable.
 			for (int i = selection.size() - 1; i >= 0; i--) {
-				EditPart primaryCandidate = (EditPart) selection.get(i);
+				EditPart primaryCandidate = selection.get(i);
 				if (primaryCandidate.isSelectable()) {
 					primaryCandidate.setSelected(EditPart.SELECTED_PRIMARY);
 					break;
@@ -132,16 +132,12 @@ public class SelectionManager {
 	 * @since 3.2
 	 */
 	public void deselectAll() {
-		EditPart part;
 		// Fix for 458416: adjust the focus through the viewer only (to give
 		// AbstractEditPartViewer a change to update its focusPart field).
 		// AbstractEditPartViewer#setFocus() should call back setFocus(null)
 		// here, so both focus part values should stay in sync.
 		viewer.setFocus(null);
-		for (Object element : selection) {
-			part = (EditPart) element;
-			part.setSelected(EditPart.SELECTED_NONE);
-		}
+		selection.forEach(ep -> ep.setSelected(EditPart.SELECTED_NONE));
 		selection.clear();
 		fireSelectionChanged();
 	}
@@ -286,8 +282,7 @@ public class SelectionManager {
 		// AbstractEditPartViewer#setFocus() should call back setFocus(null)
 		// here, so both focus part values should stay in sync.
 		viewer.setFocus(null);
-		for (Object element : selection) {
-			EditPart part = (EditPart) element;
+		for (EditPart part : selection) {
 			if (!hashset.contains(part)) {
 				part.setSelected(EditPart.SELECTED_NONE);
 			}

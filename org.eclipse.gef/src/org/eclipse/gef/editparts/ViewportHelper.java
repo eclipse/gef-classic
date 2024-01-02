@@ -37,8 +37,8 @@ abstract class ViewportHelper {
 			} else {
 				figure = figure.getParent();
 			}
-			if (figure instanceof Viewport) {
-				port = (Viewport) figure;
+			if (figure instanceof Viewport vp) {
+				port = vp;
 				break;
 			}
 		} while (figure != part.getFigure() && figure != null);

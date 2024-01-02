@@ -81,25 +81,27 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 						&& getFocusEditPart().getParent().getParent() instanceof DrawerEditPart));
 	}
 
-	private boolean acceptNextContainer(KeyEvent event) {
+	private static boolean acceptNextContainer(KeyEvent event) {
 		return event.keyCode == SWT.ARROW_DOWN;
 	}
 
-	private void buildNavigationList(EditPart palettePart, EditPart exclusion, ArrayList navList, EditPart stackPart) {
+	private void buildNavigationList(EditPart palettePart, EditPart exclusion, List<EditPart> navList,
+			EditPart stackPart) {
 		if (palettePart != exclusion) {
 			if (isCollapsedDrawer(palettePart)) {
 				navList.add(palettePart);
 				return;
-			} else if (stackPart instanceof PaletteStackEditPart && stackPart.getChildren().contains(palettePart)) {
+			}
+			if (stackPart instanceof PaletteStackEditPart && stackPart.getChildren().contains(palettePart)) {
 				// we only want to add the top level item to the navlist
 				if (((PaletteStack) stackPart.getModel()).getActiveEntry().equals(palettePart.getModel())) {
 					navList.add(palettePart);
 				}
-			} else if (stackPart instanceof PinnablePaletteStackEditPart
+			} else if (stackPart instanceof PinnablePaletteStackEditPart pinablePaletteEP
 					&& stackPart.getChildren().contains(palettePart)) {
 				// we only want to add the top level item to the navlist unless
 				// the palette stack is expanded
-				if (((PinnablePaletteStackEditPart) stackPart).isExpanded()
+				if (pinablePaletteEP.isExpanded()
 						|| ((PaletteStack) stackPart.getModel()).getActiveEntry().equals(palettePart.getModel())) {
 					navList.add(palettePart);
 				}

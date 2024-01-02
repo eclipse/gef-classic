@@ -42,7 +42,7 @@ import org.eclipse.jface.action.IAction;
  */
 public class KeyHandler {
 
-	private Map actions;
+	private Map<KeyStroke, IAction> actions;
 	private KeyHandler parent;
 
 	/**
@@ -78,7 +78,7 @@ public class KeyHandler {
 		if (actions == null) {
 			return false;
 		}
-		IAction action = (IAction) actions.get(key);
+		IAction action = actions.get(key);
 		if (action == null) {
 			return false;
 		}
@@ -98,7 +98,7 @@ public class KeyHandler {
 	 */
 	public void put(KeyStroke keystroke, IAction action) {
 		if (actions == null) {
-			actions = new HashMap();
+			actions = new HashMap<>();
 		}
 		actions.put(keystroke, action);
 	}

@@ -18,32 +18,32 @@ package org.eclipse.gef;
  */
 public class ThemeConstants {
 
-	static final String CONFIG_COLOR_BUTTON_LIGHTEST = "org.eclipse.gef.color.button.lightest";
-	static final String CONFIG_COLOR_BUTTON = "org.eclipse.gef.color.button";
-	static final String CONFIG_COLOR_BUTTON_DARKER = "org.eclipse.gef.color.button.darker";
-	static final String CONFIG_COLOR_BUTTON_DARKEST = "org.eclipse.gef.color.button.darkest";
+	static final String CONFIG_COLOR_BUTTON_LIGHTEST = "org.eclipse.gef.color.button.lightest"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_BUTTON = "org.eclipse.gef.color.button"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_BUTTON_DARKER = "org.eclipse.gef.color.button.darker"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_BUTTON_DARKEST = "org.eclipse.gef.color.button.darkest"; //$NON-NLS-1$
 
-	static final String CONFIG_COLOR_LIST_BACKGROUND = "org.eclipse.gef.color.list.background";
-	static final String CONFIG_COLOR_LIST_FOREGROUND = "org.eclipse.gef.color.list.foreground";
+	static final String CONFIG_COLOR_LIST_BACKGROUND = "org.eclipse.gef.color.list.background"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_LIST_FOREGROUND = "org.eclipse.gef.color.list.foreground"; //$NON-NLS-1$
 
-	static final String CONFIG_COLOR_LINE_FOREGROUND = "org.eclipse.gef.color.line.foreground";
+	static final String CONFIG_COLOR_LINE_FOREGROUND = "org.eclipse.gef.color.line.foreground"; //$NON-NLS-1$
 
-	static final String CONFIG_COLOR_MENU_BACKGROUND = "org.eclipse.gef.color.menu.background";
-	static final String CONFIG_COLOR_MENU_FOREGROUND = "org.eclipse.gef.color.menu.foreground";
-	static final String CONFIG_COLOR_MENU_BACKGROUND_SELECTED = "org.eclipse.gef.color.menu.background.selected";
-	static final String CONFIG_COLOR_MENU_FOREGROUND_SELECTED = "org.eclipse.gef.color.menu.foreground.selected";
+	static final String CONFIG_COLOR_MENU_BACKGROUND = "org.eclipse.gef.color.menu.background"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_MENU_FOREGROUND = "org.eclipse.gef.color.menu.foreground"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_MENU_BACKGROUND_SELECTED = "org.eclipse.gef.color.menu.background.selected"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_MENU_FOREGROUND_SELECTED = "org.eclipse.gef.color.menu.foreground.selected"; //$NON-NLS-1$
 
-	static final String CONFIG_COLOR_TITLE_BACKGROUND = "org.eclipse.gef.color.title.background";
-	static final String CONFIG_COLOR_TITLE_GRADIENT = "org.eclipse.gef.color.title.gradient";
-	static final String CONFIG_COLOR_TITLE_FOREGROUND = "org.eclipse.gef.color.title.foreground";
+	static final String CONFIG_COLOR_TITLE_BACKGROUND = "org.eclipse.gef.color.title.background"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_TITLE_GRADIENT = "org.eclipse.gef.color.title.gradient"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_TITLE_FOREGROUND = "org.eclipse.gef.color.title.foreground"; //$NON-NLS-1$
 
-	static final String CONFIG_COLOR_TITLE_INACTIVE_BACKGROUND = "org.eclipse.gef.color.title.inactive.background";
-	static final String CONFIG_COLOR_TITLE_INACTIVE_GRADIENT = "org.eclipse.gef.color.title.inactive.gradient";
-	static final String CONFIG_COLOR_TITLE_INACTIVE_FOREGROUND = "org.eclipse.gef.color.title.inactive.foreground";
+	static final String CONFIG_COLOR_TITLE_INACTIVE_BACKGROUND = "org.eclipse.gef.color.title.inactive.background"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_TITLE_INACTIVE_GRADIENT = "org.eclipse.gef.color.title.inactive.gradient"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_TITLE_INACTIVE_FOREGROUND = "org.eclipse.gef.color.title.inactive.foreground"; //$NON-NLS-1$
 
-	static final String CONFIG_COLOR_TOOLTIP_FOREGROUND = "org.eclipse.gef.color.tooltip.foreground";
-	static final String CONFIG_COLOR_TOOLTIP_BACKGROUND = "org.eclipse.gef.color.tooltip.background";
+	static final String CONFIG_COLOR_TOOLTIP_FOREGROUND = "org.eclipse.gef.color.tooltip.foreground"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_TOOLTIP_BACKGROUND = "org.eclipse.gef.color.tooltip.background"; //$NON-NLS-1$
 
-	static final String CONFIG_COLOR_LIST_HOVER_BACKGROUND = "org.eclipse.gef.color.list.hover.background";
-	static final String CONFIG_COLOR_LIST_SELECTED_BACKGROUND = "org.eclipse.gef.color.list.selected.background";
+	static final String CONFIG_COLOR_LIST_HOVER_BACKGROUND = "org.eclipse.gef.color.list.hover.background"; //$NON-NLS-1$
+	static final String CONFIG_COLOR_LIST_SELECTED_BACKGROUND = "org.eclipse.gef.color.list.selected.background"; //$NON-NLS-1$
 }

@@ -62,9 +62,9 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 		 */
 		@Override
 		public List getSourceAnchorLocations() {
-			List list = new ArrayList();
-			if (getFigure() instanceof Connection) {
-				Point p = ((Connection) getFigure()).getPoints().getMidpoint();
+			List<Point> list = new ArrayList<>();
+			if (getFigure() instanceof Connection con) {
+				Point p = con.getPoints().getMidpoint();
 				getFigure().translateToAbsolute(p);
 				list.add(p);
 			}
@@ -80,7 +80,8 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 		}
 	}
 
-	private EditPart sourceEditPart, targetEditPart;
+	private EditPart sourceEditPart;
+	private EditPart targetEditPart;
 
 	/**
 	 * Activates the Figure representing this, by setting up the start and end
@@ -187,9 +188,8 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 */
 	protected ConnectionAnchor getSourceConnectionAnchor() {
 		if (getSource() != null) {
-			if (getSource() instanceof NodeEditPart) {
-				NodeEditPart editPart = (NodeEditPart) getSource();
-				return editPart.getSourceConnectionAnchor(this);
+			if (getSource() instanceof NodeEditPart nodeEP) {
+				return nodeEP.getSourceConnectionAnchor(this);
 			}
 			IFigure f = ((GraphicalEditPart) getSource()).getFigure();
 			return new ChopboxAnchor(f);
@@ -210,9 +210,8 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 */
 	protected ConnectionAnchor getTargetConnectionAnchor() {
 		if (getTarget() != null) {
-			if (getTarget() instanceof NodeEditPart) {
-				NodeEditPart editPart = (NodeEditPart) getTarget();
-				return editPart.getTargetConnectionAnchor(this);
+			if (getTarget() instanceof NodeEditPart nodeEP) {
+				return nodeEP.getTargetConnectionAnchor(this);
 			}
 			IFigure f = ((GraphicalEditPart) getTarget()).getFigure();
 			return new ChopboxAnchor(f);

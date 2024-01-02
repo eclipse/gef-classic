@@ -28,7 +28,7 @@ public abstract class ToolEntry extends PaletteEntry {
 	/** Type Identifier **/
 	public static final Object PALETTE_TYPE_TOOL = "$Palette Tool";//$NON-NLS-1$
 
-	private Map map;
+	private Map<Object, Object> map;
 	private Class toolClass;
 
 	/**
@@ -133,7 +133,7 @@ public abstract class ToolEntry extends PaletteEntry {
 	 */
 	public void setToolProperty(Object key, Object value) {
 		if (map == null) {
-			map = new HashMap();
+			map = new HashMap<>();
 		}
 		map.put(key, value);
 	}

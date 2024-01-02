@@ -125,7 +125,7 @@ public class CommandStack {
 	 */
 	public static final int PRE_MASK = PRE_EXECUTE | PRE_UNDO | PRE_REDO | PRE_FLUSH | PRE_MARK_SAVE;
 
-	private final List eventListeners = new ArrayList();
+	private final List<CommandStackEventListener> eventListeners = new ArrayList<>();
 
 	/**
 	 * The list of {@link CommandStackListener}s.
@@ -134,13 +134,13 @@ public class CommandStack {
 	 *             {@link #notifyListeners()}
 	 */
 	@Deprecated
-	protected List listeners = new ArrayList();
+	protected List<CommandStackListener> listeners = new ArrayList<>();
 
-	private final Stack redoable = new Stack();
+	private final Stack<Command> redoable = new Stack<>();
 
 	private int saveLocation = 0;
 
-	private final Stack undoable = new Stack();
+	private final Stack<Command> undoable = new Stack<>();
 
 	private int undoLimit = 0;
 
@@ -183,7 +183,7 @@ public class CommandStack {
 		if (redoable.isEmpty()) {
 			return false;
 		}
-		return ((Command) redoable.peek()).canRedo();
+		return redoable.peek().canRedo();
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class CommandStack {
 		if (undoable.isEmpty()) {
 			return false;
 		}
-		return ((Command) undoable.peek()).canUndo();
+		return undoable.peek().canUndo();
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class CommandStack {
 			command.execute();
 			if (getUndoLimit() > 0) {
 				while (undoable.size() >= getUndoLimit()) {
-					((Command) undoable.remove(0)).dispose();
+					undoable.remove(0).dispose();
 					if (saveLocation > -1) {
 						saveLocation--;
 					}
@@ -261,13 +261,13 @@ public class CommandStack {
 
 	private void flushRedo() {
 		while (!redoable.isEmpty()) {
-			((Command) redoable.pop()).dispose();
+			redoable.pop().dispose();
 		}
 	}
 
 	private void flushUndo() {
 		while (!undoable.isEmpty()) {
-			((Command) undoable.pop()).dispose();
+			undoable.pop().dispose();
 		}
 	}
 
@@ -275,7 +275,7 @@ public class CommandStack {
 	 * @return an array containing all commands in the order they were executed
 	 */
 	public Object[] getCommands() {
-		List commands = new ArrayList(undoable);
+		List<Command> commands = new ArrayList<>(undoable);
 		for (int i = redoable.size() - 1; i >= 0; i--) {
 			commands.add(redoable.get(i));
 		}
@@ -346,9 +346,7 @@ public class CommandStack {
 	@Deprecated
 	protected void notifyListeners() {
 		EventObject event = new EventObject(this);
-		for (Object listener : listeners) {
-			((CommandStackListener) listener).commandStackChanged(event);
-		}
+		listeners.forEach(listener -> listener.commandStackChanged(event));
 	}
 
 	/**
@@ -361,9 +359,7 @@ public class CommandStack {
 	 */
 	protected void notifyListeners(Command command, int state) {
 		CommandStackEvent event = new CommandStackEvent(this, command, state);
-		for (Object eventListener : eventListeners) {
-			((CommandStackEventListener) eventListener).stackChanged(event);
-		}
+		eventListeners.forEach(eventListener -> eventListener.stackChanged(event));
 	}
 
 	/**
@@ -376,7 +372,7 @@ public class CommandStack {
 		if (!canRedo()) {
 			return;
 		}
-		Command command = (Command) redoable.pop();
+		Command command = redoable.pop();
 		notifyListeners(command, PRE_REDO);
 		try {
 			command.redo();
@@ -428,7 +424,7 @@ public class CommandStack {
 			return;
 		}
 		// Assert.isTrue(canUndo());
-		Command command = (Command) undoable.pop();
+		Command command = undoable.pop();
 		notifyListeners(command, PRE_UNDO);
 		try {
 			command.undo();
