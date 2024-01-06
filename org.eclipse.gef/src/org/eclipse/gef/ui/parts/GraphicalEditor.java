@@ -14,7 +14,6 @@ package org.eclipse.gef.ui.parts;
 
 import java.util.ArrayList;
 import java.util.EventObject;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
@@ -63,30 +62,13 @@ import org.eclipse.gef.ui.properties.UndoablePropertySheetPage;
  */
 public abstract class GraphicalEditor extends EditorPart implements CommandStackListener, ISelectionListener {
 
-	private static class ActionIDList extends ArrayList {
-		@Override
-		public boolean add(Object o) {
-			if (o instanceof IAction) {
-				try {
-					IAction action = (IAction) o;
-					o = action.getId();
-					throw new IllegalArgumentException("Action IDs should be added to lists, not the action: " //$NON-NLS-1$
-							+ action);
-				} catch (IllegalArgumentException exc) {
-					exc.printStackTrace();
-				}
-			}
-			return super.add(o);
-		}
-	}
-
 	private DefaultEditDomain editDomain;
 	private GraphicalViewer graphicalViewer;
 	private ActionRegistry actionRegistry;
 	private SelectionSynchronizer synchronizer;
-	private List selectionActions = new ActionIDList();
-	private List stackActions = new ActionIDList();
-	private List propertyActions = new ActionIDList();
+	private final List<String> selectionActions = new ArrayList<>();
+	private final List<String> stackActions = new ArrayList<>();
+	private final List<String> propertyActions = new ArrayList<>();
 
 	/**
 	 * Constructs the editor part
@@ -278,19 +260,19 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	}
 
 	/**
-	 * Returns the list of {@link IAction IActions} dependant on property changes in
+	 * Returns the list of <em>IDs</em> of Actions dependent on property changes in
 	 * the Editor. These actions should implement the {@link UpdateAction} interface
 	 * so that they can be updated in response to property changes. An example is
 	 * the "Save" action.
 	 *
 	 * @return the list of property-dependant actions
 	 */
-	protected List getPropertyActions() {
+	protected List<String> getPropertyActions() {
 		return propertyActions;
 	}
 
 	/**
-	 * Returns the list of <em>IDs</em> of Actions that are dependant on changes in
+	 * Returns the list of <em>IDs</em> of Actions that are dependent on changes in
 	 * the workbench's {@link ISelectionService}. The associated Actions can be
 	 * found in the action registry. Such actions should implement the
 	 * {@link UpdateAction} interface so that they can be updated in response to
@@ -299,15 +281,15 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * @see #updateActions(List)
 	 * @return the list of selection-dependant action IDs
 	 */
-	protected List getSelectionActions() {
+	protected List<String> getSelectionActions() {
 		return selectionActions;
 	}
 
 	/**
-	 * Returns the selection syncronizer object. The synchronizer can be used to
+	 * Returns the selection synchronizer object. The synchronizer can be used to
 	 * sync the selection of 2 or more EditPartViewers.
 	 *
-	 * @return the syncrhonizer
+	 * @return the synchronizer
 	 */
 	protected SelectionSynchronizer getSelectionSynchronizer() {
 		if (synchronizer == null) {
@@ -317,7 +299,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	}
 
 	/**
-	 * Returns the list of <em>IDs</em> of Actions that are dependant on the
+	 * Returns the list of <em>IDs</em> of Actions that are dependent on the
 	 * CommmandStack's state. The associated Actions can be found in the action
 	 * registry. These actions should implement the {@link UpdateAction} interface
 	 * so that they can be updated in response to command stack changes. An example
@@ -325,7 +307,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 *
 	 * @return the list of stack-dependant action IDs
 	 */
-	protected List getStackActions() {
+	protected List<String> getStackActions() {
 		return stackActions;
 	}
 
@@ -457,15 +439,11 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 *
 	 * @param actionIds the list of IDs to update
 	 */
-	protected void updateActions(List actionIds) {
+	protected void updateActions(List<String> actionIds) {
 		ActionRegistry registry = getActionRegistry();
-		Iterator iter = actionIds.iterator();
-		while (iter.hasNext()) {
-			IAction action = registry.getAction(iter.next());
-			if (action instanceof UpdateAction) {
-				((UpdateAction) action).update();
-			}
-		}
+		actionIds.stream().map(registry::getAction) //
+				.filter(UpdateAction.class::isInstance).map(UpdateAction.class::cast) //
+				.forEach(UpdateAction::update);
 	}
 
 }
