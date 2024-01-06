@@ -269,10 +269,8 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 			ignoreInvalidate = true;
 			processStaleConnections();
 			isDirty = false;
-			List<? extends Path> updated = algorithm.solve();
-			Connection current;
-			for (Path path : updated) {
-				current = (Connection) path.data;
+			for (Path path : algorithm.solve()) {
+				Connection current = (Connection) path.data;
 				current.revalidate();
 
 				PointList points = path.getPoints().getCopy();
@@ -301,7 +299,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	 *         routings.
 	 * @since 3.5
 	 */
-	public List<? extends Path> getPathsAfterRouting() {
+	public List<Path> getPathsAfterRouting() {
 		if (isDirty) {
 			processStaleConnections();
 			isDirty = false;
