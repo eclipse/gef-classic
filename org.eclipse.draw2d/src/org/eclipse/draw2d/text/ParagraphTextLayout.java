@@ -78,12 +78,12 @@ public class ParagraphTextLayout extends TextLayout {
 	 * @param levelInfo the Bidi levels
 	 * @return the requested segment
 	 */
-	private String[] getSegments(String text, int levelInfo[]) {
+	private static String[] getSegments(String text, int[] levelInfo) {
 		if (levelInfo.length == 1) {
 			return new String[] { text };
 		}
 
-		String result[] = new String[levelInfo.length / 2 + 1];
+		String[] result = new String[levelInfo.length / 2 + 1];
 
 		int i;
 		int endOffset;
@@ -101,11 +101,11 @@ public class ParagraphTextLayout extends TextLayout {
 
 	class SegmentLookahead implements FlowUtilities.LookAhead {
 		private int seg = -1;
-		private String segs[];
+		private final String[] segs;
 		private int[] width;
 		private final int trailingBorderSize;
 
-		SegmentLookahead(String segs[], int trailingBorderSize) {
+		SegmentLookahead(String[] segs, int trailingBorderSize) {
 			this.segs = segs;
 			this.trailingBorderSize = trailingBorderSize;
 		}
@@ -149,25 +149,28 @@ public class ParagraphTextLayout extends TextLayout {
 		int offset = 0;
 
 		FlowContext context = getContext();
-		List fragments = textFlow.getFragments();
+		@SuppressWarnings("unchecked")
+		List<TextFragmentBox> fragments = (List<TextFragmentBox>) textFlow.getFragments();
 		Font font = textFlow.getFont();
 		int fragIndex = 0;
 		int advance = 0;
 
 		TextFragmentBox fragment;
-		int levelInfo[] = (textFlow.getBidiInfo() == null) ? new int[] { -1 } : textFlow.getBidiInfo().levelInfo;
+		int[] levelInfo = (textFlow.getBidiInfo() == null) ? new int[] { -1 } : textFlow.getBidiInfo().levelInfo;
 
-		String segment, segments[] = getSegments(textFlow.getText(), levelInfo);
+		String segment;
+		String[] segments = getSegments(textFlow.getText(), levelInfo);
 		FlowBorder border = null;
-		if (textFlow.getBorder() instanceof FlowBorder) {
-			border = (FlowBorder) textFlow.getBorder();
+		if (textFlow.getBorder() instanceof FlowBorder flowBorder) {
+			border = flowBorder;
 		}
 
 		SegmentLookahead lookahead = new SegmentLookahead(segments, border == null ? 0 : border.getRightMargin());
 		int seg;
 
 		if (border != null) {
-			fragment = getFragment(fragIndex++, fragments);
+			fragment = getFragment(fragIndex, fragments);
+			fragIndex++;
 			fragment.setBidiLevel(levelInfo[0]);
 			fragment.setTruncated(false);
 			fragment.offset = fragment.length = -1;
@@ -184,7 +187,8 @@ public class ParagraphTextLayout extends TextLayout {
 			lookahead.setIndex(seg);
 
 			do {
-				fragment = getFragment(fragIndex++, fragments);
+				fragment = getFragment(fragIndex, fragments);
+				fragIndex++;
 
 				fragment.offset = offset;
 				fragment.setBidiLevel(levelInfo[seg * 2]);
@@ -200,7 +204,8 @@ public class ParagraphTextLayout extends TextLayout {
 		}
 
 		if (border != null) {
-			fragment = getFragment(fragIndex++, fragments);
+			fragment = getFragment(fragIndex, fragments);
+			fragIndex++;
 			fragment.setBidiLevel(levelInfo[0]);
 			fragment.setTruncated(false);
 			fragment.offset = fragment.length = -1;

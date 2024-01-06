@@ -43,7 +43,7 @@ public class FlowBorderTests extends SimpleTextTest {
 	}
 
 	private static TextFragmentBox getTextFragment(TextFlow flow, int index) {
-		return (TextFragmentBox) flow.getFragments().get(index);
+		return flow.getFragments().get(index);
 	}
 
 }

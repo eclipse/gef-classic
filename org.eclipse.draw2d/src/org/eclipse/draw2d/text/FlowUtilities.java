@@ -99,40 +99,37 @@ public class FlowUtilities {
 	 *                 are true.
 	 * @return the average character width
 	 */
+	@SuppressWarnings("static-method")
 	protected float getAverageCharWidth(TextFragmentBox fragment, Font font) {
 		if (fragment.getWidth() > 0 && fragment.length != 0) {
 			return fragment.getWidth() / (float) fragment.length;
 		}
-		return FigureUtilities.getFontMetrics(font).getAverageCharWidth();
+		return (float) FigureUtilities.getFontMetrics(font).getAverageCharacterWidth();
 	}
 
 	static int getBorderAscent(InlineFlow owner) {
-		if (owner.getBorder() instanceof FlowBorder) {
-			FlowBorder border = (FlowBorder) owner.getBorder();
+		if (owner.getBorder() instanceof FlowBorder border) {
 			return border.getInsets(owner).top;
 		}
 		return 0;
 	}
 
 	static int getBorderAscentWithMargin(InlineFlow owner) {
-		if (owner.getBorder() instanceof FlowBorder) {
-			FlowBorder border = (FlowBorder) owner.getBorder();
+		if (owner.getBorder() instanceof FlowBorder border) {
 			return border.getTopMargin() + border.getInsets(owner).top;
 		}
 		return 0;
 	}
 
 	static int getBorderDescent(InlineFlow owner) {
-		if (owner.getBorder() instanceof FlowBorder) {
-			FlowBorder border = (FlowBorder) owner.getBorder();
+		if (owner.getBorder() instanceof FlowBorder border) {
 			return border.getInsets(owner).bottom;
 		}
 		return 0;
 	}
 
 	static int getBorderDescentWithMargin(InlineFlow owner) {
-		if (owner.getBorder() instanceof FlowBorder) {
-			FlowBorder border = (FlowBorder) owner.getBorder();
+		if (owner.getBorder() instanceof FlowBorder border) {
 			return border.getBottomMargin() + border.getInsets(owner).bottom;
 		}
 		return 0;
@@ -175,9 +172,8 @@ public class FlowUtilities {
 			// This will
 			// happen at most once.
 			return getTextLayoutBounds(string, font, 0, guess - 1).width;
-		} else {
-			return getTextUtilities().getTextExtents(string.substring(0, guess), font).width;
 		}
+		return getTextUtilities().getTextExtents(string.substring(0, guess), font).width;
 	}
 
 	/**
@@ -187,7 +183,7 @@ public class FlowUtilities {
 	 * @param font     the font to be used in the calculation
 	 * @param string   the string to be used in the calculation
 	 */
-	final protected void setupFragment(TextFragmentBox fragment, Font font, String string) {
+	protected final void setupFragment(TextFragmentBox fragment, Font font, String string) {
 		if (fragment.getWidth() == -1 || fragment.isTruncated()) {
 			int width;
 			if (string.length() == 0 || fragment.length == 0) {
@@ -218,7 +214,7 @@ public class FlowUtilities {
 	 * @return the number of characters that will fit in the given space; can be 0
 	 *         (eg., when the first character of the given string is a newline)
 	 */
-	final protected int wrapFragmentInContext(TextFragmentBox frag, String string, FlowContext context,
+	protected final int wrapFragmentInContext(TextFragmentBox frag, String string, FlowContext context,
 			LookAhead lookahead, Font font, int wrapping) {
 		frag.setTruncated(false);
 		int strLen = string.length();
@@ -260,16 +256,15 @@ public class FlowUtilities {
 
 		while (true) {
 			if ((max - min) <= 1) {
-				if (min == absoluteMin && context.isCurrentLineOccupied() && !context.getContinueOnSameLine()
-						&& availableWidth < measureString(frag, string, min, font)
-								+ ((min == strLen && lookahead != null) ? lookahead.getWidth() : 0)) {
-					context.endLine();
-					availableWidth = context.getRemainingLineWidth();
-					max = Math.min(strLen, firstDelimiter) + 1;
-					if ((max - min) <= 1) {
-						break;
-					}
-				} else {
+				if ((min != absoluteMin) || !context.isCurrentLineOccupied() || context.getContinueOnSameLine()
+						|| (availableWidth >= measureString(frag, string, min, font)
+								+ ((min == strLen && lookahead != null) ? lookahead.getWidth() : 0))) {
+					break;
+				}
+				context.endLine();
+				availableWidth = context.getRemainingLineWidth();
+				max = Math.min(strLen, firstDelimiter) + 1;
+				if ((max - min) <= 1) {
 					break;
 				}
 			}
@@ -391,6 +386,7 @@ public class FlowUtilities {
 	/**
 	 * @see TextLayout#getBounds()
 	 */
+	@SuppressWarnings("static-method")
 	protected Rectangle getTextLayoutBounds(String s, Font f, int start, int end) {
 		TextLayout textLayout = getTextLayout();
 		textLayout.setFont(f);
@@ -405,6 +401,7 @@ public class FlowUtilities {
 	 * @return the <code>TextUtililities</code> instance
 	 * @since 3.4
 	 */
+	@SuppressWarnings("static-method")
 	protected TextUtilities getTextUtilities() {
 		return TextUtilities.INSTANCE;
 	}

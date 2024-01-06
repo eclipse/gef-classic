@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Font;
 
+import org.eclipse.draw2d.text.FlowBox;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.TextFlow;
@@ -54,9 +55,9 @@ public class TextualTests extends BaseTestCase {
 		block.validate();
 
 		// TODO enhance verification
-		List boldFragments = bold.getFragments();
+		List<? extends FlowBox> boldFragments = bold.getFragments();
 		assertTrue(boldFragments.size() == 3);
-		List italicFragments = italics.getFragments();
+		List<? extends FlowBox> italicFragments = italics.getFragments();
 		assertTrue(italicFragments.size() == 2);
 	}
 
@@ -76,7 +77,7 @@ public class TextualTests extends BaseTestCase {
 		block.setSize(-1, -1);
 		block.validate();
 
-		TextFragmentBox box = (TextFragmentBox) largeText.getFragments().get(0);
+		TextFragmentBox box = largeText.getFragments().get(0);
 		int y = box.getBaseline();
 		try {
 			assertTrue(smallText.getFirstOffsetForLine(y) == 0);

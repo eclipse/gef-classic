@@ -16,10 +16,12 @@ import java.text.BreakIterator;
 import java.text.spi.BreakIteratorProvider;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.ServiceLoader;
 
 import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.text.FlowBox;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.ParagraphTextLayout;
@@ -78,11 +80,11 @@ public class TextFlowWrapTest extends BaseTestCase {
 		textFlow.setText(string1);
 		textFlow2.setText(string2);
 		figure.validate();
-		ArrayList list = new ArrayList<>(textFlow.getFragments());
+		List<FlowBox> list = new ArrayList<>(textFlow.getFragments());
 		if (string2.length() != 0) {
 			list.addAll(textFlow2.getFragments());
 		}
-		Iterator frags = list.iterator();
+		Iterator<FlowBox> frags = list.iterator();
 
 		int index = 0;
 		TextFragmentBox previousFrag = null;
@@ -103,7 +105,8 @@ public class TextFlowWrapTest extends BaseTestCase {
 				assertTrue("Failed on: " + string1 + string2 + "Fragment is not truncated\n", //$NON-NLS-1$ //$NON-NLS-2$
 						previousFrag.isTruncated());
 				continue;
-			} else if (answer == NON_TRUNCATED) {
+			}
+			if (answer == NON_TRUNCATED) {
 				assertFalse("Failed on: " + string1 + string2 + "Fragment is truncated\n", previousFrag.isTruncated()); //$NON-NLS-1$ //$NON-NLS-2$
 				continue;
 			}

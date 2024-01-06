@@ -40,7 +40,8 @@ public final class BidiProcessor {
 	 * @since 3.1
 	 */
 	private static class BidiEntry {
-		int begin, end;
+		int begin;
+		int end;
 		FlowFigure fig;
 
 		BidiEntry(FlowFigure fig, int offset, int length) {
@@ -59,7 +60,7 @@ public final class BidiProcessor {
 			.orElseGet(DefaultBidiProvider::new);
 
 	private StringBuffer bidiText;
-	private List list = new ArrayList();
+	private final List<BidiEntry> list = new ArrayList<>();
 	private int orientation = SWT.LEFT_TO_RIGHT;
 
 	private BidiProcessor() {
@@ -114,18 +115,18 @@ public final class BidiProcessor {
 	 * @param levels the calculated levels of all the text in the block
 	 */
 	private void assignResults(int[] levels) {
-		BidiEntry prevEntry = null, entry = null;
-		BidiInfo prevInfo = null, info = null;
+		BidiEntry prevEntry = null;
+		BidiInfo prevInfo = null;
+		BidiInfo info = null;
 		int end = 2, start = 0;
-		for (Object element : list) {
-			entry = (BidiEntry) element;
+		for (BidiEntry entry : list) {
 			info = new BidiInfo();
 
 			while (levels[end] < entry.end) {
 				end += 2;
 			}
 
-			int levelInfo[];
+			int[] levelInfo;
 			if (end == start) {
 				levelInfo = new int[1];
 				if (prevInfo != null) {
@@ -166,8 +167,8 @@ public final class BidiProcessor {
 				start = end - 2;
 			}
 		}
-		if (entry != null) {
-			entry.fig.setBidiInfo(info);
+		if (!list.isEmpty()) {
+			list.get(list.size() - 1).fig.setBidiInfo(info);
 		}
 	}
 
@@ -179,7 +180,7 @@ public final class BidiProcessor {
 	 * @param the character to be evaluated
 	 * @return <code>true</code> if the given character is Arabic or ZWJ
 	 */
-	private boolean isJoiningCharacter(char c) {
+	private static boolean isJoiningCharacter(char c) {
 		return Character.getDirectionality(c) == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC || c == BidiChars.ZWJ;
 	}
 
@@ -217,16 +218,19 @@ public final class BidiProcessor {
 				int newLevel = layout.getLevel(offset);
 				if (newLevel != prevLevel) {
 					if (j + 3 > levels.length) {
-						int temp[] = levels;
+						int[] temp = levels;
 						levels = new int[levels.length * 2 + 1];
 						System.arraycopy(temp, 0, levels, 0, temp.length);
 					}
-					levels[j++] = offset;
-					levels[j++] = newLevel;
+					levels[j] = offset;
+					j++;
+					levels[j] = newLevel;
+					j++;
 					prevLevel = newLevel;
 				}
 			}
-			levels[j++] = offset;
+			levels[j] = offset;
+			j++;
 
 			if (j != levels.length) {
 				int[] newLevels = new int[j];

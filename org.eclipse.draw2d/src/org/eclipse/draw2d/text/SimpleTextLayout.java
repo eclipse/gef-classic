@@ -41,11 +41,12 @@ public class SimpleTextLayout extends TextLayout {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowFigureLayout#layout()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void layout() {
 		TextFlow textFlow = (TextFlow) getFlowFigure();
 		String text = textFlow.getText();
-		List fragments = textFlow.getFragments();
+		List<? extends TextFragmentBox> fragments = textFlow.getFragments();
 		Font font = textFlow.getFont();
 		TextFragmentBox fragment;
 		int i = 0;
@@ -54,7 +55,8 @@ public class SimpleTextLayout extends TextLayout {
 
 		do {
 			nextLineBreak(text, offset);
-			fragment = getFragment(i++, fragments);
+			fragment = getFragment(i, (List<TextFragmentBox>) fragments);
+			i++;
 			fragment.length = result - offset;
 			fragment.offset = offset;
 			fragment.setWidth(-1);
@@ -65,11 +67,12 @@ public class SimpleTextLayout extends TextLayout {
 		} while (offset < text.length());
 		// Remove the remaining unused fragments.
 		while (i < fragments.size()) {
-			fragments.remove(i++);
+			fragments.remove(i);
+			i++;
 		}
 	}
 
-	private int nextLineBreak(String text, int offset) {
+	private static int nextLineBreak(String text, int offset) {
 		result = text.length();
 		delimeterLength = 0;
 		int current;
