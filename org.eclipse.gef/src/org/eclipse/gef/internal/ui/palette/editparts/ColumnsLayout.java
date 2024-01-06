@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -43,13 +43,11 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 	protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
 		if (!(child instanceof SeparatorEditPart.SeparatorFigure)) {
 			Dimension hints = getMinimumHints(child, wHint, hHint);
-			int numOfColumns = (wHint + majorSpacing) / (hints.width + majorSpacing);
-			// numOfColumns = Math.min(numOfColumns,
-			// maxChildrenInRowWith(child));
+			int numOfColumns = (wHint + getMajorSpacing()) / (hints.width + getMajorSpacing());
 			if (numOfColumns == 0) {
 				wHint = hints.width;
 			} else {
-				wHint = (wHint - ((numOfColumns - 1) * majorSpacing)) / numOfColumns;
+				wHint = (wHint - ((numOfColumns - 1) * getMajorSpacing())) / numOfColumns;
 			}
 			hHint = hints.height;
 		}
@@ -66,9 +64,8 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 		if (cachedConstraint == null) {
 			cachedConstraint = defaultConstraint.getCopy();
 			for (IFigure child : figure.getParent().getChildren()) {
-				Dimension childSize = (child instanceof PinnablePaletteStackFigure)
-						? ((PinnablePaletteStackFigure) child).getHeaderPreferredSize(cachedConstraint.width,
-								cachedConstraint.height)
+				Dimension childSize = (child instanceof PinnablePaletteStackFigure ppStackFigure)
+						? ppStackFigure.getHeaderPreferredSize(cachedConstraint.width, cachedConstraint.height)
 						: child.getPreferredSize(cachedConstraint.width, cachedConstraint.height);
 				cachedConstraint.width = Math.max(cachedConstraint.width, childSize.width);
 			}

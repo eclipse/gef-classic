@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -24,9 +24,9 @@ class FreeformHelper implements FreeformListener {
 		}
 	}
 
-	private FreeformFigure host;
+	private final FreeformFigure host;
 	private Rectangle freeformExtent;
-	private FigureListener figureListener = new ChildTracker();
+	private final FigureListener figureListener = new ChildTracker();
 
 	FreeformHelper(FreeformFigure host) {
 		this.host = host;
@@ -38,8 +38,8 @@ class FreeformHelper implements FreeformListener {
 		}
 		Rectangle r;
 		for (IFigure child : host.getChildren()) {
-			if (child instanceof FreeformFigure) {
-				r = ((FreeformFigure) child).getFreeformExtent();
+			if (child instanceof FreeformFigure freeFormFig) {
+				r = freeFormFig.getFreeformExtent();
 			} else {
 				r = child.getBounds();
 			}
@@ -61,8 +61,8 @@ class FreeformHelper implements FreeformListener {
 
 	public void hookChild(IFigure child) {
 		invalidate();
-		if (child instanceof FreeformFigure) {
-			((FreeformFigure) child).addFreeformListener(this);
+		if (child instanceof FreeformFigure freeFormFig) {
+			freeFormFig.addFreeformListener(this);
 		} else {
 			child.addFigureListener(figureListener);
 		}
@@ -90,16 +90,16 @@ class FreeformHelper implements FreeformListener {
 		bounds = bounds.getCopy();
 		host.translateFromParent(bounds);
 		for (IFigure child : host.getChildren()) {
-			if (child instanceof FreeformFigure) {
-				((FreeformFigure) child).setFreeformBounds(bounds);
+			if (child instanceof FreeformFigure freeFormFig) {
+				freeFormFig.setFreeformBounds(bounds);
 			}
 		}
 	}
 
 	public void unhookChild(IFigure child) {
 		invalidate();
-		if (child instanceof FreeformFigure) {
-			((FreeformFigure) child).removeFreeformListener(this);
+		if (child instanceof FreeformFigure freeFormFig) {
+			freeFormFig.removeFreeformListener(this);
 		} else {
 			child.removeFigureListener(figureListener);
 		}

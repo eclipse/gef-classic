@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -33,6 +33,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 *
 	 * @deprecated Unused.
 	 */
+	@Deprecated
 	public static final boolean HORIZONTAL = true;
 
 	/**
@@ -40,6 +41,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 *
 	 * @deprecated Unused.
 	 */
+	@Deprecated
 	public static final boolean VERTICAL = false;
 
 	/**
@@ -48,6 +50,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * @deprecated Use {@link OrderedLayout#setStretchMinorAxis(boolean)} and
 	 *             {@link OrderedLayout#isStretchMinorAxis()} instead.
 	 */
+	@Deprecated
 	protected boolean matchWidth;
 
 	/**
@@ -55,6 +58,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 *
 	 * @deprecated Use {@link #getSpacing()} and {@link #setSpacing(int)} instead.
 	 */
+	@Deprecated
 	protected int spacing;
 
 	/**
@@ -136,7 +140,7 @@ public class ToolbarLayout extends OrderedLayout {
 			minSize = calculateChildrenSize(children, wHint, minSize.width, false);
 		}
 
-		minSize.height += Math.max(0, children.size() - 1) * spacing;
+		minSize.height += Math.max(0, children.size() - 1) * getSpacing();
 		return transposer.t(minSize).expand(insets.getWidth(), insets.getHeight())
 				.union(getBorderPreferredSize(container));
 	}
@@ -181,7 +185,7 @@ public class ToolbarLayout extends OrderedLayout {
 			prefSize = calculateChildrenSize(children, wHint, prefSize.width, true);
 		}
 
-		prefSize.height += Math.max(0, children.size() - 1) * spacing;
+		prefSize.height += Math.max(0, children.size() - 1) * getSpacing();
 		return transposer.t(prefSize).expand(insets.getWidth(), insets.getHeight())
 				.union(getBorderPreferredSize(container));
 	}
@@ -193,6 +197,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * @return the given figure's minimum size
 	 * @since 3.3
 	 */
+	@SuppressWarnings("static-method")
 	protected Dimension getChildMinimumSize(IFigure child, int wHint, int hHint) {
 		return child.getMinimumSize(wHint, hHint);
 	}
@@ -204,6 +209,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * @return given figure's preferred size
 	 * @since 3.3
 	 */
+	@SuppressWarnings("static-method")
 	protected Dimension getChildPreferredSize(IFigure child, int wHint, int hHint) {
 		return child.getPreferredSize(wHint, hHint);
 	}
@@ -248,6 +254,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * @return <code>true</code> if stretch minor axis is enabled
 	 * @deprecated Use {@link #isStretchMinorAxis()} instead.
 	 */
+	@Deprecated
 	public boolean getStretchMinorAxis() {
 		return isStretchMinorAxis();
 	}
@@ -275,8 +282,8 @@ public class ToolbarLayout extends OrderedLayout {
 		int y = clientArea.y;
 		int availableHeight = clientArea.height;
 
-		Dimension prefSizes[] = new Dimension[numChildren];
-		Dimension minSizes[] = new Dimension[numChildren];
+		Dimension[] prefSizes = new Dimension[numChildren];
+		Dimension[] minSizes = new Dimension[numChildren];
 
 		// Calculate the width and height hints. If it's a vertical
 		// ToolBarLayout,
@@ -316,8 +323,8 @@ public class ToolbarLayout extends OrderedLayout {
 			totalHeight += prefSizes[i].height;
 			totalMinHeight += minSizes[i].height;
 		}
-		totalHeight += (numChildren - 1) * spacing;
-		totalMinHeight += (numChildren - 1) * spacing;
+		totalHeight += (numChildren - 1) * getSpacing();
+		totalMinHeight += (numChildren - 1) * getSpacing();
 		prefMinSumHeight = totalHeight - totalMinHeight;
 		/*
 		 * The total amount that the children must be shrunk is the sum of the preferred
@@ -363,6 +370,8 @@ public class ToolbarLayout extends OrderedLayout {
 				break;
 			case ALIGN_BOTTOMRIGHT:
 				break;
+			default:
+				break;
 			}
 			newBounds.x += adjust;
 			newBounds.height -= amntShrinkCurrentHeight;
@@ -370,7 +379,7 @@ public class ToolbarLayout extends OrderedLayout {
 
 			amntShrinkHeight -= amntShrinkCurrentHeight;
 			prefMinSumHeight -= (prefHeight - minHeight);
-			y += newBounds.height + spacing;
+			y += newBounds.height + getSpacing();
 		}
 	}
 
@@ -382,6 +391,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * @param match whether to stretch children
 	 * @since 2.0
 	 */
+	@Deprecated
 	public void setMatchWidth(boolean match) {
 		matchWidth = match;
 	}
@@ -415,6 +425,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * @deprecated Use {@link #setHorizontal(boolean)} with argument
 	 *             <code>false</code> instead.
 	 */
+	@Deprecated
 	public void setVertical(boolean flag) {
 		setHorizontal(!flag);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 IBM Corporation and others.
+ * Copyright (c) 2008, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -58,11 +58,13 @@ public class ScalablePolygonShape extends AbstractPointListShape {
 		TEMPLATEBOUNDS.setSize(0, 0);
 		int[] intArray = points.toIntArray();
 		for (int i = 0; i < intArray.length;) {
-			int x = intArray[i++];
+			int x = intArray[i];
+			i++;
 			if (x > TEMPLATEBOUNDS.width) {
 				TEMPLATEBOUNDS.width = x;
 			}
-			int y = intArray[i++];
+			int y = intArray[i];
+			i++;
 			if (y > TEMPLATEBOUNDS.height) {
 				TEMPLATEBOUNDS.height = y;
 			}
@@ -76,19 +78,22 @@ public class ScalablePolygonShape extends AbstractPointListShape {
 		}
 		Rectangle pointsBounds = getTemplateBounds();
 		Rectangle actualBounds = getBounds();
-		double xScale = actualBounds.width > lineWidth ? ((double) actualBounds.width - lineWidth) / pointsBounds.width
+		int curLineWidth = getLineWidth();
+		double xScale = actualBounds.width > curLineWidth
+				? ((double) actualBounds.width - curLineWidth) / pointsBounds.width
 				: 0;
-		double yScale = actualBounds.height > lineWidth
-				? ((double) actualBounds.height - lineWidth) / pointsBounds.height
+		double yScale = actualBounds.height > curLineWidth
+				? ((double) actualBounds.height - curLineWidth) / pointsBounds.height
 				: 0;
-		double halfLineWidth = ((double) lineWidth) / 2;
+		double halfLineWidth = ((double) curLineWidth) / 2;
 
 		int[] pointsArray = points.getCopy().toIntArray();
 		for (int i = 0; i < pointsArray.length; i = i + 2) {
 			pointsArray[i] = (int) (Math.floor(pointsArray[i] * xScale) + halfLineWidth);
 			pointsArray[i + 1] = (int) (Math.floor(pointsArray[i + 1] * yScale) + halfLineWidth);
 		}
-		return scaledPoints = new PointList(pointsArray);
+		scaledPoints = new PointList(pointsArray);
+		return scaledPoints;
 	}
 
 	@Override

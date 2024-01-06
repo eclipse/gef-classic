@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -596,10 +596,10 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Color getBackgroundColor() {
-		if (bgColor == null && getParent() != null) {
+		if (getLocalBackgroundColor() == null && getParent() != null) {
 			return getParent().getBackgroundColor();
 		}
-		return bgColor;
+		return getLocalBackgroundColor();
 	}
 
 	/**
@@ -698,8 +698,8 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Font getFont() {
-		if (font != null) {
-			return font;
+		if (getLocalFont() != null) {
+			return getLocalFont();
 		}
 		if (getParent() != null) {
 			return getParent().getFont();
@@ -712,10 +712,10 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Color getForegroundColor() {
-		if (fgColor == null && getParent() != null) {
+		if (getLocalForegroundColor() == null && getParent() != null) {
 			return getParent().getForegroundColor();
 		}
-		return fgColor;
+		return getLocalForegroundColor();
 	}
 
 	/**
@@ -738,8 +738,8 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public LayoutManager getLayoutManager() {
-		if (layoutManager instanceof LayoutNotifier) {
-			return ((LayoutNotifier) layoutManager).realLayout;
+		if (layoutManager instanceof LayoutNotifier layoutNotifier) {
+			return layoutNotifier.realLayout;
 		}
 		return layoutManager;
 	}
@@ -754,9 +754,6 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected <T> Iterator<T> getListeners(Class<T> clazz) {
-		if (eventListeners == null) {
-			return Collections.emptyIterator();
-		}
 		return eventListeners.getListeners(clazz);
 	}
 
@@ -770,9 +767,6 @@ public class Figure implements IFigure {
 	 * @since 3.13
 	 */
 	protected <T> Iterable<T> getListenersIterable(final Class<T> listenerType) {
-		if (eventListeners == null) {
-			return Collections.emptyList();
-		}
 		return eventListeners.getListenersIterable(listenerType);
 	}
 
@@ -1184,6 +1178,7 @@ public class Figure implements IFigure {
 	 *         revalidating its parent.
 	 * @since 2.0
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isValidationRoot() {
 		return false;
 	}
@@ -1223,8 +1218,8 @@ public class Figure implements IFigure {
 		if (getLocalForegroundColor() != null) {
 			graphics.setForegroundColor(getLocalForegroundColor());
 		}
-		if (font != null) {
-			graphics.setFont(font);
+		if (getLocalFont() != null) {
+			graphics.setFont(getLocalFont());
 		}
 
 		graphics.pushState();
@@ -1474,7 +1469,7 @@ public class Figure implements IFigure {
 	 * @param listener The listener to remove
 	 * @since 2.0
 	 */
-	protected void removeListener(Class clazz, Object listener) {
+	protected <T> void removeListener(Class<T> clazz, Object listener) {
 		eventListeners.removeListener(clazz, listener);
 	}
 
@@ -1589,7 +1584,7 @@ public class Figure implements IFigure {
 	public void setBackgroundColor(Color bg) {
 		// Set background color to bg unless in high contrast mode.
 		// In that case, get the color from system
-		if (Objects.equals(bgColor, bg)) {
+		if (Objects.equals(getLocalBackgroundColor(), bg)) {
 			return;
 		}
 		Display display = Display.getCurrent();
@@ -1613,7 +1608,7 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setBorder(Border border) {
-		if (this.border != border) {
+		if (getBorder() != border) {
 			this.border = border;
 			revalidate();
 			repaint();
@@ -1636,8 +1631,8 @@ public class Figure implements IFigure {
 	public void setBounds(Rectangle rect) {
 		int x = bounds.x, y = bounds.y;
 
-		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
-				translate = (rect.x != x) || (rect.y != y);
+		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height);
+		boolean translate = (rect.x != x) || (rect.y != y);
 
 		if ((resize || translate) && isVisible()) {
 			erase();
@@ -1787,7 +1782,7 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setFont(Font f) {
-		if (font != f) {
+		if (getLocalFont() != f) {
 			font = f;
 			revalidate();
 			repaint();
@@ -1801,7 +1796,7 @@ public class Figure implements IFigure {
 	public void setForegroundColor(Color fg) {
 		// Set foreground color to fg unless in high contrast mode.
 		// In that case, get the color from system
-		if (Objects.equals(fgColor, fg)) {
+		if (Objects.equals(getLocalForegroundColor(), fg)) {
 			return;
 		}
 		Display display = Display.getCurrent();
@@ -1940,8 +1935,8 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setSize(int w, int h) {
-		Rectangle bounds = getBounds();
-		if (bounds.width == w && bounds.height == h) {
+		Rectangle curBounds = getBounds();
+		if (curBounds.width == w && curBounds.height == h) {
 			return;
 		}
 		Rectangle r = new Rectangle(getBounds());
@@ -1954,7 +1949,7 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setToolTip(IFigure f) {
-		if (toolTip == f) {
+		if (getToolTip() == f) {
 			return;
 		}
 		toolTip = f;
@@ -2048,6 +2043,7 @@ public class Figure implements IFigure {
 	 * @return <code>true</code> if this Figure uses local coordinates
 	 * @since 2.0
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean useLocalCoordinates() {
 		return false;
 	}
@@ -2236,26 +2232,32 @@ public class Figure implements IFigure {
 	protected static final UpdateManager NO_MANAGER = new UpdateManager() {
 		@Override
 		public void addDirtyRegion(IFigure figure, int x, int y, int w, int h) {
+			// do nothing
 		}
 
 		@Override
 		public void addInvalidFigure(IFigure f) {
+			// do nothing
 		}
 
 		@Override
 		public void performUpdate() {
+			// do nothing
 		}
 
 		@Override
 		public void performUpdate(Rectangle region) {
+			// do nothing
 		}
 
 		@Override
 		public void setRoot(IFigure root) {
+			// do nothing
 		}
 
 		@Override
 		public void setGraphicsSource(GraphicsSource gs) {
+			// do nothing
 		}
 	};
 

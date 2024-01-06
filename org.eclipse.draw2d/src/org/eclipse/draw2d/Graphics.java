@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -564,6 +564,7 @@ public abstract class Graphics {
 	 * @since 3.0
 	 * @return the effective absolute scaling factor
 	 */
+	@SuppressWarnings("static-method")
 	public double getAbsoluteScale() {
 		return 1.0;
 	}
@@ -743,7 +744,7 @@ public abstract class Graphics {
 	 * @param points an integer array of x,y points
 	 * @return the corresponding pointlist
 	 */
-	private PointList getPointList(int[] points) {
+	private static PointList getPointList(int[] points) {
 		PointList pointList = new PointList(points.length / 2);
 		for (int i = 0; (i + 1) < points.length; i += 2) {
 			pointList.addPoint(points[i], points[i + 1]);
