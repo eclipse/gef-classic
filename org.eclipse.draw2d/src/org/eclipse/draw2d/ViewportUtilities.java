@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 IBM Corporation and others.
+ * Copyright (c) 2010, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -45,10 +45,10 @@ public final class ViewportUtilities {
 	 *         element. In case there is no enclosing {@link Viewport}, an empty
 	 *         list is returned.
 	 */
-	public static List getEnclosingViewportsPath(IFigure figure) {
+	public static List<Viewport> getEnclosingViewportsPath(IFigure figure) {
 		Viewport nearestEnclosingViewport = getNearestEnclosingViewport(figure);
 		if (nearestEnclosingViewport == null) {
-			return new ArrayList();
+			return Collections.emptyList();
 		}
 		Viewport rootViewport = getRootViewport(figure);
 		return getViewportsPath(nearestEnclosingViewport, rootViewport, true);
@@ -71,7 +71,7 @@ public final class ViewportUtilities {
 	 *         {@link Viewport} are null or in case the root viewport is not an
 	 *         ancestor of the leaf {@link Viewport}.
 	 */
-	public static List getViewportsPath(final Viewport leafViewport, final Viewport rootViewport) {
+	public static List<Viewport> getViewportsPath(final Viewport leafViewport, final Viewport rootViewport) {
 		return getViewportsPath(leafViewport, rootViewport, true);
 	}
 
@@ -96,15 +96,15 @@ public final class ViewportUtilities {
 	 *         {@link Viewport} are null or in case the root viewport is not an
 	 *         ancestor of the leaf {@link Viewport}.
 	 */
-	public static List getViewportsPath(final Viewport leafViewport, final Viewport rootViewport,
+	public static List<Viewport> getViewportsPath(final Viewport leafViewport, final Viewport rootViewport,
 			boolean includeRootViewport) {
 		if (leafViewport == null || rootViewport == null) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 
 		// search all enclosing viewports of leaf viewport up to root viewport
 		// (or until no enclosing viewport can be found)
-		List nestedViewports = new ArrayList();
+		List<Viewport> nestedViewports = new ArrayList<>();
 		Viewport currentViewport = leafViewport;
 		do {
 			nestedViewports.add(currentViewport);
@@ -118,7 +118,7 @@ public final class ViewportUtilities {
 			}
 			return nestedViewports;
 		}
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	/**
@@ -163,11 +163,10 @@ public final class ViewportUtilities {
 		if (figure == null) {
 			return null;
 		}
-		if (figure instanceof Viewport) {
-			return (Viewport) figure;
-		} else {
-			return getNearestEnclosingViewport(figure);
+		if (figure instanceof Viewport viewPort) {
+			return viewPort;
 		}
+		return getNearestEnclosingViewport(figure);
 	}
 
 	/**
@@ -185,8 +184,8 @@ public final class ViewportUtilities {
 		Viewport viewport = null;
 		IFigure currentFigure = figure;
 		while (currentFigure.getParent() != null) {
-			if (currentFigure.getParent() instanceof Viewport) {
-				viewport = (Viewport) currentFigure.getParent();
+			if (currentFigure.getParent() instanceof Viewport vp) {
+				viewport = vp;
 				break;
 			}
 			currentFigure = currentFigure.getParent();

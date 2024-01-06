@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Insets;
@@ -45,8 +44,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements IClippingSt
 	@Override
 	public Rectangle[] getClip(IFigure figure) {
 		Rectangle[] clipRect = null;
-		if (figure instanceof Connection) {
-			clipRect = getEdgeClippingRectangle((Connection) figure);
+		if (figure instanceof Connection conn) {
+			clipRect = getEdgeClippingRectangle(conn);
 		} else {
 			clipRect = new Rectangle[] { getNodeClippingRectangle(figure) };
 		}
@@ -100,49 +99,47 @@ public class ViewportAwareConnectionLayerClippingStrategy implements IClippingSt
 		// visible at all)
 		Viewport nearestEnclosingSourceViewport = ViewportUtilities.getNearestEnclosingViewport(sourceFigure);
 		Viewport nearestEnclosingTargetViewport = ViewportUtilities.getNearestEnclosingViewport(targetFigure);
-		if (nearestEnclosingSourceViewport != nearestEnclosingTargetViewport) {
-			// compute if source and target anchor are visible
-			// within the nearest common enclosing viewport (which may
-			// itself be nested in other viewports).
-			Rectangle sourceClipRect = clipRect.getCopy();
-			if (nearestEnclosingSourceViewport != nearestEnclosingCommonViewport) {
-				clipAtViewports(sourceClipRect, ViewportUtilities.getViewportsPath(nearestEnclosingSourceViewport,
-						nearestEnclosingCommonViewport, false));
-			}
-			Rectangle targetClipRect = clipRect.getCopy();
-			if (nearestEnclosingTargetViewport != nearestEnclosingCommonViewport) {
-				clipAtViewports(targetClipRect, ViewportUtilities.getViewportsPath(nearestEnclosingTargetViewport,
-						nearestEnclosingCommonViewport, false));
-			}
-			PointList absolutePointsAsCopy = getAbsolutePointsAsCopy(connection);
-			boolean sourceAnchorVisible = sourceClipRect.getExpanded(PRIVATE_INSETS)
-					.contains(absolutePointsAsCopy.getFirstPoint());
-			boolean targetAnchorVisible = targetClipRect.getExpanded(PRIVATE_INSETS)
-					.contains(absolutePointsAsCopy.getLastPoint());
-
-			if (!sourceAnchorVisible || !targetAnchorVisible) {
-				// one (or both) of source or target anchor is invisible
-				// within the nearest common viewport, so up to now
-				// we regard the edge as invisible.
-				return new Rectangle[] {};
-				// TODO: We could come up with a more decent strategy here,
-				// which also computes clipping fragments in those cases
-				// where source/target are not visible but the edge
-				// intersects with the enclosing source/target viewport's
-				// parents bounds.
-
-			} else {
-				// both ends are visible, so just return what we have
-				// computed before
-				// (clipping at nearest enclosing viewport)
-				return new Rectangle[] { clipRect };
-			}
-		} else {
+		if (nearestEnclosingSourceViewport == nearestEnclosingTargetViewport) {
 			// source and target share the same enclosing viewport, so just
 			// return what we have computed before (clipping at nearest
 			// enclosing viewport)
 			return new Rectangle[] { clipRect };
 		}
+		// compute if source and target anchor are visible
+		// within the nearest common enclosing viewport (which may
+		// itself be nested in other viewports).
+		Rectangle sourceClipRect = clipRect.getCopy();
+		if (nearestEnclosingSourceViewport != nearestEnclosingCommonViewport) {
+			clipAtViewports(sourceClipRect, ViewportUtilities.getViewportsPath(nearestEnclosingSourceViewport,
+					nearestEnclosingCommonViewport, false));
+		}
+		Rectangle targetClipRect = clipRect.getCopy();
+		if (nearestEnclosingTargetViewport != nearestEnclosingCommonViewport) {
+			clipAtViewports(targetClipRect, ViewportUtilities.getViewportsPath(nearestEnclosingTargetViewport,
+					nearestEnclosingCommonViewport, false));
+		}
+		PointList absolutePointsAsCopy = getAbsolutePointsAsCopy(connection);
+		boolean sourceAnchorVisible = sourceClipRect.getExpanded(PRIVATE_INSETS)
+				.contains(absolutePointsAsCopy.getFirstPoint());
+		boolean targetAnchorVisible = targetClipRect.getExpanded(PRIVATE_INSETS)
+				.contains(absolutePointsAsCopy.getLastPoint());
+
+		if (!sourceAnchorVisible || !targetAnchorVisible) {
+			// one (or both) of source or target anchor is invisible
+			// within the nearest common viewport, so up to now
+			// we regard the edge as invisible.
+			return new Rectangle[] {};
+			// TODO: We could come up with a more decent strategy here,
+			// which also computes clipping fragments in those cases
+			// where source/target are not visible but the edge
+			// intersects with the enclosing source/target viewport's
+			// parents bounds.
+
+		}
+		// both ends are visible, so just return what we have
+		// computed before
+		// (clipping at nearest enclosing viewport)
+		return new Rectangle[] { clipRect };
 	}
 
 	/**
@@ -156,7 +153,7 @@ public class ViewportAwareConnectionLayerClippingStrategy implements IClippingSt
 		// now traverse the viewport path of the figure (and reduce clipRect
 		// to what is actually visible); process all viewports up to the
 		// root viewport
-		List enclosingViewportsPath = ViewportUtilities
+		List<Viewport> enclosingViewportsPath = ViewportUtilities
 				.getViewportsPath(ViewportUtilities.getNearestEnclosingViewport(figure), getRootViewport(), false);
 		clipAtViewports(clipRect, enclosingViewportsPath);
 		return clipRect;
@@ -165,11 +162,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements IClippingSt
 	/**
 	 * Clips the given clipRect at all given viewports.
 	 */
-	protected void clipAtViewports(Rectangle clipRect, List enclosingViewportsPath) {
-		for (Iterator iterator = enclosingViewportsPath.iterator(); iterator.hasNext();) {
-			Viewport viewport = (Viewport) iterator.next();
-			clipRect.intersect(getAbsoluteViewportAreaAsCopy(viewport));
-		}
+	protected void clipAtViewports(Rectangle clipRect, List<Viewport> enclosingViewportsPath) {
+		enclosingViewportsPath.forEach(vp -> clipRect.intersect(getAbsoluteViewportAreaAsCopy(vp)));
 	}
 
 	/**
