@@ -149,7 +149,8 @@ class GraphUtilities {
 		while (right.getParent() != common) {
 			right = right.getParent();
 		}
-		return (left.rowOrder != -1 && right.rowOrder != -1) && left.rowOrder != right.rowOrder;
+		return (left.getRowConstraint() != -1 && right.getRowConstraint() != -1)
+				&& left.getRowConstraint() != right.getRowConstraint();
 	}
 
 }

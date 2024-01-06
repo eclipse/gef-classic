@@ -104,11 +104,11 @@ class CompoundRankSorter extends RankSorter {
 
 	void copyConstraints(NestingTree tree) {
 		if (tree.subgraph != null) {
-			tree.sortValue = tree.subgraph.rowOrder;
+			tree.sortValue = tree.subgraph.getRowConstraint();
 		}
 		for (Object child : tree.contents) {
 			if (child instanceof Node n) {
-				n.sortValue = n.rowOrder;
+				n.sortValue = n.getRowConstraint();
 			} else {
 				copyConstraints((NestingTree) child);
 			}

@@ -27,13 +27,13 @@ class VerticalPlacement extends GraphVisitor {
 	void visit(DirectedGraph g) {
 		Insets pad;
 		int currentY = g.getMargin().top;
-		int row, rowHeight;
+		int row;
 		RankList ranks = g.ranks;
 		g.rankLocations = new int[ranks.size() + 1];
 		for (row = 0; row < ranks.size(); row++) {
 			g.rankLocations[row] = currentY;
 			Rank rank = ranks.getRank(row);
-			rowHeight = 0;
+			int rowHeight = 0;
 			rank.topPadding = rank.bottomPadding = 0;
 			for (Node node : rank) {
 				pad = g.getPadding(node);

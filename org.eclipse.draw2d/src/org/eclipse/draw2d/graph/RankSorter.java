@@ -159,7 +159,7 @@ class RankSorter {
 
 			// Sort the ranks based on their constraints. Constraints are
 			// preserved throughout.
-			Collections.sort(rank, (left, right) -> left.rowOrder - right.rowOrder);
+			Collections.sort(rank, (left, right) -> left.getRowConstraint() - right.getRowConstraint());
 			postSort();
 		}
 	}
