@@ -111,7 +111,7 @@ class InitialRankSolver extends GraphVisitor {
 	private static void assignMinimumRank(Node node) {
 		int rank = 0;
 		for (Edge e : node.incoming) {
-			rank = Math.max(rank, e.delta + e.source.rank);
+			rank = Math.max(rank, e.getDelta() + e.source.rank);
 		}
 		node.rank = rank;
 	}

@@ -19,6 +19,7 @@ import org.eclipse.draw2d.geometry.Insets;
  * @author Randy Hudson
  * @since 2.1.2
  */
+@Deprecated
 public class VirtualNode extends Node {
 
 	/**
@@ -38,14 +39,15 @@ public class VirtualNode extends Node {
 	 * @param e the edge
 	 * @param i the row
 	 */
+	@Deprecated
 	public VirtualNode(Edge e, int i) {
 		super(e);
 		incoming.add(e);
 		outgoing.add(e);
-		width = e.width;
+		width = e.getWidth();
 		height = 0;
 		rank = i;
-		setPadding(new Insets(0, e.padding, 0, e.padding));
+		setPadding(new Insets(0, e.getPadding(), 0, e.getPadding()));
 	}
 
 	/**
@@ -95,9 +97,8 @@ public class VirtualNode extends Node {
 	 */
 	@Override
 	public String toString() {
-		if (data instanceof Edge)
-		 {
-			return "VN[" + (((Edge) data).vNodes.indexOf(this) + 1) //$NON-NLS-1$
+		if (data instanceof Edge edge) {
+			return "VN[" + (edge.vNodes.indexOf(this) + 1) //$NON-NLS-1$
 					+ "](" + data + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return super.toString();

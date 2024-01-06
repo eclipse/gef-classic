@@ -24,8 +24,8 @@ class VirtualNodeCreation extends RevertableChange {
 
 	private final Edge edge;
 	private final DirectedGraph graph;
-	private Node nodes[];
-	private Edge[] edges;
+	private final Node[] nodes;
+	private final Edge[] edges;
 
 	private static final int INNER_EDGE_X = 2;
 	private static final int LONG_EDGE_X = 8;
@@ -50,13 +50,13 @@ class VirtualNodeCreation extends RevertableChange {
 		nodes = new Node[size];
 		edges = new Edge[size + 1];
 
-		Insets padding = new Insets(0, edge.padding, 0, edge.padding);
+		Insets padding = new Insets(0, edge.getPadding(), 0, edge.getPadding());
 
 		Subgraph s = GraphUtilities.getCommonAncestor(edge.source, edge.target);
 
 		for (int i = 0; i < size; i++) {
 			nodes[i] = currentNode = new VirtualNode("Virtual" + i + ':' + edge, s); //$NON-NLS-1$
-			currentNode.width = edge.width;
+			currentNode.width = edge.getWidth();
 			if (s != null) {
 				currentNode.nestingIndex = s.nestingIndex;
 			}
@@ -69,7 +69,7 @@ class VirtualNodeCreation extends RevertableChange {
 			currentEdge = new Edge(prevNode, currentNode, 1, edge.weight * LONG_EDGE_X);
 			if (i == 0) {
 				currentEdge.weight = edge.weight * INNER_EDGE_X;
-				currentEdge.offsetSource = edge.offsetSource;
+				currentEdge.setSourceOffset(edge.offsetSource);
 			}
 			graph.edges.add(edges[i] = currentEdge);
 			graph.nodes.add(currentNode);
@@ -77,8 +77,9 @@ class VirtualNodeCreation extends RevertableChange {
 		}
 
 		currentEdge = new Edge(prevNode, edge.target, 1, edge.weight * INNER_EDGE_X);
-		currentEdge.offsetTarget = edge.offsetTarget;
-		graph.edges.add(edges[edges.length - 1] = currentEdge);
+		currentEdge.setTargetOffset(edge.offsetTarget);
+		edges[edges.length - 1] = currentEdge;
+		graph.edges.add(currentEdge);
 		graph.removeEdge(edge);
 	}
 

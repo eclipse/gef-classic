@@ -102,11 +102,11 @@ public class LocalOptimizerTest extends Assert {
 		 * [-----E----] F G H \ / / \ / / X / / \ / I J K L (Should not swap)
 		 */
 		createEdge(a, e);
-		createEdge(b, e).offsetTarget = 30;
-		createEdge(c, e).offsetTarget = 20;
+		createEdge(b, e).setTargetOffset(30);
+		createEdge(c, e).setTargetOffset(20);
 
-		createEdge(e, k).offsetSource = 20;
-		createEdge(e, j).offsetSource = 30;
+		createEdge(e, k).setSourceOffset(20);
+		createEdge(e, j).setSourceOffset(30);
 		createEdge(f, k);
 
 		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" }) //$NON-NLS-1$

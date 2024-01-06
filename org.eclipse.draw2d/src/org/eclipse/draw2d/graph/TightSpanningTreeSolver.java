@@ -145,11 +145,11 @@ class TightSpanningTreeSolver extends SpanningTreeVisitor {
 			if (candidates.size() == 0) {
 				throw new RuntimeException("graph is not fully connected");//$NON-NLS-1$
 			}
-			int minSlack = Integer.MAX_VALUE, slack;
-			Edge minEdge = null, edge;
+			int minSlack = Integer.MAX_VALUE;
+			Edge minEdge = null;
 			for (int i = 0; i < candidates.size() && minSlack > 0; i++) {
-				edge = candidates.getEdge(i);
-				slack = edge.getSlack();
+				Edge edge = candidates.getEdge(i);
+				int slack = edge.getSlack();
 				if (slack < minSlack) {
 					minSlack = slack;
 					minEdge = edge;

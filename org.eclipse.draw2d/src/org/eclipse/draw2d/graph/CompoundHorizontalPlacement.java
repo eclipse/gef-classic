@@ -58,7 +58,7 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 					if (left != null) {
 						Edge e = new Edge(graphLeft, getPrime(left), 0, 0);
 						prime.edges.add(e);
-						e.delta = graph.getPadding(n).left + graph.getMargin().left;
+						e.setDelta(graph.getPadding(n).left + graph.getMargin().left);
 					}
 
 				} else {
@@ -139,11 +139,6 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 			map(n, nPrime);
 		}
 		return nPrime;
-	}
-
-	@Override
-	public void visit(DirectedGraph g) {
-		super.visit(g);
 	}
 
 }
