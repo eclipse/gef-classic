@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2022 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -54,16 +54,15 @@ public abstract class AbstractZoomManager {
 	/** Style bit meaning animate during {@link #zoomIn()} and {@link #zoomOut()} */
 	public static final int ANIMATE_ZOOM_IN_OUT = 1;
 
-	private List<ZoomListener> listeners = new ArrayList<>();
+	private final List<ZoomListener> listeners = new ArrayList<>();
 
 	private double multiplier = 1.0;
-	private ScalableFigure pane;
-	private Viewport viewport;
+	private final ScalableFigure pane;
+	private final Viewport viewport;
 	private double zoom = 1.0;
-	// private int zoomAnimationStyle = ANIMATE_NEVER;
 	private double[] zoomLevels = { .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4 };
 
-	private List zoomLevelContributions = Collections.EMPTY_LIST;
+	private List<String> zoomLevelContributions = Collections.emptyList();
 
 	DecimalFormat format = new DecimalFormat("####%"); //$NON-NLS-1$
 
@@ -146,14 +145,10 @@ public abstract class AbstractZoomManager {
 
 	private double getFitXZoomLevel(int which) {
 		IFigure fig = getScalableFigure();
-
-		Dimension available = getViewport().getClientArea().getSize();
-		Dimension desired;
-		if (fig instanceof FreeformFigure) {
-			desired = ((FreeformFigure) fig).getFreeformExtent().getCopy().union(0, 0).getSize();
-		} else {
-			desired = fig.getPreferredSize().getCopy();
-		}
+		final Dimension available = getViewport().getClientArea().getSize();
+		final Dimension desired = (fig instanceof FreeformFigure freeFormFig)
+				? freeFormFig.getFreeformExtent().getCopy().union(0, 0).getSize()
+				: fig.getPreferredSize().getCopy();
 
 		desired.width -= fig.getInsets().getWidth();
 		desired.height -= fig.getInsets().getHeight();
@@ -313,7 +308,7 @@ public abstract class AbstractZoomManager {
 	 *
 	 * @return the list of contributed zoom levels
 	 */
-	public List getZoomLevelContributions() {
+	public List<String> getZoomLevelContributions() {
 		return zoomLevelContributions;
 	}
 
@@ -338,10 +333,8 @@ public abstract class AbstractZoomManager {
 		for (int i = 0; i < zoomLevels.length; i++) {
 			zoomLevelStrings[i] = format.format(zoomLevels[i] * multiplier);
 		}
-		if (zoomLevelContributions != null) {
-			for (int i = 0; i < zoomLevelContributions.size(); i++) {
-				zoomLevelStrings[i + zoomLevels.length] = (String) zoomLevelContributions.get(i);
-			}
+		for (int i = 0; i < zoomLevelContributions.size(); i++) {
+			zoomLevelStrings[i + zoomLevels.length] = zoomLevelContributions.get(i);
 		}
 		return zoomLevelStrings;
 	}
@@ -490,8 +483,12 @@ public abstract class AbstractZoomManager {
 	 *
 	 * @param contributions the list of contributed zoom levels
 	 */
-	public void setZoomLevelContributions(List contributions) {
-		zoomLevelContributions = contributions;
+	public void setZoomLevelContributions(List<String> contributions) {
+		if (contributions != null) {
+			zoomLevelContributions = contributions;
+		} else {
+			zoomLevelContributions = Collections.emptyList();
+		}
 	}
 
 	/**
