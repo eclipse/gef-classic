@@ -99,11 +99,9 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		// register listeners to all viewports in the host figure's path:
 		// listeners the host figure itself will be registered within showFeedback()
 		// and unregistered within hideFeedback()
-		for (Object element : ViewportUtilities.getViewportsPath(getHostFigureViewport(),
-				ViewportUtilities.getRootViewport(getHostFigure()))) {
-			Viewport viewport = (Viewport) element;
-			viewport.addPropertyChangeListener(viewportViewLocationChangeListener);
-		}
+		List<Viewport> viewportsPath = ViewportUtilities.getViewportsPath(getHostFigureViewport(),
+				ViewportUtilities.getRootViewport(getHostFigure()));
+		viewportsPath.forEach(vp -> vp.addPropertyChangeListener(viewportViewLocationChangeListener));
 	}
 
 	/**
@@ -178,12 +176,9 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		// remove viewport listeners; listener to host figure, which were
 		// registered during showSelection() will be unregistered during
 		// hideSelection(), so they do not have to be unregistered here
-		for (Object element : ViewportUtilities.getViewportsPath(getHostFigureViewport(),
-				ViewportUtilities.getRootViewport(getHostFigure()))) {
-			Viewport viewport = (Viewport) element;
-			viewport.removePropertyChangeListener(viewportViewLocationChangeListener);
-
-		}
+		List<Viewport> viewportsPath = ViewportUtilities.getViewportsPath(getHostFigureViewport(),
+				ViewportUtilities.getRootViewport(getHostFigure()));
+		viewportsPath.forEach(vp -> vp.removePropertyChangeListener(viewportViewLocationChangeListener));
 		super.deactivate();
 	}
 
