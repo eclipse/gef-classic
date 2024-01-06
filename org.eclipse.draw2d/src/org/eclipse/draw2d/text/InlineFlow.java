@@ -39,7 +39,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class InlineFlow extends FlowFigure {
 
-	List fragments = new ArrayList(1);
+	List<FlowBox> fragments = new ArrayList<>(1);
 
 	/**
 	 * Iterates over the children to find the width before a line-break is
@@ -68,9 +68,8 @@ public class InlineFlow extends FlowFigure {
 	@Override
 	public boolean containsPoint(int x, int y) {
 		if (super.containsPoint(x, y)) {
-			List frags = getFragments();
-			for (Object frag : frags) {
-				if (((FlowBox) frag).containsPoint(x, y)) {
+			for (FlowBox frag : getFragments()) {
+				if (frag.containsPoint(x, y)) {
 					return true;
 				}
 			}
@@ -93,7 +92,7 @@ public class InlineFlow extends FlowFigure {
 	 *
 	 * @return The fragments
 	 */
-	public List getFragments() {
+	public List<? extends FlowBox> getFragments() {
 		return fragments;
 	}
 
@@ -108,11 +107,11 @@ public class InlineFlow extends FlowFigure {
 	protected void paintBorder(Graphics graphics) {
 		if (getBorder() != null) {
 			FlowBorder fb = (FlowBorder) getBorder();
-			List frags = getFragments();
+			List<? extends FlowBox> frags = getFragments();
 			Rectangle where = new Rectangle();
 			int sides;
 			for (int i = 0; i < frags.size(); i++) {
-				FlowBox box = (FlowBox) frags.get(i);
+				FlowBox box = frags.get(i);
 
 				where.x = box.getX();
 				where.width = box.getWidth();
@@ -145,10 +144,7 @@ public class InlineFlow extends FlowFigure {
 		graphics.restoreState();
 		graphics.setXORMode(true);
 		graphics.setBackgroundColor(ColorConstants.white);
-		List list = getFragments();
-		FlowBox box;
-		for (Object element : list) {
-			box = (FlowBox) element;
+		for (FlowBox box : getFragments()) {
 			int top = box.getLineRoot().getVisibleTop();
 			int bottom = box.getLineRoot().getVisibleBottom();
 			graphics.fillRectangle(box.getX(), top, box.getWidth(), bottom - top);
@@ -160,15 +156,12 @@ public class InlineFlow extends FlowFigure {
 	 */
 	@Override
 	public void postValidate() {
-		List list = getFragments();
-		FlowBox box;
 		int left = Integer.MAX_VALUE;
 		int top = left;
 		int right = Integer.MIN_VALUE;
 		int bottom = right;
 
-		for (Object element : list) {
-			box = (FlowBox) element;
+		for (FlowBox box : getFragments()) {
 			left = Math.min(left, box.getX());
 			right = Math.max(right, box.getX() + box.getWidth());
 			top = Math.min(top, box.getLineRoot().getVisibleTop());

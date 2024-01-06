@@ -118,6 +118,7 @@ public abstract class FlowContainerLayout extends FlowFigureLayout implements Fl
 		});
 	}
 
+	@SuppressWarnings("static-method")
 	boolean forceChildInvalidation(IFigure f) {
 		return true;
 	}

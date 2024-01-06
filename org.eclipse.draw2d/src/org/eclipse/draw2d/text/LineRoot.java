@@ -56,16 +56,16 @@ public class LineRoot extends LineBox {
 	private void bidiCommit() {
 		int xLocation = getX();
 		BidiLevelNode root = new BidiLevelNode();
-		List<FlowBox> branches = new ArrayList<>();
+		List<NestedLine> branches = new ArrayList<>();
 		// branches does not include this LineRoot; all the non-leaf child
 		// fragments of a
 		// parent will be listed before the parent itself in this list
 		buildBidiTree(this, root, branches);
-		List result = new ArrayList();
+		List<FlowBox> result = new ArrayList<>();
 		root.emit(result);
 		int i = isMirrored ? result.size() - 1 : 0;
 		while (i >= 0 && i < result.size()) {
-			FlowBox box = (FlowBox) result.get(i);
+			FlowBox box = result.get(i);
 			box.setX(xLocation);
 			xLocation += box.getWidth();
 			i += isMirrored ? -1 : 1;
@@ -75,14 +75,13 @@ public class LineRoot extends LineBox {
 		layoutNestedLines(branches);
 	}
 
-	private void buildBidiTree(FlowBox box, BidiLevelNode node, List<FlowBox> branches) {
+	private void buildBidiTree(FlowBox box, BidiLevelNode node, List<NestedLine> branches) {
 		if (box instanceof LineBox lineBox) {
-			List children = lineBox.getFragments();
-			for (Object child : children) {
-				buildBidiTree((FlowBox) child, node, branches);
+			for (FlowBox child : lineBox.getFragments()) {
+				buildBidiTree(child, node, branches);
 			}
-			if (box != this) {
-				branches.add(box);
+			if (box != this && box instanceof NestedLine nestedLine) {
+				branches.add(nestedLine);
 			}
 		} else {
 			ContentBox leafBox = (ContentBox) box;
@@ -126,10 +125,10 @@ public class LineRoot extends LineBox {
 	private void contiguousCommit(FlowBox box, int x) {
 		box.setX(x);
 		if (box instanceof LineBox lineBox) {
-			List fragments = lineBox.getFragments();
+			List<FlowBox> fragments = lineBox.getFragments();
 			int i = isMirrored ? fragments.size() - 1 : 0;
 			while (i >= 0 && i < fragments.size()) {
-				FlowBox child = (FlowBox) fragments.get(i);
+				FlowBox child = fragments.get(i);
 				contiguousCommit(child, x);
 				x += child.getWidth();
 				i += isMirrored ? -1 : 1;
@@ -137,9 +136,9 @@ public class LineRoot extends LineBox {
 		}
 	}
 
-	private Result findParent(NestedLine line, List branches, int afterIndex) {
+	private Result findParent(NestedLine line, List<NestedLine> branches, int afterIndex) {
 		for (int i = afterIndex + 1; i < branches.size(); i++) {
-			NestedLine box = (NestedLine) branches.get(i);
+			NestedLine box = branches.get(i);
 			int index = box.getFragments().indexOf(line);
 			if (index >= 0) {
 				return new Result(box, index);
@@ -169,14 +168,14 @@ public class LineRoot extends LineBox {
 		return baseline - contentAscent;
 	}
 
-	private void layoutNestedLines(List branches) {
+	private void layoutNestedLines(List<NestedLine> branches) {
 		for (int i = 0; i < branches.size(); i++) {
-			NestedLine parent = (NestedLine) branches.get(i);
+			NestedLine parent = branches.get(i);
 			FlowBox prevChild = null;
 			Rectangle bounds = null;
-			List frags = parent.getFragments();
+			List<FlowBox> frags = parent.getFragments();
 			for (int j = 0; j < frags.size(); j++) {
-				FlowBox child = (FlowBox) frags.get(j);
+				FlowBox child = frags.get(j);
 				if (prevChild != null && prevChild.getX() + prevChild.width != child.getX()
 						&& child.getX() + child.width != prevChild.getX()) {
 					// the boxes are not adjacent, and hence the parent box
@@ -230,7 +229,7 @@ public class LineRoot extends LineBox {
 		this.baseline = top + getAscent();
 	}
 
-	private static class BidiLevelNode extends ArrayList {
+	private static class BidiLevelNode extends ArrayList<Object> {
 		int level;
 		final BidiLevelNode parent;
 
@@ -243,24 +242,14 @@ public class LineRoot extends LineBox {
 			this.level = level;
 		}
 
-		void emit(List list) {
+		void emit(List<FlowBox> list) {
 			if (level % 2 == 1) {
 				for (int i = size() - 1; i >= 0; i--) {
-					Object child = get(i);
-					if (child instanceof BidiLevelNode) {
-						((BidiLevelNode) child).emit(list);
-					} else {
-						list.add(child);
-					}
+					emitChild(list, get(i));
 				}
 			} else {
 				for (int i = 0; i < size(); i++) {
-					Object child = get(i);
-					if (child instanceof BidiLevelNode) {
-						((BidiLevelNode) child).emit(list);
-					} else {
-						list.add(child);
-					}
+					emitChild(list, get(i));
 				}
 			}
 		}
@@ -272,13 +261,21 @@ public class LineRoot extends LineBox {
 		BidiLevelNode push() {
 			if (!isEmpty()) {
 				Object last = get(size() - 1);
-				if (last instanceof BidiLevelNode && ((BidiLevelNode) last).level == level + 1) {
-					return (BidiLevelNode) last;
+				if (last instanceof BidiLevelNode bidiLevelNode && bidiLevelNode.level == level + 1) {
+					return bidiLevelNode;
 				}
 			}
 			BidiLevelNode child = new BidiLevelNode(this, level + 1);
-			add(child);
+			super.add(child);
 			return child;
+		}
+
+		private static void emitChild(List<FlowBox> list, Object child) {
+			if (child instanceof BidiLevelNode bidiLevelNode) {
+				bidiLevelNode.emit(list);
+			} else if (child instanceof FlowBox box) {
+				list.add(box);
+			}
 		}
 	}
 

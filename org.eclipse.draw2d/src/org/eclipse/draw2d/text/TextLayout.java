@@ -36,9 +36,9 @@ public abstract class TextLayout extends FlowFigureLayout {
 	 * @param fragments the original list of fragments
 	 * @return a TextFragmentBox
 	 */
-	protected TextFragmentBox getFragment(int i, List fragments) {
+	protected TextFragmentBox getFragment(int i, List<TextFragmentBox> fragments) {
 		if (fragments.size() > i) {
-			return (TextFragmentBox) fragments.get(i);
+			return fragments.get(i);
 		}
 		TextFragmentBox box = new TextFragmentBox((TextFlow) getFlowFigure());
 		fragments.add(box);

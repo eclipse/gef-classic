@@ -52,7 +52,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	 */
 	@Override
 	protected void createNewLine() {
-		currentLine = new NestedLine((InlineFlow) getFlowFigure());
+		currentLine = new NestedLine(getFlowFigure());
 		setupLine(currentLine);
 	}
 
@@ -66,15 +66,24 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	}
 
 	/**
+	 * @since 3.15
+	 */
+	@Override
+	protected InlineFlow getFlowFigure() {
+		return (InlineFlow) super.getFlowFigure();
+	}
+
+	/**
 	 * @see FlowContainerLayout#flush()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void flush() {
 		if (currentLine != null && currentLine.isOccupied()) {
 			// We want to preserve the state when a linebox is being added
 			boolean sameLine = getContext().getContinueOnSameLine();
 			getContext().addToCurrentLine(currentLine);
-			((InlineFlow) getFlowFigure()).getFragments().add(currentLine);
+			((List<FlowBox>) getFlowFigure().getFragments()).add(currentLine);
 			currentLine = null;
 			getContext().setContinueOnSameLine(sameLine);
 		}
@@ -94,7 +103,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	 * @see FlowContext#getWidthLookahead(FlowFigure, int[])
 	 */
 	@Override
-	public void getWidthLookahead(FlowFigure child, int result[]) {
+	public void getWidthLookahead(FlowFigure child, int[] result) {
 		List<? extends IFigure> children = getFlowFigure().getChildren();
 		int index = -1;
 		if (child != null) {
@@ -123,7 +132,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	 */
 	@Override
 	public void preLayout() {
-		((InlineFlow) getFlowFigure()).getFragments().clear();
+		getFlowFigure().getFragments().clear();
 	}
 
 	/**

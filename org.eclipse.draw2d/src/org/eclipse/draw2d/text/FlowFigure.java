@@ -52,8 +52,8 @@ public abstract class FlowFigure extends Figure {
 		super.add(child, constraint, index);
 		// If this layout manager is a FlowContext, then the child *must* be a
 		// FlowFigure
-		if (getLayoutManager() instanceof FlowContext) {
-			((FlowFigure) child).setFlowContext((FlowContext) getLayoutManager());
+		if (getLayoutManager() instanceof FlowContext flowcontext) {
+			((FlowFigure) child).setFlowContext(flowcontext);
 		}
 		revalidateBidi(this);
 	}
@@ -70,6 +70,7 @@ public abstract class FlowFigure extends Figure {
 	 * @return boolean indicating whether or not a line-break was found
 	 * @since 3.1
 	 */
+	@SuppressWarnings("static-method")
 	public boolean addLeadingWordRequirements(int[] width) {
 		return true;
 	}

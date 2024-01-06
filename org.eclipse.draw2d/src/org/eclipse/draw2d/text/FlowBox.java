@@ -98,10 +98,12 @@ public abstract class FlowBox {
 		return getDescent();
 	}
 
+	@SuppressWarnings("static-method")
 	int getAscentWithBorder() {
 		throw new RuntimeException("Not valid on this box type"); //$NON-NLS-1$
 	}
 
+	@SuppressWarnings("static-method")
 	int getDescentWithBorder() {
 		throw new RuntimeException("Not valid on this box type"); //$NON-NLS-1$
 	}
@@ -132,6 +134,7 @@ public abstract class FlowBox {
 	 * @return <code>true</code> if the box is bi-directional
 	 * @since 3.1
 	 */
+	@SuppressWarnings("static-method")
 	public boolean requiresBidi() {
 		return false;
 	}

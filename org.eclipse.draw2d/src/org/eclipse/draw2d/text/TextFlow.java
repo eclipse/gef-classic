@@ -145,9 +145,9 @@ public class TextFlow extends InlineFlow {
 
 		TextFragmentBox closestBox = null;
 		int index = 0;
-		List fragments = getFragmentsWithoutBorder();
+		List<? extends TextFragmentBox> fragments = getFragmentsWithoutBorder();
 		for (int i = fragments.size() - 1; i >= 0; i--) {
-			TextFragmentBox box = (TextFragmentBox) fragments.get(i);
+			TextFragmentBox box = fragments.get(i);
 			if (box.getBaseline() - box.getLineRoot().getAscent() > p.y && (closestBox == null
 					|| box.getBaseline() < closestBox.getBaseline() || (box.getBaseline() == closestBox.getBaseline()
 							&& hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x)))) {
@@ -180,9 +180,9 @@ public class TextFlow extends InlineFlow {
 
 		TextFragmentBox closestBox = null;
 		int index = 0;
-		List fragments = getFragmentsWithoutBorder();
+		List<? extends TextFragmentBox> fragments = getFragmentsWithoutBorder();
 		for (int i = fragments.size() - 1; i >= 0; i--) {
-			TextFragmentBox box = (TextFragmentBox) fragments.get(i);
+			TextFragmentBox box = fragments.get(i);
 			if (box.getBaseline() + box.getLineRoot().getDescent() < p.y && (closestBox == null
 					|| box.getBaseline() > closestBox.getBaseline() || (box.getBaseline() == closestBox.getBaseline()
 							&& hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x)))) {
@@ -228,7 +228,7 @@ public class TextFlow extends InlineFlow {
 			return getText().substring(box.offset, box.offset + box.length);
 		}
 
-		StringBuffer buffer = new StringBuffer(box.length + 3);
+		StringBuilder buffer = new StringBuilder(box.length + 3);
 		buffer.append(box.isRightToLeft() ? BidiChars.RLO : BidiChars.LRO);
 		if (index == 0 && bidiInfo.leadingJoiner) {
 			buffer.append(BidiChars.ZWJ);
@@ -262,19 +262,19 @@ public class TextFlow extends InlineFlow {
 			trailing = false;
 		}
 
-		List fragments = getFragmentsWithoutBorder();
+		List<? extends TextFragmentBox> fragments = getFragmentsWithoutBorder();
 		int i = fragments.size();
 		TextFragmentBox box;
 		do {
 			i--;
-			box = (TextFragmentBox) fragments.get(i);
+			box = fragments.get(i);
 		} while (offset < box.offset && i > 0);
 
 		// Cannot be trailing and after the last char, so go to first char in
 		// next box
 		if (trailing && box.offset + box.length <= offset) {
 			i++;
-			box = (TextFragmentBox) fragments.get(i);
+			box = fragments.get(i);
 			offset = box.offset;
 			trailing = false;
 		}
@@ -326,15 +326,18 @@ public class TextFlow extends InlineFlow {
 	 * @return -1 or the lowest offset for the line
 	 */
 	public int getFirstOffsetForLine(int baseline) {
-		TextFragmentBox box;
-		List fragments = getFragmentsWithoutBorder();
-		for (Object fragment : fragments) {
-			box = (TextFragmentBox) fragment;
+		for (TextFragmentBox box : getFragmentsWithoutBorder()) {
 			if (baseline == box.getBaseline()) {
 				return box.offset;
 			}
 		}
 		return -1;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<? extends TextFragmentBox> getFragments() {
+		return (List<? extends TextFragmentBox>) super.getFragments();
 	}
 
 	/**
@@ -345,8 +348,8 @@ public class TextFlow extends InlineFlow {
 	 * @return list of fragments without the border fragments
 	 * @since 3.4
 	 */
-	protected List getFragmentsWithoutBorder() {
-		List fragments = getFragments();
+	protected List<? extends TextFragmentBox> getFragmentsWithoutBorder() {
+		List<? extends TextFragmentBox> fragments = getFragments();
 		if (getBorder() != null) {
 			fragments = fragments.subList(1, fragments.size() - 1);
 		}
@@ -365,9 +368,9 @@ public class TextFlow extends InlineFlow {
 	 */
 	public int getLastOffsetForLine(int baseline) {
 		TextFragmentBox box;
-		List fragments = getFragmentsWithoutBorder();
+		List<? extends TextFragmentBox> fragments = getFragmentsWithoutBorder();
 		for (int i = fragments.size() - 1; i >= 0; i--) {
-			box = (TextFragmentBox) fragments.get(i);
+			box = fragments.get(i);
 			if (baseline == box.getBaseline()) {
 				return box.offset + box.length - 1;
 			}
@@ -403,10 +406,7 @@ public class TextFlow extends InlineFlow {
 	 * @since 3.1
 	 */
 	public int getNextVisibleOffset(int offset) {
-		TextFragmentBox box;
-		List fragments = getFragmentsWithoutBorder();
-		for (Object fragment : fragments) {
-			box = (TextFragmentBox) fragment;
+		for (TextFragmentBox box : getFragmentsWithoutBorder()) {
 			if (box.offset + box.length <= offset) {
 				continue;
 			}
@@ -447,7 +447,7 @@ public class TextFlow extends InlineFlow {
 	 * @param proximity restricts and records the distance of the returned offset
 	 * @return the nearest offset in this figure's text
 	 */
-	public int getOffset(Point p, int trailing[], Dimension proximity) {
+	public int getOffset(Point p, int[] trailing, Dimension proximity) {
 		if (proximity == null) {
 			proximity = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 		}
@@ -493,9 +493,9 @@ public class TextFlow extends InlineFlow {
 		if (offset == -1) {
 			offset = Integer.MAX_VALUE;
 		}
-		List fragments = getFragmentsWithoutBorder();
+		List<? extends TextFragmentBox> fragments = getFragmentsWithoutBorder();
 		for (int i = fragments.size() - 1; i >= 0; i--) {
-			box = (TextFragmentBox) fragments.get(i);
+			box = fragments.get(i);
 			if (box.offset >= offset) {
 				continue;
 			}
@@ -512,22 +512,20 @@ public class TextFlow extends InlineFlow {
 	}
 
 	int getVisibleAscent() {
-		if (getBorder() instanceof FlowBorder) {
-			FlowBorder border = (FlowBorder) getBorder();
+		if (getBorder() instanceof FlowBorder border) {
 			return border.getInsets(this).top + getAscent();
 		}
 		return getAscent();
 	}
 
 	int getVisibleDescent() {
-		if (getBorder() instanceof FlowBorder) {
-			FlowBorder border = (FlowBorder) getBorder();
+		if (getBorder() instanceof FlowBorder border) {
 			return border.getInsets(this).bottom + getDescent();
 		}
 		return getDescent();
 	}
 
-	private int hDistanceBetween(TextFragmentBox box, int x) {
+	private static int hDistanceBetween(TextFragmentBox box, int x) {
 		if (x < box.getX()) {
 			return box.getX() - x;
 		}
@@ -541,8 +539,8 @@ public class TextFlow extends InlineFlow {
 	 * @return <code>true</code> if the text is truncated with ellipses
 	 */
 	public boolean isTextTruncated() {
-		for (Object fragment : fragments) {
-			if (((TextFragmentBox) fragment).isTruncated()) {
+		for (TextFragmentBox box : getFragmentsWithoutBorder()) {
+			if (box.isTruncated()) {
 				return true;
 			}
 		}
@@ -708,7 +706,7 @@ public class TextFlow extends InlineFlow {
 		return text;
 	}
 
-	private int vDistanceBetween(TextFragmentBox box, int y) {
+	private static int vDistanceBetween(TextFragmentBox box, int y) {
 		int top = box.getBaseline() - box.getLineRoot().getAscent();
 		if (y < top) {
 			return top - y;
@@ -723,6 +721,7 @@ public class TextFlow extends InlineFlow {
 	 * @return a <code>FlowUtilities</code> instance
 	 * @since 3.4
 	 */
+	@SuppressWarnings("static-method")
 	protected FlowUtilities getFlowUtilities() {
 		return FlowUtilities.INSTANCE;
 	}
@@ -734,6 +733,7 @@ public class TextFlow extends InlineFlow {
 	 * @return a <code>TextUtilities</code> instance
 	 * @since 3.4
 	 */
+	@SuppressWarnings("static-method")
 	protected TextUtilities getTextUtilities() {
 		return TextUtilities.INSTANCE;
 	}

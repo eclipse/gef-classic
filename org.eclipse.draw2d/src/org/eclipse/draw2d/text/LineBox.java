@@ -13,7 +13,6 @@
 package org.eclipse.draw2d.text;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -32,7 +31,7 @@ public abstract class LineBox extends CompositeBox {
 	 */
 	int contentDescent;
 
-	List fragments = new ArrayList();
+	List<FlowBox> fragments = new ArrayList<>();
 
 	/**
 	 * @see org.eclipse.draw2d.text.CompositeBox#add(org.eclipse.draw2d.text.FlowBox)
@@ -51,8 +50,8 @@ public abstract class LineBox extends CompositeBox {
 	@Override
 	public int getAscent() {
 		int ascent = 0;
-		for (Object fragment : fragments) {
-			ascent = Math.max(ascent, ((FlowBox) fragment).getAscent());
+		for (FlowBox fragment : fragments) {
+			ascent = Math.max(ascent, fragment.getAscent());
 		}
 		return ascent;
 	}
@@ -80,8 +79,8 @@ public abstract class LineBox extends CompositeBox {
 	@Override
 	public int getDescent() {
 		int descent = 0;
-		for (Object fragment : fragments) {
-			descent = Math.max(descent, ((FlowBox) fragment).getDescent());
+		for (FlowBox fragment : fragments) {
+			descent = Math.max(descent, fragment.getDescent());
 		}
 		return descent;
 	}
@@ -89,7 +88,7 @@ public abstract class LineBox extends CompositeBox {
 	/**
 	 * @return Returns the fragments.
 	 */
-	List getFragments() {
+	List<FlowBox> getFragments() {
 		return fragments;
 	}
 
@@ -110,13 +109,7 @@ public abstract class LineBox extends CompositeBox {
 	 */
 	@Override
 	public boolean requiresBidi() {
-		for (Iterator iter = getFragments().iterator(); iter.hasNext();) {
-			FlowBox box = (FlowBox) iter.next();
-			if (box.requiresBidi()) {
-				return true;
-			}
-		}
-		return false;
+		return getFragments().stream().anyMatch(FlowBox::requiresBidi);
 	}
 
 }
