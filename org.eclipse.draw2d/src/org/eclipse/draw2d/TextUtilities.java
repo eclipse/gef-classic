@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 IBM Corporation and others.
+ * Copyright (c) 2007, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -39,6 +39,7 @@ public class TextUtilities {
 	 * @param f the font
 	 * @return the dimensions of the given string
 	 */
+	@SuppressWarnings("static-method")
 	public Dimension getStringExtents(String s, Font f) {
 		return FigureUtilities.getStringExtents(s, f);
 	}
@@ -51,6 +52,7 @@ public class TextUtilities {
 	 * @param f the font
 	 * @return the dimensions of the given text
 	 */
+	@SuppressWarnings("static-method")
 	public Dimension getTextExtents(String s, Font f) {
 		return FigureUtilities.getTextExtents(s, f);
 	}
@@ -61,6 +63,7 @@ public class TextUtilities {
 	 * @param font
 	 * @return the font's ascent
 	 */
+	@SuppressWarnings("static-method")
 	public int getAscent(Font font) {
 		FontMetrics fm = FigureUtilities.getFontMetrics(font);
 		return fm.getHeight() - fm.getDescent();
@@ -72,6 +75,7 @@ public class TextUtilities {
 	 * @param font
 	 * @return the font's descent
 	 */
+	@SuppressWarnings("static-method")
 	public int getDescent(Font font) {
 		return FigureUtilities.getFontMetrics(font).getDescent();
 	}
@@ -87,13 +91,13 @@ public class TextUtilities {
 	 */
 	public int getLargestSubstringConfinedTo(String s, Font f, int availableWidth) {
 		FontMetrics metrics = FigureUtilities.getFontMetrics(f);
-		int min, max;
-		float avg = metrics.getAverageCharWidth();
-		min = 0;
-		max = s.length() + 1;
+		int min = 0;
+		int max = s.length() + 1;
+		double avg = metrics.getAverageCharacterWidth();
 
 		// The size of the current guess
-		int guess = 0, guessSize = 0;
+		int guess = 0;
+		int guessSize = 0;
 		while ((max - min) > 1) {
 			// Pick a new guess size
 			// New guess is the last guess plus the missing width in pixels

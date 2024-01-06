@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -293,8 +293,8 @@ public class LightweightSystem {
 		/** @see IFigure#getBackgroundColor() */
 		@Override
 		public Color getBackgroundColor() {
-			if (bgColor != null) {
-				return bgColor;
+			if (getLocalBackgroundColor() != null) {
+				return getLocalBackgroundColor();
 			}
 			if (canvas != null) {
 				return canvas.getBackground();
@@ -305,8 +305,8 @@ public class LightweightSystem {
 		/** @see IFigure#getFont() */
 		@Override
 		public Font getFont() {
-			if (font != null) {
-				return font;
+			if (getLocalFont() != null) {
+				return getLocalFont();
 			}
 			if (canvas != null) {
 				return canvas.getFont();
@@ -317,8 +317,8 @@ public class LightweightSystem {
 		/** @see IFigure#getForegroundColor() */
 		@Override
 		public Color getForegroundColor() {
-			if (fgColor != null) {
-				return fgColor;
+			if (getLocalForegroundColor() != null) {
+				return getLocalForegroundColor();
 			}
 			if (canvas != null) {
 				return canvas.getForeground();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 IBM Corporation and others.
+ * Copyright (c) 2008, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -58,7 +58,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 		// Build the sizes for each row, and update prefSize accordingly
 		Dimension expandedPaneSize = null;
 		for (IFigure child : container.getChildren()) {
-			if (child instanceof PinnablePaletteStackFigure && ((PinnablePaletteStackFigure) child).isExpanded()) {
+			if (isExpandedPinabblePaletteStackFigure(child)) {
 
 				// Subtract out the insets from the hints
 				if (wHint > -1) {
@@ -101,11 +101,10 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	 */
 	@Override
 	protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
-		if (child instanceof PinnablePaletteStackFigure) {
-			return ((PinnablePaletteStackFigure) child).getHeaderPreferredSize(wHint, hHint);
-		} else {
-			return child.getPreferredSize(wHint, hHint);
+		if (child instanceof PinnablePaletteStackFigure ppStackFigure) {
+			return ppStackFigure.getHeaderPreferredSize(wHint, hHint);
 		}
+		return child.getPreferredSize(wHint, hHint);
 	}
 
 	/**
@@ -118,36 +117,38 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	protected void layoutRow(IFigure parent) {
 		int majorAdjustment = 0;
 		int minorAdjustment = 0;
-		int correctMajorAlignment = majorAlignment;
-		int correctMinorAlignment = minorAlignment;
 
 		majorAdjustment = data.area.width - data.rowWidth + getMinorSpacing();
 
-		switch (correctMajorAlignment) {
-		case ALIGN_LEFTTOP:
+		switch (getMajorAlignment()) {
+		case ALIGN_TOPLEFT:
 			majorAdjustment = 0;
 			break;
 		case ALIGN_CENTER:
 			majorAdjustment /= 2;
 			break;
-		case ALIGN_RIGHTBOTTOM:
+		case ALIGN_BOTTOMRIGHT:
+			break;
+		default:
 			break;
 		}
 
 		int expandedPaneHeight = 0;
 		for (int j = 0; j < data.rowCount; j++) {
-			if (fill) {
+			if (isStretchMinorAxis()) {
 				data.bounds[j].height = data.rowHeight;
 			} else {
 				minorAdjustment = data.rowHeight - data.bounds[j].height;
-				switch (correctMinorAlignment) {
-				case ALIGN_LEFTTOP:
+				switch (getMinorAlignment()) {
+				case ALIGN_TOPLEFT:
 					minorAdjustment = 0;
 					break;
 				case ALIGN_CENTER:
 					minorAdjustment /= 2;
 					break;
-				case ALIGN_RIGHTBOTTOM:
+				case ALIGN_BOTTOMRIGHT:
+					break;
+				default:
 					break;
 				}
 				data.bounds[j].y += minorAdjustment;
@@ -157,8 +158,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 			IFigure child = data.row[j];
 			setBoundsOfChild(parent, data.row[j], transposer.t(data.bounds[j]));
 
-			if (child instanceof PinnablePaletteStackFigure && ((PinnablePaletteStackFigure) child).isExpanded()) {
-
+			if (isExpandedPinabblePaletteStackFigure(child)) {
 				int wHint = -1;
 				int hHint = -1;
 				if (isHorizontal()) {
@@ -185,13 +185,17 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	@Override
 	protected void setBoundsOfChild(IFigure parent, IFigure child, Rectangle bounds) {
 
-		if (child instanceof PinnablePaletteStackFigure && ((PinnablePaletteStackFigure) child).isExpanded()) {
+		if (isExpandedPinabblePaletteStackFigure(child)) {
 			parent.getClientArea(Rectangle.SINGLETON);
 			bounds.translate(Rectangle.SINGLETON.x, Rectangle.SINGLETON.y);
 			((PinnablePaletteStackFigure) child).setHeaderBoundsLayoutHint(bounds);
 		} else {
 			super.setBoundsOfChild(parent, child, bounds);
 		}
+	}
+
+	private static boolean isExpandedPinabblePaletteStackFigure(IFigure child) {
+		return child instanceof PinnablePaletteStackFigure ppStackFigure && ppStackFigure.isExpanded();
 	}
 
 }

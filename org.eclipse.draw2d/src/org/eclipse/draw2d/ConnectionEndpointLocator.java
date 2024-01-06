@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -25,11 +25,11 @@ import org.eclipse.draw2d.geometry.Transposer;
  */
 public class ConnectionEndpointLocator implements Locator {
 
-	private boolean end;
-	private Connection conn;
+	private final boolean end;
+	private final Connection conn;
 	private int uDistance;
 	private int vDistance;
-	private static Rectangle figureBounds;
+	private static final Rectangle figureBounds = new Rectangle();
 
 	/**
 	 * Transposes the location if the connection point is along the top or bottom of
@@ -52,7 +52,6 @@ public class ConnectionEndpointLocator implements Locator {
 		conn = c;
 		uDistance = 14;
 		vDistance = 4;
-		figureBounds = new Rectangle();
 	}
 
 	/*
@@ -61,9 +60,9 @@ public class ConnectionEndpointLocator implements Locator {
 	 *
 	 * @param loc The point that is to be located
 	 */
-	private int calculateConnectionLocation(Point loc, Point topLeft, Point center) {
-		double m1, m2 = 0;
-		m1 = (double) (topLeft.y - center.y) / (double) (topLeft.x - center.x);
+	private static int calculateConnectionLocation(Point loc, Point topLeft, Point center) {
+		double m1 = (double) (topLeft.y - center.y) / (double) (topLeft.x - center.x);
+		double m2 = 0;
 
 		if (loc.x - center.x != 0) {
 			m2 = (double) (loc.y - center.y) / (double) (loc.x - center.x);
@@ -73,24 +72,21 @@ public class ConnectionEndpointLocator implements Locator {
 			// Case where m2 is vertical
 			if (loc.y < center.y) {
 				return 3;
-			} else {
-				return 1;
 			}
-		} else if (Math.abs(m2) <= Math.abs(m1)) {
+			return 1;
+		}
+		if (Math.abs(m2) <= Math.abs(m1)) {
 			// Connection start point along left or right side
 			if (loc.x < center.x) {
 				return 4;
-			} else {
-				return 2;
 			}
-		} else {
-			// Connection start point along top or bottom
-			if (loc.y < center.y) {
-				return 3;
-			} else {
-				return 1;
-			}
+			return 2;
 		}
+		// Connection start point along top or bottom
+		if (loc.y < center.y) {
+			return 3;
+		}
+		return 1;
 	}
 
 	/*
@@ -103,20 +99,17 @@ public class ConnectionEndpointLocator implements Locator {
 	 *
 	 * @param endPoint The end point of the connection.
 	 */
-	private int calculateConnectionLocation(Point startPoint, Point endPoint) {
+	private static int calculateConnectionLocation(Point startPoint, Point endPoint) {
 		if (Math.abs(endPoint.x - startPoint.x) > Math.abs(endPoint.y - startPoint.y)) {
 			if (endPoint.x > startPoint.x) {
 				return 2;
-			} else {
-				return 4;
 			}
-		} else {
-			if (endPoint.y > startPoint.y) {
-				return 1;
-			} else {
-				return 3;
-			}
+			return 4;
 		}
+		if (endPoint.y > startPoint.y) {
+			return 1;
+		}
+		return 3;
 	}
 
 	/*
@@ -130,7 +123,7 @@ public class ConnectionEndpointLocator implements Locator {
 	 *
 	 * @since 2.0
 	 */
-	private double calculateTan(Point startPoint, Point endPoint) {
+	private static double calculateTan(Point startPoint, Point endPoint) {
 		double tan = 0;
 		if (endPoint.x == startPoint.x) {
 			tan = 1.0;

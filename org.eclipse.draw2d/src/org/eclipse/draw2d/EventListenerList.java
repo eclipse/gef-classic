@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -20,7 +20,7 @@ import java.util.Iterator;
  */
 public final class EventListenerList {
 
-	private volatile Object array[];
+	private volatile Object[] array;
 
 	/**
 	 * Adds a listener of type <i>c</i> to the list.
@@ -38,7 +38,8 @@ public final class EventListenerList {
 		if (oldSize != 0) {
 			System.arraycopy(array, 0, newArray, 0, oldSize);
 		}
-		newArray[oldSize++] = c;
+		newArray[oldSize] = c;
+		oldSize++;
 		newArray[oldSize] = listener;
 		array = newArray;
 	}
@@ -139,8 +140,7 @@ public final class EventListenerList {
 			}
 			index += 2;
 		}
-		if (index == array.length)
-		 {
+		if (index == array.length) {
 			return; // listener was not found
 		}
 

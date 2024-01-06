@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -44,8 +44,8 @@ public class ConnectionLayer extends FreeformLayer {
 
 		// If the connection layout manager is set, then every
 		// figure added should use this layout manager.
-		if (figure instanceof Connection && getConnectionRouter() != null) {
-			((Connection) figure).setConnectionRouter(getConnectionRouter());
+		if (figure instanceof Connection conn && getConnectionRouter() != null) {
+			conn.setConnectionRouter(getConnectionRouter());
 		}
 	}
 
@@ -78,8 +78,8 @@ public class ConnectionLayer extends FreeformLayer {
 	 */
 	@Override
 	public void remove(IFigure figure) {
-		if (figure instanceof Connection) {
-			((Connection) figure).setConnectionRouter(null);
+		if (figure instanceof Connection conn) {
+			conn.setConnectionRouter(null);
 		}
 		super.remove(figure);
 	}
@@ -94,8 +94,8 @@ public class ConnectionLayer extends FreeformLayer {
 	public void setConnectionRouter(ConnectionRouter router) {
 		connectionRouter = router;
 		getChildrenRevIterable().forEach(child -> {
-			if (child instanceof Connection) {
-				((Connection) child).setConnectionRouter(router);
+			if (child instanceof Connection conn) {
+				conn.setConnectionRouter(router);
 			}
 		});
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -67,11 +67,11 @@ public class FanRouter extends AutomaticRouter {
 		Point bendPoint;
 
 		if (index % 2 == 0) {
-			bendPoint = new Point(midPoint.x + (index / 2) * (-1 * ySeparation),
-					midPoint.y + (index / 2) * xSeparation);
+			bendPoint = new Point(midPoint.x + (int) ((index / 2.0) * -1.0 * ySeparation),
+					midPoint.y + (int) ((index / 2.0) * xSeparation));
 		} else {
-			bendPoint = new Point(midPoint.x + (index / 2) * ySeparation,
-					midPoint.y + (index / 2) * (-1 * xSeparation));
+			bendPoint = new Point(midPoint.x + (int) ((index / 2.0) * ySeparation),
+					midPoint.y + (int) ((index / 2.0) * -1.0 * xSeparation));
 		}
 		if (!bendPoint.equals(midPoint)) {
 			points.insertPoint(bendPoint, 1);

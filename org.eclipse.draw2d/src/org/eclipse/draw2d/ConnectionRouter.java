@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -83,10 +83,11 @@ public interface ConnectionRouter {
 		public void route(Connection conn) {
 			PointList points = conn.getPoints();
 			points.removeAllPoints();
-			Point p;
-			conn.translateToRelative(p = getStartPoint(conn));
+			Point p = getStartPoint(conn);
+			conn.translateToRelative(p);
 			points.addPoint(p);
-			conn.translateToRelative(p = getEndPoint(conn));
+			p = getEndPoint(conn);
+			conn.translateToRelative(p);
 			points.addPoint(p);
 			conn.setPoints(points);
 		}

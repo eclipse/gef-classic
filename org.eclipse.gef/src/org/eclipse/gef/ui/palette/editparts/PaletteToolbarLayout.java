@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -37,8 +37,9 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 	 * @param child The figure that is to be marked as growing or non-growing
 	 * @return <code>true</code> if the given child is considered growing
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isChildGrowing(IFigure child) {
-		return child instanceof DrawerFigure && ((DrawerFigure) child).isExpanded();
+		return child instanceof DrawerFigure drawerFigure && drawerFigure.isExpanded();
 	}
 
 	/**
@@ -54,8 +55,8 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 		int y = clientArea.y;
 		int availableHeight = clientArea.height;
 		boolean stretching;
-		Dimension prefSizes[] = new Dimension[numChildren];
-		Dimension minSizes[] = new Dimension[numChildren];
+		Dimension[] prefSizes = new Dimension[numChildren];
+		Dimension[] minSizes = new Dimension[numChildren];
 		int totalHeight = 0, totalMinHeight = 0, heightOfNonGrowingChildren = 0, heightPerChild = 0, excessHeight = 0;
 
 		/*
@@ -165,11 +166,8 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 				}
 			}
 
-			if (getStretchMinorAxis()) {
-				newBounds.width = clientArea.width;
-			} else {
-				newBounds.width = Math.min(prefSizes[i].width, clientArea.width);
-			}
+			newBounds.width = (isStretchMinorAxis()) ? clientArea.width
+					: Math.min(prefSizes[i].width, clientArea.width);
 
 			int adjust = clientArea.width - newBounds.width;
 			switch (getMinorAlignment()) {
@@ -180,6 +178,8 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 				adjust /= 2;
 				break;
 			case ALIGN_BOTTOMRIGHT:
+				break;
+			default:
 				break;
 			}
 			newBounds.x += adjust;

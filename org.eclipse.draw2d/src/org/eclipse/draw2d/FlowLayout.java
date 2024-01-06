@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -28,9 +28,15 @@ public class FlowLayout extends OrderedLayout {
 	 * Holds the necessary information for layout calculations.
 	 */
 	protected class WorkingData {
-		public Rectangle bounds[], area;
-		public IFigure row[];
-		public int rowHeight, rowWidth, rowCount, rowX, rowY, maxWidth;
+		public Rectangle[] bounds;
+		public Rectangle area;
+		public IFigure[] row;
+		public int rowHeight;
+		public int rowWidth;
+		public int rowCount;
+		public int rowX;
+		public int rowY;
+		public int maxWidth;
 	}
 
 	/**
@@ -38,6 +44,7 @@ public class FlowLayout extends OrderedLayout {
 	 *
 	 * @deprecated Use {@link OrderedLayout#ALIGN_TOPLEFT} instead.
 	 */
+	@Deprecated
 	public static final int ALIGN_LEFTTOP = ALIGN_TOPLEFT;
 
 	/**
@@ -45,6 +52,7 @@ public class FlowLayout extends OrderedLayout {
 	 *
 	 * @deprecated Use {@link OrderedLayout#ALIGN_BOTTOMRIGHT} instead.
 	 */
+	@Deprecated
 	public static final int ALIGN_RIGHTBOTTOM = ALIGN_BOTTOMRIGHT;
 
 	protected WorkingData data = null;
@@ -56,6 +64,7 @@ public class FlowLayout extends OrderedLayout {
 	 * @deprecated Use {@link OrderedLayout#setStretchMinorAxis(boolean)} and
 	 *             {@link OrderedLayout#isStretchMinorAxis()} instead.
 	 */
+	@Deprecated
 	protected boolean fill;
 
 	/**
@@ -64,6 +73,7 @@ public class FlowLayout extends OrderedLayout {
 	 * @deprecated Use {@link #getMajorAlignment()} and
 	 *             {@link #setMajorAlignment(int)} instead.
 	 */
+	@Deprecated
 	protected int majorAlignment = ALIGN_TOPLEFT;
 
 	/**
@@ -72,6 +82,7 @@ public class FlowLayout extends OrderedLayout {
 	 * @deprecated Use {@link #getMajorSpacing()} and {@link #setMajorSpacing(int)}
 	 *             instead.
 	 */
+	@Deprecated
 	protected int majorSpacing = 5;
 
 	/**
@@ -80,6 +91,7 @@ public class FlowLayout extends OrderedLayout {
 	 * @deprecated Use {@link #getMinorSpacing()} and {@link #setMinorSpacing(int)}
 	 *             instead.
 	 */
+	@Deprecated
 	protected int minorSpacing = 5;
 
 	/**
@@ -183,6 +195,7 @@ public class FlowLayout extends OrderedLayout {
 	 * @param hHint the height hint
 	 * @return the child's preferred size
 	 */
+	@SuppressWarnings("static-method")
 	protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
 		return child.getPreferredSize(wHint, hHint);
 	}
@@ -308,10 +321,8 @@ public class FlowLayout extends OrderedLayout {
 			Dimension pref = transposer.t(getChildSize(f, wHint, hHint));
 			Rectangle r = new Rectangle(0, 0, pref.width, pref.height);
 
-			if (data.rowCount > 0) {
-				if (data.rowWidth + pref.width > data.maxWidth) {
-					layoutRow(parent);
-				}
+			if (data.rowCount > 0 && data.rowWidth + pref.width > data.maxWidth) {
+				layoutRow(parent);
 			}
 			r.x = data.rowX;
 			r.y = data.rowY;
@@ -353,6 +364,8 @@ public class FlowLayout extends OrderedLayout {
 			break;
 		case ALIGN_BOTTOMRIGHT:
 			break;
+		default:
+			break;
 		}
 
 		for (int j = 0; j < data.rowCount; j++) {
@@ -368,6 +381,8 @@ public class FlowLayout extends OrderedLayout {
 					minorAdjustment /= 2;
 					break;
 				case ALIGN_BOTTOMRIGHT:
+					break;
+				default:
 					break;
 				}
 				data.bounds[j].y += minorAdjustment;
@@ -388,6 +403,7 @@ public class FlowLayout extends OrderedLayout {
 	 * @param bounds the size of the child to be set
 	 * @since 2.0
 	 */
+	@SuppressWarnings("static-method")
 	protected void setBoundsOfChild(IFigure parent, IFigure child, Rectangle bounds) {
 		parent.getClientArea(Rectangle.SINGLETON);
 		bounds.translate(Rectangle.SINGLETON.x, Rectangle.SINGLETON.y);
