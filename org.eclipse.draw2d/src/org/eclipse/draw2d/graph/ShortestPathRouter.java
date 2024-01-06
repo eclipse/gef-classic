@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
@@ -232,7 +233,7 @@ public class ShortestPathRouter {
 	 *
 	 * @param vertex the vertex that has the paths
 	 */
-	private boolean dirtyPathsOn(Vertex vertex) {
+	private static boolean dirtyPathsOn(Vertex vertex) {
 		List<Path> paths = vertex.paths;
 		if (paths != null && !paths.isEmpty()) {
 			for (Path path : paths) {
@@ -271,7 +272,7 @@ public class ShortestPathRouter {
 	 * @param segment the segment
 	 * @return v1, or v2 whichever is closest to the segment
 	 */
-	private Vertex getNearestVertex(Vertex v1, Vertex v2, Segment segment) {
+	private static Vertex getNearestVertex(Vertex v1, Vertex v2, Segment segment) {
 		if (segment.start.getDistance(v1) + segment.end.getDistance(v1) > segment.start.getDistance(v2)
 				+ segment.end.getDistance(v2)) {
 			return v2;
@@ -487,7 +488,7 @@ public class ShortestPathRouter {
 	 *                     obstacles center
 	 * @param path         the path
 	 */
-	private void labelVertex(Segment segment, long crossProduct, Path path) {
+	private static void labelVertex(Segment segment, long crossProduct, Path path) {
 		// assumes vertex in question is segment.end
 		if (crossProduct > 0) {
 			if (path.isInverted) {
@@ -560,13 +561,12 @@ public class ShortestPathRouter {
 	 * represent bendpoints.
 	 */
 	private void recombineChildrenPaths() {
-		for (Path path : pathsToChildPaths.keySet()) {
+		for (Entry<Path, List<Path>> entry : pathsToChildPaths.entrySet()) {
+			Path path = entry.getKey();
 			path.fullReset();
 
-			List<Path> childPaths = pathsToChildPaths.get(path);
 			Path childPath = null;
-
-			for (Path childPath2 : childPaths) {
+			for (Path childPath2 : entry.getValue()) {
 				childPath = childPath2;
 				path.points.addAll(childPath.getPoints());
 				// path will overlap
@@ -664,7 +664,7 @@ public class ShortestPathRouter {
 	 *
 	 * @return returns the list of paths which were updated.
 	 */
-	public List<? extends Path> solve() {
+	public List<Path> solve() {
 
 		solveDirtyPaths();
 
@@ -704,7 +704,8 @@ public class ShortestPathRouter {
 				continue;
 			}
 			List<Path> children = pathsToChildPaths.get(path);
-			int prevCount = 1, newCount = 1;
+			int prevCount = 1;
+			int newCount = 1;
 			if (children == null) {
 				children = Collections.emptyList();
 			} else {
@@ -757,7 +758,7 @@ public class ShortestPathRouter {
 	 * @param path
 	 * @param children
 	 */
-	private void refreshChildrenEndpoints(Path path, List<Path> children) {
+	private static void refreshChildrenEndpoints(Path path, List<Path> children) {
 		Point previous = path.getStartPoint();
 		Point next;
 		PointList bendpoints = path.getBendPoints();
