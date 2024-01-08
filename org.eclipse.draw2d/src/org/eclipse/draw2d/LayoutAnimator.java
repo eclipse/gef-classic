@@ -105,10 +105,11 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 *
 	 * @see Animator#playback(IFigure)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean playback(IFigure container) {
-		Map initial = (Map) Animation.getInitialState(this, container);
-		Map ending = (Map) Animation.getFinalState(this, container);
+		Map<IFigure, Rectangle> initial = (Map<IFigure, Rectangle>) Animation.getInitialState(this, container);
+		Map<IFigure, Rectangle> ending = (Map<IFigure, Rectangle>) Animation.getFinalState(this, container);
 		if (initial == null) {
 			return false;
 		}
@@ -116,11 +117,9 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 		float progress = Animation.getProgress();
 		float ssergorp = 1 - progress;
 
-		Rectangle rect1, rect2;
-
 		for (IFigure child : container.getChildren()) {
-			rect1 = (Rectangle) initial.get(child);
-			rect2 = (Rectangle) ending.get(child);
+			Rectangle rect1 = initial.get(child);
+			Rectangle rect2 = ending.get(child);
 
 			// TODO need to change this to hide the figure until the end.
 			if (rect1 == null) {
@@ -153,6 +152,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 */
 	@Override
 	public final void remove(IFigure child) {
+		// unused
 	}
 
 	/**
@@ -162,6 +162,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 */
 	@Override
 	public final void setConstraint(IFigure child, Object constraint) {
+		// unused
 	}
 
 }

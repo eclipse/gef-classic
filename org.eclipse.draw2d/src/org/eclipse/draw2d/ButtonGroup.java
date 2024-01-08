@@ -31,8 +31,8 @@ public class ButtonGroup {
 
 	private ButtonModel selectedModel;
 	private ButtonModel defaultModel;
-	private List<ButtonModel> members = new ArrayList<>();
-	private List<PropertyChangeListener> listeners = new ArrayList<>();
+	private final List<ButtonModel> members = new ArrayList<>();
+	private final List<PropertyChangeListener> listeners = new ArrayList<>();
 
 	/**
 	 * Constructs a ButtonGroup with no default selection.
@@ -96,7 +96,7 @@ public class ButtonGroup {
 	 * @return The List of ButtonModels in this ButtonGroup
 	 * @since 2.0
 	 */
-	public List getElements() {
+	public List<ButtonModel> getElements() {
 		return members;
 	}
 
