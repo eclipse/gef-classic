@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -27,7 +27,7 @@ import org.eclipse.draw2d.geometry.PrecisionPoint;
  */
 public class BendpointConnectionRouter extends AbstractRouter {
 
-	private Map<Connection, Object> constraints = new HashMap<>(11);
+	private final Map<Connection, List<Bendpoint>> constraints = new HashMap<>(11);
 
 	private static final PrecisionPoint A_POINT = new PrecisionPoint();
 
@@ -36,9 +36,10 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	 *
 	 * @param connection The connection whose constraint we are retrieving
 	 * @return The constraint
+	 * @since 3.15
 	 */
 	@Override
-	public Object getConstraint(Connection connection) {
+	public List<Bendpoint> getConstraint(Connection connection) {
 		return constraints.get(connection);
 	}
 
@@ -63,7 +64,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 		PointList points = conn.getPoints();
 		points.removeAllPoints();
 
-		List bendpoints = (List) getConstraint(conn);
+		List<Bendpoint> bendpoints = getConstraint(conn);
 		if (bendpoints == null) {
 			bendpoints = Collections.emptyList();
 		}
@@ -75,9 +76,9 @@ public class BendpointConnectionRouter extends AbstractRouter {
 			ref1 = conn.getTargetAnchor().getReferencePoint();
 			ref2 = conn.getSourceAnchor().getReferencePoint();
 		} else {
-			ref1 = new Point(((Bendpoint) bendpoints.get(0)).getLocation());
+			ref1 = new Point(bendpoints.get(0).getLocation());
 			conn.translateToAbsolute(ref1);
-			ref2 = new Point(((Bendpoint) bendpoints.get(bendpoints.size() - 1)).getLocation());
+			ref2 = new Point(bendpoints.get(bendpoints.size() - 1).getLocation());
 			conn.translateToAbsolute(ref2);
 		}
 
@@ -85,10 +86,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 		conn.translateToRelative(A_POINT);
 		points.addPoint(A_POINT);
 
-		for (Object bendpoint : bendpoints) {
-			Bendpoint bp = (Bendpoint) bendpoint;
-			points.addPoint(bp.getLocation());
-		}
+		bendpoints.forEach(bp -> points.addPoint(bp.getLocation()));
 
 		A_POINT.setLocation(conn.getTargetAnchor().getLocation(ref2));
 		conn.translateToRelative(A_POINT);
@@ -100,11 +98,12 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	 * Sets the constraint for the given {@link Connection}.
 	 *
 	 * @param connection The connection whose constraint we are setting
-	 * @param constraint The constraint
+	 * @param constraint The constraint, which as to be a List<Bendpoint>
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setConstraint(Connection connection, Object constraint) {
-		constraints.put(connection, constraint);
+		constraints.put(connection, (List<Bendpoint>) constraint);
 	}
 
 }

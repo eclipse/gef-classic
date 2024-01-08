@@ -53,7 +53,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 		}
 	}
 
-	private final Map<Connection, Object> constraintMap = new HashMap<>();
+	private final Map<Connection, List<Bendpoint>> constraintMap = new HashMap<>();
 	private Map<IFigure, Rectangle> figuresToBounds;
 	private Map<Connection, Path> connectionToPaths;
 	private boolean isDirty;
@@ -128,9 +128,10 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	 *
 	 * @param connection The connection whose constraint we are retrieving
 	 * @return The constraint
+	 * @since 3.15
 	 */
 	@Override
-	public Object getConstraint(Connection connection) {
+	public List<Bendpoint> getConstraint(Connection connection) {
 		return constraintMap.get(connection);
 	}
 
@@ -181,7 +182,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 				algorithm.addPath(path);
 			}
 
-			List constraint = (List) getConstraint(conn);
+			List<Bendpoint> constraint = getConstraint(conn);
 			if (constraint == null) {
 				constraint = Collections.emptyList();
 			}
@@ -197,10 +198,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 
 			if (!constraint.isEmpty()) {
 				PointList bends = new PointList(constraint.size());
-				for (Object element : constraint) {
-					Bendpoint bp = (Bendpoint) element;
-					bends.addPoint(bp.getLocation());
-				}
+				constraint.forEach(bp -> bends.addPoint(bp.getLocation()));
 				path.setBendPoints(bends);
 			} else {
 				path.setBendPoints(null);
@@ -312,12 +310,13 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	/**
 	 * @see ConnectionRouter#setConstraint(Connection, Object)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setConstraint(Connection connection, Object constraint) {
 		// Connection.setConstraint() already calls revalidate, so we know that a
 		// route() call will follow.
 		staleConnections.add(connection);
-		constraintMap.put(connection, constraint);
+		constraintMap.put(connection, (List<Bendpoint>) constraint);
 		isDirty = true;
 	}
 
