@@ -201,8 +201,6 @@
           locateNestedProjects="true"/>
       <repositoryList>
         <repository
-            url="https://download.eclipse.org/releases/${eclipse.target.platform.latest}"/>
-        <repository
             url="https://download.eclipse.org/cbi/updates/license"/>
       </repositoryList>
     </targlet>
