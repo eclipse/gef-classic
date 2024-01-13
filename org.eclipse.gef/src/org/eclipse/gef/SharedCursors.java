@@ -70,7 +70,11 @@ public class SharedCursors extends Cursors {
 				}
 			}
 		}
-		return deviceZoom;
+		// On Mac and Linux X11 ImageData for cursors should always be created with 100% device zoom 
+		return Platform.getOS().equals(Platform.OS_MACOSX) ||
+				(Platform.getOS().equals(Platform.OS_LINUX) && "x11".equalsIgnoreCase(System.getenv("XDG_SESSION_TYPE"))) //$NON-NLS-1$ //$NON-NLS-2$
+				? 100 
+				: deviceZoom;
 	}
 
 }
