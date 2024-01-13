@@ -1949,7 +1949,7 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setToolTip(IFigure f) {
-		if (getToolTip() == f) {
+		if (toolTip == f) {
 			return;
 		}
 		toolTip = f;
