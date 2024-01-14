@@ -99,6 +99,7 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	 * @param p the point
 	 * @return the direction from <i>r</i> to <i>p</i>
 	 */
+	@SuppressWarnings("static-method")
 	protected Ray getDirection(Rectangle r, Point p) {
 		int distance = Math.abs(r.x - p.x);
 		Ray direction;

@@ -91,6 +91,7 @@ public abstract class PrintOperation {
 	 * @since 3.1
 	 * @TODO Make protected post-3.1
 	 */
+	@SuppressWarnings("static-method")
 	int getGraphicsOrientation() {
 		return SWT.LEFT_TO_RIGHT;
 	}

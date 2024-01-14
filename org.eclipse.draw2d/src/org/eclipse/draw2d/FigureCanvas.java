@@ -561,7 +561,7 @@ public class FigureCanvas extends Canvas {
 		hookViewport();
 	}
 
-	private int verifyScrollBarOffset(RangeModel model, int value) {
+	private static int verifyScrollBarOffset(RangeModel model, int value) {
 		value = Math.max(model.getMinimum(), value);
 		return Math.min(model.getMaximum() - model.getExtent(), value);
 	}

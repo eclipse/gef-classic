@@ -140,9 +140,8 @@ public class Clickable extends Figure {
 	protected ButtonModel createDefaultModel() {
 		if (isStyle(STYLE_TOGGLE)) {
 			return new ToggleModel();
-		} else {
-			return new ButtonModel();
 		}
+		return new ButtonModel();
 	}
 
 	/**
@@ -151,6 +150,7 @@ public class Clickable extends Figure {
 	 * @return The event handler
 	 * @since 2.0
 	 */
+	@SuppressWarnings("static-method")
 	protected ClickableEventHandler createEventHandler() {
 		return new ClickableEventHandler();
 	}

@@ -174,6 +174,7 @@ public class ScaledGraphics extends Graphics {
 		graphics.clipRect(zoomClipRect(r));
 	}
 
+	@SuppressWarnings("static-method")
 	Font createFont(FontData data) {
 		return new Font(Display.getCurrent(), data);
 	}

@@ -178,6 +178,7 @@ public class ViewportAwareConnectionLayerClippingStrategy implements IClippingSt
 	/**
 	 * Returns the connection's points in absolute coordinates.
 	 */
+	@SuppressWarnings("static-method")
 	protected PointList getAbsolutePointsAsCopy(Connection connection) {
 		PointList points = connection.getPoints().getCopy();
 		connection.translateToAbsolute(points);
@@ -194,6 +195,7 @@ public class ViewportAwareConnectionLayerClippingStrategy implements IClippingSt
 	/**
 	 * Returns the viewport's client area in absolute coordinates.
 	 */
+	@SuppressWarnings("static-method")
 	protected Rectangle getAbsoluteClientAreaAsCopy(IFigure figure) {
 		Rectangle absoluteClientArea = figure.getClientArea();
 		figure.translateToParent(absoluteClientArea);
@@ -204,6 +206,7 @@ public class ViewportAwareConnectionLayerClippingStrategy implements IClippingSt
 	/**
 	 * Returns the figure's bounds in absolute coordinates.
 	 */
+	@SuppressWarnings("static-method")
 	protected Rectangle getAbsoluteBoundsAsCopy(IFigure figure) {
 		Rectangle absoluteFigureBounds = figure.getBounds().getCopy();
 		figure.translateToAbsolute(absoluteFigureBounds);

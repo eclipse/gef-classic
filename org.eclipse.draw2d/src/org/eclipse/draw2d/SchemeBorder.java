@@ -271,6 +271,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	 * @param tl       the highlight (top/left) colors
 	 * @param br       the shadow (bottom/right) colors
 	 */
+	@SuppressWarnings("static-method")
 	protected void paint(Graphics graphics, IFigure fig, Insets insets, Color[] tl, Color[] br) {
 		graphics.setLineWidth(1);
 		graphics.setLineStyle(Graphics.LINE_SOLID);

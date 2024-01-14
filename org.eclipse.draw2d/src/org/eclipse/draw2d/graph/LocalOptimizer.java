@@ -21,6 +21,7 @@ package org.eclipse.draw2d.graph;
  */
 class LocalOptimizer extends GraphVisitor {
 
+	@SuppressWarnings("static-method")
 	boolean shouldSwap(Node current, Node next) {
 		if (GraphUtilities.isConstrained(current, next)) {
 			return false;
