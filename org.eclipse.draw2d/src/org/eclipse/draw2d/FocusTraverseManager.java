@@ -49,6 +49,7 @@ public class FocusTraverseManager {
 	 * @param prevFocus the IFigure who currently owns focus
 	 * @return the next focusable figure
 	 */
+	@SuppressWarnings("static-method")
 	public IFigure getNextFocusableFigure(IFigure root, IFigure prevFocus) {
 		boolean found = false;
 		IFigure nextFocus = prevFocus;
@@ -90,7 +91,7 @@ public class FocusTraverseManager {
 				}
 			} else if (siblingPos < siblings.size() - 1) {
 				siblingPos++;
-				nextFocus = ((siblings.get(siblingPos)));
+				nextFocus = siblings.get(siblingPos);
 				if (isFocusEligible(nextFocus)) {
 					found = true;
 				}
@@ -133,6 +134,7 @@ public class FocusTraverseManager {
 	 * @param prevFocus The IFigure who currently owns focus
 	 * @return the previous focusable figure
 	 */
+	@SuppressWarnings("static-method")
 	public IFigure getPreviousFocusableFigure(IFigure root, IFigure prevFocus) {
 		if (prevFocus == null) {
 			return null;

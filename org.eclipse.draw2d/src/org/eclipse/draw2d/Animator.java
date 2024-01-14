@@ -59,6 +59,7 @@ public abstract class Animator {
 	 * @return <code>true</code> if playback was successful
 	 * @since 3.2
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean playback(IFigure figure) {
 		return false;
 	}

@@ -96,10 +96,12 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 		return result;
 	}
 
+	@SuppressWarnings("static-method")
 	int getTreeMax(Node n) {
 		return n.workingInts[1];
 	}
 
+	@SuppressWarnings("static-method")
 	int getTreeMin(Node n) {
 		return n.workingInts[0];
 	}
@@ -142,7 +144,7 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 	}
 
 	void networkSimplexLoop() {
-		Edge leave, enter;
+		Edge leave;
 		int count = 0;
 		while ((leave = leave()) != null && count < 900) {
 
@@ -151,7 +153,7 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 			Node leaveTail = getTreeTail(leave);
 			Node leaveHead = getTreeHead(leave);
 
-			enter = enter(leaveTail);
+			Edge enter = enter(leaveTail);
 			if (enter == null) {
 				break;
 			}
@@ -221,14 +223,17 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 		}
 	}
 
+	@SuppressWarnings("static-method")
 	void setTreeMax(Node n, int value) {
 		n.workingInts[1] = value;
 	}
 
+	@SuppressWarnings("static-method")
 	void setTreeMin(Node n, int value) {
 		n.workingInts[0] = value;
 	}
 
+	@SuppressWarnings("static-method")
 	boolean subtreeContains(Node parent, Node child) {
 		return parent.workingInts[0] <= child.workingInts[1] && child.workingInts[1] <= parent.workingInts[1];
 	}

@@ -47,6 +47,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 	 * @return The endpoint
 	 * @since 2.0
 	 */
+	@SuppressWarnings("static-method")
 	protected Point getEndPoint(Connection connection) {
 		Point ref = connection.getSourceAnchor().getReferencePoint();
 		return END.setLocation(connection.getTargetAnchor().getLocation(ref));
@@ -64,6 +65,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 	 * @return The start point
 	 * @since 2.0
 	 */
+	@SuppressWarnings("static-method")
 	protected Point getStartPoint(Connection conn) {
 		Point ref = conn.getTargetAnchor().getReferencePoint();
 		return START.setLocation(conn.getSourceAnchor().getLocation(ref));

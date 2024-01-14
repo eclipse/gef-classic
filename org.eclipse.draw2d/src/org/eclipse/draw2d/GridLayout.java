@@ -146,6 +146,7 @@ public class GridLayout extends AbstractHintLayout {
 	 * @param hHint
 	 * @return the child size.
 	 */
+	@SuppressWarnings("static-method")
 	protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
 		return child.getPreferredSize(wHint, hHint);
 	}
@@ -683,7 +684,8 @@ public class GridLayout extends AbstractHintLayout {
 					if (data != null) {
 						int hSpan = Math.max(1, Math.min(data.horizontalSpan, columnCount));
 						int vSpan = Math.max(1, data.verticalSpan);
-						int cellWidth = 0, cellHeight = 0;
+						int cellWidth = 0;
+						int cellHeight = 0;
 						for (int k = 0; k < hSpan; k++) {
 							cellWidth += widths[j + k];
 						}
@@ -694,35 +696,33 @@ public class GridLayout extends AbstractHintLayout {
 						int childX = gridX + data.horizontalIndent;
 						int childWidth = Math.min(data.cacheWidth, cellWidth);
 						switch (data.horizontalAlignment) {
-						case SWT.CENTER:
-						case GridData.CENTER:
+						case SWT.CENTER, GridData.CENTER:
 							childX = gridX + Math.max(0, (cellWidth - childWidth) / 2);
 							break;
-						case SWT.RIGHT:
-						case SWT.END:
-						case GridData.END:
+						case SWT.RIGHT, SWT.END, GridData.END:
 							childX = gridX + Math.max(0, cellWidth - childWidth);
 							break;
 						case SWT.FILL:
 							childWidth = cellWidth - data.horizontalIndent;
+							break;
+						default:
 							break;
 						}
 						cellHeight += verticalSpacing * (vSpan - 1);
 						int childY = gridY; // + data.verticalIndent;
 						int childHeight = Math.min(data.cacheHeight, cellHeight);
 						switch (data.verticalAlignment) {
-						case SWT.CENTER:
-						case GridData.CENTER:
+						case SWT.CENTER, GridData.CENTER:
 							childY = gridY + Math.max(0, (cellHeight - childHeight) / 2);
 							break;
-						case SWT.BOTTOM:
-						case SWT.END:
-						case GridData.END:
+						case SWT.BOTTOM, SWT.END, GridData.END:
 							childY = gridY + Math.max(0, cellHeight - childHeight);
 							break;
 						case SWT.FILL:
 							childHeight = cellHeight; // -
 							// data.verticalIndent;
+							break;
+						default:
 							break;
 						}
 						IFigure child = grid[i][j];

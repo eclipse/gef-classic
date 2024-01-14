@@ -78,6 +78,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * @return the up button
 	 * @since 2.0
 	 */
+	@SuppressWarnings("static-method")
 	protected Clickable createDefaultUpButton() {
 		Button buttonUp = new ArrowButton();
 		buttonUp.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.BUTTON_SCROLLBAR));
@@ -90,6 +91,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * @return the down button
 	 * @since 2.0
 	 */
+	@SuppressWarnings("static-method")
 	protected Clickable createDefaultDownButton() {
 		Button buttonDown = new ArrowButton();
 		buttonDown.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.BUTTON_SCROLLBAR));
@@ -112,6 +114,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * @return the page up figure
 	 * @since 2.0
 	 */
+	@SuppressWarnings("static-method")
 	protected Clickable createPageUp() {
 		final Clickable clickable = new Clickable();
 		clickable.setOpaque(true);
@@ -135,6 +138,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * @return the thumb figure
 	 * @since 2.0
 	 */
+	@SuppressWarnings("static-method")
 	protected IFigure createDefaultThumb() {
 		Panel thumb = new Panel();
 		thumb.setMinimumSize(new Dimension(6, 6));
@@ -379,7 +383,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		buttonDown = down;
 		if (buttonDown != null) {
 			if (buttonDown instanceof Orientable orientable) {
-				orientable.setDirection(isHorizontal() ? Orientable.EAST : Orientable.SOUTH);
+				orientable.setDirection(isHorizontal() ? PositionConstants.EAST : PositionConstants.SOUTH);
 			}
 			buttonDown.setFiringMethod(Clickable.REPEAT_FIRING);
 			buttonDown.addActionListener(e -> stepDown());
@@ -401,7 +405,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		buttonUp = up;
 		if (up != null) {
 			if (up instanceof Orientable orientable) {
-				orientable.setDirection(isHorizontal() ? Orientable.WEST : Orientable.NORTH);
+				orientable.setDirection(isHorizontal() ? PositionConstants.WEST : PositionConstants.NORTH);
 			}
 			buttonUp.setFiringMethod(Clickable.REPEAT_FIRING);
 			buttonUp.addActionListener(e -> stepUp());

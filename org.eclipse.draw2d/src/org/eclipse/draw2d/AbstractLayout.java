@@ -55,6 +55,7 @@ public abstract class AbstractLayout implements LayoutManager {
 	 * @param container The figure that the border is on
 	 * @return The border's preferred size
 	 */
+	@SuppressWarnings("static-method")
 	protected Dimension getBorderPreferredSize(IFigure container) {
 		if (container.getBorder() == null) {
 			return new Dimension();

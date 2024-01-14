@@ -21,10 +21,12 @@ package org.eclipse.draw2d.graph;
  */
 abstract class SpanningTreeVisitor extends GraphVisitor {
 
+	@SuppressWarnings("static-method")
 	Edge getParentEdge(Node node) {
 		return (Edge) node.workingData[1];
 	}
 
+	@SuppressWarnings("static-method")
 	EdgeList getSpanningTreeChildren(Node node) {
 		return (EdgeList) node.workingData[0];
 	}
@@ -51,6 +53,7 @@ abstract class SpanningTreeVisitor extends GraphVisitor {
 		return edge.target;
 	}
 
+	@SuppressWarnings("static-method")
 	void setParentEdge(Node node, Edge edge) {
 		node.workingData[1] = edge;
 	}

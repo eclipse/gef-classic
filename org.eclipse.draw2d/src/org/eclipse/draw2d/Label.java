@@ -689,6 +689,7 @@ public class Label extends Figure implements PositionConstants {
 	 * @return a <code>TextUtilities</code> instance
 	 * @since 3.4
 	 */
+	@SuppressWarnings("static-method")
 	public TextUtilities getTextUtilities() {
 		return TextUtilities.INSTANCE;
 	}
@@ -700,6 +701,7 @@ public class Label extends Figure implements PositionConstants {
 	 * @return the string to append to the text when truncated
 	 * @since 3.4
 	 */
+	@SuppressWarnings("static-method")
 	protected String getTruncationString() {
 		return ELLIPSIS;
 	}

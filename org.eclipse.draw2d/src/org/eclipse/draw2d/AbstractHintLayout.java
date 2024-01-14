@@ -32,8 +32,8 @@ import org.eclipse.draw2d.geometry.Dimension;
 public abstract class AbstractHintLayout extends AbstractLayout {
 
 	private Dimension minimumSize = null;
-	private Dimension cachedPreferredHint = new Dimension(-1, -1);
-	private Dimension cachedMinimumHint = new Dimension(-1, -1);
+	private final Dimension cachedPreferredHint = new Dimension(-1, -1);
+	private final Dimension cachedMinimumHint = new Dimension(-1, -1);
 
 	/**
 	 * Calculates the minimum size using the given width and height hints. This
@@ -106,6 +106,7 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	 * @return <code>true</code> if this layout is sensite to horizontal hint
 	 *         changes
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isSensitiveHorizontally(IFigure container) {
 		return true;
 	}
@@ -117,6 +118,7 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	 * @param container the layout's container
 	 * @return <code>true</code> if this layout is sensite to vertical hint changes
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean isSensitiveVertically(IFigure container) {
 		return true;
 	}

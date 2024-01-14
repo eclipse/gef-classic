@@ -28,8 +28,12 @@ import org.eclipse.draw2d.geometry.Rectangle;
 class Obstacle extends Rectangle {
 
 	boolean exclude;
-	Vertex topLeft, topRight, bottomLeft, bottomRight, center;
-	private ShortestPathRouter router;
+	Vertex topLeft;
+	Vertex topRight;
+	Vertex bottomLeft;
+	Vertex bottomRight;
+	Vertex center;
+	private final ShortestPathRouter router;
 
 	/**
 	 * Creates a new obstacle from the given rectangle bounds.
@@ -56,7 +60,7 @@ class Obstacle extends Rectangle {
 		return router.getSpacing();
 	}
 
-	private void growVertex(Vertex vertex) {
+	private static void growVertex(Vertex vertex) {
 		if (vertex.totalCount > 0) {
 			vertex.grow();
 		}
@@ -106,7 +110,7 @@ class Obstacle extends Rectangle {
 		topRight.fullReset();
 	}
 
-	private void shrinkVertex(Vertex vertex) {
+	private static void shrinkVertex(Vertex vertex) {
 		if (vertex.totalCount > 0) {
 			vertex.shrink();
 		}

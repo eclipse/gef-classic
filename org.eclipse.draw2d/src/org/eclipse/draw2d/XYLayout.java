@@ -81,6 +81,7 @@ public class XYLayout extends AbstractLayout {
 	 * @param parent the figure whose origin is requested
 	 * @return the origin
 	 */
+	@SuppressWarnings("static-method")
 	public Point getOrigin(IFigure parent) {
 		return parent.getClientArea().getLocation();
 	}
