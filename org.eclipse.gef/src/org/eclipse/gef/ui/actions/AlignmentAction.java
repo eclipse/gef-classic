@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -70,15 +70,16 @@ public final class AlignmentAction extends SelectionAction {
 	 * Indicates that the top edges should be aligned.
 	 */
 	public static final String ID_ALIGN_TOP = GEFActionConstants.ALIGN_TOP;
-	private int alignment;
+	private final int alignment;
 
-	private List operationSet;
+	private List<EditPart> operationSet;
 
 	/**
 	 * @deprecated use AlignmentAction(IWorkbenchPart, int align)
 	 * @param editor the editor
 	 * @param align  the alignment ID
 	 */
+	@Deprecated
 	public AlignmentAction(IEditorPart editor, int align) {
 		this((IWorkbenchPart) editor, align);
 	}
@@ -112,7 +113,7 @@ public final class AlignmentAction extends SelectionAction {
 	 * @return the alignment rectangle
 	 */
 	protected Rectangle calculateAlignmentRectangle(Request request) {
-		List editparts = getOperationSet(request);
+		List<? extends EditPart> editparts = getOperationSet(request);
 		if (editparts == null || editparts.isEmpty()) {
 			return null;
 		}
@@ -139,17 +140,14 @@ public final class AlignmentAction extends SelectionAction {
 		AlignmentRequest request = new AlignmentRequest(RequestConstants.REQ_ALIGN);
 		request.setAlignmentRectangle(calculateAlignmentRectangle(request));
 		request.setAlignment(alignment);
-		List editparts = getOperationSet(request);
+		List<? extends EditPart> editparts = getOperationSet(request);
 		if (editparts.size() < 2) {
 			return null;
 		}
 
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel(getText());
-		for (Object editpart2 : editparts) {
-			EditPart editpart = (EditPart) editpart2;
-			command.add(editpart.getCommand(request));
-		}
+		editparts.forEach(ep -> command.add(ep.getCommand(request)));
 		return command;
 	}
 
@@ -158,7 +156,7 @@ public final class AlignmentAction extends SelectionAction {
 	 */
 	@Override
 	public void dispose() {
-		operationSet = Collections.EMPTY_LIST;
+		operationSet = Collections.emptyList();
 		super.dispose();
 	}
 
@@ -168,25 +166,25 @@ public final class AlignmentAction extends SelectionAction {
 	 * @param request the alignment request
 	 * @return the list of parts which will be aligned
 	 */
-	protected List getOperationSet(Request request) {
+	protected List<? extends EditPart> getOperationSet(Request request) {
 		if (operationSet != null) {
 			return operationSet;
 		}
 		List editparts = new ArrayList(getSelectedObjects());
 		if (editparts.isEmpty() || !(editparts.get(0) instanceof GraphicalEditPart)) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 		Object primary = editparts.get(editparts.size() - 1);
 		editparts = ToolUtilities.getSelectionWithoutDependants(editparts);
 		ToolUtilities.filterEditPartsUnderstanding(editparts, request);
 		if (editparts.size() < 2 || !editparts.contains(primary)) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 		EditPart parent = ((EditPart) editparts.get(0)).getParent();
 		for (int i = 1; i < editparts.size(); i++) {
 			EditPart part = (EditPart) editparts.get(i);
 			if (part.getParent() != parent) {
-				return Collections.EMPTY_LIST;
+				return Collections.emptyList();
 			}
 		}
 		return editparts;

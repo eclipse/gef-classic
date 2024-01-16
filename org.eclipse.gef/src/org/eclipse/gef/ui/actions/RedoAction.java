@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -61,8 +61,8 @@ public class RedoAction extends StackAction {
 	@Override
 	protected void init() {
 		super.init();
-		setToolTipText(MessageFormat.format(GEFMessages.RedoAction_Tooltip, new Object[] { "" }).trim()); //$NON-NLS-1$
-		setText(MessageFormat.format(GEFMessages.RedoAction_Label, new Object[] { "" }).trim() //$NON-NLS-1$
+		setToolTipText(MessageFormat.format(GEFMessages.RedoAction_Tooltip, "").trim()); //$NON-NLS-1$
+		setText(MessageFormat.format(GEFMessages.RedoAction_Label, "").trim() //$NON-NLS-1$
 		);
 		setId(ActionFactory.REDO.getId());
 
@@ -77,10 +77,8 @@ public class RedoAction extends StackAction {
 	@Override
 	protected void refresh() {
 		Command redoCmd = getCommandStack().getRedoCommand();
-		setToolTipText(MessageFormat
-				.format(GEFMessages.RedoAction_Tooltip, new Object[] { getLabelForCommand(redoCmd) }).trim());
-		setText(MessageFormat.format(GEFMessages.RedoAction_Label, new Object[] { getLabelForCommand(redoCmd) })
-				.trim());
+		setToolTipText(MessageFormat.format(GEFMessages.RedoAction_Tooltip, getLabelForCommand(redoCmd)).trim());
+		setText(MessageFormat.format(GEFMessages.RedoAction_Label, getLabelForCommand(redoCmd)).trim());
 		super.refresh();
 	}
 

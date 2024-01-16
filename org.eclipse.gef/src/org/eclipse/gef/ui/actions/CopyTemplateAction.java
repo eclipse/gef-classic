@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -82,19 +81,14 @@ public class CopyTemplateAction extends WorkbenchPartAction implements ISelectio
 	 */
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		ISelection s = event.getSelection();
-		if (!(s instanceof IStructuredSelection selection)) {
-			return;
-		}
-		template = null;
-		if (selection != null && selection.size() == 1) {
+		if (event.getSelection() instanceof IStructuredSelection selection && selection.size() == 1) {
+			template = null;
 			Object obj = selection.getFirstElement();
-			if (obj instanceof EditPart) {
-				Object model = ((EditPart) obj).getModel();
-				if (model instanceof CombinedTemplateCreationEntry) {
-					template = ((CombinedTemplateCreationEntry) model).getTemplate();
-				} else if (model instanceof PaletteTemplateEntry) {
-					template = ((PaletteTemplateEntry) model).getTemplate();
+			if (obj instanceof EditPart ep) {
+				if (ep.getModel() instanceof CombinedTemplateCreationEntry combinedCreationEntry) {
+					template = combinedCreationEntry.getTemplate();
+				} else if (ep.getModel() instanceof PaletteTemplateEntry paletteEntry) {
+					template = paletteEntry.getTemplate();
 				}
 			}
 		}

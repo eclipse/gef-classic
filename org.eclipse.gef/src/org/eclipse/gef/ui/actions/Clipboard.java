@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -31,8 +31,8 @@ public class Clipboard {
 
 	private static Clipboard defaultClipboard = new Clipboard();
 	private static final SimpleObjectTransfer TRANSFER = new SimpleObjectTransfer() {
-		private final String TYPE_NAME = "org.eclipse.gef.clipboard.transfer"; //$NON-NLS-1$
-		private final int TYPE_ID = registerType(TYPE_NAME);
+		private static final String TYPE_NAME = "org.eclipse.gef.clipboard.transfer"; //$NON-NLS-1$
+		private static final int TYPE_ID = registerType(TYPE_NAME);
 
 		@Override
 		protected int[] getTypeIds() {
@@ -62,6 +62,7 @@ public class Clipboard {
 	 *             created. Use {@link #getDefault()}. This method will be removed
 	 *             in future releases.
 	 */
+	@Deprecated
 	public Clipboard() {
 	}
 
@@ -70,6 +71,7 @@ public class Clipboard {
 	 *
 	 * @return contents of the clipboard
 	 */
+	@SuppressWarnings("static-method")
 	public Object getContents() {
 		org.eclipse.swt.dnd.Clipboard cb = new org.eclipse.swt.dnd.Clipboard(null);
 		Object contents = cb.getContents(TRANSFER);
@@ -84,6 +86,7 @@ public class Clipboard {
 	 *
 	 * @param contents the new contents
 	 */
+	@SuppressWarnings("static-method")
 	public void setContents(Object contents) {
 		org.eclipse.swt.dnd.Clipboard cb = new org.eclipse.swt.dnd.Clipboard(null);
 		cb.setContents(new Object[] { contents }, new Transfer[] { TRANSFER });

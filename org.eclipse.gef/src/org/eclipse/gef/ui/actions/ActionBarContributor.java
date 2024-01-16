@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -34,8 +34,8 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 * handlers. We need to hold on to these so that we can remove them as
 	 * PartListeners in dispose().
 	 */
-	private List retargetActions = new ArrayList();
-	private List globalActionKeys = new ArrayList();
+	private List<RetargetAction> retargetActions = new ArrayList<>();
+	private final List<String> globalActionKeys = new ArrayList<>();
 
 	/**
 	 * Adds the given action to the action registry.
@@ -105,10 +105,9 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 */
 	@Override
 	public void dispose() {
-		for (Object retargetAction : retargetActions) {
-			RetargetAction action = (RetargetAction) retargetAction;
-			getPage().removePartListener(action);
-			action.dispose();
+		for (RetargetAction retargetAction : retargetActions) {
+			getPage().removePartListener(retargetAction);
+			retargetAction.dispose();
 		}
 		registry.dispose();
 		retargetActions = null;
@@ -149,11 +148,10 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 */
 	@Override
 	public void setActiveEditor(IEditorPart editor) {
-		ActionRegistry registry = editor.getAdapter(ActionRegistry.class);
+		ActionRegistry editorRegistry = editor.getAdapter(ActionRegistry.class);
 		IActionBars bars = getActionBars();
-		for (Object globalActionKey : globalActionKeys) {
-			String id = (String) globalActionKey;
-			IAction handler = registry != null ? registry.getAction(id) : null;
+		for (String id : globalActionKeys) {
+			IAction handler = editorRegistry != null ? editorRegistry.getAction(id) : null;
 			bars.setGlobalActionHandler(id, handler);
 		}
 	}

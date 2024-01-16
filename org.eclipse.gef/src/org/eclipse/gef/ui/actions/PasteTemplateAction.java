@@ -92,6 +92,7 @@ public class PasteTemplateAction extends SelectionAction {
 	 *
 	 * @return the clipboard's contents
 	 */
+	@SuppressWarnings("static-method")
 	protected Object getClipboardContents() {
 		return Clipboard.getDefault().getContents();
 	}
@@ -106,11 +107,9 @@ public class PasteTemplateAction extends SelectionAction {
 	 * @param template the template Object; it will never be <code>null</code>
 	 * @return a Factory
 	 */
+	@SuppressWarnings("static-method")
 	protected CreationFactory getFactory(Object template) {
-		if (template instanceof CreationFactory) {
-			return (CreationFactory) template;
-		}
-		return null;
+		return (template instanceof CreationFactory cf) ? cf : null;
 	}
 
 	/**

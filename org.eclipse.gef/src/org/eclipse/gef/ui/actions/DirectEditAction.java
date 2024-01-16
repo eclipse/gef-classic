@@ -44,6 +44,7 @@ import org.eclipse.gef.internal.GEFMessages;
 public class DirectEditAction extends SelectionAction {
 
 	/** @deprecated */
+	@Deprecated
 	public static final String ID = GEFActionConstants.DIRECT_EDIT;
 
 	private Request directEditRequest = new Request(RequestConstants.REQ_DIRECT_EDIT);
@@ -74,8 +75,7 @@ public class DirectEditAction extends SelectionAction {
 	 */
 	@Override
 	protected boolean calculateEnabled() {
-		if (getSelectedObjects().size() == 1 && (getSelectedObjects().get(0) instanceof EditPart)) {
-			EditPart part = (EditPart) getSelectedObjects().get(0);
+		if (getSelectedObjects().size() == 1 && (getSelectedObjects().get(0) instanceof EditPart part)) {
 			return part.understandsRequest(getDirectEditRequest());
 		}
 		return false;
