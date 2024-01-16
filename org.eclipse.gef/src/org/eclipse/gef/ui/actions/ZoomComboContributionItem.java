@@ -44,10 +44,10 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 
 	private boolean forceSetText;
 	private Combo combo;
-	private String[] initStrings;
+	private final String[] initStrings;
 	private ToolItem toolitem;
 	private ZoomManager zoomManager;
-	private IPartService service;
+	private final IPartService service;
 	private IPartListener partListener;
 
 	/**
@@ -88,18 +88,22 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 
 			@Override
 			public void partBroughtToTop(IWorkbenchPart p) {
+				// does not need to be considered here
 			}
 
 			@Override
 			public void partClosed(IWorkbenchPart p) {
+				// does not need to be considered here
 			}
 
 			@Override
 			public void partDeactivated(IWorkbenchPart p) {
+				// does not need to be considered here
 			}
 
 			@Override
 			public void partOpened(IWorkbenchPart p) {
+				// does not need to be considered here
 			}
 		});
 	}
@@ -139,6 +143,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	 * @param control The control to compute width
 	 * @return int The width required
 	 */
+	@SuppressWarnings("static-method")
 	protected int computeWidth(Control control) {
 		return control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
 	}

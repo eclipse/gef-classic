@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -30,8 +30,7 @@ public class RedoRetargetAction extends LabelRetargetAction {
 	 * Constructs a new RedoRetargetAction with the default ID, label and image.
 	 */
 	public RedoRetargetAction() {
-		super(ActionFactory.REDO.getId(),
-				MessageFormat.format(GEFMessages.RedoAction_Label, new Object[] { "" }).trim()); //$NON-NLS-1$
+		super(ActionFactory.REDO.getId(), MessageFormat.format(GEFMessages.RedoAction_Label, "").trim()); //$NON-NLS-1$
 		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_REDO));
 		setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_REDO_DISABLED));

@@ -33,12 +33,14 @@ import org.eclipse.gef.requests.GroupRequest;
 public class DeleteAction extends SelectionAction {
 
 	/** @deprecated Use ActionFactory.DELETE.getId() instead. */
+	@Deprecated
 	public static final String ID = ActionFactory.DELETE.getId();
 
 	/**
 	 * @deprecated use DeleteAction(IWorkbenchPart part)
 	 * @param editor The editor this action will be associated with.
 	 */
+	@Deprecated
 	public DeleteAction(IEditorPart editor) {
 		this((IWorkbenchPart) editor);
 	}
@@ -50,6 +52,7 @@ public class DeleteAction extends SelectionAction {
 	 * @param editor The editor this action will be associated with.
 	 * @param label  The label to be displayed for this action.
 	 */
+	@Deprecated
 	public DeleteAction(IEditorPart editor, String label) {
 		this((IWorkbenchPart) editor);
 		setText(label);
@@ -87,6 +90,7 @@ public class DeleteAction extends SelectionAction {
 	 * @param objects The objects to be deleted.
 	 * @return The command to remove the selected objects.
 	 */
+	@SuppressWarnings("static-method")
 	public Command createDeleteCommand(List objects) {
 		if (objects.isEmpty()) {
 			return null;

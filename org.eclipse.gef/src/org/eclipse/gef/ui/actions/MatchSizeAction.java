@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -128,12 +128,13 @@ public class MatchSizeAction extends SelectionAction {
 	 *                             EditPart's Figure
 	 * @return the delta between the two heights to be used in the Request.
 	 */
+	@SuppressWarnings("static-method")
 	protected double getPreciseHeightDelta(PrecisionRectangle precisePartBounds,
 			PrecisionRectangle precisePrimaryBounds) {
 		return precisePrimaryBounds.preciseHeight() - precisePartBounds.preciseHeight();
 	}
 
-	private GraphicalEditPart getPrimarySelectionEditPart(List editParts) {
+	private static GraphicalEditPart getPrimarySelectionEditPart(List editParts) {
 		GraphicalEditPart part = null;
 		for (Object editPart : editParts) {
 			part = (GraphicalEditPart) editPart;
@@ -154,6 +155,7 @@ public class MatchSizeAction extends SelectionAction {
 	 *                             EditPart's Figure
 	 * @return the delta between the two widths to be used in the Request.
 	 */
+	@SuppressWarnings("static-method")
 	protected double getPreciseWidthDelta(PrecisionRectangle precisePartBounds,
 			PrecisionRectangle precisePrimaryBounds) {
 		return precisePrimaryBounds.preciseWidth() - precisePartBounds.preciseWidth();

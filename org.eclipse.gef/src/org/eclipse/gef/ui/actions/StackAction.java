@@ -37,16 +37,15 @@ public abstract class StackAction extends WorkbenchPartAction {
 	 * @param command the command
 	 * @return a non-<code>null</code> String
 	 */
+	@SuppressWarnings("static-method")
 	protected String getLabelForCommand(Command command) {
-		if (command == null)
-		 {
+		if (command == null) {
 			return "";//$NON-NLS-1$
 		}
 		if (command.getLabel() == null) {
 			return "";//$NON-NLS-1$
-		} else {
-			return command.getLabel();
 		}
+		return command.getLabel();
 	}
 
 }
