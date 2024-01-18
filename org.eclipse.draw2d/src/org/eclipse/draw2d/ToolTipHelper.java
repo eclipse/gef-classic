@@ -32,9 +32,11 @@ import org.eclipse.draw2d.geometry.Dimension;
  */
 public class ToolTipHelper extends PopUpHelper {
 
+	private static int defaultHideDelay = 5000;
+
 	private Timer timer;
 	private IFigure currentTipSource;
-	private int hideDelay = 5000;
+	private int hideDelay;
 
 	/**
 	 * Constructs a ToolTipHelper to be associated with Control <i>c</i>.
@@ -46,6 +48,7 @@ public class ToolTipHelper extends PopUpHelper {
 		super(c, SWT.TOOL | SWT.ON_TOP);
 		getShell().setBackground(ColorConstants.tooltipBackground);
 		getShell().setForeground(ColorConstants.tooltipForeground);
+		hideDelay = defaultHideDelay;
 	}
 
 	/*
@@ -80,6 +83,18 @@ public class ToolTipHelper extends PopUpHelper {
 	 */
 	public void setHideDelay(int hideDelay) {
 		this.hideDelay = hideDelay;
+	}
+
+	/**
+	 * Sets the default tooltip hide delay, which is the number in ms after which
+	 * the tooltip will disappear again if not overwritten using
+	 * {@link #setHideDelay(int)}.
+	 *
+	 * @param defaultHideDelay the delay in ms after which the tooltip is hidden
+	 * @since 3.15
+	 */
+	public static void setDefaultHideDelay(int defaultHideDelay) {
+		ToolTipHelper.defaultHideDelay = defaultHideDelay;
 	}
 
 	/**
