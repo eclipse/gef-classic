@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -103,12 +103,7 @@ public abstract class PaletteEntryFactory {
 			return false;
 		}
 
-		PaletteContainer parent;
-		if (selected instanceof PaletteContainer) {
-			parent = (PaletteContainer) selected;
-		} else {
-			parent = selected.getParent();
-		}
+		PaletteContainer parent = (selected instanceof PaletteContainer pc) ? pc : selected.getParent();
 
 		return parent.getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION
 				&& parent.acceptsType(determineTypeForNewEntry(selected));
@@ -125,9 +120,10 @@ public abstract class PaletteEntryFactory {
 	 * @param selected The selected entry
 	 * @return The parent of the new entry to be created
 	 */
+	@SuppressWarnings("static-method")
 	protected PaletteContainer determineContainerForNewEntry(PaletteEntry selected) {
-		if (selected instanceof PaletteContainer) {
-			return (PaletteContainer) selected;
+		if (selected instanceof PaletteContainer pc) {
+			return pc;
 		}
 		return selected.getParent();
 	}
@@ -143,6 +139,7 @@ public abstract class PaletteEntryFactory {
 	 * @param selected The selected entry
 	 * @return The type of the new entry to be created
 	 */
+	@SuppressWarnings("static-method")
 	protected Object determineTypeForNewEntry(PaletteEntry selected) {
 		return PaletteEntry.PALETTE_TYPE_UNKNOWN;
 	}
@@ -160,6 +157,7 @@ public abstract class PaletteEntryFactory {
 	 * @return the index at which the new entry should be added in the given
 	 *         container (-1 indicates add at the end)
 	 */
+	@SuppressWarnings("static-method")
 	protected int determineIndexForNewEntry(PaletteContainer c, PaletteEntry selected) {
 		return c.getChildren().indexOf(selected) + 1;
 	}

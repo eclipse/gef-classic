@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -48,6 +48,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	 * @param model          the PaletteDrawer
 	 * @return the newly created EditPart
 	 */
+	@SuppressWarnings("static-method")
 	protected EditPart createDrawerEditPart(EditPart parentEditPart, Object model) {
 		return new DrawerEditPart((PaletteDrawer) model);
 	}
@@ -63,12 +64,12 @@ public class PaletteEditPartFactory implements EditPartFactory {
 		if (model instanceof PaletteStack) {
 			return createStackEditPart(parentEditPart, model);
 		}
-		if (model instanceof PaletteContainer) {
-			Object type = ((PaletteContainer) model).getType();
+		if (model instanceof PaletteContainer pc) {
+			Object type = pc.getType();
 			if (PaletteDrawer.PALETTE_TYPE_DRAWER.equals(type)) {
 				return createDrawerEditPart(parentEditPart, model);
 			}
-			if (PaletteGroup.PALETTE_TYPE_GROUP.equals(type) || PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(type)) {
+			if (PaletteGroup.PALETTE_TYPE_GROUP.equals(type) || PaletteEntry.PALETTE_TYPE_UNKNOWN.equals(type)) {
 				return createGroupEditPart(parentEditPart, model);
 			}
 			if (PaletteToolbar.PALETTE_TYPE_TOOLBAR_GROUP.equals(type)) {
@@ -94,6 +95,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	 * @param model          the PaletteSeparator
 	 * @return the newly created EditPart
 	 */
+	@SuppressWarnings("static-method")
 	protected EditPart createSeparatorEditPart(EditPart parentEditPart, Object model) {
 		return new SeparatorEditPart((PaletteSeparator) model);
 	}
@@ -105,8 +107,9 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	 * @param model          the PaletteStack
 	 * @return the newly created EditPart
 	 */
+	@SuppressWarnings("static-method")
 	protected EditPart createStackEditPart(EditPart parentEditPart, Object model) {
-		if (parentEditPart instanceof PaletteEditPart && ((PaletteEditPart) parentEditPart).isToolbarItem()) {
+		if (parentEditPart instanceof PaletteEditPart palEP && palEP.isToolbarItem()) {
 			return new PaletteStackEditPart((PaletteStack) model);
 		}
 		return new PinnablePaletteStackEditPart((PaletteStack) model);
@@ -119,6 +122,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	 * @param model          the ToolEntry
 	 * @return the newly created EditPart
 	 */
+	@SuppressWarnings("static-method")
 	protected EditPart createEntryEditPart(EditPart parentEditPart, Object model) {
 		return new ToolEntryEditPart((PaletteEntry) model);
 	}
@@ -130,6 +134,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	 * @param model          the PaletteGroup
 	 * @return the newly created EditPart
 	 */
+	@SuppressWarnings("static-method")
 	protected EditPart createGroupEditPart(EditPart parentEditPart, Object model) {
 		return new GroupEditPart((PaletteContainer) model);
 	}
@@ -141,6 +146,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	 * @param model          the PaletteToolbar
 	 * @return the newly created EditPart
 	 */
+	@SuppressWarnings("static-method")
 	protected EditPart createToolbarEditPart(EditPart parentEditPart, Object model) {
 		return new ToolbarEditPart((PaletteToolbar) model);
 	}
@@ -152,6 +158,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	 * @param model          the PaletteRoot
 	 * @return the newly created EditPart
 	 */
+	@SuppressWarnings("static-method")
 	protected EditPart createMainPaletteEditPart(EditPart parentEditPart, Object model) {
 		return new SliderPaletteEditPart((PaletteRoot) model);
 	}
@@ -163,6 +170,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	 * @param model          the PaletteTemplateEntry
 	 * @return the newly created EditPart
 	 */
+	@SuppressWarnings("static-method")
 	protected EditPart createTemplateEditPart(EditPart parentEditPart, Object model) {
 		return new TemplateEditPart((PaletteTemplateEntry) model);
 	}

@@ -41,8 +41,8 @@ import org.eclipse.gef.examples.flow.model.SequentialActivity;
  */
 public final class FlowEditorPaletteFactory {
 
-	private static List<PaletteContainer> createCategories(PaletteRoot root) {
-		List<PaletteContainer> categories = new ArrayList<>(2);
+	private static List<PaletteEntry> createCategories(PaletteRoot root) {
+		List<PaletteEntry> categories = new ArrayList<>(2);
 		categories.add(createControlGroup(root));
 		categories.add(createComponentsDrawer());
 		return categories;

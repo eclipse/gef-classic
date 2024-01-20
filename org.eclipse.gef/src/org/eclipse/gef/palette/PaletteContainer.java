@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -32,7 +32,7 @@ public class PaletteContainer extends PaletteEntry {
 	/**
 	 * This container's contents
 	 */
-	protected List children = new ArrayList();
+	protected List<PaletteEntry> children = new ArrayList<>();
 
 	/**
 	 * Constructor
@@ -55,6 +55,7 @@ public class PaletteContainer extends PaletteEntry {
 	 * @param type the type being requested
 	 * @return true if this can be a child of this container
 	 */
+	@SuppressWarnings("static-method")
 	public boolean acceptsType(Object type) {
 		return true;
 	}
@@ -80,7 +81,7 @@ public class PaletteContainer extends PaletteEntry {
 					+ entry.getType());
 		}
 
-		List oldChildren = new ArrayList(getChildren());
+		List<PaletteEntry> oldChildren = new ArrayList<>(getChildren());
 
 		int actualIndex = index < 0 ? getChildren().size() : index;
 		getChildren().add(actualIndex, entry);
@@ -93,10 +94,10 @@ public class PaletteContainer extends PaletteEntry {
 	 *
 	 * @param list a list of PaletteEntry objects to add to this PaletteContainer
 	 */
-	public void addAll(List list) {
-		ArrayList oldChildren = new ArrayList(getChildren());
-		for (int i = 0; i < list.size(); i++) {
-			PaletteEntry child = (PaletteEntry) list.get(i);
+	public void addAll(List<PaletteEntry> list) {
+		List<PaletteEntry> oldChildren = new ArrayList<>(getChildren());
+		for (PaletteEntry element : list) {
+			PaletteEntry child = element;
 			if (!acceptsType(child.getType())) {
 				throw new IllegalArgumentException("This container can not contain this type of child: " //$NON-NLS-1$
 						+ child.getType());
@@ -118,7 +119,7 @@ public class PaletteContainer extends PaletteEntry {
 		// find the entry with the given id
 		boolean found = false;
 		for (int i = 0; i < getChildren().size(); i++) {
-			PaletteEntry currEntry = (PaletteEntry) getChildren().get(i);
+			PaletteEntry currEntry = getChildren().get(i);
 			if (currEntry.getId().equals(id)) {
 				found = true;
 			} else if (found && currEntry instanceof PaletteSeparator) {
@@ -126,18 +127,16 @@ public class PaletteContainer extends PaletteEntry {
 				return;
 			}
 		}
-		if (found) {
-			add(entry);
-		}
-		else {
+		if (!found) {
 			throw new IllegalArgumentException("Section not found: " + id); //$NON-NLS-1$
 		}
+		add(entry);
 	}
 
 	/**
 	 * @return the children of this container
 	 */
-	public List getChildren() {
+	public List<PaletteEntry> getChildren() {
 		return children;
 	}
 
@@ -153,10 +152,9 @@ public class PaletteContainer extends PaletteEntry {
 			// index
 			return false;
 		}
-		if (getChildren().get(index) instanceof PaletteContainer
+		if (getChildren().get(index) instanceof PaletteContainer container
 				&& getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 			// move it into a container if we have full permission
-			PaletteContainer container = (PaletteContainer) getChildren().get(index);
 			if (container.acceptsType(entry.getType())
 					&& container.getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 				remove(entry);
@@ -168,7 +166,7 @@ public class PaletteContainer extends PaletteEntry {
 				return true;
 			}
 		}
-		List oldChildren = new ArrayList(getChildren());
+		List<PaletteEntry> oldChildren = new ArrayList<>(getChildren());
 		getChildren().remove(entry);
 		getChildren().add(index, entry);
 		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, getChildren());
@@ -203,7 +201,7 @@ public class PaletteContainer extends PaletteEntry {
 	 * @param entry the PaletteEntry to remove
 	 */
 	public void remove(PaletteEntry entry) {
-		List oldChildren = new ArrayList(getChildren());
+		List<PaletteEntry> oldChildren = new ArrayList<>(getChildren());
 		if (getChildren().remove(entry)) {
 			entry.setParent(null);
 			listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, getChildren());
@@ -216,17 +214,11 @@ public class PaletteContainer extends PaletteEntry {
 	 *
 	 * @param list the list of children
 	 */
-	public void setChildren(List list) {
-		List oldChildren = children;
-		for (Object oldChild : oldChildren) {
-			PaletteEntry entry = (PaletteEntry) oldChild;
-			entry.setParent(null);
-		}
+	public void setChildren(List<PaletteEntry> list) {
+		List<PaletteEntry> oldChildren = children;
+		oldChildren.forEach(entry -> entry.setParent(null));
 		children = list;
-		for (Object child : children) {
-			PaletteEntry entry = (PaletteEntry) child;
-			entry.setParent(this);
-		}
+		children.forEach(entry -> entry.setParent(this));
 		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, getChildren());
 	}
 

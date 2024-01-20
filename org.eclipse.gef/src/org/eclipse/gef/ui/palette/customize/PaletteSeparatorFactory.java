@@ -38,8 +38,7 @@ public class PaletteSeparatorFactory extends PaletteEntryFactory {
 	 */
 	@Override
 	public PaletteEntry createNewEntry(Shell shell) {
-		PaletteSeparator separator = new PaletteSeparator();
-		return separator;
+		return new PaletteSeparator();
 	}
 
 	/**

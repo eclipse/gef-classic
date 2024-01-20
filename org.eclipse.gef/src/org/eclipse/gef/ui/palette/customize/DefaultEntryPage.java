@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,8 +13,6 @@
 package org.eclipse.gef.ui.palette.customize;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -63,6 +61,7 @@ public class DefaultEntryPage implements EntryPage {
 	 */
 	@Override
 	public final void apply() {
+		// nothing to do
 	}
 
 	/**
@@ -108,12 +107,7 @@ public class DefaultEntryPage implements EntryPage {
 				FigureUtilities.getFontMetrics(description.getFont()).getHeight() * 2).height;
 		description.setLayoutData(data);
 		if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
-			description.addModifyListener(new ModifyListener() {
-				@Override
-				public void modifyText(ModifyEvent e) {
-					handleDescriptionChanged(((Text) e.getSource()).getText());
-				}
-			});
+			description.addModifyListener(e -> handleDescriptionChanged(((Text) e.getSource()).getText()));
 		}
 		return description;
 	}
@@ -153,6 +147,7 @@ public class DefaultEntryPage implements EntryPage {
 	 * @param text  The Label's text
 	 * @return Label - The newly created Label
 	 */
+	@SuppressWarnings("static-method")
 	protected Label createLabel(Composite panel, int style, String text) {
 		Label label = new Label(panel, style);
 		label.setFont(panel.getFont());
@@ -169,12 +164,7 @@ public class DefaultEntryPage implements EntryPage {
 	protected Text createNameText(Composite panel) {
 		Text name = createText(panel, SWT.SINGLE | SWT.BORDER, entry.getLabel());
 		if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
-			name.addModifyListener(new ModifyListener() {
-				@Override
-				public void modifyText(ModifyEvent e) {
-					handleNameChanged(((Text) e.getSource()).getText());
-				}
-			});
+			name.addModifyListener(e -> handleNameChanged(((Text) e.getSource()).getText()));
 		}
 		name.setVisible(true);
 		return name;
@@ -228,6 +218,7 @@ public class DefaultEntryPage implements EntryPage {
 	 *
 	 * @return The message to be used when notifying listeners about a state change
 	 */
+	@SuppressWarnings("static-method")
 	protected String getMessage() {
 		return ""; //$NON-NLS-1$
 	}

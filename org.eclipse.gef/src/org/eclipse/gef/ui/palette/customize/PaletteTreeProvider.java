@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -69,7 +69,7 @@ class PaletteTreeProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof PaletteContainer pc) {
-			List children = pc.getChildren();
+			List<PaletteEntry> children = pc.getChildren();
 			if (!children.isEmpty()) {
 				return children.toArray();
 			}
@@ -123,11 +123,9 @@ class PaletteTreeProvider implements ITreeContentProvider {
 			viewer.refresh(entry);
 		} else if (property.equals(PaletteContainer.PROPERTY_CHILDREN)) {
 			viewer.refresh(entry);
-			List oldChildren = (List) evt.getOldValue();
-			for (Object oldChild : oldChildren) {
-				PaletteEntry child = (PaletteEntry) oldChild;
-				traverseModel(child, false);
-			}
+			@SuppressWarnings("unchecked")
+			List<PaletteEntry> oldChildren = (List<PaletteEntry>) evt.getOldValue();
+			oldChildren.forEach(child -> traverseModel(child, false));
 			traverseModel(entry, true);
 		}
 	}

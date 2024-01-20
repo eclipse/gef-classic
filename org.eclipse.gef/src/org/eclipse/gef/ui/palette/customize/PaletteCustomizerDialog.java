@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,20 +12,15 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.palette.customize;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -39,9 +34,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -55,8 +48,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
@@ -119,20 +110,22 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 */
 	protected static final int CLIENT_ID = 16;
 
-	private HashMap widgets = new HashMap();
-	private HashMap entriesToPages = new HashMap();
-	private List actions;
+	private final HashMap<Integer, Widget> widgets = new HashMap<>();
+	private final HashMap<PaletteEntry, EntryPage> entriesToPages = new HashMap<>();
+	private List<PaletteCustomizationAction> actions;
 
 	private String errorMessage;
 	private Tree tree;
-	private Composite titlePage, errorPage;
+	private Composite titlePage;
+	private Composite errorPage;
 	private PageBook propertiesPanelContainer;
 	// This PageBook is used to switch the title of the properties panel to
 	// either an error
 	// message or the currently active entry's label
 	private PageBook titleSwitcher;
-	private PaletteCustomizer customizer;
-	private EntryPage activePage, noSelectionPage;
+	private final PaletteCustomizer customizer;
+	private EntryPage activePage;
+	private EntryPage noSelectionPage;
 	private CLabel title;
 	private MultiLineLabel errorTitle;
 	private Image titleImage;
@@ -140,18 +133,13 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	private ILabelProvider treeViewerLabelProvider;
 	private PaletteEntry activeEntry;
 	private PaletteEntry initialSelection;
-	private PaletteRoot root;
-	private PropertyChangeListener titleUpdater = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			if (title == null) {
-				return;
-			}
-
+	private final PaletteRoot root;
+	private final PropertyChangeListener titleUpdater = evt -> {
+		if (title != null) {
 			title.setText(((PaletteEntry) evt.getSource()).getLabel());
 		}
 	};
-	private ISelectionChangedListener pageFlippingPreventer = new ISelectionChangedListener() {
+	private final ISelectionChangedListener pageFlippingPreventer = new ISelectionChangedListener() {
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
 			treeviewer.removePostSelectionChangedListener(this);
@@ -308,13 +296,10 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 		if (descriptor != null) {
 			button.setImage(new Image(parent.getDisplay(), descriptor.getImageData()));
-			button.addDisposeListener(new DisposeListener() {
-				@Override
-				public void widgetDisposed(DisposeEvent e) {
-					Image img = ((Button) e.getSource()).getImage();
-					if (img != null && !img.isDisposed()) {
-						img.dispose();
-					}
+			button.addDisposeListener(e -> {
+				Image img = ((Button) e.getSource()).getImage();
+				if (img != null && !img.isDisposed()) {
+					img.dispose();
 				}
 			});
 		}
@@ -379,9 +364,9 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			// otherwise the
 			// will scroll to show the last item, and then will select the first
 			// visible item.
-			List children = getPaletteRoot().getChildren();
+			List<PaletteEntry> children = getPaletteRoot().getChildren();
 			if (!children.isEmpty()) {
-				initialSelection = (PaletteEntry) children.get(0);
+				initialSelection = children.get(0);
 			}
 		}
 		if (initialSelection != null) {
@@ -446,13 +431,13 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * @return A List of {@link PaletteCustomizationAction
 	 *         PaletteCustomizationActions}
 	 */
-	protected List createOutlineActions() {
-		List actions = new ArrayList();
-		actions.add(new NewAction());
-		actions.add(new DeleteAction());
-		actions.add(new MoveDownAction());
-		actions.add(new MoveUpAction());
-		return actions;
+	protected List<PaletteCustomizationAction> createOutlineActions() {
+		List<PaletteCustomizationAction> newOutlineActions = new ArrayList<>();
+		newOutlineActions.add(new NewAction());
+		newOutlineActions.add(new DeleteAction());
+		newOutlineActions.add(new MoveDownAction());
+		newOutlineActions.add(new MoveUpAction());
+		return newOutlineActions;
 	}
 
 	/**
@@ -466,10 +451,8 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		// MenuManager for the tree's context menu
 		final MenuManager outlineMenu = new MenuManager();
 
-		List actions = getOutlineActions();
 		// Add all the actions to the context menu
-		for (Iterator iter = actions.iterator(); iter.hasNext();) {
-			IAction action = (IAction) iter.next();
+		for (IAction action : getOutlineActions()) {
 			if (action instanceof IMenuCreator) {
 				outlineMenu.add(new ActionContributionItem(action) {
 					@Override
@@ -486,12 +469,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			}
 		}
 
-		outlineMenu.addMenuListener(new IMenuListener() {
-			@Override
-			public void menuAboutToShow(IMenuManager manager) {
-				outlineMenu.update(true);
-			}
-		});
+		outlineMenu.addMenuListener(manager -> outlineMenu.update(true));
 
 		outlineMenu.createContextMenu(tree);
 		return outlineMenu.getMenu();
@@ -530,29 +508,23 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		composite.setLayout(new FillLayout());
 
 		// A paint listener that draws an etched border around the toolbar
-		composite.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(PaintEvent e) {
-				Rectangle area = composite.getBounds();
-				GC gc = e.gc;
-				gc.setLineStyle(SWT.LINE_SOLID);
-				gc.setForeground(ColorConstants.buttonDarker);
-				gc.drawLine(area.x, area.y, area.x + area.width - 2, area.y);
-				gc.drawLine(area.x, area.y, area.x, area.y + area.height - 1);
-				gc.drawLine(area.x + area.width - 2, area.y, area.x + area.width - 2, area.y + area.height - 1);
-				gc.setForeground(ColorConstants.buttonLightest);
-				gc.drawLine(area.x + 1, area.y + 1, area.x + area.width - 3, area.y + 1);
-				gc.drawLine(area.x + area.width - 1, area.y + 1, area.x + area.width - 1, area.y + area.height - 1);
-				gc.drawLine(area.x + 1, area.y + 1, area.x + 1, area.y + area.height - 1);
-			}
+		composite.addPaintListener(e -> {
+			Rectangle area = composite.getBounds();
+			GC gc = e.gc;
+			gc.setLineStyle(SWT.LINE_SOLID);
+			gc.setForeground(ColorConstants.buttonDarker);
+			gc.drawLine(area.x, area.y, area.x + area.width - 2, area.y);
+			gc.drawLine(area.x, area.y, area.x, area.y + area.height - 1);
+			gc.drawLine(area.x + area.width - 2, area.y, area.x + area.width - 2, area.y + area.height - 1);
+			gc.setForeground(ColorConstants.buttonLightest);
+			gc.drawLine(area.x + 1, area.y + 1, area.x + area.width - 3, area.y + 1);
+			gc.drawLine(area.x + area.width - 1, area.y + 1, area.x + area.width - 1, area.y + area.height - 1);
+			gc.drawLine(area.x + 1, area.y + 1, area.x + 1, area.y + area.height - 1);
 		});
 
 		// Create the ToolBarManager and add all the actions to it
 		ToolBarManager tbMgr = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
-		List actions = getOutlineActions();
-		for (Object action : actions) {
-			tbMgr.add(new ToolbarDropdownContributionItem(((IAction) action)));
-		}
+		getOutlineActions().forEach(action -> tbMgr.add(new ToolbarDropdownContributionItem(action)));
 		tbMgr.createControl(composite);
 		tbMgr.getControl().setFont(composite.getFont());
 
@@ -597,12 +569,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		treeViewerLabelProvider = new PaletteLabelProvider(viewer);
 		viewer.setLabelProvider(treeViewerLabelProvider);
 		viewer.setInput(getPaletteRoot());
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				handleOutlineSelectionChanged();
-			}
-		});
+		viewer.addSelectionChangedListener(event -> handleOutlineSelectionChanged());
 
 		return viewer;
 	}
@@ -639,12 +606,9 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.FILL_VERTICAL);
 		data.horizontalSpan = 2;
 		propertiesPanelContainer.setLayoutData(data);
-		propertiesPanelContainer.addListener(SWT.Resize, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				if (activePage != null) {
-					propertiesPanelContainer.layout();
-				}
+		propertiesPanelContainer.addListener(SWT.Resize, event -> {
+			if (activePage != null) {
+				propertiesPanelContainer.layout();
 			}
 		});
 
@@ -725,12 +689,9 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		if (titleImage == null) {
 			titleImage = new Image(composite.getDisplay(),
 					ImageDescriptor.createFromFile(Internal.class, "icons/customizer_dialog_title.gif").getImageData()); //$NON-NLS-1$
-			composite.addDisposeListener(new DisposeListener() {
-				@Override
-				public void widgetDisposed(DisposeEvent e) {
-					titleImage.dispose();
-					titleImage = null;
-				}
+			composite.addDisposeListener(e -> {
+				titleImage.dispose();
+				titleImage = null;
 			});
 		}
 
@@ -754,13 +715,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 */
 	@Override
 	protected Button getButton(int id) {
-		Button button = null;
-		Widget widget = getWidget(id);
-		if (widget instanceof Button) {
-			button = (Button) widget;
-		}
-
-		return button;
+		return (getWidget(id) instanceof Button button) ? button : null;
 	}
 
 	/**
@@ -787,7 +742,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		}
 
 		if (entriesToPages.containsKey(entry)) {
-			return (EntryPage) entriesToPages.get(entry);
+			return entriesToPages.get(entry);
 		}
 
 		EntryPage page = getCustomizer().getPropertiesPage(entry);
@@ -808,7 +763,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * @return the list of <code>PaletteCustomizationAction</code>s
 	 * @see #createOutlineActions()
 	 */
-	protected final List getOutlineActions() {
+	protected final List<PaletteCustomizationAction> getOutlineActions() {
 		if (actions == null) {
 			actions = createOutlineActions();
 		}
@@ -858,7 +813,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 *         otherwise
 	 */
 	protected Widget getWidget(int id) {
-		Widget widget = (Widget) widgets.get(Integer.valueOf(id));
+		Widget widget = widgets.get(Integer.valueOf(id));
 		if (widget == null) {
 			widget = super.getButton(id);
 		}
@@ -991,6 +946,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 					@Override
 					public void apply() {
+						// nothing to do here
 					}
 
 					@Override
@@ -1007,6 +963,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 					@Override
 					public void setPageContainer(EntryPageContainer pageContainer) {
+						// nothing to do here
 					}
 				};
 				noSelectionPage.createControl(propertiesPanelContainer, null);
@@ -1098,11 +1055,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * disabling them as necessary.
 	 */
 	protected void updateActions() {
-		List actions = getOutlineActions();
-		for (Iterator iter = actions.iterator(); iter.hasNext();) {
-			PaletteCustomizationAction action = (PaletteCustomizationAction) iter.next();
-			action.update();
-		}
+		getOutlineActions().forEach(PaletteCustomizationAction::update);
 	}
 
 	/*
@@ -1191,7 +1144,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * New Action
 	 */
 	private class NewAction extends PaletteCustomizationAction implements IMenuCreator {
-		private List factories;
+		private final List<FactoryWrapperAction> factories;
 		private MenuManager menuMgr;
 
 		public NewAction() {
@@ -1236,18 +1189,14 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		@Override
 		public Menu getMenu(Menu parent) {
 			Menu menu = new Menu(parent);
-			for (Iterator iter = factories.iterator(); iter.hasNext();) {
-				FactoryWrapperAction action = (FactoryWrapperAction) iter.next();
-				if (action.isEnabled()) {
-					addActionToMenu(menu, action);
-				}
-			}
-
+			factories.stream().filter(FactoryWrapperAction::isEnabled)
+					.forEach(action -> addActionToMenu(parent, action));
 			return menu;
 		}
 
 		@Override
 		public void run() {
+			// nothing to do for now
 		}
 
 		@Override
@@ -1258,8 +1207,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 				entry = getPaletteRoot();
 			}
 			// Enable or disable the FactoryWrapperActions
-			for (Iterator iter = factories.iterator(); iter.hasNext();) {
-				FactoryWrapperAction action = (FactoryWrapperAction) iter.next();
+			for (FactoryWrapperAction action : factories) {
 				action.setEnabled(action.canCreate(entry));
 				enabled = enabled || action.isEnabled();
 			}
@@ -1270,24 +1218,11 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 		protected void updateMenuManager(MenuManager manager) {
 			manager.removeAll();
-			for (Iterator iter = factories.iterator(); iter.hasNext();) {
-				FactoryWrapperAction action = (FactoryWrapperAction) iter.next();
-				if (action.isEnabled()) {
-					manager.add(action);
-				}
-			}
+			factories.stream().filter(FactoryWrapperAction::isEnabled).forEach(manager::add);
 		}
 
-		private List wrap(List list) {
-			List newList = new ArrayList();
-			if (list != null) {
-				for (Iterator iter = list.iterator(); iter.hasNext();) {
-					PaletteEntryFactory element = (PaletteEntryFactory) iter.next();
-					newList.add(new FactoryWrapperAction(element));
-				}
-			}
-
-			return newList;
+		private List<FactoryWrapperAction> wrap(List<PaletteEntryFactory> list) {
+			return (list != null) ? list.stream().map(FactoryWrapperAction::new).toList() : Collections.emptyList();
 		}
 	}
 
@@ -1295,7 +1230,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * FactoryWrapperAction class
 	 */
 	private class FactoryWrapperAction extends Action {
-		private PaletteEntryFactory factory;
+		private final PaletteEntryFactory factory;
 
 		public FactoryWrapperAction(PaletteEntryFactory factory) {
 			this.factory = factory;

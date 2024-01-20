@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -43,7 +43,7 @@ public class PaletteGroup extends PaletteContainer {
 	 * @param label    the label
 	 * @param children the list of PaletteEntry children
 	 */
-	public PaletteGroup(String label, List children) {
+	public PaletteGroup(String label, List<PaletteEntry> children) {
 		this(label);
 		addAll(children);
 	}

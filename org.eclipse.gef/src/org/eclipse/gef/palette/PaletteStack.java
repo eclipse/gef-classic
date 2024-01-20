@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -93,7 +93,7 @@ public class PaletteStack extends PaletteContainer {
 	 * @see org.eclipse.gef.palette.PaletteContainer#addAll(java.util.List)
 	 */
 	@Override
-	public void addAll(List list) {
+	public void addAll(List<PaletteEntry> list) {
 		super.addAll(list);
 		checkActiveEntry();
 		updateListeners(list, true);
@@ -109,11 +109,10 @@ public class PaletteStack extends PaletteContainer {
 			activeEntry = null;
 		}
 		if (activeEntry == null && !getChildren().isEmpty()) {
-			activeEntry = (PaletteEntry) getChildren().get(0);
+			activeEntry = getChildren().get(0);
 		}
 		if (activeEntry != null && !activeEntry.isVisible()) {
-			for (Object element : getChildren()) {
-				PaletteEntry child = (PaletteEntry) element;
+			for (PaletteEntry child : getChildren()) {
 				if (child.isVisible()) {
 					activeEntry = child;
 					break;
@@ -167,7 +166,7 @@ public class PaletteStack extends PaletteContainer {
 	}
 
 	@Override
-	public void setChildren(List list) {
+	public void setChildren(List<PaletteEntry> list) {
 		updateListeners(getChildren(), false);
 		super.setChildren(list);
 		updateListeners(getChildren(), true);
@@ -182,9 +181,8 @@ public class PaletteStack extends PaletteContainer {
 	 * @param add     true if the lister should be added; false if it should be
 	 *                removed
 	 */
-	private void updateListeners(Collection entries, boolean add) {
-		for (Object entry : entries) {
-			PaletteEntry child = (PaletteEntry) entry;
+	private void updateListeners(Collection<PaletteEntry> entries, boolean add) {
+		for (PaletteEntry child : entries) {
 			if (add) {
 				child.addPropertyChangeListener(childListener);
 			} else {

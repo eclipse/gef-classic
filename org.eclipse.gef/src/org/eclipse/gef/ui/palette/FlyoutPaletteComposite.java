@@ -69,6 +69,7 @@ import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.Graphics;
@@ -81,7 +82,6 @@ import org.eclipse.draw2d.Triangle;
 import org.eclipse.draw2d.geometry.Dimension;
 
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.InternalImages;
@@ -129,7 +129,8 @@ public class FlyoutPaletteComposite extends Composite {
 
 	private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	private final Composite paletteContainer;
-	private PaletteViewer pViewer, externalViewer;
+	private PaletteViewer pViewer;
+	private PaletteViewer externalViewer;
 	private IMemento capturedPaletteState;
 	private Control graphicalControl;
 	private final Composite sash;
@@ -149,18 +150,22 @@ public class FlyoutPaletteComposite extends Composite {
 	private int paletteState = STATE_HIDDEN;
 	private int paletteWidth = DEFAULT_PALETTE_SIZE;
 	private int minWidth = MIN_PALETTE_SIZE;
-	private int cachedSize = -1, cachedState = -1, cachedLocation = -1;
+	private int cachedSize = -1;
+	private int cachedState = -1;
+	private int cachedLocation = -1;
 	private int cachedTitleHeight = 24; // give it a default value
 
 	private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
 		@Override
 		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
-			handlePerspectiveActivated(page, perspective);
+			updateState(page);
 		}
 
 		@Override
 		public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, String changeId) {
-			handlePerspectiveChanged(page, perspective, changeId);
+			if (changeId.equals(IWorkbenchPage.CHANGE_VIEW_SHOW) || changeId.equals(IWorkbenchPage.CHANGE_VIEW_HIDE)) {
+				updateState(page);
+			}
 		}
 	};
 
@@ -210,10 +215,9 @@ public class FlyoutPaletteComposite extends Composite {
 				prefs.setPaletteWidth(paletteWidth);
 			} else if (property.equals(PROPERTY_DOCK_LOCATION)) {
 				prefs.setDockLocation(dock);
-			} else if (property.equals(PROPERTY_STATE)) {
-				if (paletteState == STATE_COLLAPSED || paletteState == STATE_PINNED_OPEN) {
-					prefs.setPaletteState(paletteState);
-				}
+			} else if (property.equals(PROPERTY_STATE)
+					&& (paletteState == STATE_COLLAPSED || paletteState == STATE_PINNED_OPEN)) {
+				prefs.setPaletteState(paletteState);
 			}
 		});
 	}
@@ -235,8 +239,7 @@ public class FlyoutPaletteComposite extends Composite {
 			viewer.saveState(memento);
 		} catch (RuntimeException re) {
 			// Bug 74843 -- See comment #1
-			// If there's a problem with saving the palette's state, it simply
-			// won't be
+			// If there's a problem with saving the palette's state, it simply won't be
 			// transferred to the new palette
 			memento = null;
 			/*
@@ -283,23 +286,12 @@ public class FlyoutPaletteComposite extends Composite {
 		if (pViewer != null) {
 			result = pViewer.getControl();
 		}
-		// Fix for bug 101703 -- pViewer.getControl().getParent() might be
-		// parented
-		// by paletteContainer
+		// Fix for bug 101703 -- pViewer.getControl().getParent() might be parented by
+		// paletteContainer
 		if (result != null && !result.isDisposed() && result.getParent() != paletteContainer) {
 			result = result.getParent();
 		}
 		return result;
-	}
-
-	private void handlePerspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
-		updateState(page);
-	}
-
-	private void handlePerspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, String changeId) {
-		if (changeId.equals(IWorkbenchPage.CHANGE_VIEW_SHOW) || changeId.equals(IWorkbenchPage.CHANGE_VIEW_HIDE)) {
-			updateState(page);
-		}
 	}
 
 	// Will return false if the ancestor or descendant is null
@@ -435,7 +427,7 @@ public class FlyoutPaletteComposite extends Composite {
 		});
 	}
 
-	private boolean restorePaletteState(PaletteViewer newPalette, IMemento state) {
+	private static boolean restorePaletteState(PaletteViewer newPalette, IMemento state) {
 		if (state != null) {
 			try {
 				return newPalette.restoreState(state);
@@ -534,26 +526,32 @@ public class FlyoutPaletteComposite extends Composite {
 		viewer.addDropTargetListener(new TransferDropTargetListener() {
 			@Override
 			public void dragEnter(DropTargetEvent event) {
+				// currently nothing to do here
 			}
 
 			@Override
 			public void dragLeave(DropTargetEvent event) {
+				// currently nothing to do here
 			}
 
 			@Override
 			public void dragOperationChanged(DropTargetEvent event) {
+				// currently nothing to do here
 			}
 
 			@Override
 			public void dragOver(DropTargetEvent event) {
+				// currently nothing to do here
 			}
 
 			@Override
 			public void drop(DropTargetEvent event) {
+				// currently nothing to do here
 			}
 
 			@Override
 			public void dropAccept(DropTargetEvent event) {
+				// currently nothing to do here
 			}
 
 			@Override
@@ -602,6 +600,17 @@ public class FlyoutPaletteComposite extends Composite {
 				capturedPaletteState = null;
 				minWidth = Math.max(pViewer.getControl().computeSize(0, 0).x, MIN_PALETTE_SIZE);
 			}
+			/*
+			 * Fix for Bug# 63901 When the flyout collapses, if the palette has focus, throw
+			 * focus to the graphical control. That way, hitting ESC will still deactivate
+			 * the current tool and load the default one. Note that focus is being set on
+			 * RulerComposite and not GraphicalViewer's control. But this is okay since
+			 * RulerComposite passes the focus on to its first child, which is the graphical
+			 * viewer's control.
+			 */
+			if (paletteState == STATE_COLLAPSED && pViewer.getControl().isFocusControl()) {
+				graphicalControl.setFocus();
+			}
 			break;
 		case STATE_HIDDEN:
 			if (pViewer == null) {
@@ -619,23 +628,15 @@ public class FlyoutPaletteComposite extends Composite {
 				pViewerCtrl.dispose();
 			}
 			pViewer = null;
-		}
-		/*
-		 * Fix for Bug# 63901 When the flyout collapses, if the palette has focus, throw
-		 * focus to the graphical control. That way, hitting ESC will still deactivate
-		 * the current tool and load the default one. Note that focus is being set on
-		 * RulerComposite and not GraphicalViewer's control. But this is okay since
-		 * RulerComposite passes the focus on to its first child, which is the graphical
-		 * viewer's control.
-		 */
-		if (paletteState == STATE_COLLAPSED && pViewer.getControl().isFocusControl()) {
-			graphicalControl.setFocus();
+			break;
+		default:
+			break;
 		}
 		layout(true);
 		listeners.firePropertyChange(PROPERTY_STATE, oldState, newState);
 	}
 
-	private void transferState(PaletteViewer src, PaletteViewer dest) {
+	private static void transferState(PaletteViewer src, PaletteViewer dest) {
 		restorePaletteState(dest, capturePaletteState(src));
 	}
 
@@ -808,7 +809,7 @@ public class FlyoutPaletteComposite extends Composite {
 		}
 
 		private void updateState() {
-			setCursor(isInState(STATE_EXPANDED | STATE_PINNED_OPEN) ? SharedCursors.SIZEWE : null);
+			setCursor(isInState(STATE_EXPANDED | STATE_PINNED_OPEN) ? Cursors.SIZEWE : null);
 		}
 
 		private class SashDragManager extends MouseAdapter implements MouseMoveListener {
@@ -886,7 +887,7 @@ public class FlyoutPaletteComposite extends Composite {
 			final Tracker tracker = new Tracker(FlyoutPaletteComposite.this, SWT.RIGHT | SWT.LEFT);
 			Rectangle[] rects = new Rectangle[1];
 			rects[0] = sash.getBounds();
-			tracker.setCursor(SharedCursors.SIZEE);
+			tracker.setCursor(Cursors.SIZEE);
 			tracker.setRectangles(rects);
 			if (tracker.open()) {
 				int deltaX = sash.getBounds().x - tracker.getRectangles()[0].x;
@@ -982,8 +983,7 @@ public class FlyoutPaletteComposite extends Composite {
 				if (switchDock) {
 					setDockLocation(PositionConstants.EAST_WEST & ~dock);
 				}
-				// mouse up is received by the tracker and by this listener, so
-				// we set dragging
+				// mouse up is received by the tracker and by this listener, so we set dragging
 				// to be false
 				dragging = false;
 			}
@@ -992,10 +992,12 @@ public class FlyoutPaletteComposite extends Composite {
 
 		@Override
 		public void mouseEnter(MouseEvent e) {
+			// currently nothing to do here
 		}
 
 		@Override
 		public void mouseExit(MouseEvent e) {
+			// currently nothing to do here
 		}
 
 		@Override
@@ -1023,7 +1025,8 @@ public class FlyoutPaletteComposite extends Composite {
 	}
 
 	private class PaletteComposite extends Composite {
-		protected Control button, title;
+		protected Control button;
+		protected Control title;
 
 		public PaletteComposite(Composite parent, int style) {
 			super(parent, style);
@@ -1032,10 +1035,8 @@ public class FlyoutPaletteComposite extends Composite {
 			listeners.addPropertyChangeListener(evt -> {
 				if (evt.getPropertyName().equals(PROPERTY_STATE)) {
 					updateState();
-				} else if (evt.getPropertyName().equals(PROPERTY_DOCK_LOCATION)) {
-					if (getVisible()) {
-						layout(true);
-					}
+				} else if (evt.getPropertyName().equals(PROPERTY_DOCK_LOCATION) && getVisible()) {
+					layout(true);
 				}
 			});
 
@@ -1182,7 +1183,7 @@ public class FlyoutPaletteComposite extends Composite {
 		}
 
 		private void init() {
-			setCursor(SharedCursors.ARROW);
+			setCursor(Cursors.ARROW);
 			lws = new LightweightSystem();
 			lws.setControl(this);
 			final ArrowButton b = new ArrowButton(getArrowDirection());
@@ -1325,7 +1326,7 @@ public class FlyoutPaletteComposite extends Composite {
 			lws = new LightweightSystem();
 			lws.setControl(this);
 			lws.setContents(contents);
-			setCursor(SharedCursors.SIZEALL);
+			setCursor(Cursors.SIZEALL);
 			FONT_MGR.register(this);
 			new TitleDragManager(this);
 			final MenuManager manager = new MenuManager();
@@ -1448,7 +1449,7 @@ public class FlyoutPaletteComposite extends Composite {
 			JFaceResources.getFontRegistry().removeListener(fontListener);
 		}
 
-		protected String getFontType() {
+		private static String getFontType() {
 			return JFaceResources.DIALOG_FONT;
 		}
 
@@ -1543,7 +1544,7 @@ public class FlyoutPaletteComposite extends Composite {
 
 		public static final int RIGHT = 2;
 
-		private final static Cursor cursors[] = new Cursor[3];
+		private static final Cursor[] cursors = new Cursor[3];
 
 		/**
 		 * Return the cursor for a drop scenario, as identified by code. Code must be

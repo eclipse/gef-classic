@@ -28,7 +28,7 @@ import org.eclipse.gef.EditDomain;
  */
 public class PaletteViewerProvider {
 
-	private EditDomain graphicalViewerEditDomain;
+	private final EditDomain graphicalViewerEditDomain;
 
 	/**
 	 * Constructor
@@ -47,6 +47,7 @@ public class PaletteViewerProvider {
 	 *
 	 * @param viewer the viewer that is to be configured
 	 */
+	@SuppressWarnings("static-method")
 	protected void configurePaletteViewer(PaletteViewer viewer) {
 		viewer.setContextMenu(new PaletteContextMenuProvider(viewer));
 	}

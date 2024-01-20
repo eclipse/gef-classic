@@ -13,6 +13,7 @@
 package org.eclipse.gef.ui.palette;
 
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.ui.IWorkbenchActionConstants;
 
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPart;
@@ -57,7 +58,7 @@ public class PaletteContextMenuProvider extends ContextMenuProvider {
 		EditPart selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
 		IPinnableEditPart pinnablePart = selectedPart.getAdapter(IPinnableEditPart.class);
 		if (pinnablePart != null && pinnablePart.canBePinned()) {
-			menu.appendToGroup(GEFActionConstants.MB_ADDITIONS, new PinDrawerAction(pinnablePart));
+			menu.appendToGroup(IWorkbenchActionConstants.MB_ADDITIONS, new PinDrawerAction(pinnablePart));
 		}
 		menu.appendToGroup(GEFActionConstants.GROUP_VIEW,
 				new LayoutAction(getPaletteViewer().getPaletteViewerPreferences()));

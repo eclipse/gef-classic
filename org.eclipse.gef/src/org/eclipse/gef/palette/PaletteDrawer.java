@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -51,6 +51,7 @@ public class PaletteDrawer extends PaletteContainer {
 	/**
 	 * @deprecated use {@link #INITIAL_STATE_PINNED_OPEN}
 	 */
+	@Deprecated
 	public static final int INITIAL_STATUS_PINNED_OPEN = 2;
 
 	private int initialState;
@@ -103,8 +104,7 @@ public class PaletteDrawer extends PaletteContainer {
 		if (drawerType != null) {
 			return drawerType;
 		}
-		for (Object child2 : children) {
-			PaletteEntry child = (PaletteEntry) child2;
+		for (PaletteEntry child : children) {
 			Object type = child.getType();
 			if (type != PaletteSeparator.PALETTE_TYPE_SEPARATOR) {
 				return type;
