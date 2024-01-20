@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,7 +13,6 @@
 package org.eclipse.gef.ui.palette;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Control;
@@ -35,8 +34,8 @@ import org.eclipse.gef.internal.Internal;
  */
 public class LayoutAction extends Action implements IMenuCreator {
 
-	private PaletteViewerPreferences prefs;
-	private List actions;
+	private final PaletteViewerPreferences prefs;
+	private final List<LayoutChangeAction> actions;
 
 	/**
 	 * Constructor
@@ -60,8 +59,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 		actions = createActions();
 		setMenuCreator(this);
 
-		if (hasIcon)
-		 {
+		if (hasIcon) {
 			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/palette_layout.gif")); //$NON-NLS-1$
 		}
 
@@ -75,6 +73,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 	 * @param parent The menu to which the given action is to be added
 	 * @param action The action that is to be added to the given menu
 	 */
+	@SuppressWarnings("static-method")
 	protected void addActionToMenu(Menu parent, IAction action) {
 		ActionContributionItem item = new ActionContributionItem(action);
 		item.fill(parent, -1);
@@ -84,11 +83,11 @@ public class LayoutAction extends Action implements IMenuCreator {
 	 * @return A list of actions that can switch to one of the supported layout
 	 *         modes
 	 */
-	protected List createActions() {
-		ArrayList list = new ArrayList();
+	protected List<LayoutChangeAction> createActions() {
+		List<LayoutChangeAction> list = new ArrayList<>();
 		int[] modes = prefs.getSupportedLayoutModes();
 
-		Action action;
+		LayoutChangeAction action;
 		for (int mode : modes) {
 			switch (mode) {
 			case PaletteViewerPreferences.LAYOUT_COLUMNS:
@@ -111,6 +110,8 @@ public class LayoutAction extends Action implements IMenuCreator {
 				action.setText(PaletteMessages.SETTINGS_DETAILS_VIEW_LABEL);
 				list.add(action);
 				break;
+			default:
+				break;
 			}
 		}
 		return list;
@@ -123,11 +124,11 @@ public class LayoutAction extends Action implements IMenuCreator {
 	 */
 	@Override
 	public void dispose() {
+		// nothing to do
 	}
 
 	private Menu fillMenu(Menu menu) {
-		for (Iterator iter = actions.iterator(); iter.hasNext();) {
-			LayoutChangeAction action = (LayoutChangeAction) iter.next();
+		for (LayoutChangeAction action : actions) {
 			action.setChecked(prefs.getLayoutSetting() == action.getLayoutSetting());
 			addActionToMenu(menu, action);
 		}
@@ -154,7 +155,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 	}
 
 	private class LayoutChangeAction extends Action {
-		private int value;
+		private final int value;
 
 		public LayoutChangeAction(int layoutSetting) {
 			value = layoutSetting;

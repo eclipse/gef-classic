@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -53,39 +53,43 @@ public class PaletteSettingsDialog extends Dialog {
 	private Control detailsPanel;
 	private Control iconsPanel;
 	private Control listPanel;
-	private final HashMap widgets = new HashMap();
+	private final HashMap<Integer, Widget> widgets = new HashMap<>();
 
 	/**
 	 * A HashMap to cache the various settings displayed in this dialog
 	 */
-	protected HashMap settings = new HashMap();
+	protected HashMap<String, Object> settings = new HashMap<>();
 
 	/**
 	 * HashMap keys used for caching the various settings displayed in this dialog.
 	 */
-	protected static final String CACHE_LAYOUT = "layout setting", //$NON-NLS-1$
-			CACHE_COLUMNS_ICON_SIZE = "columns - use large icons", //$NON-NLS-1$
-			CACHE_LIST_ICON_SIZE = "list - use large icons", //$NON-NLS-1$
-			CACHE_ICONS_ICON_SIZE = "icons only - use large icons", //$NON-NLS-1$
-			CACHE_DETAILS_ICON_SIZE = "details - use large icons", //$NON-NLS-1$
-			CACHE_FONT = "font", //$NON-NLS-1$
-			CACHE_COLLAPSE = "auto-collapse setting"; //$NON-NLS-1$
+	protected static final String CACHE_LAYOUT = "layout setting"; //$NON-NLS-1$
+	protected static final String CACHE_COLUMNS_ICON_SIZE = "columns - use large icons"; //$NON-NLS-1$
+	protected static final String CACHE_LIST_ICON_SIZE = "list - use large icons"; //$NON-NLS-1$
+	protected static final String CACHE_ICONS_ICON_SIZE = "icons only - use large icons"; //$NON-NLS-1$
+	protected static final String CACHE_DETAILS_ICON_SIZE = "details - use large icons"; //$NON-NLS-1$
+	protected static final String CACHE_FONT = "font"; //$NON-NLS-1$
+	protected static final String CACHE_COLLAPSE = "auto-collapse setting"; //$NON-NLS-1$
 
 	/**
 	 * The unique IDs for the various widgets. These IDs can be used to retrieve
 	 * these widgets from the internal map (using {@link #getWidget(int)}), or to
 	 * identify widgets in {@link #buttonPressed(int)}.
 	 */
-	protected static final int LAYOUT_COLUMNS_VIEW_ID = IDialogConstants.CLIENT_ID + 1,
-			LAYOUT_LIST_VIEW_ID = IDialogConstants.CLIENT_ID + 2, LAYOUT_ICONS_VIEW_ID = IDialogConstants.CLIENT_ID + 3,
-			LAYOUT_COLUMNS_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 4,
-			LAYOUT_LIST_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 5,
-			LAYOUT_ICONS_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 6,
-			LAYOUT_DETAILS_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 7,
-			COLLAPSE_NEVER_ID = IDialogConstants.CLIENT_ID + 8, COLLAPSE_ALWAYS_ID = IDialogConstants.CLIENT_ID + 9,
-			COLLAPSE_NEEDED_ID = IDialogConstants.CLIENT_ID + 10, APPLY_ID = IDialogConstants.CLIENT_ID + 11,
-			LAYOUT_DETAILS_VIEW_ID = IDialogConstants.CLIENT_ID + 12, FONT_CHANGE_ID = IDialogConstants.CLIENT_ID + 13,
-			DEFAULT_FONT_ID = IDialogConstants.CLIENT_ID + 14;
+	protected static final int LAYOUT_COLUMNS_VIEW_ID = IDialogConstants.CLIENT_ID + 1;
+	protected static final int LAYOUT_LIST_VIEW_ID = IDialogConstants.CLIENT_ID + 2;
+	protected static final int LAYOUT_ICONS_VIEW_ID = IDialogConstants.CLIENT_ID + 3;
+	protected static final int LAYOUT_COLUMNS_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 4;
+	protected static final int LAYOUT_LIST_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 5;
+	protected static final int LAYOUT_ICONS_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 6;
+	protected static final int LAYOUT_DETAILS_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 7;
+	protected static final int COLLAPSE_NEVER_ID = IDialogConstants.CLIENT_ID + 8;
+	protected static final int COLLAPSE_ALWAYS_ID = IDialogConstants.CLIENT_ID + 9;
+	protected static final int COLLAPSE_NEEDED_ID = IDialogConstants.CLIENT_ID + 10;
+	protected static final int APPLY_ID = IDialogConstants.CLIENT_ID + 11;
+	protected static final int LAYOUT_DETAILS_VIEW_ID = IDialogConstants.CLIENT_ID + 12;
+	protected static final int FONT_CHANGE_ID = IDialogConstants.CLIENT_ID + 13;
+	protected static final int DEFAULT_FONT_ID = IDialogConstants.CLIENT_ID + 14;
 
 	/**
 	 * Sub - classes that need to create their own unique IDs should do so by adding
@@ -302,9 +306,14 @@ public class PaletteSettingsDialog extends Dialog {
 			break;
 		case PaletteViewerPreferences.COLLAPSE_NEVER:
 			b = getButton(COLLAPSE_NEVER_ID);
-		}
-		b.setSelection(true);
+			break;
+		default:
+			break;
 
+		}
+		if (b != null) {
+			b.setSelection(true);
+		}
 		return composite;
 	}
 
@@ -514,6 +523,8 @@ public class PaletteSettingsDialog extends Dialog {
 						SWT.RADIO, null);
 				((GridData) b.getLayoutData()).horizontalIndent = 5;
 				break;
+			default:
+				break;
 			}
 		}
 
@@ -532,10 +543,13 @@ public class PaletteSettingsDialog extends Dialog {
 		case PaletteViewerPreferences.LAYOUT_DETAILS:
 			b = getButton(LAYOUT_DETAILS_VIEW_ID);
 			break;
+		default:
+			break;
 		}
-		b.setSelection(true);
-		b.setFocus();
-
+		if (b != null) {
+			b.setSelection(true);
+			b.setFocus();
+		}
 		return composite;
 	}
 
@@ -619,13 +633,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 */
 	@Override
 	protected Button getButton(int id) {
-		Button button = null;
-		Widget widget = getWidget(id);
-		if (widget instanceof Button) {
-			button = (Button) widget;
-		}
-
-		return button;
+		return (getWidget(id) instanceof Button button) ? button : null;
 	}
 
 	/**
@@ -637,7 +645,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 *         otherwise.
 	 */
 	protected Widget getWidget(int id) {
-		Widget widget = (Widget) widgets.get(Integer.valueOf(id));
+		Widget widget = widgets.get(Integer.valueOf(id));
 		if (widget == null) {
 			widget = super.getButton(id);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -59,7 +59,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	private static final Border TOOLTIP_BORDER = new MarginBorder(0, 2, 1, 0);
 	private static ImageCache globalImageCache;
 	private AccessibleEditPart acc;
-	private PropertyChangeListener childListener = evt -> {
+	private final PropertyChangeListener childListener = evt -> {
 		if (evt.getPropertyName().equals(PaletteEntry.PROPERTY_VISIBLE)) {
 			refreshChildren();
 		}
@@ -227,17 +227,16 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
 	@Override
-	public List getModelChildren() {
-		List modelChildren;
-		if (getModel() instanceof PaletteContainer palCont) {
-			modelChildren = new ArrayList(palCont.getChildren());
-		} else {
-			return Collections.EMPTY_LIST;
+	public List<PaletteEntry> getModelChildren() {
+		List<PaletteEntry> modelChildren;
+		if (!(getModel() instanceof PaletteContainer palCont)) {
+			return Collections.emptyList();
 		}
+		modelChildren = new ArrayList<>(palCont.getChildren());
 
 		PaletteEntry prevVisibleEntry = null;
-		for (Iterator iter = modelChildren.iterator(); iter.hasNext();) {
-			PaletteEntry entry = (PaletteEntry) iter.next();
+		for (Iterator<PaletteEntry> iter = modelChildren.iterator(); iter.hasNext();) {
+			PaletteEntry entry = iter.next();
 			if (!entry.isVisible()) {
 				// not visible
 				iter.remove();
@@ -277,6 +276,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * @return the model element.
 	 * @deprecated use getModel() instead
 	 */
+	@Deprecated
 	protected PaletteEntry getPaletteEntry() {
 		return getModel();
 	}
@@ -349,13 +349,14 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	/**
 	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
 		if (property.equals(PaletteContainer.PROPERTY_CHILDREN)) {
-			traverseChildren((List) evt.getOldValue(), false);
+			traverseChildren((List<PaletteEntry>) evt.getOldValue(), false);
 			refreshChildren();
-			traverseChildren((List) evt.getNewValue(), true);
+			traverseChildren((List<PaletteEntry>) evt.getNewValue(), true);
 		} else if (property.equals(PaletteEntry.PROPERTY_LABEL) || property.equals(PaletteEntry.PROPERTY_SMALL_ICON)
 				|| property.equals(PaletteEntry.PROPERTY_LARGE_ICON)
 				|| property.equals(PaletteEntry.PROPERTY_DESCRIPTION)) {
@@ -414,9 +415,8 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 		traverseChildren(container.getChildren(), add);
 	}
 
-	private void traverseChildren(List children, boolean add) {
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			PaletteEntry entry = (PaletteEntry) iter.next();
+	private void traverseChildren(List<PaletteEntry> children, boolean add) {
+		for (PaletteEntry entry : children) {
 			if (add) {
 				entry.addPropertyChangeListener(childListener);
 			} else {
@@ -430,13 +430,13 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 */
 	protected static class ImageCache {
 		/** Map from ImageDescriptor to Image */
-		private Map<ImageDescriptor, Image> images = new HashMap<>(11);
+		private final Map<ImageDescriptor, Image> images = new HashMap<>(11);
 
 		Image getImage(ImageDescriptor desc) {
 			if (desc == null) {
 				return null;
 			}
-			return images.computeIfAbsent(desc, d -> d.createImage());
+			return images.computeIfAbsent(desc, ImageDescriptor::createImage);
 		}
 
 		Image getMissingImage() {
@@ -444,7 +444,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 		}
 
 		void dispose() {
-			images.values().forEach(img -> img.dispose());
+			images.values().forEach(Image::dispose);
 			images.clear();
 		}
 	}

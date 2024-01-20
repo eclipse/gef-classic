@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2022 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,7 +13,6 @@
 package org.eclipse.gef.ui.palette.customize;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.swt.graphics.Color;
@@ -41,7 +40,7 @@ import org.eclipse.gef.palette.PaletteSeparator;
  */
 class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 
-	private Map imageCache = new HashMap();
+	private Map<ImageDescriptor, Image> imageCache = new HashMap<>();
 
 	/**
 	 * Constructor
@@ -60,12 +59,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	}
 
 	private Image getCachedImage(ImageDescriptor descriptor) {
-		Image image = (Image) imageCache.get(descriptor);
-		if (image == null) {
-			image = descriptor.createImage();
-			imageCache.put(descriptor, image);
-		}
-		return image;
+		return imageCache.computeIfAbsent(descriptor, dummy -> descriptor.createImage());
 	}
 
 	/**
@@ -114,6 +108,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	 */
 	@Override
 	public void addListener(ILabelProviderListener listener) {
+		// do nothing
 	}
 
 	/**
@@ -121,9 +116,8 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	 */
 	@Override
 	public void dispose() {
-		Iterator images = imageCache.values().iterator();
-		while (images.hasNext()) {
-			((Image) images.next()).dispose();
+		for (Image element : imageCache.values()) {
+			element.dispose();
 		}
 		imageCache = null;
 	}
@@ -144,6 +138,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	 */
 	@Override
 	public void removeListener(ILabelProviderListener listener) {
+		// do nothing
 	}
 
 }

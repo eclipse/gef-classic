@@ -22,7 +22,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
-import org.eclipse.gef.palette.CreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteDrawer;
@@ -73,7 +72,8 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		}
 		if (GroundOutput.class.isAssignableFrom(modelClass)) {
 			return GroundFigure.SIZE;
-		} else if (LiveOutput.class.equals(modelClass)) {
+		}
+		if (LiveOutput.class.equals(modelClass)) {
 			return LiveOutputFigure.SIZE;
 		}
 		return IFigure.MAX_DIMENSION;
@@ -94,7 +94,8 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		}
 		if (OrGate.class.equals(modelClass)) {
 			return OrGateFigure.SIZE;
-		} else if (XORGate.class.equals(modelClass)) {
+		}
+		if (XORGate.class.equals(modelClass)) {
 			return XOrGateFigure.SIZE;
 		} else if (GroundOutput.class.isAssignableFrom(modelClass)) {
 			return GroundFigure.SIZE;
@@ -104,8 +105,8 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		return IFigure.MIN_DIMENSION;
 	}
 
-	private static List<PaletteContainer> createCategories(PaletteRoot root) {
-		List<PaletteContainer> categories = new ArrayList<>(3);
+	private static List<PaletteEntry> createCategories(PaletteRoot root) {
+		List<PaletteEntry> categories = new ArrayList<>(3);
 
 		categories.add(createControlGroup(root));
 		categories.add(createComponentsDrawer());
@@ -120,7 +121,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		PaletteDrawer drawer = new PaletteDrawer(LogicMessages.LogicPlugin_Category_ComplexParts_Label,
 				ImageDescriptor.createFromFile(Circuit.class, "icons/can.gif")); //$NON-NLS-1$
 
-		List<CreationToolEntry> entries = new ArrayList<>();
+		List<PaletteEntry> entries = new ArrayList<>();
 
 		CombinedTemplateCreationEntry combined = new CombinedTemplateCreationEntry(
 				LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Label,

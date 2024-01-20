@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -515,13 +515,13 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 		if (widget != null) {
 
 			// determine what to do
-			boolean textChanged = propertyName == null || propertyName.equals(Action.TEXT);
-			boolean imageChanged = propertyName == null || propertyName.equals(Action.IMAGE);
-			boolean tooltipTextChanged = propertyName == null || propertyName.equals(Action.TOOL_TIP_TEXT);
-			boolean enableStateChanged = propertyName == null || propertyName.equals(Action.ENABLED)
+			boolean textChanged = propertyName == null || propertyName.equals(IAction.TEXT);
+			boolean imageChanged = propertyName == null || propertyName.equals(IAction.IMAGE);
+			boolean tooltipTextChanged = propertyName == null || propertyName.equals(IAction.TOOL_TIP_TEXT);
+			boolean enableStateChanged = propertyName == null || propertyName.equals(IAction.ENABLED)
 					|| propertyName.equals(IContributionManagerOverrides.P_ENABLED);
 			boolean checkChanged = (action.getStyle() == IAction.AS_CHECK_BOX)
-					&& (propertyName == null || propertyName.equals(Action.CHECKED));
+					&& (propertyName == null || propertyName.equals(IAction.CHECKED));
 
 			if (widget instanceof ToolItem ti) {
 				if (imageChanged) {
@@ -616,11 +616,9 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 			}
 
 			if (widget instanceof Button button) {
-				if (imageChanged) {
-					if (updateImages(false)) {
-						// don't update text if it has an image
-						textChanged = false;
-					}
+				if (imageChanged && updateImages(false)) {
+					// don't update text if it has an image
+					textChanged = false;
 				}
 				if (textChanged) {
 					String text = action.getText();

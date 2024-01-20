@@ -31,9 +31,10 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  */
 public class DrawerEntryPage extends DefaultEntryPage {
 
-	private Button openDrawerOption, pinDrawerOption;
+	private Button openDrawerOption;
+	private Button pinDrawerOption;
 
-	private boolean contains(Object[] array, Object obj) {
+	private static boolean contains(Object[] array, Object obj) {
 		for (int i = array.length - 1; i >= 0; i--) {
 			if (obj == array[i]) {
 				return true;

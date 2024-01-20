@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 IBM Corporation and others.
+ * Copyright (c) 2008, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -51,7 +51,7 @@ public class PaletteToolbar extends PaletteContainer {
 	 * @param label    the label
 	 * @param children the list of PaletteEntry children
 	 */
-	public PaletteToolbar(String label, List children) {
+	public PaletteToolbar(String label, List<PaletteEntry> children) {
 		this(label);
 		addAll(children);
 	}
