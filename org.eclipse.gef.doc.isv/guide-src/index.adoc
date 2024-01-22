@@ -1,0 +1,13 @@
+= org.eclipse.gef Programmer's Guide
+
+== GEF Programmer's Guide +
+org.eclipse.gef
+
+Draw2d focuses on efficient painting and layout of figures. The GEF
+plug-in adds an editing layer on top of Draw2d. The purpose of this
+framework is to:
+
+. Facilitate the display of some existing model graphically using draw2d
+figures
+. Support interactions from mouse, keyboard, or the Eclipse workbench
+. Provide common components related to the above

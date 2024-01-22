@@ -12,8 +12,13 @@
 	<artifactId>org.eclipse.zest.doc.isv</artifactId>
 	<version>1.8.600-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
+	<name>[bundle] GEF Classic Zest Developer Documentation</name>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>

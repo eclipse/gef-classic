@@ -46,19 +46,18 @@
 		<unzip src="${linkoffline-target}/org.eclipse.platform.doc.isv.jar" dest="${linkoffline-target}/org.eclipse.platform.doc.isv/" />	
 		<echo message="Done: ${linkoffline-target} contains unzipped offline link target." />
 
-		<property name="tmp.options.file" value="javadocOptions.tmp.txt" />
+		<property name="tmp.options.file" value="javadocOptions.txt" />
 		<echo message="Preparing temporary options file ${tmp.options.file}" />
-		<copy file="javadocOptions.txt" tofile="${tmp.options.file}" overwrite="true" />
-		<replaceregexp file="${basedir}/${tmp.options.file}" flags="g" match="(\r\n?|\n);" replace="${args.list.delimiter}" />
-		<replace file="${basedir}/${tmp.options.file}" token="@context@" value="${api.context.libs.classpath}" />
-		<replace file="${basedir}/${tmp.options.file}" token="@rt@" value="${bootclasspath}" />
-		<replace file="${basedir}/${tmp.options.file}" token="@args.list.delimiter@" value="${args.list.delimiter}" />
-		<replace file="${basedir}/${tmp.options.file}" token="@linkoffline-target@" value="${linkoffline-target}" />
+		<replaceregexp file="${project.build.directory}/${tmp.options.file}" flags="g" match="(\r\n?|\n);" replace="${args.list.delimiter}" />
+		<replace file="${project.build.directory}/${tmp.options.file}" token="@context@" value="${api.context.libs.classpath}" />
+		<replace file="${project.build.directory}/${tmp.options.file}" token="@rt@" value="${bootclasspath}" />
+		<replace file="${project.build.directory}/${tmp.options.file}" token="@args.list.delimiter@" value="${args.list.delimiter}" />
+		<replace file="${project.build.directory}/${tmp.options.file}" token="@linkoffline-target@" value="${linkoffline-target}" />
 		<echo message="Done." />
 
 		<echo message="Generating javadoc..." />
 		<exec dir="." executable="${javadoc}" output="doc.bin.log">
-			<arg line="@${basedir}/${tmp.options.file} -J-Xmx1000M" />
+			<arg line="@${project.build.directory}/${tmp.options.file} -J-Xmx1000M" />
 		</exec>
 		<echo message="Done." />
 	</target>

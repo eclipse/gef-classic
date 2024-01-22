@@ -20,6 +20,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<comparator.repo>https://download.eclipse.org/tools/gef/classic/releases/3.18.0</comparator.repo>
 		<surefire.timeout>300</surefire.timeout>
+		<asciidoctor-maven-plugin.version>2.2.4</asciidoctor-maven-plugin.version>
+		<jruby.version>9.4.5.0</jruby.version>
 	</properties>
 
 	<build>
@@ -118,7 +120,8 @@
 				<executions>
 					<execution>
 						<id>replace-tokens</id>
-						<phase>process-resources</phase>
+						<!-- Has to be executed before the "generate-resources" phase of the isv bundles -->
+						<phase>initialize</phase>
 						<configuration>
 							<target>
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties"
@@ -139,10 +142,10 @@
 								<if>
 									<available file="javadocOptions.txt" />
 									<then>
-										<copy file="javadocOptions.txt" tofile="javadocOptions.txt.backup"
+										<copy file="javadocOptions.txt" tofile="${project.build.directory}/javadocOptions.txt"
 											overwrite="true" />
 										<echo message="Creating backup of javadocOptions.txt" />
-										<replace file="javadocOptions.txt">
+										<replace file="${project.build.directory}/javadocOptions.txt">
 											<replacefilter token="@build@"
 												value="${unqualifiedVersion}.${buildQualifier}" />
 										</replace>
@@ -252,6 +255,41 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.asciidoctor</groupId>
+					<artifactId>asciidoctor-maven-plugin</artifactId>
+					<version>${asciidoctor-maven-plugin.version}</version>
+					<dependencies>
+						<!-- Required for source-code highlighting -->
+						<dependency>
+							<groupId>org.jruby</groupId>
+							<artifactId>jruby</artifactId>
+							<version>${jruby.version}</version>
+						</dependency>
+					</dependencies>
+					<configuration>
+						<doctype>book</doctype>
+						<attributes>
+							<stylesheet>${project.basedir}/book.css</stylesheet>
+							<nofooter/>
+						</attributes>
+						<sourceDirectory>guide-src</sourceDirectory>
+						<outputDirectory>guide</outputDirectory>
+					</configuration>
+					<executions>
+						<execution>
+							<id>asciidoc-to-html</id>
+							<phase>generate-resources</phase>
+							<goals>
+								<goal>process-asciidoc</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<profiles>

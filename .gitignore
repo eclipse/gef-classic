@@ -1,7 +1,6 @@
-/*/*/bin/
-/target
-/*/*/target
-/promotion/target
+**/bin/
+**/target/
+**/guide/*.html
 /gef-updates
 *~
 *.rej

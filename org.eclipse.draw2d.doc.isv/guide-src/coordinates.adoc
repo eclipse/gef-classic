@@ -1,0 +1,165 @@
+= Coordinate Systems
+
+== Coordinate Systems
+
+Draw2d provides a flexible coordinate with simple defaults. Different
+coordinate systems are required by certain optimizations and features
+provided by draw2d. A coordinate system is nothing more than an
+adjustment made to the Draw2d `Graphics` when painting children
+(coordinate systems have *no affect* on the way a figure paints itself).
+For example, it is possible to translate or zoom a Graphics. Both of
+these operations affect subsequent paint calls. To match what you see,
+operations like searching for a figure at a point must respect such
+coordinate changes.
+
+The default coordinate system is very simple, it is the same for every
+figure. So it doesn't matter if a figure is parented by another figure,
+you could compare the bounding boxes directly to each other. When the
+figures paint, they all paint in the same coordinates, and when hit
+testing is performed, the location is not modified when searching
+recursively through the children. This coordinate system is called
+_absolute_. If a figure uses absolute coordinates, when it moves, it
+must also translate its children by the same amount. "Absolute" may not
+be the best choice of words. "Inherited" is probably more accurate,
+since children are inheriting the parent's coordinate system, which
+could be anything.
+
+The opposite of absolute (or inherited) coordinates is _relative_ (also
+_local)_. In a relative coordinate system, the bounds of children are
+relative to the client area of their parent. The client area is the
+parent's bounds unless the parent has insets. When a figure with
+relative coordinates is moved, the children come along for free, without
+any changes to their bounds.
+
+=== Relative vs. Absolute
+
+The default coordinate system is absolute and is often left unchanged. A
+figure can easily change the coordinate system used for its children by
+overriding useLocalCoordinates(). The following table shows some
+possible reasons to choose either.
+
+[.custom]
+|===
+|*Task* |*Absolute Coordinates* |*Relative Coordinates*
+
+|Translate/move a figure |The figure and all of its children must be
+translated, which can be expensive in extreme cases. |Only the figure's
+bounds must be updated. The children move for free.
+
+|Hit-test / determine repaint regions |No adjustments are needed to
+coordinates. |Some simple math is used to adjust coordinates and
+rectangles to/from the coordinate system's origin.
+
+|Observe the figure's "location" on the Canvas |A FigureListener can be
+used if the entire parent chain is using absolute coordinates. But this
+guarantee is rare. |A FigureListener and CoordinateListener must be
+used. You must call translateToAsbolute on the figure being observed to
+get its canvas coordinates.
+
+|Determine the bounds of a parent based on the bounds of the children
+|Easy - after the children have been position, the parent can then
+figure out what its bounds should be. |Extremely hard, since updating
+the parent's bounds will cause the children to "move".
+|===
+
+=== Other Coordinate Systems
+
+Zooming and scrolling are done specially by the viewport and scalable
+layered pane figures provided with Draw2d. Scrolling a drawing is quite
+common, and it would be silly if doing this required updating the
+bounding rectangle of every figure in the drawing. As an optimization, a
+viewport can be constructed with _virtual_ scrolling, which is
+implemented by translating the coordinate system's origin.
+
+Zoom is done by scaling the coordinate system about the origin.
+
+=== Working with Absolute Coordinates
+
+The only types of locations which can be passed around and compared in a
+meaningful way are absolute. Here, "absolute" means the top-most parent
+(or root) figure's coordinate system. When Draw2d is used with SWT
+Canvas, an absolute location is the location on that Canvas. To get the
+location on the Display (i.e. the monitor), you would then have to use
+the utilities on SWT's Display to convert from a Control to the Display.
+
+To convert to and from absolute coordinates, utility methods are defined
+on IFigure. These methods will convert any object implementing the
+` Translatable` interface (historical note: zoom was not in the first
+draw2d release so translation was the only type of converting
+necessary).
+
+* link:../reference/api/org/eclipse/draw2d/IFigure.html#translateToAbsolute(org.eclipse.draw2d.geometry.Translatable)[*`translateToAbsolute(Translatable)`*] -
+converts from the receiver's coordinates to absolute coordinates.
+Note that the receiver's coordinate system is the system in which
+the receiver is placed, and *not* the coordinates in which it
+places its children.
+* link:../reference/api/org/eclipse/draw2d/IFigure.html#translateToRelative(org.eclipse.draw2d.geometry.Translatable)[*`translateToRelative(Translatable)`*] -
+converts from absolute coordinates to the receiver's coordinates.
+The above methods are implemented recursively by walking up the parent
+chain and performing the conversion for each parent. It's not easy to
+extend the behavior of a recursive method, so the actual conversions are
+factored out into separate methods.  These methods are also public and
+are called in some situations.
+* link:../reference/api/org/eclipse/draw2d/IFigure.html#translateToParent(org.eclipse.draw2d.geometry.Translatable)[*`translateToParent(Translatable)`*] -
+converts from the coordinate system defined by the receiver.  If the
+receiver uses absolute/inherited coordinates, no conversion is performed.
+* link:../reference/api/org/eclipse/draw2d/IFigure.html#translateFromParent(org.eclipse.draw2d.geometry.Translatable)[*`translateFromParent(Translatable)`*] -
+converts to the coordinate system defined by the receiver.
+
+==== Example: How to place a Shell on top of a Figure
+
+____
+Given a figure that is displayed on a Canvas, how do we popup a shell
+such that it is in exactly the same location on the screen?
+____
+
+==== Solution:
+
+____
+First, take the figure's location and convert it to the canvas. Note
+that the figure's bounds are returned by reference, so you need to
+create a copy to avoid modifying the original bounds. Next, create an
+SWT Rectangle and convert it to the display's coordinates:
+
+[source,java]
+----
+public void example1(Shell shell, Figure figure, Canvas canvas) {
+    org.eclipse.draw2d.geometry.Rectangle r;
+    org.eclipse.swt.graphics.Rectangle swtRect;
+
+    r = figure.getBounds().getCopy();
+    figure.translateToAbsolute(r);
+
+    swtRect = new org.eclipse.swt.graphics.Rectangle(r.x, r.y, r.width, r.height);
+    shell.setBounds(canvas.getDisplay().map(canvas, null, swtRect));
+}
+----
+____
+
+==== Example: How to Position a Connection using an Anchor
+
+____
+Given a ConnectionAnchor, what is the proper way to set the endpoint of
+a connection?
+____
+
+==== Solution:
+
+____
+A connection anchor is a helper object that returns a Point in absolute
+coordinates. The connection figure can be inside a figure such as a
+viewport or layer that has its own coordinate system. The following code
+makes the necessary conversion:
+
+[source,java]
+----
+public void example2(Connection connection, ConnectionAnchor sourceAnchor, Point reference) {
+    Point anchorpoint = sourceAnchor.getLocation(reference);
+    connection.translateToRelative(anchorpoint);
+
+    PointList list = connection.getPoints();
+    list.setPoint(anchorpoint, 0);
+    connection.setPoints(list);
+}
+----
+____
