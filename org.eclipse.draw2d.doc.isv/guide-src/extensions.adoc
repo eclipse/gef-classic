@@ -1,0 +1,91 @@
+= User-specific Extensions
+
+== BreakIterator
+
+The link:../reference/api/org/eclipse/draw2d/text/FlowUtilities.html[*`FlowUtilities`*]
+class uses the native _BreakIterator_ class to determine the boundaries between
+words. Clients may contribute their own implementation by contributing a custom
+_BreakIteratorProvider_ via SPI. If multiple services are contributed, the first
+one is chosen.
+
+=== Example: How to supply a custom BreakIterator
+
+____
+Users may want to use the break rules from e.g. ICU instead of the JDK rules.
+Because those classes don't share a common interface, the user has to extend
+the abstract _BreakIterator_ class and call the corresponding ICU method for
+abstract method that is overwritten.
+____
+
+=== Solution:
+
+____
+SPI uses the context-classloader to instantiate the custom implementation. In
+order to use this mechanism in OSGi with minimal complications, it is
+recommended to create this class within a Draw2D fragment. Also note that this
+class needs to be registered via _META-INF/services/java.text.spi.BreakIteratorProvider_
+
+[source,java]
+----
+public class CustomBreakIteratorProvider extends BreakIteratorProvider {
+	@Override
+	public BreakIterator getWordInstance(Locale locale) {
+		...
+	}
+
+	@Override
+	public BreakIterator getLineInstance(Locale locale) {
+		...
+	}
+
+	@Override
+	public BreakIterator getCharacterInstance(Locale locale) {
+		...
+	}
+
+	@Override
+	public BreakIterator getSentenceInstance(Locale locale) {
+		...
+	}
+
+	@Override
+	public Locale[] getAvailableLocales() {
+		...
+	}
+}
+----
+____
+
+== Bidi
+
+Similarly to the _BreakIterator_, the link:../reference/api/org/eclipse/draw2d/text/BidiProcessor.html[BidiProcessor]
+class uses the native _Bidi_ class to determine whether a text requires a Bidi
+analysis. Clients may contribute their own implementation by contributing a
+custom link:../reference/api/org/eclipse/draw2d/text/BidiProvider.html[BidiProvider]
+via SPI. If multiple services are contributed, the first one is chosen.
+
+=== Example: Custom BidiProvider Service
+
+____
+The Bidi algorithm provided by the JDK might not be sufficient to determine,
+whether a given text requires further analysis.
+____
+
+=== Solution:
+
+____
+SPI uses the context-classloader to instantiate the custom implementation. In
+order to use this mechanism in OSGi with minimal complications, it is
+recommended to create this class within a Draw2D fragment. Also note that this
+class needs to be registered via _META-INF/services/org.eclipse.draw2d.text.BidiProvider_.
+
+[source,java]
+----
+public class CustomBidiProvider implements BidiProvider {
+	@Override
+	public boolean requiresBidi(char[] text, int start, int limit) {
+		...
+	}
+}
+----
+____

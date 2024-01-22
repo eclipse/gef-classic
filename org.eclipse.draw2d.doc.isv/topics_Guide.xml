@@ -12,5 +12,6 @@
 		<topic label="Hit Testing" href="guide/hittest.html"/>
 		<topic label="Connections and Routing" href="guide/connections.html"/>
 		<topic label="Coordinate Systems" href="guide/coordinates.html"/>
+		<topic label="Custom Extensions" href="guide/extensions.html" />
 	</topic>
 </toc>
