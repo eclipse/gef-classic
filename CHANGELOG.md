@@ -3,9 +3,10 @@
 ## Draw2d
  - Removal of dependency to ICU. If required, downstream projects may contribute
    their own BreakIterator and Bidi implementations using the
-   `BreakIteratorProvider` and `BidiProvider`. See the documentation for
-   examples.
-
+   `BreakIteratorProvider` and `BidiProvider`.
+ - The selection, stack and property `Actions` of the `GraphicalEditor` can only
+   hold Strings and no longer support objects of type IAction.
+ 
 # GEF Classic 3.15.0 (Eclipse 2022-12)
 
 ## General
