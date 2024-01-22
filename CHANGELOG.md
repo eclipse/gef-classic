@@ -1,17 +1,26 @@
+# GEF Classic 3.19.0 (Eclipse 2024-03)
+
+## Draw2d
+ - Removal of dependency to ICU. If required, downstream projects may contribute
+   their own BreakIterator and Bidi implementations using the
+   `BreakIteratorProvider` and `BidiProvider`.
+ - The selection, stack and property `Actions` of the `GraphicalEditor` can only
+   hold Strings and no longer support objects of type IAction.
+ 
 # GEF Classic 3.15.0 (Eclipse 2022-12)
 
-##General
+## General
  - Code clean-up and reduced deprecated code usage
- - Rreduced dependencies to com.ibm.icu.text package
+ - Reduced dependencies to com.ibm.icu.text package
 
-##Draw2d
+## Draw2d
  - Common ZoomManager code from GEF and ZEST was moved to Draw2d to reduce code duplication
  - Introduction of ZoomScrollPolicies allowing to configure how the ZoomManager will scroll after zooming
  - New MouseLocationZoomScrollPolicy which maintains the content under the mouse during zooming
  - Fixed thumbnailing for Mac OS
  - Fixed unwanted drawing artifacts that could occur during drag operations
 
-##GEF
+## GEF
  - Clients can now provide their own marquee selection figure 
  - Fixed resizing from left or top: When reaching minimum size it moved the element
  

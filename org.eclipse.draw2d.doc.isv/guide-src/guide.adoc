@@ -13,3 +13,7 @@ coordinates, modifying the space occupied by a figure
 decorations, and routing
 * link:coordinates.html[Coordinate Systems] - absolute and relative
 coordinates, working with absolute coordinates
+* link:extensions.html[User-specific Extensions] - customize runtime
+behavior
+* link:migration-guide.html[Plug-in Migration Guide] - changes between
+individual releases

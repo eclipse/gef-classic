@@ -12,5 +12,8 @@
 		<topic label="Hit Testing" href="guide/hittest.html"/>
 		<topic label="Connections and Routing" href="guide/connections.html"/>
 		<topic label="Coordinate Systems" href="guide/coordinates.html"/>
+		<topic label="User-specific Extensions" href="guide/extensions.html" />
+  <topic href="guide/migration-guide.html" label="Plug-in Migration Guide">
+  </topic>
 	</topic>
 </toc>
