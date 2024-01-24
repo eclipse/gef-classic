@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.figures;
 
+import org.eclipse.draw2d.Container;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -30,8 +31,7 @@ public class SubgraphFigure extends Figure {
 	IFigure header;
 
 	public SubgraphFigure(IFigure header, IFigure footer) {
-		contents = new Figure();
-		contents.setLayoutManager(new DummyLayout());
+		contents = new Container(new DummyLayout());
 		add(contents);
 		add(this.header = header);
 		add(this.footer = footer);
