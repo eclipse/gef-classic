@@ -30,6 +30,7 @@ import org.eclipse.draw2d.ButtonModel;
 import org.eclipse.draw2d.ChangeListener;
 import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Container;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
@@ -161,7 +162,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	@Override
 	public IFigure createFigure() {
 
-		Figure figure = new Figure() {
+		Figure figure = new Container(new BorderLayout()) {
 			@Override
 			public Dimension getPreferredSize(int wHint, int hHint) {
 				if (PaletteStackEditPart.this.getChildren().isEmpty()) {
@@ -170,15 +171,13 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 				return super.getPreferredSize(wHint, hHint);
 			}
 		};
-		figure.setLayoutManager(new BorderLayout());
 
-		contentsFigure = new Figure();
 		StackLayout stackLayout = new StackLayout();
 		// make it so the stack layout does not allow the invisible figures to
 		// contribute
 		// to its bounds
 		stackLayout.setObserveVisibility(true);
-		contentsFigure.setLayoutManager(stackLayout);
+		contentsFigure = new Container(stackLayout);
 		figure.add(contentsFigure, BorderLayout.CENTER);
 
 		arrowFigure = new RolloverArrow();
