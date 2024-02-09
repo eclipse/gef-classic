@@ -733,5 +733,5 @@ Example :
     	...
     }
 
-This article continues. Continue reading at [GEF_Description2](https://github.com/eclipse/gef-classic/blob/wiki-migration/docs/GEF_Description2.md).
+This article continues. Continue reading at [GEF_Description2](https://github.com/eclipse/gef-classic/blob/master/docs/GEF_Description2.md).
 
