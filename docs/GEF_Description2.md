@@ -219,7 +219,7 @@ TODO : explaining the effect of a getCommand() method returning null and the di
 
 In my opinion this is the most complicated thing about GEF.
 
-There is an article called [standard user interactions in GEF](http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/gef-home/reference/Attic/interactions.html?rev=HEAD&content-type=text/html&cvsroot=Tools_Project) on the [http://www.eclipse.org/gef](http://www.eclipse.org/gef) site. You can find it on the Tools_Project cvs root, the path is gef-home/reference/interactions.html (from there, download the last version of the document). You can find it with google too but the images seem to be missing in the page google knows about. The most useful user interactions are described and which Tools, Requests and EditPolicies are involved in their achievement.
+There is an article called [standard user interactions in GEF](https://archive.eclipse.org/modeling/searchcvs/cvssrc/www-gef/www-gef/reference/interactions.htmlt). The most useful user interactions are described and which Tools, Requests and EditPolicies are involved in their achievement.
 
 Once you know which Tool to use to achieve some user interaction, on which Request to react and with which EditPolicy :
 
@@ -406,21 +406,6 @@ If you want to know in a more detailed way how GEF builds the EditParts for the 
 Note 1 : in the process of building the view, a connection will be discovered by GEF two times : one time at the source side, in the List returned by a getModelSourceConnection() method, and another time at the target side, in the List returned by a getModelTargetConnection(). An EditPart will be built for the connection the first time it is discovered and its source or target EditPart will be set. The second time the connection is discovered, the AbstractConnectionEditPart which is already built is found by using the \[model objects => EditParts\] map of the EditPartViewer and the remaining node EditPart (source or target) is set.
 
 Note 2 : When the source or target EditPart of an AbstractConnectionEditPart changes, if both the target EditPart and the source EditPart are non-null, the AbstractConnectionEditPart is refreshed. In addition to the classic refresh() method of AbstractGraphicalEditPart, the refresh() method of AbstractConnectionEditPart also refreshes the ConnectionAnchors of the Connection Figure. Additional things...
-
-Here is some additional information I wrote a few months ago about Requests, Handles and EditPolicies but it is in French and maybe not very reliable :
-
-requests, handles, editpolices (pdf version) requests, handles, editpolices (word version)
-
-Here is the first GEF plugin I wrote and it comes with a tutorial document, in French. I know there are mistakes in it and it probably doesn't work with the last version of GEF but I have no more time to read it and correct them, sorry. Here is a picture of the result and a link to download it :
-
-![Gef desc2 plugin.jpg](https://raw.githubusercontent.com/eclipse/gef-classic/master/docs/images/Gef_desc2_plugin.jpg)
-
-[Download plugin + project + pdf and word tutorial in french](/images/d/da/Gef_desc2_plugin1.zip "Gef desc2 plugin1.zip")
-
-If you find these documents worthy, feel free to translate them, I don't have the courage to do it by myself anymore. An english translated version (using Google Translator) can be found [here](http://www.jyotirmaya.com/GEF_Desc2_plugin1_English.zip).
-
-  
-I have written all this without worrying about the site organization, so if you see better places to put something, feel free to move it there. I will not complete the todos by myself because I don't have time and courage anymore to spend on this. If you know GEF already, feel free to correct what I have written.
 
 TODOS : maybe implementing a very very simple example with no editing capabilities (maybe Labels layed out by flow layout in a diagram) explaining how to build a simple outline view with a JFace treeviewer and then with a GEF tree viewer, explaining how to contribute to the property sheet, explaining how to contribute to retargatable actions like undo, redo, delete..., explaining how to add a context menu to the editor, explaining how to react to key events...
 
