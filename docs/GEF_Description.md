@@ -1,9 +1,7 @@
-
-
 GEF Description
 ===============
 
-Unofficial doc about GEF originally written by Régis Lemaigre.
+Documentatino about GEF originally written by Régis Lemaigre.
 
 Contents
 --------
@@ -117,7 +115,7 @@ The model - view - controller architecture (MVC) is a software architecture whic
 
 I think everybody has an intuitive view of what this term means so I will not try to define it more clearly. However, there are some requirements about the model that must be known :
 
-*   The model must hold all the interesting data you want to be edited by the user. All the data which will be made persistent at the closure of the editor should be in your model and only there. Even data defining the graphical properties of the view should be stored there (if you don't want to mix the graphical datas with the business datas, see the [Randy Hudson tutorial](http://www-128.ibm.com/developerworks/opensource/library/os-gef/) about GEF and other articles on this site).
+*   The model must hold all the interesting data you want to be edited by the user. All the data which will be made persistent at the closure of the editor should be in your model and only there. Even data defining the graphical properties of the view should be stored there (if you don't want to mix the graphical datas with the business datas, see the [Randy Hudson tutorial](https://www.aniszczyk.org/wp-content/uploads/2009/10/Create-an-Eclipse-based-application-using-the-Graphical-Editing-Framework.pdf) about GEF and other articles on this site).
 *   The model must know nothing about the view or about any other part of the editor. The model must not hold any references to its view. This is very important. The model is just a container of data which get modified during the editing process and signals its changes through a notification mechanism (this is explained in the following point).
 *   The model must implement some kind of notification mechanism : it must fire events when it changes and it must be possible to register listeners to catch these events. This is illustrated here :
 
@@ -735,5 +733,5 @@ Example :
     	...
     }
 
-This article continues. Continue reading at [GEF_Description2](/GEF_Description2 "GEF Description2").
+This article continues. Continue reading at [GEF_Description2](https://github.com/eclipse/gef-classic/blob/wiki-migration/docs/GEF_Description2.md).
 
