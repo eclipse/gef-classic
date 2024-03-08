@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -189,10 +189,8 @@ public class FigureCanvas extends Canvas {
 	 */
 	@Override
 	public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean changed) {
-		// TODO Still doesn't handle scrollbar cases, such as when a constrained
-		// width
-		// would require a horizontal scrollbar, and therefore additional
-		// height.
+		// TODO Still doesn't handle scrollbar cases, such as when a constrained width
+		// would require a horizontal scrollbar, and therefore additional height.
 		int borderSize = computeTrim(0, 0, 0, 0).x * -2;
 		if (wHint >= 0) {
 			wHint = Math.max(0, wHint - borderSize);
@@ -264,6 +262,7 @@ public class FigureCanvas extends Canvas {
 		getLightweightSystem().getUpdateManager().addUpdateListener(new UpdateListener() {
 			@Override
 			public void notifyPainting(Rectangle damage, java.util.Map<IFigure, Rectangle> dirtyRegions) {
+				// nothing to do for now
 			}
 
 			@Override
@@ -372,15 +371,9 @@ public class FigureCanvas extends Canvas {
 	 * @param y the y coordinate to scroll to
 	 */
 	public void scrollTo(int x, int y) {
-		x = verifyScrollBarOffset(getViewport().getHorizontalRangeModel(), x);
-		y = verifyScrollBarOffset(getViewport().getVerticalRangeModel(), y);
-		if (x == getViewport().getViewLocation().x) {
-			scrollToY(y);
-		} else if (y == getViewport().getViewLocation().y) {
-			scrollToX(x);
-		} else {
-			getViewport().setViewLocation(x, y);
-		}
+		int hOffset = verifyScrollBarOffset(getViewport().getHorizontalRangeModel(), x);
+		int vOffset = verifyScrollBarOffset(getViewport().getVerticalRangeModel(), y);
+		performScroll(hOffset, vOffset);
 	}
 
 	/**
@@ -395,12 +388,32 @@ public class FigureCanvas extends Canvas {
 		if (hOffset == hOffsetOld) {
 			return;
 		}
-		int dx = -hOffset + hOffsetOld;
+		performScroll(hOffset, getViewport().getViewLocation().y);
+	}
 
+	/**
+	 * Scrolls the contents vertically so that they are offset by
+	 * <code>vOffset</code>.
+	 *
+	 * @param vOffset the new vertical offset
+	 */
+	public void scrollToY(int vOffset) {
+		vOffset = verifyScrollBarOffset(getViewport().getVerticalRangeModel(), vOffset);
+		int vOffsetOld = getViewport().getViewLocation().y;
+		if (vOffset == vOffsetOld) {
+			return;
+		}
+		performScroll(getViewport().getViewLocation().x, vOffset);
+	}
+
+	private void performScroll(int hOffset, int vOffset) {
+		int dx = -hOffset + getViewport().getViewLocation().x;
+		int dy = -vOffset + getViewport().getViewLocation().y;
 		Rectangle clientArea = getViewport().getBounds().getShrinked(getViewport().getInsets());
-		Rectangle blit = clientArea.getResized(-Math.abs(dx), 0);
+		Rectangle blit = clientArea.getResized(-Math.abs(dx), -Math.abs(dy));
 		Rectangle expose = clientArea.getCopy();
 		Point dest = clientArea.getTopLeft();
+
 		expose.width = Math.abs(dx);
 		if (dx < 0) { // Moving left?
 			blit.translate(-dx, 0); // Move blit area to the right
@@ -410,6 +423,25 @@ public class FigureCanvas extends Canvas {
 			dest.x += dx; // Move expose area to the right
 		}
 
+		expose.height = Math.abs(dy);
+		if (dy < 0) { // Moving up?
+			blit.translate(0, -dy); // Move blit area down
+			expose.y = dest.y + blit.height; // Move expose area down
+		} else {
+			// Moving down
+			dest.y += dy;
+		}
+
+		scrollChildren(dx, dy, blit, dest);
+
+		getViewport().setIgnoreScroll(true);
+		getViewport().setHorizontalLocation(hOffset);
+		getViewport().setVerticalLocation(vOffset);
+		getViewport().setIgnoreScroll(false);
+		redraw(expose.x, expose.y, expose.width, expose.height, true);
+	}
+
+	private void scrollChildren(int dx, int dy, Rectangle blit, Point dest) {
 		// fix for bug 41111
 		Control[] children = getChildren();
 		boolean[] manualMove = new boolean[children.length];
@@ -425,66 +457,9 @@ public class FigureCanvas extends Canvas {
 			}
 			org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
 			if (manualMove[i]) {
-				children[i].setBounds(bounds.x + dx, bounds.y, bounds.width, bounds.height);
+				children[i].setBounds(bounds.x + dx, bounds.y + dy, bounds.width, bounds.height);
 			}
 		}
-
-		getViewport().setIgnoreScroll(true);
-		getViewport().setHorizontalLocation(hOffset);
-		getViewport().setIgnoreScroll(false);
-		redraw(expose.x, expose.y, expose.width, expose.height, true);
-	}
-
-	/**
-	 * Scrolls the contents vertically so that they are offset by
-	 * <code>vOffset</code>.
-	 *
-	 * @param vOffset the new vertical offset
-	 */
-	public void scrollToY(int vOffset) {
-		vOffset = verifyScrollBarOffset(getViewport().getVerticalRangeModel(), vOffset);
-		int vOffsetOld = getViewport().getViewLocation().y;
-		if (vOffset == vOffsetOld) {
-			return;
-		}
-		int dy = -vOffset + vOffsetOld;
-
-		Rectangle clientArea = getViewport().getBounds().getShrinked(getViewport().getInsets());
-		Rectangle blit = clientArea.getResized(0, -Math.abs(dy));
-		Rectangle expose = clientArea.getCopy();
-		Point dest = clientArea.getTopLeft();
-		expose.height = Math.abs(dy);
-		if (dy < 0) { // Moving up?
-			blit.translate(0, -dy); // Move blit area down
-			expose.y = dest.y + blit.height; // Move expose area down
-		} else {
-			// Moving down
-			dest.y += dy;
-		}
-
-		// fix for bug 41111
-		Control[] children = getChildren();
-		boolean[] manualMove = new boolean[children.length];
-		for (int i = 0; i < children.length; i++) {
-			org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
-			manualMove[i] = blit.height <= 0 || bounds.x > blit.x + blit.width || bounds.y > blit.y + blit.height
-					|| bounds.x + bounds.width < blit.x || bounds.y + bounds.height < blit.y;
-		}
-		scroll(dest.x, dest.y, blit.x, blit.y, blit.width, blit.height, true);
-		for (int i = 0; i < children.length; i++) {
-			if (children[i].isDisposed()) {
-				continue;
-			}
-			org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
-			if (manualMove[i]) {
-				children[i].setBounds(bounds.x, bounds.y + dy, bounds.width, bounds.height);
-			}
-		}
-
-		getViewport().setIgnoreScroll(true);
-		getViewport().setVerticalLocation(vOffset);
-		getViewport().setIgnoreScroll(false);
-		redraw(expose.x, expose.y, expose.width, expose.height, true);
 	}
 
 	/**
