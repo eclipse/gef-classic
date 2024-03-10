@@ -16,6 +16,7 @@ package org.eclipse.gef.util;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
+import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 
@@ -57,8 +58,9 @@ public final class EditPartUtilities {
 	 *
 	 * @return the transitive nested connection edit parts
 	 */
-	public static HashSet getAllNestedConnectionEditParts(GraphicalEditPart graphicalEditPart) {
-		HashSet transitiveConnections = new HashSet();
+	public static HashSet<? extends ConnectionEditPart> getAllNestedConnectionEditParts(
+			GraphicalEditPart graphicalEditPart) {
+		HashSet<ConnectionEditPart> transitiveConnections = new HashSet<>();
 		getAllChildren(graphicalEditPart).forEach(child -> {
 			transitiveConnections.addAll(child.getSourceConnections());
 			transitiveConnections.addAll(child.getTargetConnections());
@@ -75,8 +77,9 @@ public final class EditPartUtilities {
 	 * @return the set of child <code>ConnectionEditPart</code>s for the given
 	 *         <code>GraphicalEditPart</code>
 	 */
-	public static HashSet getNestedConnectionEditParts(GraphicalEditPart graphicalEditPart) {
-		HashSet edges = new HashSet();
+	public static HashSet<? extends ConnectionEditPart> getNestedConnectionEditParts(
+			GraphicalEditPart graphicalEditPart) {
+		HashSet<ConnectionEditPart> edges = new HashSet<>();
 		graphicalEditPart.getChildren().forEach(child -> {
 			edges.addAll(child.getSourceConnections());
 			edges.addAll(child.getTargetConnections());

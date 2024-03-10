@@ -139,14 +139,9 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * Creates the connection layer feedback figures.
 	 */
 	protected void createConnectionFeedbackFigures() {
-		HashSet transitiveNestedConnections = EditPartUtilities.getAllNestedConnectionEditParts(getHost());
-
-		for (Object connection : transitiveNestedConnections) {
-			if (connection instanceof ConnectionEditPart) {
-				createConnectionFeedbackFigure((ConnectionEditPart) connection);
-			}
-
-		}
+		HashSet<? extends ConnectionEditPart> transitiveNestedConnections = EditPartUtilities
+				.getAllNestedConnectionEditParts(getHost());
+		transitiveNestedConnections.forEach(this::createConnectionFeedbackFigure);
 	}
 
 	/**
