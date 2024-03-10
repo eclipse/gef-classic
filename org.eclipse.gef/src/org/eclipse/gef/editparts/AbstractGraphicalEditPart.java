@@ -14,9 +14,9 @@ package org.eclipse.gef.editparts;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
@@ -58,12 +58,12 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * List of <i>source</i> ConnectionEditParts
 	 */
-	protected List sourceConnections;
+	protected List<ConnectionEditPart> sourceConnections;
 
 	/**
 	 * List of <i>source</i> ConnectionEditParts
 	 */
-	protected List targetConnections;
+	protected List<ConnectionEditPart> targetConnections;
 
 	/**
 	 * A default implementation of {@link AccessibleEditPart}. Subclasses can extend
@@ -88,8 +88,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 			ArrayList<Integer> children = new ArrayList<>(AbstractGraphicalEditPart.this.getChildren().size());
 			for (EditPart part : AbstractGraphicalEditPart.this.getChildren()) {
 				AccessibleEditPart access = part.getAdapter(AccessibleEditPart.class);
-				if (access == null)
-				 {
+				if (access == null) {
 					return; // fail if any children aren't accessible.
 				}
 				children.add(Integer.valueOf(access.getAccessibleID()));
@@ -198,10 +197,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	@Override
 	public void activate() {
 		super.activate();
-		List l = getSourceConnections();
-		for (Object element : l) {
-			((EditPart) element).activate();
-		}
+		getSourceConnections().forEach(ConnectionEditPart::activate);
 	}
 
 	/**
@@ -229,15 +225,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	@Override
 	public void addNotify() {
 		super.addNotify();
-		List conns;
-		conns = getSourceConnections();
-		for (Object conn : conns) {
-			((ConnectionEditPart) conn).setSource(this);
-		}
-		conns = getTargetConnections();
-		for (Object conn : conns) {
-			((ConnectionEditPart) conn).setTarget(this);
-		}
+		getSourceConnections().forEach(conn -> conn.setSource(this));
+		getTargetConnections().forEach(conn -> conn.setTarget(this));
 	}
 
 	/**
@@ -353,11 +342,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	@Override
 	public void deactivate() {
-		List l = getSourceConnections();
-		for (Object element : l) {
-			((EditPart) element).deactivate();
-		}
-
+		getSourceConnections().forEach(ConnectionEditPart::deactivate);
 		super.deactivate();
 	}
 
@@ -537,9 +522,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @see org.eclipse.gef.GraphicalEditPart#getSourceConnections()
 	 */
 	@Override
-	public List getSourceConnections() {
+	public List<? extends ConnectionEditPart> getSourceConnections() {
 		if (sourceConnections == null) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 		return sourceConnections;
 	}
@@ -548,9 +533,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @see org.eclipse.gef.GraphicalEditPart#getTargetConnections()
 	 */
 	@Override
-	public List getTargetConnections() {
+	public List<? extends ConnectionEditPart> getTargetConnections() {
 		if (targetConnections == null) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 		return targetConnections;
 	}
@@ -577,7 +562,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	protected void primAddSourceConnection(ConnectionEditPart connection, int index) {
 		if (sourceConnections == null) {
-			sourceConnections = new ArrayList();
+			sourceConnections = new ArrayList<>();
 		}
 		sourceConnections.add(index, connection);
 	}
@@ -593,7 +578,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	protected void primAddTargetConnection(ConnectionEditPart connection, int index) {
 		if (targetConnections == null) {
-			targetConnections = new ArrayList();
+			targetConnections = new ArrayList<>();
 		}
 		targetConnections.add(index, connection);
 	}
@@ -654,50 +639,38 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	protected void refreshSourceConnections() {
 		int i;
-		ConnectionEditPart editPart;
-		Object model;
 
-		List sourceConnections = getSourceConnections();
-		int size = sourceConnections.size();
-		Map modelToEditPart = Collections.EMPTY_MAP;
-		if (size > 0) {
-			modelToEditPart = new HashMap(size);
-			for (i = 0; i < size; i++) {
-				editPart = (ConnectionEditPart) sourceConnections.get(i);
-				modelToEditPart.put(editPart.getModel(), editPart);
-			}
-		}
+		List<? extends ConnectionEditPart> sourceConns = getSourceConnections();
+		Map<Object, ConnectionEditPart> modelToEditPart = sourceConns.stream()
+				.collect(Collectors.toMap(ConnectionEditPart::getModel, cEP -> cEP));
 
-		List modelObjects = getModelSourceConnections();
+		List<? extends Object> modelObjects = getModelSourceConnections();
 		if (modelObjects == null) {
-			modelObjects = Collections.EMPTY_LIST;
+			modelObjects = Collections.emptyList();
 		}
 		for (i = 0; i < modelObjects.size(); i++) {
-			model = modelObjects.get(i);
+			Object model = modelObjects.get(i);
 
-			if (i < sourceConnections.size() && ((EditPart) sourceConnections.get(i)).getModel() == model) {
+			if (i < sourceConns.size() && sourceConns.get(i).getModel() == model) {
 				continue;
 			}
 
-			editPart = (ConnectionEditPart) modelToEditPart.get(model);
+			final ConnectionEditPart editPart = modelToEditPart.get(model);
 			if (editPart != null) {
 				reorderSourceConnection(editPart, i);
 			} else {
-				editPart = createOrFindConnection(model);
-				addSourceConnection(editPart, i);
+				addSourceConnection(createOrFindConnection(model), i);
 			}
 		}
 
 		// Remove the remaining EditParts
-		size = sourceConnections.size();
+		int size = sourceConns.size();
 		if (i < size) {
-			List trash = new ArrayList(size - i);
+			List<ConnectionEditPart> trash = new ArrayList<>(size - i);
 			for (; i < size; i++) {
-				trash.add(sourceConnections.get(i));
+				trash.add(sourceConns.get(i));
 			}
-			for (i = 0; i < trash.size(); i++) {
-				removeSourceConnection((ConnectionEditPart) trash.get(i));
-			}
+			trash.forEach(this::removeSourceConnection);
 		}
 	}
 
@@ -718,50 +691,38 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	protected void refreshTargetConnections() {
 		int i;
-		ConnectionEditPart editPart;
-		Object model;
 
-		List targetConnections = getTargetConnections();
-		int size = targetConnections.size();
-		Map modelToEditPart = Collections.EMPTY_MAP;
-		if (size > 0) {
-			modelToEditPart = new HashMap(size);
-			for (i = 0; i < size; i++) {
-				editPart = (ConnectionEditPart) targetConnections.get(i);
-				modelToEditPart.put(editPart.getModel(), editPart);
-			}
-		}
+		List<? extends ConnectionEditPart> targetConns = getTargetConnections();
+		Map<Object, ConnectionEditPart> modelToEditPart = targetConns.stream()
+				.collect(Collectors.toMap(ConnectionEditPart::getModel, cEP -> cEP));
 
-		List modelObjects = getModelTargetConnections();
+		List<? extends Object> modelObjects = getModelTargetConnections();
 		if (modelObjects == null) {
-			modelObjects = Collections.EMPTY_LIST;
+			modelObjects = Collections.emptyList();
 		}
 		for (i = 0; i < modelObjects.size(); i++) {
-			model = modelObjects.get(i);
+			Object model = modelObjects.get(i);
 
-			if (i < targetConnections.size() && ((EditPart) targetConnections.get(i)).getModel() == model) {
+			if (i < targetConns.size() && ((EditPart) targetConns.get(i)).getModel() == model) {
 				continue;
 			}
 
-			editPart = (ConnectionEditPart) modelToEditPart.get(model);
+			final ConnectionEditPart editPart = modelToEditPart.get(model);
 			if (editPart != null) {
 				reorderTargetConnection(editPart, i);
 			} else {
-				editPart = createOrFindConnection(model);
-				addTargetConnection(editPart, i);
+				addTargetConnection(createOrFindConnection(model), i);
 			}
 		}
 
 		// Remove the remaining EditParts
-		size = targetConnections.size();
+		int size = targetConns.size();
 		if (i < size) {
-			List trash = new ArrayList(size - i);
+			List<ConnectionEditPart> trash = new ArrayList<>(size - i);
 			for (; i < size; i++) {
-				trash.add(targetConnections.get(i));
+				trash.add(targetConns.get(i));
 			}
-			for (i = 0; i < trash.size(); i++) {
-				removeTargetConnection((ConnectionEditPart) trash.get(i));
-			}
+			trash.forEach(this::removeTargetConnection);
 		}
 	}
 
@@ -803,22 +764,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 */
 	@Override
 	public void removeNotify() {
-		List conns;
-		ConnectionEditPart cep;
-		conns = getSourceConnections();
-		for (Object conn : conns) {
-			cep = (ConnectionEditPart) conn;
-			if (cep.getSource() == this) {
-				cep.setSource(null);
-			}
-		}
-		conns = getTargetConnections();
-		for (Object conn : conns) {
-			cep = (ConnectionEditPart) conn;
-			if (cep.getTarget() == this) {
-				cep.setTarget(null);
-			}
-		}
+		getSourceConnections().stream().filter(conn -> conn.getSource() == this).forEach(conn -> conn.setSource(null));
+		getTargetConnections().stream().filter(conn -> conn.getTarget() == this).forEach(conn -> conn.setTarget(null));
 		super.removeNotify();
 	}
 
