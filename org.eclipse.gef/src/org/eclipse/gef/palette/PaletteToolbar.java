@@ -51,7 +51,7 @@ public class PaletteToolbar extends PaletteContainer {
 	 * @param label    the label
 	 * @param children the list of PaletteEntry children
 	 */
-	public PaletteToolbar(String label, List<PaletteEntry> children) {
+	public PaletteToolbar(String label, List<? extends PaletteEntry> children) {
 		this(label);
 		addAll(children);
 	}

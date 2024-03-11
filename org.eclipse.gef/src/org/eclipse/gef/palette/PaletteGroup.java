@@ -43,7 +43,7 @@ public class PaletteGroup extends PaletteContainer {
 	 * @param label    the label
 	 * @param children the list of PaletteEntry children
 	 */
-	public PaletteGroup(String label, List<PaletteEntry> children) {
+	public PaletteGroup(String label, List<? extends PaletteEntry> children) {
 		this(label);
 		addAll(children);
 	}
