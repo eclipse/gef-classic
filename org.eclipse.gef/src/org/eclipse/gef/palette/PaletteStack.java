@@ -93,7 +93,7 @@ public class PaletteStack extends PaletteContainer {
 	 * @see org.eclipse.gef.palette.PaletteContainer#addAll(java.util.List)
 	 */
 	@Override
-	public void addAll(List<PaletteEntry> list) {
+	public void addAll(List<? extends PaletteEntry> list) {
 		super.addAll(list);
 		checkActiveEntry();
 		updateListeners(list, true);
@@ -181,7 +181,7 @@ public class PaletteStack extends PaletteContainer {
 	 * @param add     true if the lister should be added; false if it should be
 	 *                removed
 	 */
-	private void updateListeners(Collection<PaletteEntry> entries, boolean add) {
+	private void updateListeners(Collection<? extends PaletteEntry> entries, boolean add) {
 		for (PaletteEntry child : entries) {
 			if (add) {
 				child.addPropertyChangeListener(childListener);

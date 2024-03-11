@@ -94,10 +94,9 @@ public class PaletteContainer extends PaletteEntry {
 	 *
 	 * @param list a list of PaletteEntry objects to add to this PaletteContainer
 	 */
-	public void addAll(List<PaletteEntry> list) {
+	public void addAll(List<? extends PaletteEntry> list) {
 		List<PaletteEntry> oldChildren = new ArrayList<>(getChildren());
-		for (PaletteEntry element : list) {
-			PaletteEntry child = element;
+		for (PaletteEntry child : list) {
 			if (!acceptsType(child.getType())) {
 				throw new IllegalArgumentException("This container can not contain this type of child: " //$NON-NLS-1$
 						+ child.getType());
