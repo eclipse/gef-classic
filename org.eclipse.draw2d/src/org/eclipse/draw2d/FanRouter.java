@@ -14,6 +14,7 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Ray;
 
 /**
@@ -61,17 +62,15 @@ public class FanRouter extends AutomaticRouter {
 		}
 		double length = ray.length();
 
-		double xSeparation = separation * ray.x / length;
-		double ySeparation = separation * ray.y / length;
+		double xSeparation = separation * ray.x / length * (index / 2);
+		double ySeparation = separation * ray.y / length * (index / 2);
 
 		Point bendPoint;
 
 		if (index % 2 == 0) {
-			bendPoint = new Point(midPoint.x + (int) ((index / 2.0) * -1.0 * ySeparation),
-					midPoint.y + (int) ((index / 2.0) * xSeparation));
+			bendPoint = new PrecisionPoint(midPoint.x + (-1 * ySeparation), midPoint.y + xSeparation);
 		} else {
-			bendPoint = new Point(midPoint.x + (int) ((index / 2.0) * ySeparation),
-					midPoint.y + (int) ((index / 2.0) * -1.0 * xSeparation));
+			bendPoint = new PrecisionPoint(midPoint.x + ySeparation, midPoint.y + (-1 * xSeparation));
 		}
 		if (!bendPoint.equals(midPoint)) {
 			points.insertPoint(bendPoint, 1);
