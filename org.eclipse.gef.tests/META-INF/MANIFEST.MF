@@ -2,15 +2,15 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Plugin.name
 Bundle-SymbolicName: org.eclipse.gef.tests
-Bundle-Version: 3.13.300.qualifier
+Bundle-Version: 3.13.400.qualifier
 Bundle-Vendor: %Plugin.providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.jface;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.core.resources;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",
- org.eclipse.draw2d;bundle-version="[3.8.0,4.0.0)",
- org.eclipse.gef;bundle-version="[3.8.0,4.0.0)",
+ org.eclipse.draw2d;bundle-version="[3.16.0,4.0.0)",
+ org.eclipse.gef;bundle-version="[3.18.0,4.0.0)",
  org.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: org.eclipse.gef.tests
