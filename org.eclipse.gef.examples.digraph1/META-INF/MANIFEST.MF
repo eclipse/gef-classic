@@ -3,8 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
 Bundle-SymbolicName: org.eclipse.gef.examples.digraph1;singleton:=true
-Bundle-Version: 1.2.300
-Require-Bundle: org.eclipse.gef;bundle-version="[3.3.0,4.0.0)";visibility:=reexport,
+Bundle-Version: 1.2.400
+Require-Bundle: org.eclipse.gef;bundle-version="[3.18.0,4.0.0)";visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="[3.3.0,4.0.0)";visibility:=reexport,
  org.eclipse.ui;bundle-version="[3.3.0,4.0.0)";visibility:=reexport,
  org.eclipse.ui.ide;bundle-version="[3.3.0,4.0.0)";visibility:=reexport,
