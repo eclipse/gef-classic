@@ -202,6 +202,8 @@ public class DeferredUpdateManager extends UpdateManager {
 					queueWork();
 				}
 			}
+			// fixes forced updates (e.g. in animations)
+			Display.getDefault().readAndDispatch();
 		} finally {
 			updating = false;
 		}
