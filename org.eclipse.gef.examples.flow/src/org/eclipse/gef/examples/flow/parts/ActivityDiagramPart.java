@@ -14,7 +14,7 @@ package org.eclipse.gef.examples.flow.parts;
 
 import java.util.Map;
 
-import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Container;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
@@ -72,10 +72,11 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 
 	@Override
 	protected IFigure createFigure() {
-		Figure f = new Figure() {
+		return new Container(new GraphLayoutManager(this)) {
 			@Override
 			public void setBounds(Rectangle rect) {
-				int x = bounds.x, y = bounds.y;
+				int x = bounds.x;
+				int y = bounds.y;
 
 				boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height);
 				boolean translate = (rect.x != x) || (rect.y != y);
@@ -96,8 +97,6 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 				}
 			}
 		};
-		f.setLayoutManager(new GraphLayoutManager(this));
-		return f;
 	}
 
 	/**
