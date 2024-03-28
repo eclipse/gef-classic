@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -52,7 +52,7 @@ public interface GraphicalEditPart extends EditPart {
 	 *
 	 * @return the source connections
 	 */
-	List getSourceConnections();
+	List<? extends ConnectionEditPart> getSourceConnections();
 
 	/**
 	 * Returns the <i>target</i> connections for this GraphicalEditPart. This method
@@ -61,7 +61,7 @@ public interface GraphicalEditPart extends EditPart {
 	 *
 	 * @return the target connections
 	 */
-	List getTargetConnections();
+	List<? extends ConnectionEditPart> getTargetConnections();
 
 	/**
 	 * The children of GraphicalEditparts have to be GraphicalEditParts. Therefore

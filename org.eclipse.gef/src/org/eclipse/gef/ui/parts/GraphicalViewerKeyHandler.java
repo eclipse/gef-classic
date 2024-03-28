@@ -60,7 +60,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * reference.
 	 */
 	private WeakReference<GraphicalEditPart> cachedNode;
-	private GraphicalViewer viewer;
+	private final GraphicalViewer viewer;
 
 	/**
 	 * Constructs a key handler for the given viewer.
@@ -95,7 +95,8 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	boolean acceptLeaveConnection(KeyEvent event) {
 		int key = event.keyCode;
 		if (getFocusEditPart() instanceof ConnectionEditPart) {
-			if ((key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT) || (key == SWT.ARROW_DOWN) || (key == SWT.ARROW_LEFT)) {
+			if ((key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT) || (key == SWT.ARROW_DOWN)
+					|| (key == SWT.ARROW_LEFT)) {
 				return true;
 			}
 		}
@@ -137,7 +138,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 *                false otherwise
 	 */
 	ConnectionEditPart findConnection(GraphicalEditPart node, ConnectionEditPart current, boolean forward) {
-		List connections = new ArrayList(node.getSourceConnections());
+		List<ConnectionEditPart> connections = new ArrayList<>(node.getSourceConnections());
 		connections.addAll(node.getTargetConnections());
 		connections = getValidNavigationTargets(connections);
 		if (connections.isEmpty()) {
@@ -152,18 +153,11 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 			counter += connections.size();
 		}
 		counter %= connections.size();
-		return (ConnectionEditPart) connections.get(counter % connections.size());
+		return connections.get(counter % connections.size());
 	}
 
-	private List getValidNavigationTargets(List candidateEditParts) {
-		List validNavigationTargetEditParts = new ArrayList();
-		for (int i = 0; i < candidateEditParts.size(); i++) {
-			EditPart candidate = (EditPart) candidateEditParts.get(i);
-			if (isValidNavigationTarget(candidate)) {
-				validNavigationTargetEditParts.add(candidate);
-			}
-		}
-		return validNavigationTargetEditParts;
+	private <T extends EditPart> List<T> getValidNavigationTargets(List<T> list) {
+		return list.stream().filter(this::isValidNavigationTarget).toList();
 	}
 
 	/**
@@ -286,22 +280,28 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		if (event.keyCode == 32) {
 			processSelect(event);
 			return true;
-		} else if (acceptIntoContainer(event)) {
+		}
+		if (acceptIntoContainer(event)) {
 			navigateIntoContainer(event);
 			return true;
-		} else if (acceptOutOf(event)) {
+		}
+		if (acceptOutOf(event)) {
 			navigateOut(event);
 			return true;
-		} else if (acceptConnection(event)) {
+		}
+		if (acceptConnection(event)) {
 			navigateConnections(event);
 			return true;
-		} else if (acceptScroll(event)) {
+		}
+		if (acceptScroll(event)) {
 			scrollViewer(event);
 			return true;
-		} else if (acceptLeaveConnection(event)) {
+		}
+		if (acceptLeaveConnection(event)) {
 			navigateOutOfConnection(event);
 			return true;
-		} else if (acceptLeaveContents(event)) {
+		}
+		if (acceptLeaveContents(event)) {
 			navigateIntoContainer(event);
 			return true;
 		}
@@ -384,16 +384,13 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 */
 	void navigateIntoContainer(KeyEvent event) {
 		GraphicalEditPart focus = getFocusEditPart();
-		List childList = getValidNavigationTargets(focus.getChildren());
 		Point tl = focus.getContentPane().getBounds().getTopLeft();
 
 		int minimum = Integer.MAX_VALUE;
 		int current;
 		GraphicalEditPart closestPart = null;
 
-		for (Object element : childList) {
-			GraphicalEditPart child = (GraphicalEditPart) element;
-
+		for (GraphicalEditPart child : getValidNavigationTargets(focus.getChildren())) {
 			Rectangle childBounds = child.getFigure().getBounds();
 			current = (childBounds.x - tl.x) + (childBounds.y - tl.y);
 			if (current < minimum) {
