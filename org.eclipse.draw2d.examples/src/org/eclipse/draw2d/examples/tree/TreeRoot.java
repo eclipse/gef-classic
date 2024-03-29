@@ -98,9 +98,6 @@ public class TreeRoot extends TreeBranch {
 		super.validate();
 	}
 
-	/**
-	 * @return
-	 */
 	public boolean isCompressed() {
 		return compression;
 	}

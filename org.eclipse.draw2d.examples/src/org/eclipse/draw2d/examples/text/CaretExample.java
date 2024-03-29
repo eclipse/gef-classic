@@ -36,7 +36,7 @@ import org.eclipse.draw2d.text.TextFlow;
 public class CaretExample extends AbstractExample {
 
 	TextFlow caretOwner;
-	TextFlow content[];
+	TextFlow[] content;
 	Caret caret;
 	private Label offsetLabel;
 	private Label trailLabel;
@@ -50,7 +50,7 @@ public class CaretExample extends AbstractExample {
 			protected void paintFigure(org.eclipse.draw2d.Graphics graphics) {
 				graphics.setBackgroundColor(new Color(null, 190, 220, 250));
 				graphics.fillRectangle(getBounds());
-			};
+			}
 		};
 
 		page.setBorder(new LineBorder(ColorConstants.darkGray, 10));
@@ -66,7 +66,7 @@ public class CaretExample extends AbstractExample {
 				</Japanese>.
 				<Hebrew>דפיםֱ מֱ- ישרֱֹאןץֱֹ\
 				</Hebrew>
-				<Arabic>نصً ثُ سٍَبُس</Arabic>""");
+				<Arabic>نصً ثُ سٍَبُس</Arabic>"""); //$NON-NLS-1$
 
 		text.setBorder(new TestBorder());
 		text.setFont(new Font(null, "Tahoma", 20, 0)); //$NON-NLS-1$
@@ -75,7 +75,7 @@ public class CaretExample extends AbstractExample {
 		page.addMouseMotionListener(new MouseMotionListener.Stub() {
 			@Override
 			public void mouseMoved(MouseEvent me) {
-				int trail[] = new int[1];
+				int[] trail = new int[1];
 				Point where = me.getLocation();
 				page.translateFromParent(where);
 				int offset = text.getOffset(where, trail, null);
@@ -85,14 +85,10 @@ public class CaretExample extends AbstractExample {
 			@Override
 			public void mouseExited(MouseEvent me) {
 
-			};
+			}
 		});
 		return page;
 	}
-
-	// protected int getShellStyle() {
-	// return super.getShellStyle() | SWT.RIGHT_TO_LEFT;
-	// }
 
 	@Override
 	protected void hookShell(Shell shell) {

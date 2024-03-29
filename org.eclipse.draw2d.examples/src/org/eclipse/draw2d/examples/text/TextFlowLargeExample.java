@@ -41,13 +41,13 @@ import org.eclipse.draw2d.text.TextFlow;
 
 public class TextFlowLargeExample {
 
-	static int KEYS_TYPED = 0;
-	static boolean PERFORMANCE = false;
+	static int keysTyped = 0;
+	static final boolean PERFORMANCE = false;
 	static FigureCanvas canvas;
 	static TextFlow target;
 	static FlowPage page;
-	static Font regularFont = new Font(Display.getDefault(), "Arial", 15, SWT.NORMAL), //$NON-NLS-1$
-			boldFont = new Font(Display.getDefault(), "Comic Sans MS", 16, SWT.BOLD); //$NON-NLS-1$
+	static Font regularFont = new Font(Display.getDefault(), "Arial", 15, SWT.NORMAL); //$NON-NLS-1$
+	static Font boldFont = new Font(Display.getDefault(), "Comic Sans MS", 16, SWT.BOLD); //$NON-NLS-1$
 
 	public static void main(String[] args) {
 		Display d = Display.getDefault();
@@ -78,19 +78,20 @@ public class TextFlowLargeExample {
 		}
 	}
 
-	static protected void addText(char c) {
+	protected static void addText(char c) {
 		if (((c <= 'Z') && (c >= 'A')) || ((c <= 'z') && (c >= 'a')) || (c == ' ')) {
 			if (target != null) {
 				target.setText(target.getText() + c);
-				if (PERFORMANCE && ((KEYS_TYPED % 10) == 0)) {
-					//			System.out.println(KEYS_TYPED + " keys typed " + FlowPage.VALIDATIONS + " paints and layouts");
+				if (PERFORMANCE && ((keysTyped % 10) == 0)) {
+					// System.out.println(KEYS_TYPED + " keys typed " + FlowPage.VALIDATIONS + "
+					// paints and layouts");
 				}
-				KEYS_TYPED++;
+				keysTyped++;
 			}
 		}
 	}
 
-	static public void populatePage() {
+	public static void populatePage() {
 
 		target = new TextFlow("Normal text."); //$NON-NLS-1$
 		target.setToolTip(new Label("This is a Tooltip")); //$NON-NLS-1$

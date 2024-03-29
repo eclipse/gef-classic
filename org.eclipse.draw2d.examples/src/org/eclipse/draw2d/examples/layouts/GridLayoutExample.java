@@ -112,25 +112,17 @@ public class GridLayoutExample extends AbstractExample {
 
 	protected Shape createShape() {
 		Shape shape = null;
-		if (shapeCount == 0) {
-			shape = new Ellipse();
-		} else if (shapeCount == 1) {
-			shape = new RectangleFigure();
-		} else if (shapeCount == 2) {
-			shape = new RoundedRectangle();
-		} else if (shapeCount == 3) {
-			shape = new RectangleFigure();
-		} else if (shapeCount == 4) {
-			shape = new Ellipse();
-		} else if (shapeCount == 5) {
-			shape = new Triangle();
-		} else if (shapeCount == 6) {
-			shape = new RoundedRectangle();
-		} else if (shapeCount == 7) {
-			shape = new Triangle();
-		} else {
-			shape = new RoundedRectangle();
-		}
+		shape = switch (shapeCount) {
+		case 0 -> new Ellipse();
+		case 1 -> new RectangleFigure();
+		case 2 -> new RoundedRectangle();
+		case 3 -> new RectangleFigure();
+		case 4 -> new Ellipse();
+		case 5 -> new Triangle();
+		case 6 -> new RoundedRectangle();
+		case 7 -> new Triangle();
+		default -> new RoundedRectangle();
+		};
 
 		shape.setBackgroundColor(colors[colorCount]);
 		shape.setSize(70, 70);
@@ -320,7 +312,7 @@ public class GridLayoutExample extends AbstractExample {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				gridLayout.verticalSpacing = getEventValue(e, "verticalSpacing").intValue(); //$NON-NLS-1$
-				;
+
 				updateView();
 			}
 		});
@@ -603,7 +595,8 @@ public class GridLayoutExample extends AbstractExample {
 	protected static int findAlignment(String align) {
 		if (align.equals("BEGINNING")) { //$NON-NLS-1$
 			return SWT.BEGINNING;
-		} else if (align.equals("CENTER")) { //$NON-NLS-1$
+		}
+		if (align.equals("CENTER")) { //$NON-NLS-1$
 			return SWT.CENTER;
 		} else if (align.equals("END")) { //$NON-NLS-1$
 			return SWT.END;
@@ -614,7 +607,7 @@ public class GridLayoutExample extends AbstractExample {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell(Shell)
 	 */
 	@Override
 	protected void hookShell(Shell shell) {

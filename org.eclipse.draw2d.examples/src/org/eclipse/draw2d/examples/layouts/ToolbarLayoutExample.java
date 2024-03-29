@@ -88,7 +88,7 @@ public class ToolbarLayoutExample extends AbstractExample {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell(Shell)
 	 */
 	@Override
 	protected void hookShell(Shell shell) {

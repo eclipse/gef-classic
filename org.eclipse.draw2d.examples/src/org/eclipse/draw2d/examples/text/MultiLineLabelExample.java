@@ -30,20 +30,18 @@ import org.eclipse.draw2d.widgets.MultiLineLabel;
  */
 public abstract class MultiLineLabelExample {
 
-	private static MultiLineLabel label;
-
 	public static void main(String[] args) {
 		Display d = Display.getDefault();
 		Shell shell = new Shell(d);
 		shell.setLayout(new GridLayout());
-		label = new MultiLineLabel(shell);
+		MultiLineLabel label = new MultiLineLabel(shell);
 		Text text = new Text(shell, SWT.MULTI | SWT.WRAP | SWT.H_SCROLL | SWT.READ_ONLY);
 		label.setText("""
 				This is a  oijeoi aeif jaoiewjf oaiew jfoaiew\
 				apijewpfk apoewkf paokwe pfokawpehfaowephf hawoiejf oaweijf paowkefp aoewkfpa\s\
 				pawkfe paoewkf paowekf pawokefoaiwjefo iajewoifja oewijf poerk pgaokew faewfpokew f\
 				f oaewkfp aewpofk apwejfoiuajweo foiwajef poawkefpawkje pfoakewpf aewpfkpaowke fpawf\
-				gfpowaegpawepmulti-line label.""");
+				gfpowaegpawepmulti-line label."""); //$NON-NLS-1$
 		text.setText(label.getText());
 
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
