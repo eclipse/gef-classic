@@ -116,8 +116,9 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 		}
 	}
 
-	private ShapesDiagram getCastedModel() {
-		return (ShapesDiagram) getModel();
+	@Override
+	public ShapesDiagram getModel() {
+		return (ShapesDiagram) super.getModel();
 	}
 
 	/*
@@ -126,8 +127,8 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
 	@Override
-	protected List getModelChildren() {
-		return getCastedModel().getChildren(); // return a list of shapes
+	protected List<Shape> getModelChildren() {
+		return getModel().getChildren(); // return a list of shapes
 	}
 
 	/*

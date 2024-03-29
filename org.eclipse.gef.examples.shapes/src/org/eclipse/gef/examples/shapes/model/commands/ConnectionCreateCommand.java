@@ -14,6 +14,7 @@ package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.gef.commands.Command;
 
+import org.eclipse.gef.examples.shapes.ShapesExampleMessages;
 import org.eclipse.gef.examples.shapes.model.Connection;
 import org.eclipse.gef.examples.shapes.model.Shape;
 
@@ -62,7 +63,7 @@ public class ConnectionCreateCommand extends Command {
 		if (source == null) {
 			throw new IllegalArgumentException();
 		}
-		setLabel("connection creation");
+		setLabel(ShapesExampleMessages.ConnectionCreateCommand_ConnectionCreation);
 		this.source = source;
 		this.lineStyle = lineStyle;
 	}

@@ -246,6 +246,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 			} catch (InterruptedException ie) {
 				// should not happen, since the monitor dialog is not cancelable
 				ie.printStackTrace();
+				Thread.currentThread().interrupt();
 			} catch (InvocationTargetException ite) {
 				ite.printStackTrace();
 			}
@@ -279,7 +280,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	}
 
 	private void handleLoadException(Exception e) {
-		System.err.println("** Load failed. Using default model. **");
+		System.err.println("** Load failed. Using default model. **"); //$NON-NLS-1$
 		e.printStackTrace();
 		diagram = new ShapesDiagram();
 	}
@@ -321,11 +322,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		try (ObjectInputStream in = new ObjectInputStream(file.getContents())) {
 			diagram = (ShapesDiagram) in.readObject();
 			setPartName(file.getName());
-		} catch (IOException e) {
-			handleLoadException(e);
-		} catch (CoreException e) {
-			handleLoadException(e);
-		} catch (ClassNotFoundException e) {
+		} catch (IOException | CoreException | ClassNotFoundException e) {
 			handleLoadException(e);
 		}
 	}

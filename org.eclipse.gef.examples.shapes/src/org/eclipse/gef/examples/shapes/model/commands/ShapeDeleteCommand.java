@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.gef.commands.Command;
 
+import org.eclipse.gef.examples.shapes.ShapesExampleMessages;
 import org.eclipse.gef.examples.shapes.model.Connection;
 import org.eclipse.gef.examples.shapes.model.Shape;
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
@@ -50,7 +51,7 @@ public class ShapeDeleteCommand extends Command {
 		if (parent == null || child == null) {
 			throw new IllegalArgumentException();
 		}
-		setLabel("shape deletion");
+		setLabel(ShapesExampleMessages.ShapeDeleteCommand_ShapeDeletion);
 		this.parent = parent;
 		this.child = child;
 	}

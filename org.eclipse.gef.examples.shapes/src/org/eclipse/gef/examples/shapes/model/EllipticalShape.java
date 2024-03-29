@@ -12,7 +12,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
+import java.text.MessageFormat;
+
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.gef.examples.shapes.ShapesExampleMessages;
 
 /**
  * An elliptical shape.
@@ -22,7 +26,7 @@ import org.eclipse.swt.graphics.Image;
 public class EllipticalShape extends Shape {
 
 	/** A 16x16 pictogram of an elliptical shape. */
-	private static final Image ELLIPSE_ICON = createImage("icons/ellipse16.gif");
+	private static final Image ELLIPSE_ICON = createImage("icons/ellipse16.gif"); //$NON-NLS-1$
 
 	private static final long serialVersionUID = 1;
 
@@ -33,6 +37,6 @@ public class EllipticalShape extends Shape {
 
 	@Override
 	public String toString() {
-		return "Ellipse " + hashCode();
+		return MessageFormat.format(ShapesExampleMessages.EllipticalShape_Ellipse, hashCode());
 	}
 }

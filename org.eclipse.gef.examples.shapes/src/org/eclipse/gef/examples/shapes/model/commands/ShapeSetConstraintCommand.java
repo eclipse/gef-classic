@@ -18,6 +18,7 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
+import org.eclipse.gef.examples.shapes.Messages;
 import org.eclipse.gef.examples.shapes.model.Shape;
 
 /**
@@ -51,7 +52,7 @@ public class ShapeSetConstraintCommand extends Command {
 		this.shape = shape;
 		this.request = req;
 		this.newBounds = newBounds.getCopy();
-		setLabel("move / resize");
+		setLabel(Messages.ShapeSetConstraintCommand_MoveResize);
 	}
 
 	/*

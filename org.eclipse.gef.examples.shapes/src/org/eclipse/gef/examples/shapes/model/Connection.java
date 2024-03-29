@@ -38,10 +38,10 @@ public class Connection extends ModelElement {
 	 */
 	public static final Integer DASHED_CONNECTION = Integer.valueOf(Graphics.LINE_DASH);
 	/** Property ID to use when the line style of this connection is modified. */
-	public static final String LINESTYLE_PROP = "LineStyle";
+	public static final String LINESTYLE_PROP = "LineStyle"; //$NON-NLS-1$
 	private static final IPropertyDescriptor[] descriptors = new IPropertyDescriptor[1];
-	private static final String SOLID_STR = "Solid";
-	private static final String DASHED_STR = "Dashed";
+	private static final String SOLID_STR = "Solid"; //$NON-NLS-1$
+	private static final String DASHED_STR = "Dashed"; //$NON-NLS-1$
 	private static final long serialVersionUID = 1;
 
 	/** True, if the connection is attached to its endpoints. */

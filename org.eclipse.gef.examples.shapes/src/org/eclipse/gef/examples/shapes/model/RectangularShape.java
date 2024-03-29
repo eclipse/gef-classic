@@ -12,7 +12,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
+import java.text.MessageFormat;
+
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.gef.examples.shapes.ShapesExampleMessages;
 
 /**
  * A rectangular shape.
@@ -21,7 +25,7 @@ import org.eclipse.swt.graphics.Image;
  */
 public class RectangularShape extends Shape {
 	/** A 16x16 pictogram of a rectangular shape. */
-	private static final Image RECTANGLE_ICON = createImage("icons/rectangle16.gif");
+	private static final Image RECTANGLE_ICON = createImage("icons/rectangle16.gif"); //$NON-NLS-1$
 
 	private static final long serialVersionUID = 1;
 
@@ -32,6 +36,6 @@ public class RectangularShape extends Shape {
 
 	@Override
 	public String toString() {
-		return "Rectangle " + hashCode();
+		return MessageFormat.format(ShapesExampleMessages.RectangularShape_Rectangle, hashCode());
 	}
 }

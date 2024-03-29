@@ -14,6 +14,7 @@ package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.gef.commands.Command;
 
+import org.eclipse.gef.examples.shapes.ShapesExampleMessages;
 import org.eclipse.gef.examples.shapes.model.Connection;
 
 /**
@@ -37,7 +38,7 @@ public class ConnectionDeleteCommand extends Command {
 		if (conn == null) {
 			throw new IllegalArgumentException();
 		}
-		setLabel("connection deletion");
+		setLabel(ShapesExampleMessages.ConnectionDeleteCommand_ConnectionDeletion);
 		this.connection = conn;
 	}
 
