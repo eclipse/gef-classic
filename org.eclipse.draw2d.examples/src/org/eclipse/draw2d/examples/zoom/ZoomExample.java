@@ -40,9 +40,8 @@ import org.eclipse.draw2d.parts.Thumbnail;
 public class ZoomExample {
 
 	private static Figure contents;
-	// private static Shell overviewShell;
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		Display d = new Display();
 		final Shell shell = new Shell(d);
 		shell.setSize(800, 800);

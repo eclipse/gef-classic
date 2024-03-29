@@ -22,8 +22,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Transposer;
 
 /**
- * Performs a layout on a container containing {@link AbstractBranch} figures.
- * This layout is similar to FlowLayout, except that the children are squeezed
+ * Performs a layout on a container containing {@link TreeBranch} figures. This
+ * layout is similar to FlowLayout, except that the children are squeezed
  * together to overlap by comparing their left and right contours.
  *
  * @author hudsonr Created on Apr 18, 2003
@@ -45,12 +45,12 @@ public class TreeLayout extends AbstractLayout {
 		return result.getSize();
 	}
 
-	private static int[] calculateNewRightContour(int old[], int add[], int shift) {
+	private static int[] calculateNewRightContour(int[] old, int[] add, int shift) {
 		if (old == null) {
 			return add;
 		}
-		//	if (shift < 0)
-		//		shift = 0;
+		// if (shift < 0)
+		// shift = 0;
 		int[] result = new int[Math.max(old.length, add.length)];
 		System.arraycopy(add, 0, result, 0, add.length);
 		for (int i = add.length; i < result.length; i++) {

@@ -40,7 +40,8 @@ import org.eclipse.draw2d.parts.Thumbnail;
 public class ThumbnailExample {
 
 	private static Figure contents;
-	private static Shell mainShell, overviewShell;
+	private static Shell mainShell;
+	private static Shell overviewShell;
 	private static Dimension offset = new Dimension();
 
 	public static void main(String[] args) {

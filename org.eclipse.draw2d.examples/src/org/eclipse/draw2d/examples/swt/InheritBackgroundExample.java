@@ -88,7 +88,7 @@ public class InheritBackgroundExample {
 				figure, or by the operating system.
 				Note that vertical scrolling may not be
 				as fast when the background from the
-				parent is inherited."""));
+				parent is inherited.""")); //$NON-NLS-1$
 		return canvas;
 	}
 

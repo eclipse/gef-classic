@@ -33,7 +33,7 @@ import org.eclipse.draw2d.text.TextFlow;
  */
 public class TextFlowExample extends AbstractExample {
 
-	static protected IFigure createAlignmentParagraph() {
+	protected static IFigure createAlignmentParagraph() {
 		BlockFlow block = new BlockFlow();
 		block.setHorizontalAligment(PositionConstants.RIGHT);
 		block.add(new TextFlow(
@@ -45,10 +45,10 @@ public class TextFlowExample extends AbstractExample {
 		return block;
 	}
 
-	static protected IFigure createBaselineParagraph() {
+	protected static IFigure createBaselineParagraph() {
 		BlockFlow block = new BlockFlow();
 
-		String message[] = { "Text fragments ", "with different ", "Font sizes will ", "have their ", "baseline ", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		String[] message = { "Text fragments ", "with different ", "Font sizes will ", "have their ", "baseline ", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				"vertically ", "aligned ", "within ", "the current ", "line" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 		for (int i = 0; i < message.length; i++) {
@@ -61,7 +61,7 @@ public class TextFlowExample extends AbstractExample {
 		return block;
 	}
 
-	static protected IFigure createBlockParagraph() {
+	protected static IFigure createBlockParagraph() {
 		BlockFlow blockFlow = new BlockFlow();
 		blockFlow.setFont(COURIER);
 		TextFlow contents = new TextFlow();
@@ -74,12 +74,12 @@ public class TextFlowExample extends AbstractExample {
 				public void foo() {
 				    //TABs are not handled currently, only spaces.
 				    System.out.println("foo")
-				}""");
+				}"""); //$NON-NLS-1$
 		blockFlow.add(contents);
 		return blockFlow;
 	}
 
-	static protected IFigure createNestedInlineParagraph() {
+	protected static IFigure createNestedInlineParagraph() {
 		BlockFlow blockFlow = new BlockFlow();
 		TextFlow text;
 		blockFlow.add(new TextFlow(
@@ -104,7 +104,7 @@ public class TextFlowExample extends AbstractExample {
 		return blockFlow;
 	}
 
-	static protected IFigure createParagraph() {
+	protected static IFigure createParagraph() {
 		BlockFlow blockFlow = new BlockFlow();
 		TextFlow contents = new TextFlow();
 		contents.setText("""
@@ -120,7 +120,7 @@ public class TextFlowExample extends AbstractExample {
 		return blockFlow;
 	}
 
-	static protected IFigure createTitle() {
+	protected static IFigure createTitle() {
 		BlockFlow blockFlow = new BlockFlow();
 		TextFlow contents = new TextFlow("Draw2D TextFlow Example"); //$NON-NLS-1$
 		contents.setFont(HEADING_1);
@@ -155,7 +155,6 @@ public class TextFlowExample extends AbstractExample {
 	@Override
 	protected void setFigureCanvas(FigureCanvas canvas) {
 		super.setFigureCanvas(canvas);
-		// canvas.setVerticalScrollBarVisibility(canvas.ALWAYS);
 		canvas.getViewport().setContentsTracksWidth(true);
 	}
 

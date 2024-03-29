@@ -26,17 +26,17 @@ import org.eclipse.draw2d.ToolbarLayout;
 public class UMLClassFigure extends Figure {
 
 	/** Background color of UMLFigure */
-	public static Color classColor = new Color(null, 255, 255, 206);
+	public static final Color CLASS_COLOR = new Color(null, 255, 255, 206);
 
 	/** CompartmentFigures */
-	private CompartmentFigure attributeFigure = new CompartmentFigure();
-	private CompartmentFigure methodFigure = new CompartmentFigure();
+	private final CompartmentFigure attributeFigure = new CompartmentFigure();
+	private final CompartmentFigure methodFigure = new CompartmentFigure();
 
 	public UMLClassFigure(Label name) {
 		ToolbarLayout layout = new ToolbarLayout();
 		setLayoutManager(layout);
 		setBorder(new LineBorder(ColorConstants.black, 1));
-		setBackgroundColor(classColor);
+		setBackgroundColor(CLASS_COLOR);
 		setOpaque(true);
 
 		add(name);

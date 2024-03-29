@@ -26,22 +26,71 @@ import org.eclipse.draw2d.graph.NodeList;
  * @since 2.1
  */
 public class GraphTests {
+	private static final String ROOT = "root"; //$NON-NLS-1$
+	private static final String HEAD = "Head"; //$NON-NLS-1$
+	private static final String TOP_1 = "Top 1"; //$NON-NLS-1$
+	private static final String TOP_2 = "Top 2"; //$NON-NLS-1$
+	private static final String BOTTOM_1 = "Bottom 1"; //$NON-NLS-1$
+	private static final String BOTTOM_2 = "Bottom 2"; //$NON-NLS-1$
+
+	private static final String NODE_A = "node a"; //$NON-NLS-1$
+	private static final String NODE_A0 = "node a0"; //$NON-NLS-1$
+	private static final String NODE_A1 = "node a1"; //$NON-NLS-1$
+	private static final String NODE_A2 = "node a2"; //$NON-NLS-1$
+	private static final String NODE_A3 = "node a3"; //$NON-NLS-1$
+	private static final String NODE_A4 = "node a4"; //$NON-NLS-1$
+	private static final String NODE_B = "node b"; //$NON-NLS-1$
+	private static final String NODE_B0 = "node b0"; //$NON-NLS-1$
+	private static final String NODE_B1 = "node b1"; //$NON-NLS-1$
+	private static final String NODE_B2 = "node b2"; //$NON-NLS-1$
+	private static final String NODE_B3 = "node b3"; //$NON-NLS-1$
+	private static final String NODE_B4 = "node b4"; //$NON-NLS-1$
+	private static final String NODE_B5 = "node b5"; //$NON-NLS-1$
+	private static final String NODE_B6 = "node b6"; //$NON-NLS-1$
+	private static final String NODE_C = "node c"; //$NON-NLS-1$
+	private static final String NODE_C0 = "node c0"; //$NON-NLS-1$
+	private static final String NODE_C1 = "node c1"; //$NON-NLS-1$
+	private static final String NODE_C2 = "node c2"; //$NON-NLS-1$
+	private static final String NODE_C3 = "node c3"; //$NON-NLS-1$
+	private static final String NODE_C4 = "node c4"; //$NON-NLS-1$
+	private static final String NODE_D = "node d"; //$NON-NLS-1$
+	private static final String NODE_E = "node e"; //$NON-NLS-1$
+	private static final String NODE_F = "node f"; //$NON-NLS-1$
+	private static final String NODE_G = "node g"; //$NON-NLS-1$
+	private static final String NODE_I = "node i"; //$NON-NLS-1$
+	private static final String NODE_J = "node j"; //$NON-NLS-1$
+	private static final String NODE_K = "node k"; //$NON-NLS-1$
+	private static final String NODE_H = "node h"; //$NON-NLS-1$
+	private static final String H1 = "h1"; //$NON-NLS-1$
+	private static final String H2 = "h2"; //$NON-NLS-1$
+	private static final String H3 = "h3"; //$NON-NLS-1$
+	private static final String H4 = "h4"; //$NON-NLS-1$
+	private static final String NODE_X = "node X"; //$NON-NLS-1$
+
 	public static DirectedGraph offsetTest(int direction) {
-		Node head, a1, a2, a3, a4, b1, b2, b3, b4;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(head = new Node("Head")); //$NON-NLS-1$
+		Node head = new Node(HEAD);
+		nodes.add(head);
 		head.width = 100;
-		nodes.add(a1 = new Node("node a1")); //$NON-NLS-1$
-		nodes.add(a2 = new Node("node a2")); //$NON-NLS-1$
-		nodes.add(a3 = new Node("node a3")); //$NON-NLS-1$
-		nodes.add(a4 = new Node("node a4")); //$NON-NLS-1$
+		Node a1 = new Node(NODE_A1);
+		nodes.add(a1);
+		Node a2 = new Node(NODE_A2);
+		nodes.add(a2);
+		Node a3 = new Node(NODE_A3);
+		nodes.add(a3);
+		Node a4 = new Node(NODE_A4);
+		nodes.add(a4);
 
-		nodes.add(b1 = new Node("node b1")); //$NON-NLS-1$
-		nodes.add(b2 = new Node("node b2")); //$NON-NLS-1$
-		nodes.add(b3 = new Node("node b3")); //$NON-NLS-1$
-		nodes.add(b4 = new Node("node b4")); //$NON-NLS-1$
+		Node b1 = new Node(NODE_B1);
+		nodes.add(b1);
+		Node b2 = new Node(NODE_B2);
+		nodes.add(b2);
+		Node b3 = new Node(NODE_B3);
+		nodes.add(b3);
+		Node b4 = new Node(NODE_B4);
+		nodes.add(b4);
 
 		Edge e = new Edge(head, a1);
 		e.setSourceOffset(10);
@@ -64,7 +113,8 @@ public class GraphTests {
 		edges.add(new Edge(b3, b4));
 
 		edges.add(new Edge(a1, a2));
-		edges.add(e = new Edge(a2, a3));
+		e = new Edge(a2, a3);
+		edges.add(e);
 		e.setSourceOffset(10);
 		e.setTargetOffset(40);
 		edges.add(new Edge(a3, a4));
@@ -96,19 +146,19 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		Node row[], firstRow[];
-		firstRow = new Node[4];
-		firstRow[1] = new Node("h1"); //$NON-NLS-1$
-		firstRow[2] = new Node("h2"); //$NON-NLS-1$
-		firstRow[3] = new Node("h3"); //$NON-NLS-1$
+		Node[] firstRow = new Node[4];
+		firstRow[1] = new Node(H1);
+		firstRow[2] = new Node(H2);
+		firstRow[3] = new Node(H3);
 		addNodes(nodes, firstRow);
-		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 2, 3, 2, 4, 3, 3, 3, 4 });
+
+		Node[] row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 2, 3, 2, 4, 3, 3, 3, 4 });
 
 		row = joinRows(nodes, edges, row, new int[] { 1, 1, 3, 4, 2, 1, 2, 3, 3, 2, 4, 4 });
 
 		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 1, 2, 4, 3, 3, 3, 4, 4, 3, 4, 5 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 4, 3, 5, 4 });
+		joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 4, 3, 5, 4 });
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -121,21 +171,31 @@ public class GraphTests {
 	}
 
 	public static DirectedGraph balanceThis1(int direction) {
-		Node a, b1, b2, b3, b4, b5, c, d, e, f, g;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(b1 = new Node("node b1")); //$NON-NLS-1$
-		nodes.add(b2 = new Node("node b2")); //$NON-NLS-1$
-		nodes.add(b3 = new Node("node b3")); //$NON-NLS-1$
-		nodes.add(b4 = new Node("node b4")); //$NON-NLS-1$
-		nodes.add(b5 = new Node("node b5")); //$NON-NLS-1$
-		nodes.add(c = new Node("node c")); //$NON-NLS-1$
-		nodes.add(d = new Node("node d")); //$NON-NLS-1$
-		nodes.add(e = new Node("node e")); //$NON-NLS-1$
-		nodes.add(f = new Node("node f")); //$NON-NLS-1$
-		nodes.add(g = new Node("node g")); //$NON-NLS-1$
-		nodes.add(a = new Node("node a")); //$NON-NLS-1$
+		Node b1 = new Node(NODE_B1);
+		nodes.add(b1);
+		Node b2 = new Node(NODE_B2);
+		nodes.add(b2);
+		Node b3 = new Node(NODE_B3);
+		nodes.add(b3);
+		Node b4 = new Node(NODE_B4);
+		nodes.add(b4);
+		Node b5 = new Node(NODE_B5);
+		nodes.add(b5);
+		Node c = new Node(NODE_C);
+		nodes.add(c);
+		Node d = new Node(NODE_D);
+		nodes.add(d);
+		Node e = new Node(NODE_E);
+		nodes.add(e);
+		Node f = new Node(NODE_F);
+		nodes.add(f);
+		Node g = new Node(NODE_G);
+		nodes.add(g);
+		Node a = new Node(NODE_A);
+		nodes.add(a);
 
 		b3.width = b2.width = 90;
 
@@ -153,7 +213,6 @@ public class GraphTests {
 		edges.add(new Edge(b4, f));
 
 		edges.add(new Edge(a, c));
-		// edges.add(new Edge(b, g));
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -165,19 +224,27 @@ public class GraphTests {
 	}
 
 	public static DirectedGraph balanceThis2(int direction) {
-		Node a, b2, b3, b4, c, d, e, f, g;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(b2 = new Node("node b2")); //$NON-NLS-1$
-		nodes.add(b3 = new Node("node b3")); //$NON-NLS-1$
-		nodes.add(b4 = new Node("node b4")); //$NON-NLS-1$
-		nodes.add(c = new Node("node c")); //$NON-NLS-1$
-		nodes.add(d = new Node("node d")); //$NON-NLS-1$
-		nodes.add(e = new Node("node e")); //$NON-NLS-1$
-		nodes.add(f = new Node("node f")); //$NON-NLS-1$
-		nodes.add(g = new Node("node g")); //$NON-NLS-1$
-		nodes.add(a = new Node("node a")); //$NON-NLS-1$
+		Node b2 = new Node(NODE_B2);
+		nodes.add(b2);
+		Node b3 = new Node(NODE_B3);
+		nodes.add(b3);
+		Node b4 = new Node(NODE_B4);
+		nodes.add(b4);
+		Node c = new Node(NODE_C);
+		nodes.add(c);
+		Node d = new Node(NODE_D);
+		nodes.add(d);
+		Node e = new Node(NODE_E);
+		nodes.add(e);
+		Node f = new Node(NODE_F);
+		nodes.add(f);
+		Node g = new Node(NODE_G);
+		nodes.add(g);
+		Node a = new Node(NODE_A);
+		nodes.add(a);
 
 		edges.add(new Edge(d, c));
 		edges.add(new Edge(e, c));
@@ -191,7 +258,6 @@ public class GraphTests {
 		edges.add(new Edge(f, b4));
 
 		edges.add(new Edge(c, a));
-		// edges.add(new Edge(b, g));
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -203,40 +269,52 @@ public class GraphTests {
 	}
 
 	public static DirectedGraph balanceThis3(int direction) {
-		Node top1, top2;
-		Node a1, a2, a3, a4;
-		Node b1, b2, b3, b4, b5, b6;
-		Node c1, c2, c3, c4;
-		Node bottom1, bottom2;
-
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(top1 = new Node("Top 1")); //$NON-NLS-1$
+		Node top1 = new Node(TOP_1);
+		nodes.add(top1);
 		top1.width = 400;
 
-		nodes.add(top2 = new Node("Top 2")); //$NON-NLS-1$
+		Node top2 = new Node(TOP_2);
+		nodes.add(top2);
 		top2.width = 400;
 
-		nodes.add(a1 = new Node("a1")); //$NON-NLS-1$
-		nodes.add(a2 = new Node("a2")); //$NON-NLS-1$
-		nodes.add(a3 = new Node("a3")); //$NON-NLS-1$
-		nodes.add(a4 = new Node("a4")); //$NON-NLS-1$
-		nodes.add(b1 = new Node("b1")); //$NON-NLS-1$
-		nodes.add(b2 = new Node("b2")); //$NON-NLS-1$
-		nodes.add(b3 = new Node("b3")); //$NON-NLS-1$
-		nodes.add(b4 = new Node("b4")); //$NON-NLS-1$
-		nodes.add(b5 = new Node("b5")); //$NON-NLS-1$
-		nodes.add(b6 = new Node("b6")); //$NON-NLS-1$
-		nodes.add(c1 = new Node("c1")); //$NON-NLS-1$
-		nodes.add(c2 = new Node("c2")); //$NON-NLS-1$
-		nodes.add(c3 = new Node("c3")); //$NON-NLS-1$
-		nodes.add(c4 = new Node("c4")); //$NON-NLS-1$
+		Node a1 = new Node(NODE_A1);
+		nodes.add(a1);
+		Node a2 = new Node(NODE_A2);
+		nodes.add(a2);
+		Node a3 = new Node(NODE_A3);
+		nodes.add(a3);
+		Node a4 = new Node(NODE_A4);
+		nodes.add(a4);
+		Node b1 = new Node(NODE_B1);
+		nodes.add(b1);
+		Node b2 = new Node(NODE_B2);
+		nodes.add(b2);
+		Node b3 = new Node(NODE_B3);
+		nodes.add(b3);
+		Node b4 = new Node(NODE_B4);
+		nodes.add(b4);
+		Node b5 = new Node(NODE_B5);
+		nodes.add(b5);
+		Node b6 = new Node(NODE_B6);
+		nodes.add(b6);
+		Node c1 = new Node(NODE_C1);
+		nodes.add(c1);
+		Node c2 = new Node(NODE_C2);
+		nodes.add(c2);
+		Node c3 = new Node(NODE_C3);
+		nodes.add(c3);
+		Node c4 = new Node(NODE_C4);
+		nodes.add(c4);
 
-		nodes.add(bottom1 = new Node("Bottom 1")); //$NON-NLS-1$
+		Node bottom1 = new Node(BOTTOM_1);
+		nodes.add(bottom1);
 		bottom1.width = 400;
 
-		nodes.add(bottom2 = new Node("Bottom 2")); //$NON-NLS-1$
+		Node bottom2 = new Node(BOTTOM_2);
+		nodes.add(bottom2);
 		bottom2.width = 400;
 
 		edges.add(new Edge(top1, a1));
@@ -272,16 +350,15 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		Node row[], firstRow[];
-		firstRow = new Node[2];
-		firstRow[1] = new Node("root"); //$NON-NLS-1$
+		Node[] firstRow = new Node[2];
+		firstRow[1] = new Node(ROOT);
 		addNodes(nodes, firstRow);
 
-		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2 });
+		Node[] row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2 });
 
 		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 3, 2, 4 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 3, 2, 4, 3, 5, 3, 6, 4, 7, 4, 8 });
+		joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 3, 2, 4, 3, 5, 3, 6, 4, 7, 4, 8 });
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -297,12 +374,11 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		Node row[], firstRow[];
-		firstRow = new Node[3];
-		firstRow[1] = new Node("h1"); //$NON-NLS-1$
-		firstRow[2] = new Node("h2"); //$NON-NLS-1$
+		Node[] firstRow = new Node[3];
+		firstRow[1] = new Node(H1);
+		firstRow[2] = new Node(H2);
 		addNodes(nodes, firstRow);
-		row = joinRows(nodes, edges, firstRow,
+		Node[] row = joinRows(nodes, edges, firstRow,
 				new int[] { 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 2, 7, 2, 8, 2, 9, 2, 10 });
 
 		row = joinRows(nodes, edges, row,
@@ -323,7 +399,7 @@ public class GraphTests {
 		row = joinRows(nodes, edges, row, new int[] { 1, 2, 2, 1, 3, 2, 4, 2, 4, 3, 5, 4 });
 
 		// Row 8->9
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 1, 3, 1, 4, 1 });
+		joinRows(nodes, edges, row, new int[] { 1, 1, 2, 1, 3, 1, 4, 1 });
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -339,21 +415,20 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		Node row[], firstRow[];
-		firstRow = new Node[5];
-		firstRow[1] = new Node("h1"); //$NON-NLS-1$
-		firstRow[2] = new Node("h2"); //$NON-NLS-1$
-		firstRow[3] = new Node("h3"); //$NON-NLS-1$
-		firstRow[4] = new Node("h4"); //$NON-NLS-1$
+		Node[] firstRow = new Node[5];
+		firstRow[1] = new Node(H1);
+		firstRow[2] = new Node(H2);
+		firstRow[3] = new Node(H3);
+		firstRow[4] = new Node(H4);
 		firstRow[1].width = firstRow[2].width = firstRow[3].width = firstRow[4].width = 160;
 		addNodes(nodes, firstRow);
-		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5 });
+		Node[] row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5 });
 
 		row = joinRows(nodes, edges, row, new int[] { 1, 1, 3, 3, 5, 2 });
 
 		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 2, 2, 1 });
+		joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 2, 2, 1 });
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -369,20 +444,19 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		Node row[], firstRow[];
-		firstRow = new Node[4];
-		firstRow[1] = new Node("h1"); //$NON-NLS-1$
-		firstRow[2] = new Node("h2"); //$NON-NLS-1$
-		firstRow[3] = new Node("h3"); //$NON-NLS-1$
+		Node[] firstRow = new Node[4];
+		firstRow[1] = new Node(H1);
+		firstRow[2] = new Node(H2);
+		firstRow[3] = new Node(H3);
 		firstRow[1].width = firstRow[2].width = firstRow[3].width = 120;
 		addNodes(nodes, firstRow);
-		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 2, 3, 2, 4, 3, 3, 3, 4 });
+		Node[] row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 2, 3, 2, 4, 3, 3, 3, 4 });
 
 		row = joinRows(nodes, edges, row, new int[] { 1, 1, 3, 4, 2, 1, 2, 3, 3, 2, 4, 4 });
 
 		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 1, 2, 4, 3, 3, 3, 4, 4, 3, 4, 5 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 4, 4, 5, 5, 1, 2, 4, 3, 5, 4 });
+		joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 4, 4, 5, 5, 1, 2, 4, 3, 5, 4 });
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -403,11 +477,10 @@ public class GraphTests {
 	 */
 	private static Node[] joinRows(NodeList nodes, EdgeList edges, Node[] firstRow, int[] conns) {
 		shuffleConnections(conns);
-		Node secondRow[] = new Node[20];
-		Node head, tail;
+		Node[] secondRow = new Node[20];
 		for (int i = 0; i < conns.length; i += 2) {
-			head = firstRow[conns[i]];
-			tail = secondRow[conns[i + 1]];
+			Node head = firstRow[conns[i]];
+			Node tail = secondRow[conns[i + 1]];
 			if (tail == null) {
 				tail = secondRow[conns[i + 1]] = new Node("node" + conns[i + 1]); //$NON-NLS-1$
 				tail.width = 78;
@@ -423,7 +496,7 @@ public class GraphTests {
 	 */
 	private static void shuffleConnections(int[] conns) {
 		for (int i = 0; i < conns.length; i += 2) {
-			int swap = ((int) (rand.nextFloat() * conns.length) % conns.length) / 2;
+			int swap = (rand.nextInt() * conns.length % conns.length) / 2;
 			swap *= 2;
 			int temp = conns[i];
 			conns[i] = conns[swap];
@@ -436,21 +509,29 @@ public class GraphTests {
 	}
 
 	public static DirectedGraph simpleGraph(int direction) {
-		Node a, b, c, d, e, f, g, h, i, x;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a")); //$NON-NLS-1$
-		nodes.add(e = new Node("node e")); //$NON-NLS-1$
-		nodes.add(b = new Node("node b")); //$NON-NLS-1$
-		nodes.add(c = new Node("node c")); //$NON-NLS-1$
-		nodes.add(d = new Node("node d")); //$NON-NLS-1$
-		nodes.add(x = new Node("node X")); //$NON-NLS-1$
-		nodes.add(f = new Node("node f")); //$NON-NLS-1$
-		nodes.add(g = new Node("node g")); //$NON-NLS-1$
-		nodes.add(h = new Node("node h")); //$NON-NLS-1$
-		nodes.add(i = new Node("node i")); //$NON-NLS-1$
-		// nodes.add(j = new Node("node j"));
+		Node a = new Node(NODE_A);
+		nodes.add(a);
+		Node e = new Node(NODE_E);
+		nodes.add(e);
+		Node b = new Node(NODE_B);
+		nodes.add(b);
+		Node c = new Node(NODE_C);
+		nodes.add(c);
+		Node d = new Node(NODE_D);
+		nodes.add(d);
+		Node x = new Node(NODE_X);
+		nodes.add(x);
+		Node f = new Node(NODE_F);
+		nodes.add(f);
+		Node g = new Node(NODE_G);
+		nodes.add(g);
+		Node h = new Node(NODE_H);
+		nodes.add(h);
+		Node i = new Node(NODE_I);
+		nodes.add(i);
 
 		edges.add(new Edge(a, i));
 		edges.add(new Edge(i, g));
@@ -463,7 +544,6 @@ public class GraphTests {
 		edges.add(new Edge(d, x));
 		edges.add(new Edge(x, e));
 		edges.add(new Edge(a, f));
-		// f.incoming.getEdge(0).weight = 4;
 		edges.add(new Edge(f, g));
 		edges.add(new Edge(f, h));
 		edges.add(new Edge(g, e));
@@ -471,7 +551,6 @@ public class GraphTests {
 
 		edges.add(new Edge(b, g));
 		edges.add(new Edge(f, d));
-		// edges.add(new Edge(c, h)); //This will force h onto the rank with d
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -483,17 +562,23 @@ public class GraphTests {
 	}
 
 	public static DirectedGraph test1(int direction) {
-		Node a, b, c, d, e, f, g;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a")); //$NON-NLS-1$
-		nodes.add(b = new Node("node b")); //$NON-NLS-1$
-		nodes.add(c = new Node("node c")); //$NON-NLS-1$
-		nodes.add(d = new Node("node d")); //$NON-NLS-1$
-		nodes.add(e = new Node("node e")); //$NON-NLS-1$
-		nodes.add(f = new Node("node f")); //$NON-NLS-1$
-		nodes.add(g = new Node("node g")); //$NON-NLS-1$
+		Node a = new Node(NODE_A);
+		nodes.add(a);
+		Node b = new Node(NODE_B);
+		nodes.add(b);
+		Node c = new Node(NODE_C);
+		nodes.add(c);
+		Node d = new Node(NODE_D);
+		nodes.add(d);
+		Node e = new Node(NODE_E);
+		nodes.add(e);
+		Node f = new Node(NODE_F);
+		nodes.add(f);
+		Node g = new Node(NODE_G);
+		nodes.add(g);
 
 		edges.add(new Edge(a, d));
 		edges.add(new Edge(b, d));
@@ -513,22 +598,21 @@ public class GraphTests {
 	}
 
 	public static DirectedGraph test2(int direction) {
-		Node a, b, c, d, e, f, g, h, i, j, k, l;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a")); //$NON-NLS-1$
-		nodes.add(b = new Node("node b")); //$NON-NLS-1$
-		nodes.add(c = new Node("node c")); //$NON-NLS-1$
-		nodes.add(d = new Node("node d")); //$NON-NLS-1$
-		nodes.add(e = new Node("node e")); //$NON-NLS-1$
-		nodes.add(f = new Node("node f")); //$NON-NLS-1$
-		// nodes.add(g = new Node("node g"));
-		// nodes.add(h = new Node("node h"));
-		// nodes.add(i = new Node("node i"));
-		// nodes.add(j = new Node("node j"));
-		// nodes.add(k = new Node("node k"));
-		// nodes.add(l = new Node("node l"));
+		Node a = new Node(NODE_A);
+		nodes.add(a);
+		Node b = new Node(NODE_B);
+		nodes.add(b);
+		Node c = new Node(NODE_C);
+		nodes.add(c);
+		Node d = new Node(NODE_D);
+		nodes.add(d);
+		Node e = new Node(NODE_E);
+		nodes.add(e);
+		Node f = new Node(NODE_F);
+		nodes.add(f);
 
 		edges.add(new Edge(a, b));
 		edges.add(new Edge(a, c));
@@ -547,14 +631,17 @@ public class GraphTests {
 	}
 
 	public static DirectedGraph test3(int direction) {
-		Node a, b, c, d;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a")); //$NON-NLS-1$
-		nodes.add(b = new Node("node b")); //$NON-NLS-1$
-		nodes.add(c = new Node("node c")); //$NON-NLS-1$
-		nodes.add(d = new Node("node d")); //$NON-NLS-1$
+		Node a = new Node(NODE_A);
+		nodes.add(a);
+		Node b = new Node(NODE_B);
+		nodes.add(b);
+		Node c = new Node(NODE_C);
+		nodes.add(c);
+		Node d = new Node(NODE_D);
+		nodes.add(d);
 
 		a.width = 80;
 		d.width = 75;
@@ -573,25 +660,31 @@ public class GraphTests {
 	}
 
 	public static DirectedGraph test4(int direction) {
-		Node a;
-		Node b, c, d;
-		Node e, f, g;
-		Node h, i, j;
-		Node k;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a")); //$NON-NLS-1$
-		nodes.add(b = new Node("node b")); //$NON-NLS-1$
-		nodes.add(c = new Node("node c")); //$NON-NLS-1$
-		nodes.add(d = new Node("node d")); //$NON-NLS-1$
-		nodes.add(e = new Node("node e")); //$NON-NLS-1$
-		nodes.add(f = new Node("node f")); //$NON-NLS-1$
-		nodes.add(g = new Node("node g")); //$NON-NLS-1$
-		nodes.add(h = new Node("node h")); //$NON-NLS-1$
-		nodes.add(i = new Node("node i")); //$NON-NLS-1$
-		nodes.add(j = new Node("node j")); //$NON-NLS-1$
-		nodes.add(k = new Node("node k")); //$NON-NLS-1$
+		Node a = new Node(NODE_A);
+		nodes.add(a);
+		Node b = new Node(NODE_B);
+		nodes.add(b);
+		Node c = new Node(NODE_C);
+		nodes.add(c);
+		Node d = new Node(NODE_D);
+		nodes.add(d);
+		Node e = new Node(NODE_E);
+		nodes.add(e);
+		Node f = new Node(NODE_F);
+		nodes.add(f);
+		Node g = new Node(NODE_G);
+		nodes.add(g);
+		Node h = new Node(NODE_H);
+		nodes.add(h);
+		Node i = new Node(NODE_I);
+		nodes.add(i);
+		Node j = new Node(NODE_J);
+		nodes.add(j);
+		Node k = new Node(NODE_K);
+		nodes.add(k);
 
 		edges.add(new Edge(a, b));
 		edges.add(new Edge(a, c));
@@ -622,26 +715,28 @@ public class GraphTests {
 	}
 
 	public static DirectedGraph tinyGraph(int direction) {
-		Node a, b, c, d, e, f, g;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a")); //$NON-NLS-1$
-		nodes.add(b = new Node("node b")); //$NON-NLS-1$
-		nodes.add(c = new Node("node c")); //$NON-NLS-1$
-		nodes.add(d = new Node("node d")); //$NON-NLS-1$
-		nodes.add(e = new Node("node e")); //$NON-NLS-1$
-		// nodes.add(f = new Node("node f"));
-		nodes.add(g = new Node("node g")); //$NON-NLS-1$
+		Node a = new Node(NODE_A);
+		nodes.add(a);
+		Node b = new Node(NODE_B);
+		nodes.add(b);
+		Node c = new Node(NODE_C);
+		nodes.add(c);
+		Node d = new Node(NODE_D);
+		nodes.add(d);
+		Node e = new Node(NODE_E);
+		nodes.add(e);
+		Node g = new Node(NODE_G);
+		nodes.add(g);
 
 		edges.add(new Edge(a, d));
 		edges.add(new Edge(c, b));
 		edges.add(new Edge(b, g, 1, 3));
 		edges.add(new Edge(c, d));
 		edges.add(new Edge(d, e));
-		// edges.add(new Edge(d, f));
 		edges.add(new Edge(d, g));
-		// edges.add(new Edge(c, g));
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -653,28 +748,27 @@ public class GraphTests {
 	}
 
 	public static DirectedGraph unstableGraph(int direction) {
-		Node a0, b0, c0, a1, b1, c1, a2, b2, c2;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a0 = new Node("node a0")); //$NON-NLS-1$
-		nodes.add(b0 = new Node("node b0")); //$NON-NLS-1$
-		nodes.add(c0 = new Node("node c0")); //$NON-NLS-1$
-		nodes.add(a1 = new Node("node a1")); //$NON-NLS-1$
-		nodes.add(b1 = new Node("node b1")); //$NON-NLS-1$
-		nodes.add(c1 = new Node("node c1")); //$NON-NLS-1$
-		nodes.add(a2 = new Node("node a2")); //$NON-NLS-1$
-		nodes.add(b2 = new Node("node b2")); //$NON-NLS-1$
-		nodes.add(c2 = new Node("node c2")); //$NON-NLS-1$
-
-		// edges.add(new Edge(ab, a0));
-		// edges.add(new Edge(ab, b0));
-		//
-		// edges.add(new Edge(ac, a0));
-		// edges.add(new Edge(ac, c0));
-		//
-		// edges.add(new Edge(bc, c0));
-		// edges.add(new Edge(bc, b0));
+		Node a0 = new Node(NODE_A0);
+		nodes.add(a0);
+		Node b0 = new Node(NODE_B0);
+		nodes.add(b0);
+		Node c0 = new Node(NODE_C0);
+		nodes.add(c0);
+		Node a1 = new Node(NODE_A1);
+		nodes.add(a1);
+		Node b1 = new Node(NODE_B1);
+		nodes.add(b1);
+		Node c1 = new Node(NODE_C1);
+		nodes.add(c1);
+		Node a2 = new Node(NODE_A2);
+		nodes.add(a2);
+		Node b2 = new Node(NODE_B2);
+		nodes.add(b2);
+		Node c2 = new Node(NODE_C2);
+		nodes.add(c2);
 
 		edges.add(new Edge(a0, a1, 1, 9));
 		edges.add(new Edge(a1, a2, 1, 9));
@@ -699,4 +793,7 @@ public class GraphTests {
 
 	}
 
+	private GraphTests() {
+		throw new UnsupportedOperationException();
+	}
 }

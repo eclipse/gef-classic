@@ -28,8 +28,6 @@ public class TextFlowFactory {
 	static void addFontSizes(Figure parent, int min, int max) {
 		for (int i = min; i < max; i++) {
 			TextFlow tf = new TextFlow(Integer.toString(i) + " pt. Font "); //$NON-NLS-1$
-			//		tf.setBackgroundColor(ColorConstants.lightGray);
-			//		tf.setForegroundColor(ColorConstants.yellow);
 			tf.setFont(new org.eclipse.swt.graphics.Font(org.eclipse.swt.widgets.Display.getDefault(), "Helvetica", i, //$NON-NLS-1$
 					org.eclipse.swt.SWT.NORMAL));
 			parent.add(tf);

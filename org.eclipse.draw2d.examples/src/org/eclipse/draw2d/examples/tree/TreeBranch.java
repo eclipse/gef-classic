@@ -135,8 +135,8 @@ public class TreeBranch extends Figure {
 		IFigure root = this;
 		Viewport port = null;
 		while (root.getParent() != null) {
-			if (root instanceof Viewport) {
-				port = ((Viewport) root);
+			if (root instanceof Viewport vp) {
+				port = vp;
 			}
 			root = root.getParent();
 		}

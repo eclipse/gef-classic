@@ -301,11 +301,11 @@ public class ShapeStylesExample {
 		shell.pack();
 	}
 
-	static abstract class StyleAxis {
+	abstract static class StyleAxis {
 		private final String name;
 		protected StyleItem[] elements;
 
-		public StyleAxis(String name, StyleItem[] elements) {
+		protected StyleAxis(String name, StyleItem[] elements) {
 			this.name = name;
 			this.elements = elements;
 		}
