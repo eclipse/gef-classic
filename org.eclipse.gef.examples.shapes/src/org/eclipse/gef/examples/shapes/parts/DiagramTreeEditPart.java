@@ -23,6 +23,7 @@ import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
 import org.eclipse.gef.examples.shapes.model.ModelElement;
+import org.eclipse.gef.examples.shapes.model.Shape;
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
 
 /**
@@ -105,7 +106,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<Shape> getModelChildren() {
 		return getModel().getChildren(); // a list of shapes
 	}
 

@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.text.MessageFormat;
 
 import org.eclipse.swt.widgets.Composite;
 
@@ -80,7 +81,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 	 * This WizardPage can create an empty .shapes file for the ShapesEditor.
 	 */
 	private class CreationPage extends WizardNewFileCreationPage {
-		private static final String DEFAULT_EXTENSION = ".shapes";
+		private static final String DEFAULT_EXTENSION = ".shapes"; //$NON-NLS-1$
 		private final IWorkbench workbench;
 
 		/**
@@ -91,10 +92,12 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 		 * @see ShapesCreationWizard#init(IWorkbench, IStructuredSelection)
 		 */
 		CreationPage(IWorkbench workbench, IStructuredSelection selection) {
-			super("shapeCreationPage1", selection);
+			super("shapeCreationPage1", selection); //$NON-NLS-1$
 			this.workbench = workbench;
-			setTitle("Create a new " + DEFAULT_EXTENSION + " file");
-			setDescription("Create a new " + DEFAULT_EXTENSION + " file");
+			setTitle(
+					MessageFormat.format(ShapesExampleMessages.ShapesCreationWizard_CreateANewFile, DEFAULT_EXTENSION));
+			setDescription(
+					MessageFormat.format(ShapesExampleMessages.ShapesCreationWizard_CreateANewFile, DEFAULT_EXTENSION));
 		}
 
 		/*
@@ -106,7 +109,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 		@Override
 		public void createControl(Composite parent) {
 			super.createControl(parent);
-			setFileName("shapesExample" + fileCount + DEFAULT_EXTENSION);
+			setFileName("shapesExample" + fileCount + DEFAULT_EXTENSION); //$NON-NLS-1$
 			setPageComplete(validatePage());
 		}
 
@@ -167,7 +170,8 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 			if (getFileName() != null && getFileName().endsWith(DEFAULT_EXTENSION)) {
 				return true;
 			}
-			setErrorMessage("The 'file' name must end with " + DEFAULT_EXTENSION);
+			setErrorMessage(MessageFormat.format(ShapesExampleMessages.ShapesCreationWizard_FileNameMustEndWith,
+					DEFAULT_EXTENSION));
 			return false;
 		}
 

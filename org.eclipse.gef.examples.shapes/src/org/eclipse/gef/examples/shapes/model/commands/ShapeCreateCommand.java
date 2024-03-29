@@ -17,6 +17,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.commands.Command;
 
+import org.eclipse.gef.examples.shapes.ShapesExampleMessages;
 import org.eclipse.gef.examples.shapes.model.Shape;
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
 
@@ -49,7 +50,7 @@ public class ShapeCreateCommand extends Command {
 		this.newShape = newShape;
 		this.parent = parent;
 		this.bounds = bounds;
-		setLabel("shape creation");
+		setLabel(ShapesExampleMessages.ShapeCreateCommand_ShapeCreation);
 	}
 
 	/**

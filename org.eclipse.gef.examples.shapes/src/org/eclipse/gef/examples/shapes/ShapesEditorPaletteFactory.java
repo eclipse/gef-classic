@@ -40,18 +40,18 @@ final class ShapesEditorPaletteFactory {
 
 	/** Create the "Shapes" drawer. */
 	private static PaletteContainer createShapesDrawer() {
-		PaletteDrawer componentsDrawer = new PaletteDrawer("Shapes");
+		PaletteDrawer componentsDrawer = new PaletteDrawer(ShapesExampleMessages.ShapesEditorPaletteFactory_Shapes);
 
-		CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry("Ellipse",
-				"Create an elliptical shape", EllipticalShape.class, new SimpleFactory<>(EllipticalShape.class),
-				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/ellipse16.gif"),
-				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/ellipse24.gif"));
+		CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry(ShapesExampleMessages.ShapesEditorPaletteFactory_Ellipse,
+				ShapesExampleMessages.ShapesEditorPaletteFactory_CreateEllipticalShape, EllipticalShape.class, new SimpleFactory<>(EllipticalShape.class),
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/ellipse16.gif"), //$NON-NLS-1$
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/ellipse24.gif")); //$NON-NLS-1$
 		componentsDrawer.add(component);
 
-		component = new CombinedTemplateCreationEntry("Rectangle", "Create a rectangular shape", RectangularShape.class,
+		component = new CombinedTemplateCreationEntry(ShapesExampleMessages.ShapesEditorPaletteFactory_Rectangle, ShapesExampleMessages.ShapesEditorPaletteFactory_CreateRectangularShape, RectangularShape.class,
 				new SimpleFactory<>(RectangularShape.class),
-				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/rectangle16.gif"),
-				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/rectangle24.gif"));
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/rectangle16.gif"), //$NON-NLS-1$
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/rectangle24.gif")); //$NON-NLS-1$
 		componentsDrawer.add(component);
 
 		return componentsDrawer;
@@ -72,7 +72,7 @@ final class ShapesEditorPaletteFactory {
 
 	/** Create the "Tools" group. */
 	private static PaletteContainer createToolsGroup(PaletteRoot palette) {
-		PaletteToolbar toolbar = new PaletteToolbar("Tools");
+		PaletteToolbar toolbar = new PaletteToolbar(ShapesExampleMessages.ShapesEditorPaletteFactory_Tools);
 
 		// Add a selection tool to the group
 		ToolEntry tool = new PanningSelectionToolEntry();
@@ -83,7 +83,7 @@ final class ShapesEditorPaletteFactory {
 		toolbar.add(new MarqueeToolEntry());
 
 		// Add (solid-line) connection tool
-		tool = new ConnectionCreationToolEntry("Solid connection", "Create a solid-line connection",
+		tool = new ConnectionCreationToolEntry(ShapesExampleMessages.ShapesEditorPaletteFactory_SolidConnection, ShapesExampleMessages.ShapesEditorPaletteFactory_CreateSolidLineConnection,
 				new CreationFactory() {
 					@Override
 					public Object getNewObject() {
@@ -96,12 +96,12 @@ final class ShapesEditorPaletteFactory {
 					public Object getObjectType() {
 						return Connection.SOLID_CONNECTION;
 					}
-				}, ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_s16.gif"),
-				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_s24.gif"));
+				}, ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_s16.gif"), //$NON-NLS-1$
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_s24.gif")); //$NON-NLS-1$
 		toolbar.add(tool);
 
 		// Add (dashed-line) connection tool
-		tool = new ConnectionCreationToolEntry("Dashed connection", "Create a dashed-line connection",
+		tool = new ConnectionCreationToolEntry(ShapesExampleMessages.ShapesEditorPaletteFactory_DashedConnection, ShapesExampleMessages.ShapesEditorPaletteFactory_CreateDashedLineConnection,
 				new CreationFactory() {
 					@Override
 					public Object getNewObject() {
@@ -114,8 +114,8 @@ final class ShapesEditorPaletteFactory {
 					public Object getObjectType() {
 						return Connection.DASHED_CONNECTION;
 					}
-				}, ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_d16.gif"),
-				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_d24.gif"));
+				}, ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_d16.gif"), //$NON-NLS-1$
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_d24.gif")); //$NON-NLS-1$
 		toolbar.add(tool);
 
 		return toolbar;

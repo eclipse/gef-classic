@@ -14,6 +14,7 @@ package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.gef.commands.Command;
 
+import org.eclipse.gef.examples.shapes.ShapesExampleMessages;
 import org.eclipse.gef.examples.shapes.model.Connection;
 import org.eclipse.gef.examples.shapes.model.Shape;
 
@@ -48,7 +49,7 @@ import org.eclipse.gef.examples.shapes.model.Shape;
 public class ConnectionReconnectCommand extends Command {
 
 	/** The connection instance to reconnect. */
-	private Connection connection;
+	private final Connection connection;
 	/** The new source endpoint. */
 	private Shape newSource;
 	/** The new target endpoint. */
@@ -83,7 +84,8 @@ public class ConnectionReconnectCommand extends Command {
 	public boolean canExecute() {
 		if (newSource != null) {
 			return checkSourceReconnection();
-		} else if (newTarget != null) {
+		}
+		if (newTarget != null) {
 			return checkTargetReconnection();
 		}
 		return false;
@@ -128,7 +130,7 @@ public class ConnectionReconnectCommand extends Command {
 		} else if (newTarget != null) {
 			connection.reconnect(oldSource, newTarget);
 		} else {
-			throw new IllegalStateException("Should not happen");
+			throw new IllegalStateException("Should not happen"); //$NON-NLS-1$
 		}
 	}
 
@@ -150,7 +152,7 @@ public class ConnectionReconnectCommand extends Command {
 		if (connectionSource == null) {
 			throw new IllegalArgumentException();
 		}
-		setLabel("move connection startpoint");
+		setLabel(ShapesExampleMessages.ConnectionReconnectCommand_MoveConnectionStartPoint);
 		newSource = connectionSource;
 		newTarget = null;
 	}
@@ -173,7 +175,7 @@ public class ConnectionReconnectCommand extends Command {
 		if (connectionTarget == null) {
 			throw new IllegalArgumentException();
 		}
-		setLabel("move connection endpoint");
+		setLabel(ShapesExampleMessages.ConnectionReconnectCommand_MoveConnectionEndPoint);
 		newSource = null;
 		newTarget = connectionTarget;
 	}

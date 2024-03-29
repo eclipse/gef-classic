@@ -26,6 +26,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
+import org.eclipse.gef.examples.shapes.ShapesExampleMessages;
 import org.eclipse.gef.examples.shapes.ShapesPlugin;
 
 /**
@@ -89,9 +90,9 @@ public abstract class Shape extends ModelElement {
 	 * @see #setPropertyValue(Object, Object)
 	 */
 	static {
-		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(XPOS_PROP, "X"), // id and description pair
-				new TextPropertyDescriptor(YPOS_PROP, "Y"), new TextPropertyDescriptor(WIDTH_PROP, "Width"),
-				new TextPropertyDescriptor(HEIGHT_PROP, "Height"), };
+		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(XPOS_PROP, ShapesExampleMessages.Shape_X), // id and description pair
+				new TextPropertyDescriptor(YPOS_PROP, ShapesExampleMessages.Shape_Y), new TextPropertyDescriptor(WIDTH_PROP, ShapesExampleMessages.Shape_Width),
+				new TextPropertyDescriptor(HEIGHT_PROP, ShapesExampleMessages.Shape_Height), };
 		// use a custom cell editor validator for all four array entries
 		for (IPropertyDescriptor descriptor : descriptors) {
 			((PropertyDescriptor) descriptor).setValidator(value -> {
@@ -99,9 +100,9 @@ public abstract class Shape extends ModelElement {
 				try {
 					intValue = Integer.parseInt((String) value);
 				} catch (NumberFormatException exc) {
-					return "Not a number";
+					return ShapesExampleMessages.Shape_NotANumber;
 				}
-				return (intValue >= 0) ? null : "Value must be >=  0";
+				return (intValue >= 0) ? null : ShapesExampleMessages.Shape_ValueMustBeGreaterOrEqualZero;
 			});
 		}
 	} // static

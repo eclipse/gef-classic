@@ -24,9 +24,9 @@ import java.util.List;
 public class ShapesDiagram extends ModelElement {
 
 	/** Property ID to use when a child is added to this diagram. */
-	public static final String CHILD_ADDED_PROP = "ShapesDiagram.ChildAdded";
+	public static final String CHILD_ADDED_PROP = "ShapesDiagram.ChildAdded"; //$NON-NLS-1$
 	/** Property ID to use when a child is removed from this diagram. */
-	public static final String CHILD_REMOVED_PROP = "ShapesDiagram.ChildRemoved";
+	public static final String CHILD_REMOVED_PROP = "ShapesDiagram.ChildRemoved"; //$NON-NLS-1$
 	private static final long serialVersionUID = 1;
 	private final List<Shape> shapes = new ArrayList<>();
 

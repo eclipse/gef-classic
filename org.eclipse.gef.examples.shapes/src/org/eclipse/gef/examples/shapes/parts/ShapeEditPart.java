@@ -162,12 +162,12 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	private IFigure createFigureForModel() {
 		if (getModel() instanceof EllipticalShape) {
 			return new Ellipse();
-		} else if (getModel() instanceof RectangularShape) {
-			return new RectangleFigure();
-		} else {
-			// if Shapes gets extended the conditions above must be updated
-			throw new IllegalArgumentException();
 		}
+		if (getModel() instanceof RectangularShape) {
+			return new RectangleFigure();
+		}
+		// if Shapes gets extended the conditions above must be updated
+		throw new IllegalArgumentException();
 	}
 
 	/**
@@ -195,7 +195,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 				anchor = new ChopboxAnchor(getFigure());
 			} else {
 				// if Shapes gets extended the conditions above must be updated
-				throw new IllegalArgumentException("unexpected model");
+				throw new IllegalArgumentException("unexpected model"); //$NON-NLS-1$
 			}
 		}
 		return anchor;
@@ -209,7 +209,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * ()
 	 */
 	@Override
-	protected List getModelSourceConnections() {
+	protected List<Connection> getModelSourceConnections() {
 		return getModel().getSourceConnections();
 	}
 
@@ -221,7 +221,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * ()
 	 */
 	@Override
-	protected List getModelTargetConnections() {
+	protected List<Connection> getModelTargetConnections() {
 		return getModel().getTargetConnections();
 	}
 

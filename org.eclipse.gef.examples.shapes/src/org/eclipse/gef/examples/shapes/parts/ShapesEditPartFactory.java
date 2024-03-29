@@ -56,8 +56,8 @@ public class ShapesEditPartFactory implements EditPartFactory {
 		if (modelElement instanceof Connection) {
 			return new ConnectionEditPart();
 		}
-		throw new RuntimeException("Can't create part for model element: "
-				+ ((modelElement != null) ? modelElement.getClass().getName() : "null"));
+		throw new RuntimeException("Can't create part for model element: " //$NON-NLS-1$
+				+ ((modelElement != null) ? modelElement.getClass().getName() : "null")); //$NON-NLS-1$
 	}
 
 }
