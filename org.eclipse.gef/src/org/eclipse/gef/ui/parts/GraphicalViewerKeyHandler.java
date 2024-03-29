@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,7 +14,6 @@ package org.eclipse.gef.ui.parts;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -75,6 +74,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * @return <code>true</code> if key pressed indicates a connection
 	 *         traversal/selection
 	 */
+	@SuppressWarnings("static-method")
 	boolean acceptConnection(KeyEvent event) {
 		return event.character == '/' || event.character == '?' || event.character == '\\'
 				|| event.character == '\u001c' || event.character == '|';
@@ -84,6 +84,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * @return <code>true</code> if the keys pressed indicate to traverse inside a
 	 *         container
 	 */
+	@SuppressWarnings("static-method")
 	boolean acceptIntoContainer(KeyEvent event) {
 		return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_DOWN);
 	}
@@ -94,13 +95,8 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 */
 	boolean acceptLeaveConnection(KeyEvent event) {
 		int key = event.keyCode;
-		if (getFocusEditPart() instanceof ConnectionEditPart) {
-			if ((key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT) || (key == SWT.ARROW_DOWN)
-					|| (key == SWT.ARROW_LEFT)) {
-				return true;
-			}
-		}
-		return false;
+		return ((getFocusEditPart() instanceof ConnectionEditPart) && ((key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT)
+				|| (key == SWT.ARROW_DOWN) || (key == SWT.ARROW_LEFT)));
 	}
 
 	/**
@@ -117,10 +113,12 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * @return <code>true</code> if the keys pressed indicate to traverse to the
 	 *         parent of the currently focused EditPart
 	 */
+	@SuppressWarnings("static-method")
 	boolean acceptOutOf(KeyEvent event) {
 		return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_UP);
 	}
 
+	@SuppressWarnings("static-method")
 	boolean acceptScroll(KeyEvent event) {
 		return ((event.stateMask & SWT.CTRL) != 0 && (event.stateMask & SWT.SHIFT) != 0
 				&& (event.keyCode == SWT.ARROW_DOWN || event.keyCode == SWT.ARROW_LEFT
@@ -172,16 +170,14 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * @param exclude   The EditPart to be excluded from the search
 	 *
 	 */
-	GraphicalEditPart findSibling(List siblings, Point pStart, int direction, EditPart exclude) {
-		GraphicalEditPart epCurrent;
+	GraphicalEditPart findSibling(List<? extends GraphicalEditPart> siblings, Point pStart, int direction,
+			EditPart exclude) {
 		GraphicalEditPart epFinal = null;
 		IFigure figure;
 		Point pCurrent;
 		int distance = Integer.MAX_VALUE;
 
-		Iterator iter = getValidNavigationTargets(siblings).iterator();
-		while (iter.hasNext()) {
-			epCurrent = (GraphicalEditPart) iter.next();
+		for (GraphicalEditPart epCurrent : getValidNavigationTargets(siblings)) {
 			if (epCurrent == exclude) {
 				continue;
 			}
@@ -207,6 +203,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 *
 	 * @return the center of the given figure
 	 */
+	@SuppressWarnings("static-method")
 	Point getNavigationPoint(IFigure figure) {
 		return figure.getBounds().getCenter();
 	}
@@ -240,12 +237,12 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * @return a list of navigation editparts
 	 * @since 3.4
 	 */
-	protected List getNavigationSiblings() {
-		EditPart focusPart = getFocusEditPart();
+	protected List<? extends GraphicalEditPart> getNavigationSiblings() {
+		GraphicalEditPart focusPart = getFocusEditPart();
 		if (focusPart.getParent() != null) {
-			return focusPart.getParent().getChildren();
+			return (List<? extends GraphicalEditPart>) focusPart.getParent().getChildren();
 		}
-		List<EditPart> list = new ArrayList<>(1);
+		List<GraphicalEditPart> list = new ArrayList<>(1);
 		list.add(focusPart);
 		return list;
 	}
@@ -274,7 +271,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 */
 	@Override
 	public boolean keyPressed(KeyEvent event) {
-		// if CTRL + SPACE is pressed, event.character == ' ' does not hold;
+		// if CTRL + SPACE is pressed, event.character == ' ' does not hold
 		// therefore using the keyCode to decide whether SPACE was pressed (with
 		// or without modifiers).
 		if (event.keyCode == 32) {
@@ -347,6 +344,9 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 			if (navigateJumpSibling(event, PositionConstants.NORTH)) {
 				return true;
 			}
+			break;
+		default:
+			break;
 		}
 		return super.keyPressed(event);
 	}
@@ -358,8 +358,8 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		GraphicalEditPart focus = getFocusEditPart();
 		ConnectionEditPart current = null;
 		GraphicalEditPart node = getCachedNode();
-		if (focus instanceof ConnectionEditPart) {
-			current = (ConnectionEditPart) focus;
+		if (focus instanceof ConnectionEditPart cep) {
+			current = cep;
 			if (node == null || (node != current.getSource() && node != current.getTarget())) {
 				node = (GraphicalEditPart) current.getSource();
 				counter = 0;
@@ -406,6 +406,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	/**
 	 * Not yet implemented.
 	 */
+	@SuppressWarnings("static-method")
 	boolean navigateJumpSibling(KeyEvent event, int direction) {
 		// TODO: Implement navigateJumpSibling() (for PGUP, PGDN, HOME and END
 		// key events)
@@ -433,7 +434,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * @param direction PositionConstants.* indicating the direction in which to
 	 *                  traverse
 	 */
-	boolean navigateNextSibling(KeyEvent event, int direction, List list) {
+	boolean navigateNextSibling(KeyEvent event, int direction, List<? extends GraphicalEditPart> list) {
 		GraphicalEditPart epStart = getFocusEditPart();
 		IFigure figure = epStart.getFigure();
 		Point pStart = getNavigationPoint(figure);
@@ -545,6 +546,9 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 			} else {
 				figCanvas.scrollToX(loc.x + area.width);
 			}
+			break;
+		default:
+			break;
 		}
 	}
 
