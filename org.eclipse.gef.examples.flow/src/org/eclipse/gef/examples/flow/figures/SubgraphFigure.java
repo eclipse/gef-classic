@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -32,9 +32,11 @@ public class SubgraphFigure extends Figure {
 
 	public SubgraphFigure(IFigure header, IFigure footer) {
 		contents = new Container(new DummyLayout());
+		this.header = header;
+		this.footer = footer;
 		add(contents);
-		add(this.header = header);
-		add(this.footer = footer);
+		add(this.header);
+		add(this.footer);
 	}
 
 	public IFigure getContents() {
@@ -76,7 +78,7 @@ public class SubgraphFigure extends Figure {
 		header.setLocation(rect.getLocation());
 	}
 
-	public void setSelected(boolean value) {
+	public void setSelected(boolean selected) {
+		// in the default case we don't need to do anything
 	}
-
 }

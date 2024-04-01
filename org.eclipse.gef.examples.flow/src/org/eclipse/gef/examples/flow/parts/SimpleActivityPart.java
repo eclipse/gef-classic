@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2023 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,8 +14,6 @@ package org.eclipse.gef.examples.flow.parts;
 
 import java.util.Map;
 
-import org.eclipse.jface.viewers.TextCellEditor;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.PositionConstants;
@@ -23,6 +21,8 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Subgraph;
+
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import org.eclipse.gef.examples.flow.FlowImages;
 import org.eclipse.gef.examples.flow.figures.SimpleActivityLabel;
@@ -33,7 +33,8 @@ import org.eclipse.gef.examples.flow.figures.SimpleActivityLabel;
 public class SimpleActivityPart extends ActivityPart {
 
 	@Override
-	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
+	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s,
+			Map<AbstractGraphicalEditPart, Object> map) {
 		Node n = new Node(this, s);
 		n.outgoingOffset = getAnchorOffset();
 		n.incomingOffset = getAnchorOffset();
@@ -69,7 +70,7 @@ public class SimpleActivityPart extends ActivityPart {
 	protected void performDirectEdit() {
 		if (manager == null) {
 			Label l = getFigure();
-			manager = new ActivityDirectEditManager(this, TextCellEditor.class, new ActivityCellEditorLocator(l), l);
+			manager = new ActivityDirectEditManager(this, new ActivityCellEditorLocator(l), l);
 		}
 		manager.show();
 	}

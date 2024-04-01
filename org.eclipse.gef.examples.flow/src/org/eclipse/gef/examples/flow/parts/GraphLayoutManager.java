@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -22,9 +22,11 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.CompoundDirectedGraphLayout;
 
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+
 class GraphLayoutManager extends AbstractLayout {
 
-	private ActivityDiagramPart diagram;
+	private final ActivityDiagramPart diagram;
 
 	GraphLayoutManager(ActivityDiagramPart diagram) {
 		this.diagram = diagram;
@@ -47,7 +49,7 @@ class GraphLayoutManager extends AbstractLayout {
 		}
 
 		CompoundDirectedGraph graph = new CompoundDirectedGraph();
-		Map partsToNodes = new HashMap();
+		Map<AbstractGraphicalEditPart, Object> partsToNodes = new HashMap<>();
 		diagram.contributeNodesToGraph(graph, null, partsToNodes);
 		diagram.contributeEdgesToGraph(graph, partsToNodes);
 		new CompoundDirectedGraphLayout().visit(graph);

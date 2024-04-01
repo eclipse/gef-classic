@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -19,6 +19,8 @@ import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+
 import org.eclipse.gef.examples.flow.figures.SequentialActivityFigure;
 
 /**
@@ -35,11 +37,11 @@ public class SequentialActivityPart extends StructuredActivityPart {
 	}
 
 	/**
-	 * @see ActivityPart#contributeEdgesToGraph(org.eclipse.graph.CompoundDirectedGraph,
+	 * @see ActivityPart#contributeEdgesToGraph(org.eclipse.draw2d.graph.CompoundDirectedGraph,
 	 *      java.util.Map)
 	 */
 	@Override
-	public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map map) {
+	public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map<AbstractGraphicalEditPart, Object> map) {
 		super.contributeEdgesToGraph(graph, map);
 		Node prev = null;
 		for (ActivityPart a : getChildren()) {

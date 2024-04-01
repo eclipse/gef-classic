@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -15,7 +15,6 @@ package org.eclipse.gef.examples.flow.figures;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
@@ -23,19 +22,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class SequentialActivityFigure extends SubgraphFigure {
 
-	static final MarginBorder MARGIN_BORDER = new MarginBorder(0, 8, 0, 0);
+	private static final MarginBorder MARGIN_BORDER = new MarginBorder(0, 8, 0, 0);
 
-	static final PointList ARROW = new PointList(3);
-	{
-		ARROW.addPoint(0, 0);
-		ARROW.addPoint(10, 0);
-		ARROW.addPoint(5, 5);
-	}
-
-	/**
-	 * @param header
-	 * @param footer
-	 */
 	public SequentialActivityFigure() {
 		super(new StartTag(""), new EndTag("")); //$NON-NLS-1$ //$NON-NLS-2$
 		setBorder(MARGIN_BORDER);

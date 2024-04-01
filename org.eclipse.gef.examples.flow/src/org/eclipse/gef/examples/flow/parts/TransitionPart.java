@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2023 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -31,6 +31,7 @@ import org.eclipse.draw2d.graph.NodeList;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
 import org.eclipse.gef.examples.flow.policies.TransitionEditPolicy;
@@ -40,7 +41,7 @@ import org.eclipse.gef.examples.flow.policies.TransitionEditPolicy;
  */
 public class TransitionPart extends AbstractConnectionEditPart {
 
-	protected void applyGraphResults(CompoundDirectedGraph graph, Map<ActivityPart, Object> map) {
+	protected void applyGraphResults(CompoundDirectedGraph graph, Map<AbstractGraphicalEditPart, Object> map) {
 		Edge e = (Edge) map.get(this);
 		NodeList nodes = e.vNodes;
 		PolylineConnection conn = (PolylineConnection) getConnectionFigure();
@@ -60,7 +61,7 @@ public class TransitionPart extends AbstractConnectionEditPart {
 			}
 			conn.setRoutingConstraint(bends);
 		} else {
-			conn.setRoutingConstraint(Collections.EMPTY_LIST);
+			conn.setRoutingConstraint(Collections.emptyList());
 		}
 	}
 
@@ -106,7 +107,7 @@ public class TransitionPart extends AbstractConnectionEditPart {
 		}
 	}
 
-	public void contributeToGraph(CompoundDirectedGraph graph, Map map) {
+	public void contributeToGraph(CompoundDirectedGraph graph, Map<AbstractGraphicalEditPart, Object> map) {
 		GraphAnimation.recordInitialState(getConnectionFigure());
 		Node source = (Node) map.get(getSource());
 		Node target = (Node) map.get(getTarget());

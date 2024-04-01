@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2023 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -22,6 +22,7 @@ import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEventListener;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
 import org.eclipse.gef.examples.flow.policies.ActivityContainerEditPolicy;
@@ -45,7 +46,8 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 	};
 
 	@Override
-	protected void applyOwnResults(CompoundDirectedGraph graph, Map map) {
+	protected void applyOwnResults(CompoundDirectedGraph graph, Map<AbstractGraphicalEditPart, Object> map) {
+		// we don't want to do anything here.
 	}
 
 	/**
@@ -121,6 +123,7 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 	 */
 	@Override
 	protected void refreshVisuals() {
+		// we don't want to do anything here.
 	}
 
 }

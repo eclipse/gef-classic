@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,7 +13,6 @@
 package org.eclipse.gef.examples.flow.parts;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.draw2d.Connection;
@@ -35,20 +34,15 @@ public class GraphAnimation {
 	static long start = -1;
 	static long finish;
 	static Viewport viewport;
-	// static IFigure trackMe;
-	// static IFigure showMe;
-	// static Point trackLocation;
 
 	static boolean PLAYBACK;
 	static boolean RECORDING;
 
-	static Map initialStates;
-	static Map finalStates;
+	static Map<IFigure, Object> initialStates;
+	static Map<IFigure, Object> finalStates;
 
 	static void end() {
-		Iterator iter = initialStates.keySet().iterator();
-		while (iter.hasNext()) {
-			IFigure f = ((IFigure) iter.next());
+		for (IFigure f : initialStates.keySet()) {
 			f.revalidate();
 			f.setVisible(true);
 		}
@@ -74,20 +68,17 @@ public class GraphAnimation {
 			root = root.getParent();
 		}
 
-		initialStates = new HashMap();
-		finalStates = new HashMap();
+		initialStates = new HashMap<>();
+		finalStates = new HashMap<>();
 
 		// This part records all layout results.
 		root.validate();
-		Iterator iter = initialStates.keySet().iterator();
-		if (!iter.hasNext()) {
-			// Nothing layed out, so abort the animation
+		if (initialStates.isEmpty()) {
+			// Nothing laid out, so abort the animation
 			RECORDING = false;
 			return false;
 		}
-		while (iter.hasNext()) {
-			recordFinalState((IFigure) iter.next());
-		}
+		initialStates.keySet().forEach(GraphAnimation::recordFinalState);
 
 		start = System.currentTimeMillis();
 		finish = start + DURATION;
@@ -110,7 +101,8 @@ public class GraphAnimation {
 			return true;
 		}
 		if (list1.size() == list2.size()) {
-			Point pt1 = new Point(), pt2 = new Point();
+			Point pt1 = new Point();
+			Point pt2 = new Point();
 			PointList points = conn.getPoints();
 			points.removeAllPoints();
 			for (int i = 0; i < list1.size(); i++) {
@@ -130,10 +122,9 @@ public class GraphAnimation {
 			return false;
 		}
 
-		Rectangle rect1, rect2;
 		for (IFigure child : container.getChildren()) {
-			rect1 = (Rectangle) initialStates.get(child);
-			rect2 = (Rectangle) finalStates.get(child);
+			Rectangle rect1 = (Rectangle) initialStates.get(child);
+			Rectangle rect2 = (Rectangle) finalStates.get(child);
 			if (rect2 == null) {
 				continue;
 			}
@@ -141,7 +132,6 @@ public class GraphAnimation {
 					(int) Math.round(progress * rect2.y + (1 - progress) * rect1.y),
 					(int) Math.round(progress * rect2.width + (1 - progress) * rect1.width),
 					(int) Math.round(progress * rect2.height + (1 - progress) * rect1.height)));
-			// child.invalidate();
 		}
 		return true;
 	}
@@ -152,7 +142,8 @@ public class GraphAnimation {
 		PointList points2 = conn.getPoints().getCopy();
 
 		if (points1 != null && points1.size() != points2.size()) {
-			Point p = new Point(), q = new Point();
+			Point p = new Point();
+			Point q = new Point();
 
 			int size1 = points1.size() - 1;
 			int size2 = points2.size() - 1;
@@ -168,7 +159,7 @@ public class GraphAnimation {
 
 			while (i1 > 0 || i2 > 0) {
 				if (Math.abs(current1 - current2) < 0.1 && i1 > 0 && i2 > 0) {
-					// Both points are the same, use them and go on;
+					// Both points are the same, use them and go on
 					prev1 = current1;
 					prev2 = current2;
 					i1--;
@@ -181,8 +172,8 @@ public class GraphAnimation {
 					points1.getPoint(p, i1);
 					points1.getPoint(q, i1 + 1);
 
-					p.x = (int) (((q.x * (current2 - current1) + p.x * (prev1 - current2)) / (prev1 - current1)));
-					p.y = (int) (((q.y * (current2 - current1) + p.y * (prev1 - current2)) / (prev1 - current1)));
+					p.x = (int) ((q.x * (current2 - current1) + p.x * (prev1 - current2)) / (prev1 - current1));
+					p.y = (int) ((q.y * (current2 - current1) + p.y * (prev1 - current2)) / (prev1 - current1));
 
 					points1.insertPoint(p, i1 + 1);
 
@@ -197,8 +188,8 @@ public class GraphAnimation {
 					points2.getPoint(p, i2);
 					points2.getPoint(q, i2 + 1);
 
-					p.x = (int) (((q.x * (current1 - current2) + p.x * (prev2 - current1)) / (prev2 - current2)));
-					p.y = (int) (((q.y * (current1 - current2) + p.y * (prev2 - current1)) / (prev2 - current2)));
+					p.x = (int) ((q.x * (current1 - current2) + p.x * (prev2 - current1)) / (prev2 - current2));
+					p.y = (int) ((q.y * (current1 - current2) + p.y * (prev2 - current1)) / (prev2 - current2));
 
 					points2.insertPoint(p, i2 + 1);
 
@@ -212,8 +203,8 @@ public class GraphAnimation {
 	}
 
 	static void recordFinalState(IFigure child) {
-		if (child instanceof Connection) {
-			recordFinalState((Connection) child);
+		if (child instanceof Connection conn) {
+			recordFinalState(conn);
 			return;
 		}
 		Rectangle rect2 = child.getBounds().getCopy();
@@ -250,7 +241,7 @@ public class GraphAnimation {
 	}
 
 	static void swap() {
-		Map temp = finalStates;
+		Map<IFigure, Object> temp = finalStates;
 		finalStates = initialStates;
 		initialStates = temp;
 	}
@@ -259,10 +250,8 @@ public class GraphAnimation {
 		current = System.currentTimeMillis() + 30;
 		progress = (double) (current - start) / (finish - start);
 		progress = Math.min(progress, 0.999);
-		Iterator iter = initialStates.keySet().iterator();
-
-		while (iter.hasNext()) {
-			((IFigure) iter.next()).revalidate();
+		for (IFigure element : initialStates.keySet()) {
+			element.revalidate();
 		}
 		viewport.validate();
 
@@ -272,6 +261,10 @@ public class GraphAnimation {
 		// trackLocation = trackMe.getBounds().getLocation();
 
 		return current < finish;
+	}
+
+	private GraphAnimation() {
+		throw new UnsupportedOperationException("Utility class shell not be instantiated!"); //$NON-NLS-1$
 	}
 
 }
