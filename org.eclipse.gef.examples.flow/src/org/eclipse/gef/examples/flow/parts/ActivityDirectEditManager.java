@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -20,6 +20,8 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.jface.viewers.TextCellEditor;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
@@ -43,13 +45,11 @@ public class ActivityDirectEditManager extends DirectEditManager {
 	/**
 	 * Creates a new ActivityDirectEditManager with the given attributes.
 	 *
-	 * @param source     the source EditPart
-	 * @param editorType type of editor
-	 * @param locator    the CellEditorLocator
+	 * @param source  the source EditPart
+	 * @param locator the CellEditorLocator
 	 */
-	public ActivityDirectEditManager(GraphicalEditPart source, Class editorType, CellEditorLocator locator,
-			Label label) {
-		super(source, editorType, locator);
+	public ActivityDirectEditManager(GraphicalEditPart source, CellEditorLocator locator, Label label) {
+		super(source, TextCellEditor.class, locator);
 		activityLabel = label;
 	}
 
@@ -73,22 +73,7 @@ public class ActivityDirectEditManager extends DirectEditManager {
 	@Override
 	protected void initCellEditor() {
 		Text text = (Text) getCellEditor().getControl();
-		verifyListener = new VerifyListener() {
-			@Override
-			public void verifyText(VerifyEvent event) {
-				Text text = (Text) getCellEditor().getControl();
-				String oldText = text.getText();
-				String leftText = oldText.substring(0, event.start);
-				String rightText = oldText.substring(event.end, oldText.length());
-				GC gc = new GC(text);
-				Point size = gc.textExtent(leftText + event.text + rightText);
-				gc.dispose();
-				if (size.x != 0) {
-					size = text.computeSize(size.x, SWT.DEFAULT);
-				}
-				getCellEditor().getControl().setSize(size.x, size.y);
-			}
-		};
+		verifyListener = this::verifyText;
 		text.addVerifyListener(verifyListener);
 
 		String initialLabelText = activityLabel.getText();
@@ -113,6 +98,20 @@ public class ActivityDirectEditManager extends DirectEditManager {
 		Text text = (Text) getCellEditor().getControl();
 		text.removeVerifyListener(verifyListener);
 		verifyListener = null;
+	}
+
+	private void verifyText(VerifyEvent event) {
+		Text text = (Text) getCellEditor().getControl();
+		String oldText = text.getText();
+		String leftText = oldText.substring(0, event.start);
+		String rightText = oldText.substring(event.end, oldText.length());
+		GC gc = new GC(text);
+		Point size = gc.textExtent(leftText + event.text + rightText);
+		gc.dispose();
+		if (size.x != 0) {
+			size = text.computeSize(size.x, SWT.DEFAULT);
+		}
+		getCellEditor().getControl().setSize(size.x, size.y);
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -23,11 +23,11 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 public abstract class FlowElement implements IPropertySource, Cloneable, Serializable {
 
-	public static final String CHILDREN = "Children", //$NON-NLS-1$
-			INPUTS = "inputs", //$NON-NLS-1$
-			OUTPUTS = "outputs"; //$NON-NLS-1$
+	public static final String CHILDREN = "Children"; //$NON-NLS-1$
+	public static final String INPUTS = "inputs"; //$NON-NLS-1$
+	public static final String OUTPUTS = "outputs"; //$NON-NLS-1$
 
-	transient protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+	protected transient PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	static final long serialVersionUID = 1;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {

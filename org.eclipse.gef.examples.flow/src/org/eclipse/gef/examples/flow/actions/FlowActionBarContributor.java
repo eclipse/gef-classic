@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -53,6 +53,7 @@ public class FlowActionBarContributor extends ActionBarContributor {
 	 */
 	@Override
 	protected void declareGlobalActionKeys() {
+		// we don't want global action keys
 	}
 
 }

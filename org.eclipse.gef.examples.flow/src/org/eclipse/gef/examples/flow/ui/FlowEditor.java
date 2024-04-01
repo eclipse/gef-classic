@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2023 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -24,7 +24,6 @@ import java.util.EventObject;
 import org.eclipse.swt.SWT;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -106,9 +105,11 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	 * @throws IOException
 	 */
 	protected void createOutputStream(OutputStream os) throws IOException {
-		ObjectOutputStream out = new ObjectOutputStream(os);
-		out.writeObject(diagram);
-		out.close();
+		try (ObjectOutputStream out = new ObjectOutputStream(os)) {
+			out.writeObject(diagram);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -188,6 +189,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 					file.create(new ByteArrayInputStream(out.toByteArray()), true, monitor);
 				} catch (Exception e) {
 					e.printStackTrace();
+					Thread.currentThread().interrupt();
 				}
 			}
 		};
@@ -198,6 +200,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 			getCommandStack().markSaveLocation();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -223,9 +226,6 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 		return root;
 	}
 
-	public void gotoMarker(IMarker marker) {
-	}
-
 	/**
 	 * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
 	 */
@@ -242,11 +242,9 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 		super.setInput(input);
 
 		IFile file = ((IFileEditorInput) input).getFile();
-		try {
-			InputStream is = file.getContents(false);
-			ObjectInputStream ois = new ObjectInputStream(is);
+		try (InputStream is = file.getContents(false); // - inserted for having a line break
+				ObjectInputStream ois = new ObjectInputStream(is)) {
 			diagram = (ActivityDiagram) ois.readObject();
-			ois.close();
 		} catch (Exception e) {
 			// This is just an example. All exceptions caught here.
 			e.printStackTrace();

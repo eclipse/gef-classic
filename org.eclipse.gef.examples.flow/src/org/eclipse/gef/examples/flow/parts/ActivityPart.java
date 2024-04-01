@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2023 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -57,26 +57,26 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements 
 		getModel().addPropertyChangeListener(this);
 	}
 
-	protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
+	@SuppressWarnings("unchecked") // we know that we only have TransitionParts as connections
+	@Override
+	public List<? extends TransitionPart> getSourceConnections() {
+		return (List<? extends TransitionPart>) super.getSourceConnections();
+	}
+
+	protected void applyGraphResults(CompoundDirectedGraph graph, Map<AbstractGraphicalEditPart, Object> map) {
 		Node n = (Node) map.get(this);
 		getFigure().setBounds(new Rectangle(n.x, n.y, n.width, n.height));
 
-		for (Object element : getSourceConnections()) {
-			TransitionPart trans = (TransitionPart) element;
-			trans.applyGraphResults(graph, map);
-		}
+		getSourceConnections().forEach(tr -> tr.applyGraphResults(graph, map));
 	}
 
-	public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map map) {
-		List outgoing = getSourceConnections();
-		for (int i = 0; i < outgoing.size(); i++) {
-			TransitionPart part = (TransitionPart) getSourceConnections().get(i);
-			part.contributeToGraph(graph, map);
-		}
+	public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map<AbstractGraphicalEditPart, Object> map) {
+		getSourceConnections().forEach(tr -> tr.contributeToGraph(graph, map));
 		getChildren().forEach(child -> child.contributeEdgesToGraph(graph, map));
 	}
 
-	public abstract void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map);
+	public abstract void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s,
+			Map<AbstractGraphicalEditPart, Object> map);
 
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -42,7 +42,7 @@ import org.eclipse.gef.examples.flow.model.Transition;
  */
 public class FlowWizardPage1 extends WizardNewFileCreationPage {
 
-	private IWorkbench workbench;
+	private final IWorkbench workbench;
 	private static int exampleCount = 1;
 
 	public FlowWizardPage1(IWorkbench aWorkbench, IStructuredSelection selection) {
@@ -88,15 +88,22 @@ public class FlowWizardPage1 extends WizardNewFileCreationPage {
 		relaxation.setName("Morning relaxation ritual"); //$NON-NLS-1$
 		diagram.addChild(relaxation);
 
-		Activity sleep, alarm, alarm2, clothes, spare, no, yes, drive;
-		diagram.addChild(sleep = new Activity("Sleep.....")); //$NON-NLS-1$
-		diagram.addChild(alarm = new Activity("Alarm!!!")); //$NON-NLS-1$
-		diagram.addChild(alarm2 = new Activity("Alarm!!!")); //$NON-NLS-1$
-		diagram.addChild(clothes = new Activity("Put on clothes")); //$NON-NLS-1$
-		diagram.addChild(spare = new Activity("Is there time to spare?")); //$NON-NLS-1$
-		diagram.addChild(yes = new Activity("YES")); //$NON-NLS-1$
-		diagram.addChild(no = new Activity("NO")); //$NON-NLS-1$
-		diagram.addChild(drive = new Activity("Drive to work")); //$NON-NLS-1$
+		Activity sleep = new Activity("Sleep....."); //$NON-NLS-1$
+		Activity alarm = new Activity("Alarm!!!"); //$NON-NLS-1$
+		Activity alarm2 = new Activity("Alarm!!!"); //$NON-NLS-1$
+		Activity clothes = new Activity("Put on clothes"); //$NON-NLS-1$
+		Activity spare = new Activity("Is there time to spare?"); //$NON-NLS-1$
+		Activity no = new Activity("NO"); //$NON-NLS-1$
+		Activity yes = new Activity("YES"); //$NON-NLS-1$
+		Activity drive = new Activity("Drive to work"); //$NON-NLS-1$
+		diagram.addChild(sleep);
+		diagram.addChild(alarm);
+		diagram.addChild(alarm2);
+		diagram.addChild(clothes);
+		diagram.addChild(spare);
+		diagram.addChild(yes);
+		diagram.addChild(no);
+		diagram.addChild(drive);
 
 		new Transition(sleep, alarm);
 		new Transition(alarm, wakeup);
@@ -134,8 +141,7 @@ public class FlowWizardPage1 extends WizardNewFileCreationPage {
 
 	public boolean finish() {
 		IFile newFile = createNewFile();
-		if (newFile == null)
-		 {
+		if (newFile == null) {
 			return false; // ie.- creation was unsuccessful
 		}
 

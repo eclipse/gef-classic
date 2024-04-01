@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2023 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -15,8 +15,6 @@ package org.eclipse.gef.examples.flow.parts;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jface.viewers.TextCellEditor;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Insets;
@@ -28,6 +26,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.requests.DirectEditRequest;
 
 import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
@@ -48,17 +47,17 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	static final Insets PADDING = new Insets(8, 6, 8, 6);
 	static final Insets INNER_PADDING = new Insets(0);
 
-	protected void applyChildrenResults(CompoundDirectedGraph graph, Map map) {
+	protected void applyChildrenResults(CompoundDirectedGraph graph, Map<AbstractGraphicalEditPart, Object> map) {
 		getChildren().forEach(part -> part.applyGraphResults(graph, map));
 	}
 
 	@Override
-	protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
+	protected void applyGraphResults(CompoundDirectedGraph graph, Map<AbstractGraphicalEditPart, Object> map) {
 		applyOwnResults(graph, map);
 		applyChildrenResults(graph, map);
 	}
 
-	protected void applyOwnResults(CompoundDirectedGraph graph, Map map) {
+	protected void applyOwnResults(CompoundDirectedGraph graph, Map<AbstractGraphicalEditPart, Object> map) {
 		super.applyGraphResults(graph, map);
 	}
 
@@ -76,13 +75,13 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	}
 
 	@Override
-	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
+	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s,
+			Map<AbstractGraphicalEditPart, Object> map) {
 		GraphAnimation.recordInitialState(getContentPane());
 		Subgraph me = new Subgraph(this, s);
 		me.outgoingOffset = 5;
 		me.incomingOffset = 5;
-		IFigure fig = getFigure();
-		if (fig instanceof SubgraphFigure sgFig) {
+		if (getFigure() instanceof SubgraphFigure sgFig) {
 			me.width = sgFig.getPreferredSize(me.width, me.height).width;
 			int tagHeight = sgFig.getHeader().getPreferredSize().height;
 			me.insets.top = tagHeight;
@@ -144,7 +143,7 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	protected void performDirectEdit() {
 		if (manager == null) {
 			Label l = ((Label) ((SubgraphFigure) getFigure()).getHeader());
-			manager = new ActivityDirectEditManager(this, TextCellEditor.class, new ActivityCellEditorLocator(l), l);
+			manager = new ActivityDirectEditManager(this, new ActivityCellEditorLocator(l), l);
 		}
 		manager.show();
 	}
