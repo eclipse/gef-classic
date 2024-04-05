@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005, 2011 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -37,6 +37,7 @@ import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.IContainer;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutRelationship;
 
 import org.eclipse.draw2d.IFigure;
 
@@ -442,9 +443,9 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * util.List, boolean)
 	 */
 	@Override
-	protected void setSelectionToWidget(List l, boolean reveal) {
+	protected void setSelectionToWidget(@SuppressWarnings("rawtypes") List l, boolean reveal) {
 		Graph control = (Graph) getControl();
-		List selection = new LinkedList();
+		List<GraphItem> selection = new LinkedList<>();
 		for (Object obj : l) {
 			GraphNode node = (GraphNode) nodesMap.get(obj);
 			GraphConnection conn = (GraphConnection) connectionsMap.get(obj);
@@ -455,7 +456,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 				selection.add(conn);
 			}
 		}
-		control.setSelection((GraphNode[]) selection.toArray(new GraphNode[selection.size()]));
+		control.setSelection(selection.toArray(new GraphItem[selection.size()]));
 	}
 
 	/**
@@ -702,8 +703,14 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 			// remove the node from the layout algorithm and all the connections
 			if (getLayoutAlgorithm() != null) {
 				getLayoutAlgorithm().removeEntity(node.getLayoutEntity());
-				getLayoutAlgorithm().removeRelationships(node.getSourceConnections());
-				getLayoutAlgorithm().removeRelationships(node.getTargetConnections());
+				List<LayoutRelationship> relationships = new ArrayList<>();
+				for (GraphConnection connection : node.getSourceConnections()) {
+					relationships.add(connection.getLayoutRelationship());
+				}
+				for (GraphConnection connection : node.getTargetConnections()) {
+					relationships.add(connection.getLayoutRelationship());
+				}
+				getLayoutAlgorithm().removeRelationships(relationships);
 			}
 			// remove the node and it's connections from the model
 			node.dispose();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005, 2023, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2005, 2024, CHISEL Group, University of Victoria, Victoria, BC, Canada.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -55,8 +55,8 @@ public class GraphNode extends GraphItem {
 
 	private int nodeStyle;
 
-	private List /* IGraphModelConnection */ sourceConnections;
-	private List /* IGraphModelConnection */ targetConnections;
+	private List<GraphConnection> sourceConnections;
+	private List<GraphConnection> targetConnections;
 
 	private Color foreColor;
 	private Color backColor;
@@ -151,8 +151,8 @@ public class GraphNode extends GraphItem {
 	protected void initModel(IContainer parent, String text, Image image) {
 		this.nodeStyle |= parent.getGraph().getNodeStyle();
 		this.parent = parent;
-		this.sourceConnections = new ArrayList();
-		this.targetConnections = new ArrayList();
+		this.sourceConnections = new ArrayList<>();
+		this.targetConnections = new ArrayList<>();
 		this.foreColor = parent.getGraph().DARK_BLUE;
 		this.backColor = parent.getGraph().LIGHT_BLUE;
 		this.highlightColor = parent.getGraph().HIGHLIGHT_COLOR;
@@ -204,7 +204,7 @@ public class GraphNode extends GraphItem {
 		super.dispose();
 		this.isDisposed = true;
 		while (!getSourceConnections().isEmpty()) {
-			GraphConnection connection = (GraphConnection) getSourceConnections().get(0);
+			GraphConnection connection = getSourceConnections().get(0);
 			if (!connection.isDisposed()) {
 				connection.dispose();
 			} else {
@@ -212,7 +212,7 @@ public class GraphNode extends GraphItem {
 			}
 		}
 		while (!getTargetConnections().isEmpty()) {
-			GraphConnection connection = (GraphConnection) getTargetConnections().get(0);
+			GraphConnection connection = getTargetConnections().get(0);
 			if (!connection.isDisposed()) {
 				connection.dispose();
 			} else {
@@ -247,8 +247,8 @@ public class GraphNode extends GraphItem {
 	 *
 	 * @return List a new list of GraphModelConnect objects
 	 */
-	public List getSourceConnections() {
-		return new ArrayList(sourceConnections);
+	public List<? extends GraphConnection> getSourceConnections() {
+		return new ArrayList<>(sourceConnections);
 	}
 
 	/**
@@ -256,8 +256,8 @@ public class GraphNode extends GraphItem {
 	 *
 	 * @return List a new list of GraphModelConnect objects
 	 */
-	public List getTargetConnections() {
-		return new ArrayList(targetConnections);
+	public List<? extends GraphConnection> getTargetConnections() {
+		return new ArrayList<>(targetConnections);
 	}
 
 	/**
@@ -672,15 +672,11 @@ public class GraphNode extends GraphItem {
 		// graph.addRemoveFigure(this, visible);
 		this.visible = visible;
 		this.getNodeFigure().setVisible(visible);
-		List sConnections = (this).getSourceConnections();
-		List tConnections = (this).getTargetConnections();
-		for (Object sConnection : sConnections) {
-			GraphConnection connection = (GraphConnection) sConnection;
+		for (GraphConnection connection : getSourceConnections()) {
 			connection.setVisible(visible);
 		}
 
-		for (Object tConnection : tConnections) {
-			GraphConnection connection = (GraphConnection) tConnection;
+		for (GraphConnection connection : getTargetConnections()) {
 			connection.setVisible(visible);
 		}
 	}
