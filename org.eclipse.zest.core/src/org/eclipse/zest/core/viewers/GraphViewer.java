@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -13,12 +13,11 @@
 package org.eclipse.zest.core.viewers;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -52,7 +51,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	protected Graph graph = null;
 	private IStylingGraphModelFactory modelFactory = null;
-	private List selectionChangedListeners = null;
+	private List<ISelectionChangedListener> selectionChangedListeners = null;
 	ZoomManager zoomManager = null;
 
 	/**
@@ -78,18 +77,15 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	protected void hookControl(Control control) {
 		super.hookControl(control);
 
-		selectionChangedListeners = new ArrayList();
+		selectionChangedListeners = new ArrayList<>();
 		getGraphControl().addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Iterator iterator = selectionChangedListeners.iterator();
-
 				ISelection structuredSelection = getSelection();
 				SelectionChangedEvent event = new SelectionChangedEvent(GraphViewer.this, structuredSelection);
 
-				while (iterator.hasNext()) {
-					ISelectionChangedListener listener = (ISelectionChangedListener) iterator.next();
+				for (ISelectionChangedListener listener : selectionChangedListeners) {
 					listener.selectionChanged(event);
 				}
 				firePostSelectionChanged(event);
@@ -97,7 +93,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 		});
 
-		control.addMouseListener(new MouseListener() {
+		control.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -105,23 +101,11 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 				fireDoubleClick(doubleClickEvent);
 			}
 
-			@Override
-			public void mouseDown(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseUp(MouseEvent e) {
-
-			}
-
 		});
 	}
 
 	/**
 	 * Gets the styles for this structuredViewer
-	 *
-	 * @return
 	 */
 	public int getStyle() {
 		return this.graph.getStyle();
@@ -136,7 +120,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	@Override
 	public Graph getGraphControl() {
 		return super.getGraphControl();
-	};
+	}
 
 	/**
 	 * Sets the layout algorithm to use for this viewer.
@@ -198,7 +182,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * this method (to access internal nodes and edges), your code may not compile
 	 * between versions.
 	 *
-	 * @param The user model node.
+	 * @param element The user model node.
 	 * @return An IGraphItem. This should be either a IGraphModelNode or
 	 *         IGraphModelConnection
 	 */
@@ -216,7 +200,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	}
 
 	@Override
-	protected void setSelectionToWidget(List l, boolean reveal) {
+	protected void setSelectionToWidget(@SuppressWarnings("rawtypes") List l, boolean reveal) {
 		GraphItem[] listOfItems = findItems(l);
 		graph.setSelection(listOfItems);
 	}

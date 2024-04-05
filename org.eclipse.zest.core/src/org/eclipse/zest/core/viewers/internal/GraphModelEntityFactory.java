@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -13,7 +13,6 @@
 package org.eclipse.zest.core.viewers.internal;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -80,7 +79,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		}
 
 		// We may have other entities (such as children of containers)
-		Set keySet = ((AbstractStructuredGraphViewer) getViewer()).getNodesMap().keySet();
+		Set<Object> keySet = ((AbstractStructuredGraphViewer) getViewer()).getNodesMap().keySet();
 		entities = keySet.toArray();
 
 		for (Object data : entities) {
@@ -139,11 +138,11 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 
 		if (refreshLabels) {
 			update(node);
-			for (Iterator it = node.getSourceConnections().iterator(); it.hasNext();) {
-				update((GraphItem) it.next());
+			for (GraphItem item : node.getSourceConnections()) {
+				update(item);
 			}
-			for (Iterator it = node.getTargetConnections().iterator(); it.hasNext();) {
-				update((GraphItem) it.next());
+			for (GraphItem item : node.getTargetConnections()) {
+				update(item);
 			}
 		}
 	}
@@ -156,14 +155,14 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 	private void reconnect(Graph graph, Object element, boolean refreshLabels) {
 		GraphNode node = viewer.getGraphModelNode(element);
 		Object[] related = ((IGraphEntityContentProvider) getContentProvider()).getConnectedTo(element);
-		List connections = node.getSourceConnections();
-		LinkedList toAdd = new LinkedList();
-		LinkedList toDelete = new LinkedList();
-		LinkedList toKeep = new LinkedList();
-		HashSet oldExternalConnections = new HashSet();
-		HashSet newExternalConnections = new HashSet();
-		for (Iterator it = connections.iterator(); it.hasNext();) {
-			oldExternalConnections.add(((GraphConnection) it.next()).getExternalConnection());
+		List<? extends GraphConnection> connections = node.getSourceConnections();
+		List<Object> toAdd = new LinkedList<>();
+		List<Object> toDelete = new LinkedList<>();
+		List<Object> toKeep = new LinkedList<>();
+		Set<Object> oldExternalConnections = new HashSet<>();
+		Set<Object> newExternalConnections = new HashSet<>();
+		for (GraphConnection connection : connections) {
+			oldExternalConnections.add(connection.getExternalConnection());
 		}
 		for (Object element2 : related) {
 			newExternalConnections.add(new EntityConnectionData(element, element2));
@@ -180,13 +179,13 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 				toAdd.add(next);
 			}
 		}
-		for (Iterator it = toDelete.iterator(); it.hasNext();) {
-			viewer.removeGraphModelConnection(it.next());
+		for (Object element2 : toDelete) {
+			viewer.removeGraphModelConnection(element2);
 		}
 		toDelete.clear();
-		LinkedList newNodeList = new LinkedList();
-		for (Iterator it = toAdd.iterator(); it.hasNext();) {
-			EntityConnectionData data = (EntityConnectionData) it.next();
+		List<Object> newNodeList = new LinkedList<>();
+		for (Object element2 : toAdd) {
+			EntityConnectionData data = (EntityConnectionData) element2;
 			GraphNode dest = viewer.getGraphModelNode(data.dest);
 			if (dest == null) {
 				newNodeList.add(data.dest);
@@ -195,13 +194,13 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		}
 		toAdd.clear();
 		if (refreshLabels) {
-			for (Iterator i = toKeep.iterator(); i.hasNext();) {
-				styleItem(viewer.getGraphModelConnection(i.next()));
+			for (Object element2 : toKeep) {
+				styleItem(viewer.getGraphModelConnection(element2));
 			}
 		}
-		for (Iterator it = newNodeList.iterator(); it.hasNext();) {
+		for (Object element2 : newNodeList) {
 			// refresh the new nodes so that we get a fully-up-to-date graph.
-			refresh(graph, it.next());
+			refresh(graph, element2);
 		}
 	}
 

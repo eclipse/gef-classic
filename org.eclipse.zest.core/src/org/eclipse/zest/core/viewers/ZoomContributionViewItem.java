@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005-2006, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -74,7 +74,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	 * values for initialZooms are percentage numbers (e.g., "100%"), or FIT_WIDTH,
 	 * FIT_HEIGHT, FIT_ALL.
 	 *
-	 * @param partService service used to see whether the view is zoomable.
+	 * @param part service used to see whether the view is zoomable.
 	 */
 	public ZoomContributionViewItem(IZoomableWorkbenchPart part) {
 		zoomManager = part.getZoomableViewer().getZoomManager();

@@ -31,14 +31,6 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/org/eclipse/zest/core/viewers/ZoomContributionViewItem.java" type="org.eclipse.zest.core.viewers.ZoomContributionViewItem">
-        <filter id="576725006">
-            <message_arguments>
-                <message_argument value="ZoomListener"/>
-                <message_argument value="ZoomContributionViewItem"/>
-            </message_arguments>
-        </filter>
-    </resource>
     <resource path="src/org/eclipse/zest/core/widgets/GraphContainer.java" type="org.eclipse.zest.core.widgets.GraphContainer">
         <filter id="627060751">
             <message_arguments>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005-2006, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -19,6 +19,7 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.ZestStyles;
 
 /**
  * A Graph model factory that supports the structural and visual refreshing of
@@ -31,7 +32,7 @@ import org.eclipse.zest.core.widgets.GraphNode;
  * particular implementation of IStylingGraphModelFactory. Unless otherwise
  * documented, clients should expect that the implementation of
  * IStylingGraphModelFactory adheres to the general defaults found in
- * {@link IZestGraphDefaults}.
+ * {@link ZestStyles}.
  *
  * @author Del Myers
  */

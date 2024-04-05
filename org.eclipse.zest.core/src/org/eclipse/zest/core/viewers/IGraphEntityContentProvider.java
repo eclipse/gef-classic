@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -28,7 +28,6 @@ public interface IGraphEntityContentProvider extends IStructuredContentProvider 
 	 * Gets the elements this object is connected to
 	 *
 	 * @param entity
-	 * @return
 	 */
 	public Object[] getConnectedTo(Object entity);
 

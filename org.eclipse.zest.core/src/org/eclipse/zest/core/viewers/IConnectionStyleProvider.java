@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005-2006, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -23,8 +23,8 @@ import org.eclipse.draw2d.IFigure;
  * relationships, rather than on connected nodes.
  *
  * @author Del Myers
- * @see #IGraphContentProvider
- * @see #IEntityStyleProvider
+ * @see IGraphContentProvider
+ * @see IEntityStyleProvider
  *
  */
 //@tag bug(151327-Styles) : created to solve this bug
@@ -73,7 +73,6 @@ public interface IConnectionStyleProvider extends IDisposable {
 	 * the default tooltip.
 	 *
 	 * @param entity
-	 * @return
 	 */
 	public IFigure getTooltip(Object entity);
 }
