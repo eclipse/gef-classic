@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005-2006, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -13,6 +13,7 @@
 package org.eclipse.zest.core.viewers.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
@@ -72,19 +73,17 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 */
 	private void createModelRelationships(Graph model) {
 		GraphNode[] modelNodes = getNodesArray(model);
-		List listOfNodes = new ArrayList();
-		for (GraphNode modelNode : modelNodes) {
-			listOfNodes.add(modelNode);
-		}
+		List<GraphNode> listOfNodes = new ArrayList<>();
+		Collections.addAll(listOfNodes, modelNodes);
 
 		for (int i = 0; i < listOfNodes.size(); i++) {
-			GraphNode node = (GraphNode) listOfNodes.get(i);
-			if (node instanceof GraphContainer) {
-				List childNodes = ((GraphContainer) node).getNodes();
+			GraphNode node = listOfNodes.get(i);
+			if (node instanceof GraphContainer container) {
+				List<GraphNode> childNodes = container.getNodes();
 				listOfNodes.addAll(childNodes);
 			}
 		}
-		modelNodes = (GraphNode[]) listOfNodes.toArray(new GraphNode[listOfNodes.size()]);
+		modelNodes = listOfNodes.toArray(new GraphNode[listOfNodes.size()]);
 
 		IGraphEntityRelationshipContentProvider content = getCastedContent();
 		for (GraphNode modelNode : modelNodes) {

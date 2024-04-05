@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 IBM Corporation and others.
+ * Copyright (c) 2005, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,12 +12,14 @@
  *******************************************************************************/
 package org.eclipse.zest.core.viewers;
 
+import org.eclipse.jface.viewers.IBaseLabelProvider;
+
 import org.eclipse.draw2d.IFigure;
 
 /**
  * Allows a user to create a figure for an element in graph model. To use this
  * interface, it should be implemented and passed to
- * {@link GraphViewer#setLabelProvider()}
+ * {@link GraphViewer#setLabelProvider(IBaseLabelProvider)}
  */
 public interface IFigureProvider {
 

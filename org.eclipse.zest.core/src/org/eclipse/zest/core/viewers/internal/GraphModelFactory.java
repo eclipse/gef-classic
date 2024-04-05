@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -11,9 +11,6 @@
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.viewers.internal;
-
-import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.zest.core.viewers.IFigureProvider;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
@@ -138,14 +135,10 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 			// node.
 			GraphNode node = viewer.getGraphModelNode(element);
 			if (node != null) {
-				List connections = node.getSourceConnections();
-				for (Iterator it = connections.iterator(); it.hasNext();) {
-					GraphConnection c = (GraphConnection) it.next();
+				for (GraphConnection c : node.getSourceConnections()) {
 					refresh(graph, c.getExternalConnection(), updateLabels);
 				}
-				connections = node.getTargetConnections();
-				for (Iterator it = connections.iterator(); it.hasNext();) {
-					GraphConnection c = (GraphConnection) it.next();
+				for (GraphConnection c : node.getTargetConnections()) {
 					refresh(graph, c.getExternalConnection(), updateLabels);
 				}
 			}

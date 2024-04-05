@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005, 2009, CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -14,7 +14,6 @@ package org.eclipse.zest.core.viewers.internal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +26,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.zest.core.viewers.IFigureProvider;
 import org.eclipse.zest.core.viewers.INestedContentProvider;
+import org.eclipse.zest.core.widgets.ConstraintAdapter;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphItem;
@@ -47,17 +47,18 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	private AbstractStructuredGraphViewer viewer;
 	private int connectionStyle;
 	private int nodeStyle;
-	private List /* ConstraintAdapater */ constraintAdapters = new ArrayList();
+	private List<ConstraintAdapter> constraintAdapters = new ArrayList<>();
 
 	/**
 	 *
 	 */
+	@SuppressWarnings("unchecked")
 	public AbstractStylingModelFactory(AbstractStructuredGraphViewer viewer) {
 		this.viewer = viewer;
 		this.connectionStyle = SWT.NONE;
 		this.nodeStyle = SWT.NONE;
-		if (viewer instanceof AbstractStructuredGraphViewer) {
-			this.constraintAdapters = (viewer).getConstraintAdapters();
+		if (viewer != null) {
+			this.constraintAdapters = (List<ConstraintAdapter>) viewer.getConstraintAdapters();
 		}
 	}
 
@@ -68,9 +69,9 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		// go ahead and try it.
 		GraphNode source = conn.getSource();
 		GraphNode dest = conn.getDestination();
-		LinkedList rightList = getConnectionList(source, dest);
+		List<GraphConnection> rightList = getConnectionList(source, dest);
 
-		LinkedList leftList = null;
+		List<GraphConnection> leftList = null;
 
 		if (dest != source) {
 			leftList = getConnectionList(dest, source);
@@ -93,13 +94,14 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @param size        + * total number of arcs - may be bigger then
 	 *                    connections.size
 	 */
-	protected void adjustCurves(List connections, int size) {
+	@SuppressWarnings("static-method")
+	protected void adjustCurves(List<GraphConnection> connections, int size) {
 		/*
 		 * The connections should be curved if source and dest are equal, or there are
 		 * multiple arcs between two nodes
 		 */
 		for (int i = 0; i < connections.size(); i++) {
-			GraphConnection conn = (GraphConnection) connections.get(i);
+			GraphConnection conn = connections.get(i);
 			int radius = 20;
 			if (conn.getSource() == conn.getDestination()) {
 				radius = 40;
@@ -115,11 +117,9 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @param dest
 	 * @return
 	 */
-	private LinkedList getConnectionList(GraphNode source, GraphNode dest) {
-		LinkedList list = new LinkedList();
-		Iterator i = source.getSourceConnections().iterator();
-		while (i.hasNext()) {
-			GraphConnection c = (GraphConnection) i.next();
+	private static List<GraphConnection> getConnectionList(GraphNode source, GraphNode dest) {
+		List<GraphConnection> list = new LinkedList<>();
+		for (GraphConnection c : source.getSourceConnections()) {
 			if (c.getDestination() == dest) {
 				list.add(c);
 			}
@@ -274,7 +274,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		this.nodeStyle = style;
 	}
 
-	public List /* ConstraintAdapter */ getConstraintAdapters() {
+	public List<? extends ConstraintAdapter> getConstraintAdapters() {
 		return this.constraintAdapters;
 	}
 
@@ -317,8 +317,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		// with this kind of graph, it is just as easy and cost-effective to
 		// rebuild the whole thing.
 
-		Map oldMap = viewer.getNodesMap();
-		HashMap nodesMap = new HashMap();
+		Map<Object, GraphNode> oldMap = viewer.getNodesMap();
+		Map<Object, GraphNode> nodesMap = new HashMap<>();
 		// have to copy the Map data accross so that it doesn't get overwritten
 		for (Object key : oldMap.keySet()) {
 			nodesMap.put(key, oldMap.get(key));
@@ -328,9 +328,9 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		// update the positions on the new nodes to match the old ones.
 		GraphNode[] nodes = getNodesArray(graph);
 		// save a little time, go with the smallest list as the primary list
-		if (nodes.length < nodesMap.keySet().size()) {
+		if (nodes.length < nodesMap.size()) {
 			for (GraphNode node : nodes) {
-				GraphNode oldNode = (GraphNode) nodesMap.get(node.getData());
+				GraphNode oldNode = nodesMap.get(node.getData());
 				if (oldNode != null) {
 					node.setLocation(oldNode.getLocation().x, oldNode.getLocation().y);
 					if (oldNode.isSizeFixed()) {
@@ -342,7 +342,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 			for (Object key : nodesMap.keySet()) {
 				GraphNode node = viewer.getGraphModelNode(key);
 				if (node != null) {
-					GraphNode oldNode = (GraphNode) nodesMap.get(key);
+					GraphNode oldNode = nodesMap.get(key);
 					node.setLocation(oldNode.getLocation().x, oldNode.getLocation().y);
 					if (oldNode.isSizeFixed()) {
 						node.setSize(oldNode.getSize().width, oldNode.getSize().height);
@@ -373,13 +373,13 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * Builds the graph model from the viewer's content provider. There is no
 	 * guarantee that the model will be cleared before this method is called.
 	 *
-	 * @param graph
+	 * @param model
 	 */
 	protected void doBuildGraph(Graph model) {
 		clearGraph(model);
 		model.setConnectionStyle(getConnectionStyle());
 		model.setNodeStyle(getNodeStyle());
-		model.setConstraintAdapters(getConstraintAdapters());
+		model.setConstraintAdapters(constraintAdapters);
 	}
 
 	/**
@@ -387,7 +387,6 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 *
 	 * @param parent
 	 * @param element
-	 * @return
 	 */
 	protected boolean filterElement(Object parent, Object element) {
 		ViewerFilter[] filters = getViewer().getFilters();
@@ -432,21 +431,16 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 *
 	 * @return GraphModelNode[]
 	 */
-	protected GraphNode[] getNodesArray(Graph graph) {
-		GraphNode[] nodesArray = new GraphNode[graph.getNodes().size()];
-		nodesArray = graph.getNodes().toArray(nodesArray);
-		return nodesArray;
+	protected static GraphNode[] getNodesArray(Graph graph) {
+		return graph.getNodes().toArray(new GraphNode[0]);
 	}
 
 	/**
 	 * Converts the list of GraphConnections objects into an array and return it.
 	 *
 	 * @param graph
-	 * @return
 	 */
-	protected GraphConnection[] getConnectionArray(Graph graph) {
-		GraphConnection[] connectionArray = new GraphConnection[graph.getConnections().size()];
-		connectionArray = graph.getConnections().toArray(connectionArray);
-		return connectionArray;
+	protected static GraphConnection[] getConnectionArray(Graph graph) {
+		return graph.getConnections().toArray(new GraphConnection[0]);
 	}
 }
