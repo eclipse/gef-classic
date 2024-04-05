@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.zest.tests;
 
+import org.eclipse.zest.tests.cloudio.TagCloudTests;
+import org.eclipse.zest.tests.cloudio.TagCloudViewerTests;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -24,7 +27,9 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	GraphTests.class,
 	GraphSelectionTests.class,
-	GraphViewerTests.class
+	GraphViewerTests.class,
+	TagCloudTests.class,
+	TagCloudViewerTests.class
 })
 public class ZestTestSuite {
 }
