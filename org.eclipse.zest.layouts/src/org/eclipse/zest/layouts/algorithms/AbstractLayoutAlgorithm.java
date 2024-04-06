@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada, Johannes Kepler University Linz
  *
  * This program and the accompanying materials are made available under the
@@ -950,12 +950,20 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	protected void fireProgressStarted(int totalNumberOfSteps) {
 		ProgressEvent event = new ProgressEvent(0, totalNumberOfSteps);
-		progressListeners.forEach(listener -> listener.progressStarted(event));
+		List.copyOf(progressListeners).forEach(listener -> listener.progressStarted(event));
 	}
 
 	protected void fireProgressEnded(int totalNumberOfSteps) {
 		ProgressEvent event = new ProgressEvent(totalNumberOfSteps, totalNumberOfSteps);
-		progressListeners.forEach(listener -> listener.progressEnded(event));
+		List.copyOf(progressListeners).forEach(listener -> listener.progressEnded(event));
+	}
+
+	/**
+	 * @since 1.5
+	 */
+	protected void fireProgressUpdated(int currentStep, int totalNumberOfSteps) {
+		ProgressEvent event = new ProgressEvent(currentStep, totalNumberOfSteps);
+		List.copyOf(progressListeners).forEach(listener -> listener.progressUpdated(event));
 	}
 
 	/**
@@ -971,8 +979,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		now.add(Calendar.MILLISECOND, -MIN_TIME_DELAY_BETWEEN_PROGRESS_EVENTS);
 
 		if (now.after(lastProgressEventFired) || currentStep == totalNumberOfSteps) {
-			ProgressEvent event = new ProgressEvent(currentStep, totalNumberOfSteps);
-			progressListeners.forEach(listener -> listener.progressUpdated(event));
+			fireProgressUpdated(currentStep, totalNumberOfSteps);
 			lastProgressEventFired = Calendar.getInstance();
 		}
 	}
