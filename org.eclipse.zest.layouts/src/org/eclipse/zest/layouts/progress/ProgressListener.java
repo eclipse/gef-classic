@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -20,6 +20,24 @@ package org.eclipse.zest.layouts.progress;
  * @author Casey Best
  */
 public interface ProgressListener {
+	/**
+	 * An empty implementation of {@list ProgressListener} for convenience.
+	 *
+	 * @since 1.5
+	 */
+	public static class Stub implements ProgressListener {
+		@Override
+		public void progressStarted(ProgressEvent e) {
+		}
+
+		@Override
+		public void progressUpdated(ProgressEvent e) {
+		}
+
+		@Override
+		public void progressEnded(ProgressEvent e) {
+		}
+	}
 
 	/**
 	 *
