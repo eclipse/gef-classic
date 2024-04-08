@@ -69,7 +69,7 @@ class PaletteTreeProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof PaletteContainer pc) {
-			List<PaletteEntry> children = pc.getChildren();
+			List<? extends PaletteEntry> children = pc.getChildren();
 			if (!children.isEmpty()) {
 				return children.toArray();
 			}
