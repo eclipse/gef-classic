@@ -364,7 +364,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			// otherwise the
 			// will scroll to show the last item, and then will select the first
 			// visible item.
-			List<PaletteEntry> children = getPaletteRoot().getChildren();
+			List<? extends PaletteEntry> children = getPaletteRoot().getChildren();
 			if (!children.isEmpty()) {
 				initialSelection = children.get(0);
 			}

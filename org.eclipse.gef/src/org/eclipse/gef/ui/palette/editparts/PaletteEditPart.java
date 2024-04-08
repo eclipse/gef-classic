@@ -415,7 +415,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 		traverseChildren(container.getChildren(), add);
 	}
 
-	private void traverseChildren(List<PaletteEntry> children, boolean add) {
+	private void traverseChildren(List<? extends PaletteEntry> children, boolean add) {
 		for (PaletteEntry entry : children) {
 			if (add) {
 				entry.addPropertyChangeListener(childListener);

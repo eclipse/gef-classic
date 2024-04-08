@@ -81,12 +81,12 @@ public class PaletteContainer extends PaletteEntry {
 					+ entry.getType());
 		}
 
-		List<PaletteEntry> oldChildren = new ArrayList<>(getChildren());
+		List<PaletteEntry> oldChildren = new ArrayList<>(children);
 
-		int actualIndex = index < 0 ? getChildren().size() : index;
-		getChildren().add(actualIndex, entry);
+		int actualIndex = index < 0 ? children.size() : index;
+		children.add(actualIndex, entry);
 		entry.setParent(this);
-		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, getChildren());
+		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, children);
 	}
 
 	/**
@@ -95,16 +95,16 @@ public class PaletteContainer extends PaletteEntry {
 	 * @param list a list of PaletteEntry objects to add to this PaletteContainer
 	 */
 	public void addAll(List<? extends PaletteEntry> list) {
-		List<PaletteEntry> oldChildren = new ArrayList<>(getChildren());
+		List<PaletteEntry> oldChildren = new ArrayList<>(children);
 		for (PaletteEntry child : list) {
 			if (!acceptsType(child.getType())) {
 				throw new IllegalArgumentException("This container can not contain this type of child: " //$NON-NLS-1$
 						+ child.getType());
 			}
-			getChildren().add(child);
+			children.add(child);
 			child.setParent(this);
 		}
-		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, getChildren());
+		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, children);
 	}
 
 	/**
@@ -117,8 +117,8 @@ public class PaletteContainer extends PaletteEntry {
 	public void appendToSection(String id, PaletteEntry entry) {
 		// find the entry with the given id
 		boolean found = false;
-		for (int i = 0; i < getChildren().size(); i++) {
-			PaletteEntry currEntry = getChildren().get(i);
+		for (int i = 0; i < children.size(); i++) {
+			PaletteEntry currEntry = children.get(i);
 			if (currEntry.getId().equals(id)) {
 				found = true;
 			} else if (found && currEntry instanceof PaletteSeparator) {
@@ -135,23 +135,23 @@ public class PaletteContainer extends PaletteEntry {
 	/**
 	 * @return the children of this container
 	 */
-	public List<PaletteEntry> getChildren() {
+	public List<? extends PaletteEntry> getChildren() {
 		return children;
 	}
 
 	private boolean move(PaletteEntry entry, boolean up) {
-		int index = getChildren().indexOf(entry);
+		int index = children.indexOf(entry);
 		if (index < 0) {
 			// This container does not contain the given palette entry
 			return false;
 		}
 		index = up ? index - 1 : index + 1;
-		if (index < 0 || index >= getChildren().size()) {
+		if (index < 0 || index >= children.size()) {
 			// Performing the move operation will give the child an invalid
 			// index
 			return false;
 		}
-		if (getChildren().get(index) instanceof PaletteContainer container
+		if (children.get(index) instanceof PaletteContainer container
 				&& getUserModificationPermission() == PaletteEntry.PERMISSION_FULL_MODIFICATION) {
 			// move it into a container if we have full permission
 			if (container.acceptsType(entry.getType())
@@ -165,10 +165,10 @@ public class PaletteContainer extends PaletteEntry {
 				return true;
 			}
 		}
-		List<PaletteEntry> oldChildren = new ArrayList<>(getChildren());
-		getChildren().remove(entry);
-		getChildren().add(index, entry);
-		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, getChildren());
+		List<PaletteEntry> oldChildren = new ArrayList<>(children);
+		children.remove(entry);
+		children.add(index, entry);
+		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, children);
 		return true;
 	}
 
@@ -200,10 +200,10 @@ public class PaletteContainer extends PaletteEntry {
 	 * @param entry the PaletteEntry to remove
 	 */
 	public void remove(PaletteEntry entry) {
-		List<PaletteEntry> oldChildren = new ArrayList<>(getChildren());
-		if (getChildren().remove(entry)) {
+		List<PaletteEntry> oldChildren = new ArrayList<>(children);
+		if (children.remove(entry)) {
 			entry.setParent(null);
-			listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, getChildren());
+			listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, children);
 		}
 	}
 
@@ -218,7 +218,7 @@ public class PaletteContainer extends PaletteEntry {
 		oldChildren.forEach(entry -> entry.setParent(null));
 		children = list;
 		children.forEach(entry -> entry.setParent(this));
-		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, getChildren());
+		listeners.firePropertyChange(PROPERTY_CHILDREN, oldChildren, children);
 	}
 
 	/**

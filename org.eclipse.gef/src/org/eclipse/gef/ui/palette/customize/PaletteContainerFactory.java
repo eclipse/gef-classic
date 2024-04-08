@@ -56,7 +56,7 @@ public abstract class PaletteContainerFactory extends PaletteEntryFactory {
 			return 0;
 		}
 
-		List<PaletteEntry> children = parent.getChildren();
+		List<? extends PaletteEntry> children = parent.getChildren();
 		PaletteEntry current = selected;
 		while (!children.contains(current)) {
 			current = current.getParent();

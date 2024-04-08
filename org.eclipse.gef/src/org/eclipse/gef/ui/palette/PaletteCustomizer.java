@@ -105,7 +105,7 @@ public abstract class PaletteCustomizer {
 		}
 
 		// walk parent siblings till we find one it can go into.
-		List<PaletteEntry> children = parent.getParent().getChildren();
+		List<? extends PaletteEntry> children = parent.getParent().getChildren();
 		int parentIndex = children.indexOf(parent);
 
 		for (int i = parentIndex + 1; i < children.size(); i++) {
@@ -152,7 +152,7 @@ public abstract class PaletteCustomizer {
 		}
 
 		// walk parent siblings till we find one it can go into.
-		List<PaletteEntry> children = parent.getParent().getChildren();
+		List<? extends PaletteEntry> children = parent.getParent().getChildren();
 		int parentIndex = children.indexOf(parent);
 
 		for (int i = parentIndex - 1; i >= 0; i--) {
@@ -230,7 +230,7 @@ public abstract class PaletteCustomizer {
 			if (canAdd(newParent, entry)) {
 				insertionIndex = newParent.getChildren().indexOf(parent) + 1;
 			} else {
-				List<PaletteEntry> parents = newParent.getChildren();
+				List<? extends PaletteEntry> parents = newParent.getChildren();
 				for (int i = parents.indexOf(parent) + 1; i < parents.size(); i++) {
 					if (parents.get(i) instanceof PaletteContainer pc) {
 						newParent = pc;
@@ -266,7 +266,7 @@ public abstract class PaletteCustomizer {
 			if (canAdd(newParent, entry)) {
 				insertionIndex = newParent.getChildren().indexOf(parent);
 			} else {
-				List<PaletteEntry> parents = newParent.getChildren();
+				List<? extends PaletteEntry> parents = newParent.getChildren();
 
 				for (int i = parents.indexOf(parent) - 1; i >= 0; i--) {
 					if (parents.get(i) instanceof PaletteContainer pc) {
