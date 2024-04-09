@@ -1,9 +1,9 @@
 # Eclipse Graphical Editing Framework (GEF) Classic
 
-This repository contains the code base of the [Eclipse Graphical Editing Framework (GEF)](http://www.eclipse.org/gef/) project's classic components: 
- - [GEF (MVC) 3.x](https://www.eclipse.org/gef/gef_mvc/index.php)
- - [Draw2d 3.x](https://www.eclipse.org/gef/draw2d/index.php) 
- - [Zest 1.x](https://www.eclipse.org/gef/zest/index.php)
+This repository contains the code base of the [Eclipse Graphical Editing Framework (GEF)](https://projects.eclipse.org/projects/tools.gef/) project's classic components: 
+ - [GEF (MVC) 3.x](https://github.com/eclipse/gef-classic/wiki/GEF-(MCV))
+ - [Draw2d 3.x](https://github.com/eclipse/gef-classic/wiki/Draw2D) 
+ - [Zest 1.x](https://github.com/eclipse/gef-classic/wiki/Zest)
  
 The code base of the GEF components implemented in JavaFX is located in the [eclipse/gef](https://github.com/eclipse/gef) repository instead.
 
