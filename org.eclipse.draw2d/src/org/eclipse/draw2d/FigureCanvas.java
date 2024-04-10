@@ -411,24 +411,20 @@ public class FigureCanvas extends Canvas {
 		int dy = -vOffset + getViewport().getViewLocation().y;
 		Rectangle clientArea = getViewport().getBounds().getShrinked(getViewport().getInsets());
 		Rectangle blit = clientArea.getResized(-Math.abs(dx), -Math.abs(dy));
-		Rectangle expose = clientArea.getCopy();
 		Point dest = clientArea.getTopLeft();
 
-		expose.width = Math.abs(dx);
+		blit.width = Math.max(blit.width, 0);
+		blit.height = Math.max(blit.height, 0);
+
 		if (dx < 0) { // Moving left?
 			blit.translate(-dx, 0); // Move blit area to the right
-			expose.x = dest.x + blit.width;
-		} else {
-			// Moving right
+		} else { // Moving right
 			dest.x += dx; // Move expose area to the right
 		}
 
-		expose.height = Math.abs(dy);
 		if (dy < 0) { // Moving up?
 			blit.translate(0, -dy); // Move blit area down
-			expose.y = dest.y + blit.height; // Move expose area down
-		} else {
-			// Moving down
+		} else { // Moving down
 			dest.y += dy;
 		}
 
@@ -438,7 +434,7 @@ public class FigureCanvas extends Canvas {
 		getViewport().setHorizontalLocation(hOffset);
 		getViewport().setVerticalLocation(vOffset);
 		getViewport().setIgnoreScroll(false);
-		redraw(expose.x, expose.y, expose.width, expose.height, true);
+		scrollRedraw(dx, dy, clientArea, blit);
 	}
 
 	private void scrollChildren(int dx, int dy, Rectangle blit, Point dest) {
@@ -459,6 +455,26 @@ public class FigureCanvas extends Canvas {
 			if (manualMove[i]) {
 				children[i].setBounds(bounds.x + dx, bounds.y + dy, bounds.width, bounds.height);
 			}
+		}
+	}
+
+	private void scrollRedraw(int dx, int dy, Rectangle clientArea, Rectangle blit) {
+		Rectangle expose = clientArea.getCopy();
+		if (dx != 0) {
+			expose.width = Math.abs(dx);
+			if (dx < 0) { // Moving left?
+				expose.x += blit.width; // Move expose area right
+			}
+			redraw(expose.x, expose.y, expose.width, expose.height, true);
+		}
+		if (dy != 0) {
+			expose.x = clientArea.x;
+			expose.width = clientArea.width;
+			expose.height = Math.abs(dy);
+			if (dy < 0) { // Moving up?
+				expose.y += blit.height; // Move expose area down
+			}
+			redraw(expose.x, expose.y, expose.width, expose.height, true);
 		}
 	}
 
