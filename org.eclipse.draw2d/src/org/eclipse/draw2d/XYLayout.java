@@ -136,7 +136,11 @@ public class XYLayout extends AbstractLayout {
 	@Override
 	public void setConstraint(IFigure figure, Object newConstraint) {
 		super.setConstraint(figure, newConstraint);
-		if (newConstraint instanceof Rectangle rect) {
+		if (newConstraint != null) {
+			if (!(newConstraint instanceof Rectangle rect)) {
+				throw new IllegalArgumentException("XYLayout was given " + newConstraint.getClass().getName() //$NON-NLS-1$
+						+ " as constraint for Figure. Rectangle expected!"); //$NON-NLS-1$
+			}
 			constraints.put(figure, rect);
 		}
 	}

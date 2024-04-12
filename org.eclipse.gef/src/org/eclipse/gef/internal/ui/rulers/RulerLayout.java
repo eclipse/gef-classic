@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.rulers;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -25,7 +28,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author Pratik Shah
  * @since 3.0
  */
-public class RulerLayout extends XYLayout {
+public class RulerLayout extends AbstractLayout {
+
+	private final Map<IFigure, Integer> constraints = new HashMap<>();
 
 	/**
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure,
@@ -40,7 +45,7 @@ public class RulerLayout extends XYLayout {
 	 * @see org.eclipse.draw2d.AbstractLayout#getConstraint(org.eclipse.draw2d.IFigure)
 	 */
 	@Override
-	public Object getConstraint(IFigure child) {
+	public Integer getConstraint(IFigure child) {
 		return constraints.get(child);
 	}
 
@@ -52,7 +57,13 @@ public class RulerLayout extends XYLayout {
 		Rectangle rulerSize = container.getClientArea();
 		for (IFigure child : container.getChildren()) {
 			Dimension childSize = child.getPreferredSize();
-			int position = ((Integer) getConstraint(child)).intValue();
+
+			Integer childPos = getConstraint(child);
+			if (childPos == null) {
+				continue;
+			}
+
+			int position = childPos.intValue();
 			if (((RulerFigure) container).isHorizontal()) {
 				childSize.height = rulerSize.height - 1;
 				Rectangle.SINGLETON.setLocation(position - (childSize.width / 2), rulerSize.y);
@@ -62,6 +73,33 @@ public class RulerLayout extends XYLayout {
 			}
 			Rectangle.SINGLETON.setSize(childSize);
 			child.setBounds(Rectangle.SINGLETON);
+		}
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.LayoutManager#remove(IFigure)
+	 */
+	@Override
+	public void remove(IFigure figure) {
+		super.remove(figure);
+		constraints.remove(figure);
+	}
+
+	/**
+	 * Sets the layout constraint of the given figure. The constraints can only be
+	 * of type {@link Integer}.
+	 *
+	 * @see org.eclipse.draw2d.LayoutManager#setConstraint(IFigure, Object)
+	 */
+	@Override
+	public void setConstraint(IFigure figure, Object newConstraint) {
+		super.setConstraint(figure, newConstraint);
+		if (newConstraint != null) {
+			if (!(newConstraint instanceof Integer intConstraint)) {
+				throw new IllegalArgumentException("RulerLayout was given " + newConstraint.getClass().getName() //$NON-NLS-1$
+						+ " as constraint for Figure. Integer expected!"); //$NON-NLS-1$
+			}
+			constraints.put(figure, intConstraint);
 		}
 	}
 
