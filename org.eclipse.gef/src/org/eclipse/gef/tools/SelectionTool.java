@@ -436,7 +436,7 @@ public class SelectionTool extends TargetingTool {
 		 * At this point, a handle provider with 1 or more handles has been obtained
 		 */
 		setState(STATE_TRAVERSE_HANDLE);
-		List locations = provider.getAccessibleHandleLocations();
+		final List<Point> locations = provider.getAccessibleHandleLocations();
 		// Goto next index, wrapping if necessary
 		if (e.character == '.') {
 			handleIndex = (++handleIndex) % locations.size();
@@ -448,7 +448,7 @@ public class SelectionTool extends TargetingTool {
 			setLastHandleProvider(focus);
 		}
 
-		Point loc = (Point) locations.get(handleIndex);
+		Point loc = locations.get(handleIndex);
 		Point current = new Point(getCurrentViewer().getControl().toControl(Display.getCurrent().getCursorLocation()));
 
 		if (current.equals(loc)) {
@@ -467,7 +467,7 @@ public class SelectionTool extends TargetingTool {
 				handleIndex = (--handleIndex + locations.size()) % locations.size();
 			}
 		}
-		placeMouseInViewer((Point) locations.get(handleIndex));
+		placeMouseInViewer(locations.get(handleIndex));
 		return true;
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -155,7 +155,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		 * @see AccessibleAnchorProvider#getSourceAnchorLocations()
 		 */
 		@Override
-		public List getSourceAnchorLocations() {
+		public List<Point> getSourceAnchorLocations() {
 			return getDefaultLocations();
 		}
 
@@ -163,13 +163,13 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		 * @see AccessibleAnchorProvider#getTargetAnchorLocations()
 		 */
 		@Override
-		public List getTargetAnchorLocations() {
+		public List<Point> getTargetAnchorLocations() {
 			return getDefaultLocations();
 		}
 	}
 
 	static class MergedAccessibleHandles implements AccessibleHandleProvider {
-		List locations = new ArrayList();
+		List<Point> locations = new ArrayList<>();
 
 		MergedAccessibleHandles(Iterable<EditPolicy> iterable) {
 			for (EditPolicy policy : iterable) {
@@ -183,7 +183,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		}
 
 		@Override
-		public List getAccessibleHandleLocations() {
+		public List<Point> getAccessibleHandleLocations() {
 			return locations;
 		}
 	}

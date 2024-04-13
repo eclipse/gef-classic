@@ -206,18 +206,13 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 			return false;
 		}
 
-		List list;
-		if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
-			list = provider.getTargetAnchorLocations();
-		} else {
-			list = provider.getSourceAnchorLocations();
-		}
+		final List<Point> list = (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) ? provider.getTargetAnchorLocations()
+				: provider.getSourceAnchorLocations();
 
 		Point start = getLocation();
 		int distance = Integer.MAX_VALUE;
 		Point next = null;
-		for (Object element : list) {
-			Point p = (Point) element;
+		for (Point p : list) {
 			if (p.equals(start) || (direction != 0 && (start.getPosition(p) != direction))) {
 				continue;
 			}
