@@ -70,8 +70,8 @@ public class GateEditPart extends OutputEditPart {
 				}
 
 				@Override
-				public List<Object> getTargetAnchorLocations() {
-					List<Object> list = new ArrayList<>();
+				public List<Point> getTargetAnchorLocations() {
+					List<Point> list = new ArrayList<>();
 					List<ConnectionAnchor> targetAnchors = getNodeFigure().getTargetConnectionAnchors();
 					targetAnchors.forEach(anchor -> list.add(anchor.getReferencePoint()));
 					return list;

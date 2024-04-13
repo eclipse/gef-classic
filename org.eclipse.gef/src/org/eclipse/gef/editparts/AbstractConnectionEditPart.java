@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -61,7 +61,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 		 * @see AccessibleAnchorProvider#getSourceAnchorLocations()
 		 */
 		@Override
-		public List getSourceAnchorLocations() {
+		public List<Point> getSourceAnchorLocations() {
 			List<Point> list = new ArrayList<>();
 			if (getFigure() instanceof Connection con) {
 				Point p = con.getPoints().getMidpoint();
@@ -75,7 +75,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 		 * @see AccessibleAnchorProvider#getTargetAnchorLocations()
 		 */
 		@Override
-		public List getTargetAnchorLocations() {
+		public List<Point> getTargetAnchorLocations() {
 			return getSourceAnchorLocations();
 		}
 	}

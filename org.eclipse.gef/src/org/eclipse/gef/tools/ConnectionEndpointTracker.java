@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -21,6 +21,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
@@ -31,7 +32,6 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
-import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.Tool;
 import org.eclipse.gef.requests.ReconnectRequest;
 
@@ -56,7 +56,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 */
 	public ConnectionEndpointTracker(ConnectionEditPart cep) {
 		setConnectionEditPart(cep);
-		setDisabledCursor(SharedCursors.NO);
+		setDisabledCursor(Cursors.NO);
 	}
 
 	/**
@@ -255,6 +255,8 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 			case SWT.ARROW_LEFT:
 				direction = isCurrentViewerMirrored() ? PositionConstants.EAST : PositionConstants.WEST;
 				break;
+			default:
+				break;
 			}
 
 			boolean consumed = false;
@@ -296,18 +298,13 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 			return false;
 		}
 
-		List list;
-		if (isTarget()) {
-			list = provider.getTargetAnchorLocations();
-		} else {
-			list = provider.getSourceAnchorLocations();
-		}
+		final List<Point> list = (isTarget()) ? provider.getTargetAnchorLocations()
+				: provider.getSourceAnchorLocations();
 
 		Point start = getLocation();
 		int distance = Integer.MAX_VALUE;
 		Point next = null;
-		for (Object element : list) {
-			Point p = (Point) element;
+		for (Point p : list) {
 			if (p.equals(start) || (direction != 0 && (start.getPosition(p) != direction))) {
 				continue;
 			}

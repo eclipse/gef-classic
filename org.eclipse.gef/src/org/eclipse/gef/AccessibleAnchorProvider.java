@@ -14,6 +14,8 @@ package org.eclipse.gef;
 
 import java.util.List;
 
+import org.eclipse.draw2d.geometry.Point;
+
 /**
  * This class provides keyboard accessibility support for <i>Anchors</i>.
  * Anchors are simply locations (relative to the Viewer's Control) on the
@@ -31,7 +33,7 @@ import java.util.List;
  * <P>
  * Connection operations involves either the source or target end of a
  * connection. The <code>AccessibleAnchorProvider</code> has the option of
- * returning different locations depending on the context of the operatation.
+ * returning different locations depending on the context of the operation.
  */
 
 public interface AccessibleAnchorProvider {
@@ -39,21 +41,21 @@ public interface AccessibleAnchorProvider {
 	/**
 	 * Returns a list of Points in <B>absolute</B> coordinates where source anchors
 	 * are located. Tools that work with connections should use these locations when
-	 * operating in accesible keyboard modes.
+	 * operating in accessible keyboard modes.
 	 *
 	 * @return A list of absolute locations (Points relative to the Viewer's
 	 *         Control)
 	 */
-	List getSourceAnchorLocations();
+	List<Point> getSourceAnchorLocations();
 
 	/**
 	 * Returns a list of Points in <B>absolute</B> coordinates where target anchors
 	 * are located. Tools that work with connections should use these locations when
-	 * operating in accesible keyboard modes.
+	 * operating in accessible keyboard modes.
 	 *
 	 * @return A list of absolute locations (Points relative to the Viewer's
 	 *         Control)
 	 */
-	List getTargetAnchorLocations();
+	List<Point> getTargetAnchorLocations();
 
 }
