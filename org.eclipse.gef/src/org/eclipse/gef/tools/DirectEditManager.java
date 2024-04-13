@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellEditorListener;
 
@@ -66,7 +67,7 @@ public abstract class DirectEditManager {
 	private CellEditorLocator locator;
 	private GraphicalEditPart source;
 	private CellEditor ce;
-	private final Class editorType;
+	private final Class<? extends CellEditor> editorType;
 	private boolean committing = false;
 	private Object feature;
 
@@ -79,7 +80,8 @@ public abstract class DirectEditManager {
 	 * @param editorType the cell editor type
 	 * @param locator    the locator
 	 */
-	public DirectEditManager(GraphicalEditPart source, Class editorType, CellEditorLocator locator) {
+	public DirectEditManager(GraphicalEditPart source, Class<? extends CellEditor> editorType,
+			CellEditorLocator locator) {
 		this.source = source;
 		this.locator = locator;
 		this.editorType = editorType;
@@ -98,7 +100,8 @@ public abstract class DirectEditManager {
 	 *                   them.
 	 * @since 3.2
 	 */
-	public DirectEditManager(GraphicalEditPart source, Class editorType, CellEditorLocator locator, Object feature) {
+	public DirectEditManager(GraphicalEditPart source, Class<? extends CellEditor> editorType,
+			CellEditorLocator locator, Object feature) {
 		this(source, editorType, locator);
 		this.feature = feature;
 	}
@@ -146,16 +149,23 @@ public abstract class DirectEditManager {
 	/**
 	 * Creates the cell editor on the given composite. The cell editor is created by
 	 * instantiating the cell editor type passed into this DirectEditManager's
-	 * constuctor.
+	 * constructor.
+	 *
+	 * This method assumes that editorType is not null. Subclasses may on purpose
+	 * set it to null but then need to override this method to correctly create a
+	 * CellEditor.
 	 *
 	 * @param composite the composite to create the cell editor on
 	 * @return the newly created cell editor
 	 */
 	protected CellEditor createCellEditorOn(Composite composite) {
+		Assert.isNotNull(editorType);
 		try {
-			Constructor constructor = editorType.getConstructor(Composite.class);
-			return (CellEditor) constructor.newInstance(composite);
-		} catch (Exception e) {
+			Constructor<? extends CellEditor> constructor;
+			constructor = editorType.getConstructor(Composite.class);
+			return constructor.newInstance(composite);
+
+		} catch (ReflectiveOperationException e) {
 			return null;
 		}
 	}
@@ -368,7 +378,6 @@ public abstract class DirectEditManager {
 	 */
 	protected void setEditPart(GraphicalEditPart source) {
 		this.source = source;
-		// source.addEditPartListener();
 	}
 
 	/**
