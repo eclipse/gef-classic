@@ -300,9 +300,17 @@ public class FigureCanvas extends Canvas {
 
 	private void layoutViewport() {
 		ScrollPaneSolver.Result result;
+		int vBarWidth = 0;
+		int hBarHeight = 0;
+
+		if ((getScrollbarsMode() & SWT.SCROLLBAR_OVERLAY) != 0) {
+			org.eclipse.swt.graphics.Rectangle trim = computeTrim(0, 0, 0, 0);
+			vBarWidth = trim.width;
+			hBarHeight = trim.height;
+		}
+
 		result = ScrollPaneSolver.solve(new Rectangle(getBounds()).setLocation(0, 0), getViewport(),
-				getHorizontalScrollBarVisibility(), getVerticalScrollBarVisibility(), computeTrim(0, 0, 0, 0).width,
-				computeTrim(0, 0, 0, 0).height);
+				getHorizontalScrollBarVisibility(), getVerticalScrollBarVisibility(), vBarWidth, hBarHeight);
 		getLightweightSystem().setIgnoreResize(true);
 		try {
 			if (getHorizontalBar().getVisible() != result.showH) {
