@@ -1,3 +1,8 @@
+# GEF Classic 3.20.0 
+
+## GEF
+- Clients can now configure the accessible steps of tools through methods `accGetStep()`, `accStepIncrement` and `accStepReset` from `org.eclipse.gef.tools.AbstractTool`.
+
 # GEF Classic 3.19.0 (Eclipse 2024-03)
 
 ## Draw2d
