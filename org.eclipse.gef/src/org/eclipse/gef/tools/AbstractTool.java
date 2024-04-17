@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -233,11 +233,22 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 		return isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS) && e.character == 13;
 	}
 
-	int accGetStep() {
+	/**
+	 * Return the accessible step.
+	 *
+	 * @return The accessible step.
+	 * @since 3.18
+	 */
+	protected int accGetStep() {
 		return accessibleStep;
 	}
 
-	void accStepIncrement() {
+	/**
+	 * Increment the accessible step.
+	 *
+	 * @since 3.18
+	 */
+	protected void accStepIncrement() {
 		if (accessibleBegin == -1) {
 			accessibleBegin = new Date().getTime();
 			accessibleStep = 1;
@@ -250,7 +261,12 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 		}
 	}
 
-	void accStepReset() {
+	/**
+	 * Reset the accessible step.
+	 *
+	 * @since 3.18
+	 */
+	protected void accStepReset() {
 		accessibleBegin = -1;
 	}
 
