@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -33,7 +33,7 @@ public class ToolUtilities {
 	 * @param viewer the viewer
 	 * @return the selection excluding dependants
 	 */
-	public static List getSelectionWithoutDependants(EditPartViewer viewer) {
+	public static List<? extends EditPart> getSelectionWithoutDependants(EditPartViewer viewer) {
 		return getSelectionWithoutDependants(viewer.getSelectedEditParts());
 	}
 
@@ -44,7 +44,7 @@ public class ToolUtilities {
 	 * @param selectedParts the complete selection
 	 * @return the selection excluding dependants
 	 */
-	public static List getSelectionWithoutDependants(List<? extends EditPart> selectedParts) {
+	public static List<? extends EditPart> getSelectionWithoutDependants(List<? extends EditPart> selectedParts) {
 		return new ArrayList<>(selectedParts.stream().filter(ep -> !isAncestorContainedIn(selectedParts, ep)).toList());
 	}
 
@@ -57,10 +57,10 @@ public class ToolUtilities {
 	 * @param list    the list of edit parts to filter
 	 * @param request the request
 	 */
-	public static void filterEditPartsUnderstanding(List list, Request request) {
-		Iterator iter = list.iterator();
+	public static void filterEditPartsUnderstanding(List<? extends EditPart> list, Request request) {
+		Iterator<? extends EditPart> iter = list.iterator();
 		while (iter.hasNext()) {
-			EditPart ep = (EditPart) iter.next();
+			EditPart ep = iter.next();
 			if (!ep.understandsRequest(request)) {
 				iter.remove();
 			}

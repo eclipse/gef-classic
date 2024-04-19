@@ -15,9 +15,12 @@ package org.eclipse.gef.tools;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.AutoexposeHelper;
@@ -135,6 +138,23 @@ public abstract class TargetingTool extends AbstractTool {
 	}
 
 	/**
+	 * Get the direction indication from the key event.
+	 *
+	 * @return PositionConstants.NORTH, PositionConstants.EAST,
+	 *         PositionConstants.SOUTH, PositionConstants.WEST, or 0
+	 * @since 3.18
+	 */
+	protected int getDirection(KeyEvent event) {
+		return switch (event.keyCode) {
+		case SWT.ARROW_DOWN -> PositionConstants.SOUTH;
+		case SWT.ARROW_UP -> PositionConstants.NORTH;
+		case SWT.ARROW_RIGHT -> isCurrentViewerMirrored() ? PositionConstants.WEST : PositionConstants.EAST;
+		case SWT.ARROW_LEFT -> isCurrentViewerMirrored() ? PositionConstants.EAST : PositionConstants.WEST;
+		default -> 0;
+		};
+	}
+
+	/**
 	 * Returns a List of figures that should be excluded as potential targets for
 	 * the operation.
 	 *
@@ -227,6 +247,7 @@ public abstract class TargetingTool extends AbstractTool {
 	 * @see AbstractTool#isHoverActive()
 	 * @return <code>true</code> if the hover stop is processed in some way
 	 */
+	@SuppressWarnings("static-method")
 	protected boolean handleHoverStop() {
 		return false;
 	}

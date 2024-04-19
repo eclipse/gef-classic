@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.core.runtime.Platform;
 
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -73,8 +74,8 @@ public class ResizeTracker extends SimpleDragTracker {
 	 */
 	protected static final int MAX_FLAG = FLAG_TARGET_FEEDBACK;
 
-	private int direction;
-	private GraphicalEditPart owner;
+	private final int direction;
+	private final GraphicalEditPart owner;
 	private PrecisionRectangle sourceRect;
 	private SnapToHelper snapToHelper;
 
@@ -86,6 +87,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * @deprecated use ResizeTracker(GraphicalEditPart, int) instead
 	 * @param direction the direction
 	 */
+	@Deprecated
 	public ResizeTracker(int direction) {
 		this(null, direction);
 	}
@@ -116,8 +118,8 @@ public class ResizeTracker extends SimpleDragTracker {
 			}
 
 			IFigure figure = owner.getFigure();
-			if (figure instanceof HandleBounds) {
-				sourceRect = new PrecisionRectangle(((HandleBounds) figure).getHandleBounds());
+			if (figure instanceof HandleBounds handleBounds) {
+				sourceRect = new PrecisionRectangle(handleBounds.getHandleBounds());
 			} else {
 				sourceRect = new PrecisionRectangle(figure.getBounds());
 			}
@@ -140,8 +142,8 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
 	 */
 	@Override
-	protected List createOperationSet() {
-		List list = super.createOperationSet();
+	protected List<? extends EditPart> createOperationSet() {
+		List<? extends EditPart> list = super.createOperationSet();
 		ToolUtilities.filterEditPartsUnderstanding(list, getSourceRequest());
 		return list;
 	}
@@ -189,14 +191,9 @@ public class ResizeTracker extends SimpleDragTracker {
 	 */
 	@Override
 	protected Command getCommand() {
-		List editparts = getOperationSet();
-		EditPart part;
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Resize Handle Tracker");//$NON-NLS-1$
-		for (Object editpart : editparts) {
-			part = (EditPart) editpart;
-			command.add(part.getCommand(getSourceRequest()));
-		}
+		getOperationSet().forEach(ep -> command.add(ep.getCommand(getSourceRequest())));
 		return command.unwrap();
 	}
 
@@ -213,7 +210,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 */
 	@Override
 	protected Cursor getDefaultCursor() {
-		return SharedCursors.getDirectionalCursor(direction, getTargetEditPart().getFigure().isMirrored());
+		return Cursors.getDirectionalCursor(direction, getTargetEditPart().getFigure().isMirrored());
 	}
 
 	/**
@@ -498,6 +495,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * @return the minimum size
 	 * @since 3.7
 	 */
+	@SuppressWarnings("static-method")
 	protected Dimension getMaximumSizeFor(ChangeBoundsRequest request) {
 		return IFigure.MAX_DIMENSION;
 	}
@@ -512,6 +510,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * @return the minimum size
 	 * @since 3.7
 	 */
+	@SuppressWarnings("static-method")
 	protected Dimension getMinimumSizeFor(ChangeBoundsRequest request) {
 		return IFigure.MIN_DIMENSION;
 	}

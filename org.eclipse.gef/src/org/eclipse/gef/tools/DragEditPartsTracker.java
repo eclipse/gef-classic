@@ -14,7 +14,6 @@ package org.eclipse.gef.tools;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -23,6 +22,7 @@ import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.core.runtime.Platform;
 
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -88,7 +88,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		super(sourceEditPart);
 
 		cloneActive = false;
-		setDisabledCursor(SharedCursors.NO);
+		setDisabledCursor(Cursors.NO);
 	}
 
 	/**
@@ -184,8 +184,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * strategies in <code>updateTargetRequest()</code>.
 	 */
 	private void captureSourceDimensions() {
-		List editparts = getOperationSet();
-		for (Object editpart : editparts) {
+		List<? extends EditPart> editparts = getOperationSet();
+		for (EditPart editpart : editparts) {
 			GraphicalEditPart child = (GraphicalEditPart) editpart;
 			IFigure figure = child.getFigure();
 			PrecisionRectangle bounds = null;
@@ -207,8 +207,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		}
 		if (sourceRectangle == null) {
 			IFigure figure = ((GraphicalEditPart) getSourceEditPart()).getFigure();
-			if (figure instanceof HandleBounds) {
-				sourceRectangle = new PrecisionRectangle(((HandleBounds) figure).getHandleBounds());
+			if (figure instanceof HandleBounds handleBounds) {
+				sourceRectangle = new PrecisionRectangle(handleBounds.getHandleBounds());
 			} else {
 				sourceRectangle = new PrecisionRectangle(figure.getBounds());
 			}
@@ -225,14 +225,14 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
 	 */
 	@Override
-	protected List createOperationSet() {
+	protected List<? extends EditPart> createOperationSet() {
 		if (getCurrentViewer() != null) {
-			List list = ToolUtilities.getSelectionWithoutDependants(getCurrentViewer());
+			List<? extends EditPart> list = ToolUtilities.getSelectionWithoutDependants(getCurrentViewer());
 			ToolUtilities.filterEditPartsUnderstanding(list, getTargetRequest());
 			return list;
 		}
 
-		return new ArrayList();
+		return new ArrayList<>();
 	}
 
 	/**
@@ -277,11 +277,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 			return;
 		}
 		setFlag(FLAG_SOURCE_FEEDBACK, false);
-		List editParts = getOperationSet();
-		for (Object editPart2 : editParts) {
-			EditPart editPart = (EditPart) editPart2;
-			editPart.eraseSourceFeedback(getTargetRequest());
-		}
+		getOperationSet().forEach(ep -> ep.eraseSourceFeedback(getTargetRequest()));
 	}
 
 	/**
@@ -298,8 +294,6 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Drag Object Tracker");//$NON-NLS-1$
 
-		Iterator iter = getOperationSet().iterator();
-
 		Request request = getTargetRequest();
 
 		if (isCloneActive()) {
@@ -311,8 +305,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		}
 
 		if (!isCloneActive()) {
-			while (iter.hasNext()) {
-				EditPart editPart = (EditPart) iter.next();
+			for (EditPart editPart : getOperationSet()) {
 				command.add(editPart.getCommand(request));
 			}
 		}
@@ -364,9 +357,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	@Override
 	protected Collection<IFigure> getExclusionSet() {
 		if (exclusionSet == null) {
-			List set = getOperationSet();
+			List<? extends EditPart> set = getOperationSet();
 			exclusionSet = new ArrayList<>(set.size() + 1);
-			for (Object element : set) {
+			for (EditPart element : set) {
 				GraphicalEditPart editpart = (GraphicalEditPart) element;
 				exclusionSet.add(editpart.getFigure());
 			}
@@ -485,6 +478,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 					step = -step;
 				}
 				placeMouseInViewer(getLocation().getTranslated(step, 0));
+				break;
+			default:
 				break;
 			}
 			return true;
@@ -632,11 +627,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * set} to show source feedback.
 	 */
 	protected void showSourceFeedback() {
-		List editParts = getOperationSet();
-		for (Object editPart2 : editParts) {
-			EditPart editPart = (EditPart) editPart2;
-			editPart.showSourceFeedback(getTargetRequest());
-		}
+		getOperationSet().forEach(ep -> ep.showSourceFeedback(getTargetRequest()));
 		setFlag(FLAG_SOURCE_FEEDBACK, true);
 	}
 
@@ -651,11 +642,10 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		boolean check = isInState(STATE_INITIAL);
 		super.setState(state);
 
-		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
-			if (getCurrentInput().isModKeyDown(MODIFIER_CLONE)) {
-				setCloneActive(true);
-				handleDragInProgress();
-			}
+		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
+				&& getCurrentInput().isModKeyDown(MODIFIER_CLONE)) {
+			setCloneActive(true);
+			handleDragInProgress();
 		}
 
 		if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {

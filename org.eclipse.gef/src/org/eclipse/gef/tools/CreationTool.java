@@ -14,6 +14,7 @@ package org.eclipse.gef.tools;
 
 import org.eclipse.swt.graphics.Cursor;
 
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -53,7 +54,7 @@ public class CreationTool extends TargetingTool {
 	 */
 	public CreationTool() {
 		setDefaultCursor(SharedCursors.CURSOR_TREE_ADD);
-		setDisabledCursor(SharedCursors.NO);
+		setDisabledCursor(Cursors.NO);
 	}
 
 	/**
@@ -371,6 +372,7 @@ public class CreationTool extends TargetingTool {
 	 * @return the minimum size
 	 * @since 3.7
 	 */
+	@SuppressWarnings("static-method")
 	protected Dimension getMaximumSizeFor(CreateRequest request) {
 		return IFigure.MAX_DIMENSION;
 	}
@@ -384,6 +386,7 @@ public class CreationTool extends TargetingTool {
 	 * @return the minimum size
 	 * @since 3.7
 	 */
+	@SuppressWarnings("static-method")
 	protected Dimension getMinimumSizeFor(CreateRequest request) {
 		return IFigure.MIN_DIMENSION;
 	}

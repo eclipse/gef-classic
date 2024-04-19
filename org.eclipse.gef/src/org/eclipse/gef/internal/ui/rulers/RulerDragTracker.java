@@ -16,11 +16,11 @@ import java.util.Iterator;
 
 import org.eclipse.swt.graphics.Cursor;
 
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.editparts.ZoomManager;
@@ -32,7 +32,7 @@ import org.eclipse.gef.tools.SimpleDragTracker;
 public class RulerDragTracker extends SimpleDragTracker {
 
 	protected RulerEditPart source;
-	private IFigure guide, guideline;
+	private final IFigure guide, guideline;
 
 	public RulerDragTracker(RulerEditPart source) {
 		this.source = source;
@@ -56,9 +56,8 @@ public class RulerDragTracker extends SimpleDragTracker {
 	protected Command getCommand() {
 		if (isCreationValid() && !isDelete()) {
 			return source.getRulerProvider().getCreateGuideCommand(getCurrentPosition());
-		} else {
-			return UnexecutableCommand.INSTANCE;
 		}
+		return UnexecutableCommand.INSTANCE;
 	}
 
 	@Override
@@ -73,8 +72,7 @@ public class RulerDragTracker extends SimpleDragTracker {
 		 */
 		Point pt = getLocation();
 		source.getFigure().translateToRelative(pt);
-		int position = source.isHorizontal() ? pt.x : pt.y;
-		return position;
+		return source.isHorizontal() ? pt.x : pt.y;
 	}
 
 	protected int getCurrentPosition() {
@@ -95,11 +93,11 @@ public class RulerDragTracker extends SimpleDragTracker {
 	protected Cursor getDefaultCursor() {
 		if (isDelete()) {
 			return super.getDefaultCursor();
-		} else if (isCreationValid()) {
-			return source.isHorizontal() ? SharedCursors.SIZEE : SharedCursors.SIZEN;
-		} else {
-			return SharedCursors.NO;
 		}
+		if (isCreationValid()) {
+			return source.isHorizontal() ? Cursors.SIZEE : Cursors.SIZEN;
+		}
+		return Cursors.NO;
 	}
 
 	@Override
@@ -134,7 +132,9 @@ public class RulerDragTracker extends SimpleDragTracker {
 	}
 
 	protected boolean isDelete() {
-		int pos, max, min;
+		int pos;
+		int max;
+		int min;
 		if (!source.isHorizontal()) {
 			pos = getLocation().x;
 			Rectangle zone = guide.getBounds().getExpanded(GuideEditPart.DELETE_THRESHOLD, 0);

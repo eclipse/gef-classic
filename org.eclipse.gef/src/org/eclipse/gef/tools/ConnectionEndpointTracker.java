@@ -23,7 +23,6 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.AccessibleAnchorProvider;
@@ -241,24 +240,8 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 					getCurrentViewer().reveal(getConnectionEditPart().getSource());
 				}
 			}
-			int direction = 0;
-			switch (e.keyCode) {
-			case SWT.ARROW_DOWN:
-				direction = PositionConstants.SOUTH;
-				break;
-			case SWT.ARROW_UP:
-				direction = PositionConstants.NORTH;
-				break;
-			case SWT.ARROW_RIGHT:
-				direction = isCurrentViewerMirrored() ? PositionConstants.WEST : PositionConstants.EAST;
-				break;
-			case SWT.ARROW_LEFT:
-				direction = isCurrentViewerMirrored() ? PositionConstants.EAST : PositionConstants.WEST;
-				break;
-			default:
-				break;
-			}
 
+			int direction = getDirection(e);
 			boolean consumed = false;
 			if (direction != 0 && e.stateMask == 0) {
 				consumed = navigateNextAnchor(direction);

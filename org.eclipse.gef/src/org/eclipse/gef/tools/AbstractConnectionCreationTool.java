@@ -63,7 +63,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	private CreationFactory factory;
 	private EditPartViewer viewer;
 
-	private EditPartListener.Stub deactivationListener = new EditPartListener.Stub() {
+	private final EditPartListener.Stub deactivationListener = new EditPartListener.Stub() {
 		@Override
 		public void partDeactivated(EditPart editpart) {
 			handleSourceDeactivated();
@@ -93,10 +93,8 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 */
 	@Override
 	protected Cursor calculateCursor() {
-		if (isInState(STATE_INITIAL)) {
-			if (getCurrentCommand() != null) {
-				return getDefaultCursor();
-			}
+		if (isInState(STATE_INITIAL) && getCurrentCommand() != null) {
+			return getDefaultCursor();
 		}
 		return super.calculateCursor();
 	}
@@ -145,9 +143,8 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	protected String getCommandName() {
 		if (isInState(STATE_CONNECTION_STARTED | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			return REQ_CONNECTION_END;
-		} else {
-			return REQ_CONNECTION_START;
 		}
+		return REQ_CONNECTION_START;
 	}
 
 	/**
@@ -163,8 +160,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 */
 	@Override
 	protected String getDebugNameForState(int s) {
-		if (s == STATE_CONNECTION_STARTED || s == STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
-		 {
+		if (s == STATE_CONNECTION_STARTED || s == STATE_ACCESSIBLE_DRAG_IN_PROGRESS) {
 			return "Connection Started";//$NON-NLS-1$
 		}
 		return super.getDebugNameForState(s);
