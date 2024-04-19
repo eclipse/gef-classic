@@ -92,8 +92,8 @@ public class Digraph1GraphicalEditor extends GraphicalEditor {
 	@Override
 	protected void setInput(IEditorInput input) {
 		super.setInput(input);
-		if (input instanceof IFileEditorInput) {
-			setPartName(((IFileEditorInput) input).getName());
+		if (input instanceof IFileEditorInput fileEditorInput) {
+			setPartName(fileEditorInput.getName());
 		}
 	}
 }

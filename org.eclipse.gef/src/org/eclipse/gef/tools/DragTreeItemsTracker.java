@@ -46,6 +46,7 @@ public class DragTreeItemsTracker extends SelectEditPartTracker {
 	 */
 	@Override
 	protected void performSelection() {
+		// nothing to be done
 	}
 
 }

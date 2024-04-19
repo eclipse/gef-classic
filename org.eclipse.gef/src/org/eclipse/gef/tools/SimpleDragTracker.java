@@ -12,14 +12,11 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.UnexecutableCommand;
 
@@ -70,6 +67,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 *
 	 * @return a new source request
 	 */
+	@SuppressWarnings("static-method")
 	protected Request createSourceRequest() {
 		return new Request();
 	}
@@ -92,11 +90,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 			return;
 		}
 		setFlag(FLAG_SOURCE_FEEDBACK, false);
-		List editParts = getOperationSet();
-		for (Object editPart2 : editParts) {
-			EditPart editPart = (EditPart) editPart2;
-			editPart.eraseSourceFeedback(getSourceRequest());
-		}
+		getOperationSet().forEach(ep -> ep.eraseSourceFeedback(getSourceRequest()));
 	}
 
 	/**
@@ -210,6 +204,8 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 				}
 				placeMouseInViewer(getLocation().getTranslated(step, 0));
 				break;
+			default:
+				break;
 			}
 			return true;
 		}
@@ -249,11 +245,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 * Show the source drag feedback for the drag occurring within the viewer.
 	 */
 	protected void showSourceFeedback() {
-		List editParts = getOperationSet();
-		for (Object editPart2 : editParts) {
-			EditPart editPart = (EditPart) editPart2;
-			editPart.showSourceFeedback(getSourceRequest());
-		}
+		getOperationSet().forEach(ep -> ep.showSourceFeedback(getSourceRequest()));
 		setFlag(FLAG_SOURCE_FEEDBACK, true);
 	}
 

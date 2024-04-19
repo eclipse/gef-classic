@@ -61,8 +61,8 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	 * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
 	 */
 	@Override
-	protected List createOperationSet() {
-		List list = new ArrayList();
+	protected List<? extends ConnectionEditPart> createOperationSet() {
+		List<ConnectionEditPart> list = new ArrayList<>();
 		list.add(getConnectionEditPart());
 		return list;
 	}

@@ -18,7 +18,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Event;
 
-import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.AccessibleAnchorProvider;
@@ -111,21 +110,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	@Override
 	protected boolean handleKeyDown(KeyEvent event) {
 		if (acceptArrowKey(event)) {
-			int direction = 0;
-			switch (event.keyCode) {
-			case SWT.ARROW_DOWN:
-				direction = PositionConstants.SOUTH;
-				break;
-			case SWT.ARROW_UP:
-				direction = PositionConstants.NORTH;
-				break;
-			case SWT.ARROW_RIGHT:
-				direction = isCurrentViewerMirrored() ? PositionConstants.WEST : PositionConstants.EAST;
-				break;
-			case SWT.ARROW_LEFT:
-				direction = isCurrentViewerMirrored() ? PositionConstants.EAST : PositionConstants.WEST;
-				break;
-			}
+			int direction = getDirection(event);
 
 			boolean consumed = false;
 			if (direction != 0 && event.stateMask == 0) {
@@ -156,27 +141,12 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 		}
 
 		if (acceptConnectionStart(event)) {
-			Command command = getCommand();
-			if (command != null && command.canExecute()) {
-				updateTargetUnderMouse();
-				setConnectionSource(getTargetEditPart());
-				((CreateConnectionRequest) getTargetRequest()).setSourceEditPart(getTargetEditPart());
-				setState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
-				placeMouseInViewer(getLocation().getTranslated(6, 6));
-			}
+			performConnectionStart();
 			return true;
 		}
 
 		if (acceptConnectionFinish(event)) {
-			Command command = getCommand();
-			if (command != null && command.canExecute()) {
-				setState(STATE_INITIAL);
-				placeMouseInViewer(getLocation().getTranslated(6, 6));
-				eraseSourceFeedback();
-				eraseTargetFeedback();
-				setCurrentCommand(command);
-				executeCurrentCommand();
-			}
+			performConnectionFinished();
 			return true;
 		}
 
@@ -228,6 +198,29 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 			return true;
 		}
 		return false;
+	}
+
+	private void performConnectionStart() {
+		Command command = getCommand();
+		if (command != null && command.canExecute()) {
+			updateTargetUnderMouse();
+			setConnectionSource(getTargetEditPart());
+			((CreateConnectionRequest) getTargetRequest()).setSourceEditPart(getTargetEditPart());
+			setState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS);
+			placeMouseInViewer(getLocation().getTranslated(6, 6));
+		}
+	}
+
+	private void performConnectionFinished() {
+		Command command = getCommand();
+		if (command != null && command.canExecute()) {
+			setState(STATE_INITIAL);
+			placeMouseInViewer(getLocation().getTranslated(6, 6));
+			eraseSourceFeedback();
+			eraseTargetFeedback();
+			setCurrentCommand(command);
+			executeCurrentCommand();
+		}
 	}
 
 }

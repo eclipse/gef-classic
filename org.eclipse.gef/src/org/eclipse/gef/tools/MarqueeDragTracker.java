@@ -25,6 +25,7 @@ public class MarqueeDragTracker extends MarqueeSelectionTool implements DragTrac
 	 */
 	@Override
 	protected void handleFinished() {
+		// nothing to be done
 	}
 
 }
