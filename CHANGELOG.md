@@ -1,3 +1,9 @@
+# GEF Classic 3.20.0 (Eclipse 2024-06)
+
+## Draw2d
+ - Clients can disable overlay scrolling by calling FigureCanvas.setScrollbarsMode()
+   prior to creating the object.
+
 # GEF Classic 3.19.0 (Eclipse 2024-03)
 
 ## Draw2d

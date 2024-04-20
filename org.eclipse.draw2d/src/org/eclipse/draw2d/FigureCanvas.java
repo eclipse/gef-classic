@@ -13,6 +13,9 @@
 package org.eclipse.draw2d;
 
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -21,6 +24,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Scrollable;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -49,6 +53,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class FigureCanvas extends Canvas {
 
+	private static final Logger LOGGER = Logger.getLogger(FigureCanvas.class.getSimpleName());
 	private static final int ACCEPTED_STYLES = SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT | SWT.V_SCROLL | SWT.H_SCROLL
 			| SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.BORDER;
 
@@ -72,6 +77,16 @@ public class FigureCanvas extends Canvas {
 	public static int AUTOMATIC = 1;
 	/** Always show scrollbar */
 	public static int ALWAYS = 2;
+
+	/**
+	 * Static property specifying whether new instances of this class should be
+	 * created with overlay scrolling enabled. Possible values are {@link SWT#NONE}
+	 * or {@link SWT#SCROLLBAR_OVERLAY}. Initial value is {@code null}, indicating
+	 * that the default setting should be used.
+	 *
+	 * @see <a href="https://github.com/eclipse/gef-classic/issues/430">here</a>
+	 */
+	private static Integer SCROLLBARS_MODE = null;
 
 	private int vBarVisibility = AUTOMATIC;
 	private int hBarVisibility = AUTOMATIC;
@@ -155,6 +170,7 @@ public class FigureCanvas extends Canvas {
 	 */
 	public FigureCanvas(int style, Composite parent, LightweightSystem lws) {
 		super(parent, checkStyle(style));
+		adjustScrollbarsMode();
 		getHorizontalBar().setVisible(false);
 		getVerticalBar().setVisible(false);
 		this.lws = lws;
@@ -253,6 +269,25 @@ public class FigureCanvas extends Canvas {
 			setViewport(new Viewport(true));
 		}
 		return viewport;
+	}
+
+	/**
+	 * Calls {@link Scrollable#setScrollbarsMode(int)} if executed with SWT 3.126.
+	 *
+	 * @since 3.2
+	 */
+	private void adjustScrollbarsMode() {
+		// TODO Check version of SWT binary after PR has been merged:
+		// https://github.com/eclipse-platform/eclipse.platform.swt/pull/1188
+		if (SWT.getVersion() >= 4965 && SCROLLBARS_MODE != null && SCROLLBARS_MODE != getScrollbarsMode()) {
+			try {
+				// Invoke method via reflection to remain compatible with older SWT versions
+				Method setScrollbarsMode = Scrollable.class.getMethod("setScrollbarsMode", Integer.class); //$NON-NLS-1$
+				setScrollbarsMode.invoke(this, SCROLLBARS_MODE);
+			} catch (ReflectiveOperationException e) {
+				LOGGER.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}
 	}
 
 	/**
@@ -550,6 +585,33 @@ public class FigureCanvas extends Canvas {
 		viewport = vp;
 		lws.setContents(viewport);
 		hookViewport();
+	}
+
+	/**
+	 * Global property to enable overlay scrolling for all figure canvas when
+	 * {@link SWT#SCROLLBAR_OVERLAY} and to disable overlay scrolling when
+	 * {@link SWT#NONE} is given. When {@code null}, the default setting of the
+	 * operating system is used.<br>
+	 * Calling this method has no effect on already created instances of this
+	 * class.<br>
+	 * Calling this method has no effect if overlay scrolling is not supported by
+	 * the operating system.
+	 *
+	 * @param mode One of {@link SWT#NONE}, {@link SWT#SCROLLBAR_OVERLAY} or
+	 *             {@code null}.
+	 * @since 3.16
+	 * @throws IllegalArgumentException if the given {@code mode} isn't one of
+	 *                                  {@link SWT#NONE},
+	 *                                  {@link SWT#SCROLLBAR_OVERLAY} or
+	 *                                  {@code null}.
+	 * @see #SCROLLBARS_MODE
+	 */
+	public static void setScrollbarsMode(Integer mode) throws IllegalArgumentException {
+		if (mode != null && mode != SWT.NONE && mode != SWT.SCROLLBAR_OVERLAY) {
+			throw new IllegalArgumentException(
+					"Scrollbars mode must be either null, SWT.SCROLLBAR_OVERLAY or SWT.NONE"); //$NON-NLS-1$
+		}
+		SCROLLBARS_MODE = mode;
 	}
 
 	private static int verifyScrollBarOffset(RangeModel model, int value) {
