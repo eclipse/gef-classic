@@ -1,4 +1,7 @@
-# GEF Classic 3.20.0 
+# GEF Classic 3.20.0 (Eclipse 2024-03)
+
+## Draw2d
+ - _Experimental:_ Clients can set the  `org.eclipse.draw2d.LightweightSystem.useDoubleBuffering` system property to enable double buffering while performing paint operations.
 
 ## GEF
 - Clients can now configure the accessible steps of tools through methods `accGetStep()`, `accStepIncrement` and `accStepReset` from `org.eclipse.gef.tools.AbstractTool`.

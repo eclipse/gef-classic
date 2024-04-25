@@ -40,6 +40,14 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/org/eclipse/draw2d/LightweightSystem.java" type="org.eclipse.draw2d.LightweightSystem">
+        <filter id="336658481">
+            <message_arguments>
+                <message_argument value="org.eclipse.draw2d.LightweightSystem"/>
+                <message_argument value="KEY_USE_DOUBLE_BUFFERING"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/org/eclipse/draw2d/Orientable.java" type="org.eclipse.draw2d.Orientable">
         <filter id="576720909">
             <message_arguments>

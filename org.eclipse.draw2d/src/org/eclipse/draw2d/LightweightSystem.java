@@ -19,6 +19,7 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.accessibility.AccessibleListener;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusEvent;
@@ -34,6 +35,7 @@ import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -54,6 +56,15 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * </ol>
  */
 public class LightweightSystem {
+	/**
+	 * Indicates whether double-buffering should be used when painting the figures.
+	 * This is an experimental feature that might be removed in a future release.
+	 *
+	 * @since 3.16
+	 * @noreference This field is not intended to be referenced by clients.
+	 */
+	public static final String KEY_USE_DOUBLE_BUFFERING = "org.eclipse.draw2d.LightweightSystem.useDoubleBuffering"; //$NON-NLS-1$
+	private static final boolean USE_DOUBLE_BUFFERING = Boolean.valueOf(System.getProperty(KEY_USE_DOUBLE_BUFFERING));
 
 	private Canvas canvas;
 	IFigure contents;
@@ -61,6 +72,7 @@ public class LightweightSystem {
 	private EventDispatcher dispatcher;
 	private UpdateManager manager = new DeferredUpdateManager();
 	private int ignoreResize;
+	private Image bufferedImage;
 
 	/**
 	 * Constructs a LightweightSystem on Canvas <i>c</i>.
@@ -100,6 +112,17 @@ public class LightweightSystem {
 		canvas.addFocusListener(handler);
 		canvas.addDisposeListener(handler);
 		canvas.addListener(SWT.MouseWheel, handler);
+		canvas.addDisposeListener(event -> {
+			if (bufferedImage != null) {
+				bufferedImage.dispose();
+			}
+		});
+		canvas.addControlListener(ControlListener.controlResizedAdapter(event -> {
+			if (bufferedImage != null) {
+				bufferedImage.dispose();
+			}
+			bufferedImage = null;
+		}));
 
 		canvas.addControlListener(new ControlAdapter() {
 			@Override
@@ -199,7 +222,21 @@ public class LightweightSystem {
 	 * @since 2.0
 	 */
 	public void paint(GC gc) {
-		getUpdateManager().paint(gc);
+		if (USE_DOUBLE_BUFFERING) {
+			if (bufferedImage == null) {
+				Rectangle bounds = getRootFigure().getBounds();
+				bufferedImage = new Image(null, bounds.width, bounds.height);
+			}
+			GC bufferedGC = new GC(bufferedImage);
+			try {
+				getUpdateManager().paint(bufferedGC);
+				gc.drawImage(bufferedImage, 0, 0);
+			} finally {
+				bufferedGC.dispose();
+			}
+		} else {
+			getUpdateManager().paint(gc);
+		}
 	}
 
 	/**
