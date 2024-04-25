@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -40,4 +40,20 @@ public interface UpdateListener {
 	 */
 	void notifyValidating();
 
+	/**
+	 * An empty implementation of {@list UpdateListener} for convenience.
+	 *
+	 * @since 3.16
+	 */
+	static class Stub implements UpdateListener {
+		@Override
+		public void notifyPainting(Rectangle damage, Map<IFigure, Rectangle> dirtyRegions) {
+			// may be overwritten by subclasses
+		}
+
+		@Override
+		public void notifyValidating() {
+			// may be overwritten by subclasses
+		}
+	}
 }

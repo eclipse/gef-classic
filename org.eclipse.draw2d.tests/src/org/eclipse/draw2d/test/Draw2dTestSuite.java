@@ -59,7 +59,8 @@ import org.junit.runners.Suite;
 	LayerTest.class,
 	ShapeTest.class,
 	InsetsTest.class,
-	DirectedGraphLayoutTest.class
+	DirectedGraphLayoutTest.class,
+	ScrollPaneTests.class
 })
 public class Draw2dTestSuite {
 }
