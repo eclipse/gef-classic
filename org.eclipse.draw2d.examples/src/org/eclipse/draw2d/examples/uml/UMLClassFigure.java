@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2023 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -18,15 +18,15 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
+import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.SeparatorBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
 
 public class UMLClassFigure extends Figure {
 
@@ -37,18 +37,6 @@ public class UMLClassFigure extends Figure {
 	static Font BOLD = new Font(null, "", 10, SWT.BOLD); //$NON-NLS-1$
 
 	public UMLClassFigure() {
-		class SeparatorBorder extends MarginBorder {
-			SeparatorBorder() {
-				super(3, 5, 3, 5);
-			}
-
-			@Override
-			public void paint(IFigure figure, Graphics graphics, Insets insets) {
-				Rectangle where = getPaintRectangle(figure, insets);
-				graphics.drawLine(where.getTopLeft(), where.getTopRight());
-			}
-		}
-
 		Label header = new Label("ClassName", classImage); //$NON-NLS-1$
 		header.setFont(BOLD);
 		header.setBorder(new MarginBorder(3, 5, 3, 5));
@@ -59,7 +47,8 @@ public class UMLClassFigure extends Figure {
 		layout.setStretchMinorAxis(false);
 		attributes.add(new Label("name : String")); //$NON-NLS-1$
 		attributes.add(new Label("ID : String")); //$NON-NLS-1$
-		attributes.setBorder(new SeparatorBorder());
+		Border attributeBorder = new SeparatorBorder(new Insets(3, 5, 3, 5), PositionConstants.TOP);
+		attributes.setBorder(attributeBorder);
 
 		Figure methods = new Figure();
 		layout = new ToolbarLayout();
@@ -67,7 +56,8 @@ public class UMLClassFigure extends Figure {
 		layout.setStretchMinorAxis(false);
 		methods.add(new Label("foo() : int")); //$NON-NLS-1$
 		methods.add(new Label("bar() : char")); //$NON-NLS-1$
-		methods.setBorder(new SeparatorBorder());
+		Border methodBorder = new SeparatorBorder(new Insets(3, 5, 3, 5), PositionConstants.TOP);
+		methods.setBorder(methodBorder);
 
 		setBorder(new LineBorder());
 		setLayoutManager(new ToolbarLayout());
