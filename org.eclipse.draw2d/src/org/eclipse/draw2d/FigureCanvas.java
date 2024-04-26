@@ -303,7 +303,7 @@ public class FigureCanvas extends Canvas {
 		int vBarWidth = 0;
 		int hBarHeight = 0;
 
-		if ((getScrollbarsMode() & SWT.SCROLLBAR_OVERLAY) != 0) {
+		if ((getScrollbarsMode() & SWT.SCROLLBAR_OVERLAY) == 0) {
 			org.eclipse.swt.graphics.Rectangle trim = computeTrim(0, 0, 0, 0);
 			vBarWidth = trim.width;
 			hBarHeight = trim.height;
