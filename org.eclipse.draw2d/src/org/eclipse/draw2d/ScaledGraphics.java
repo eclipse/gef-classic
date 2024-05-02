@@ -996,6 +996,7 @@ public class ScaledGraphics extends Graphics {
 		}
 
 		if (zoomWidth < -1 || zoomWidth == 0) {
+			zoomed.dispose();
 			return null;
 		}
 
