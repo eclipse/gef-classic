@@ -986,9 +986,6 @@ public class ScaledGraphics extends Graphics {
 	}
 
 	private TextLayout zoomTextLayout(TextLayout layout) {
-		TextLayout zoomed = new TextLayout(Display.getCurrent());
-		zoomed.setText(layout.getText());
-
 		int zoomWidth = -1;
 
 		if (layout.getWidth() != -1) {
@@ -997,8 +994,10 @@ public class ScaledGraphics extends Graphics {
 
 		if (zoomWidth < -1 || zoomWidth == 0) {
 			return null;
-		}
+		} 
 
+		TextLayout zoomed = new TextLayout(Display.getCurrent());
+		zoomed.setText(layout.getText());
 		zoomed.setFont(zoomFont(layout.getFont()));
 		zoomed.setAlignment(layout.getAlignment());
 		zoomed.setAscent(layout.getAscent());
