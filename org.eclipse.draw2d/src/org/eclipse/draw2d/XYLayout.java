@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
@@ -25,10 +22,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * using the XY Layout algorithm. This lays out the components using the layout
  * constraints as defined by each component.
  */
-public class XYLayout extends AbstractLayout {
-
-	/** The layout contraints */
-	protected Map<IFigure, Rectangle> constraints = new HashMap<>();
+public class XYLayout extends AbstractConstraintLayout {
 
 	/**
 	 * Calculates and returns the preferred size of the input figure. Since in
@@ -44,7 +38,7 @@ public class XYLayout extends AbstractLayout {
 	protected Dimension calculatePreferredSize(IFigure f, int wHint, int hHint) {
 		Rectangle rect = new Rectangle();
 		for (IFigure child : f.getChildren()) {
-			Rectangle r = constraints.get(child);
+			Rectangle r = (Rectangle) getConstraint(child);
 			if (r == null) {
 				continue;
 			}
@@ -65,14 +59,6 @@ public class XYLayout extends AbstractLayout {
 		Insets insets = f.getInsets();
 		return new Dimension(d.width + insets.getWidth(), d.height + insets.getHeight())
 				.union(getBorderPreferredSize(f));
-	}
-
-	/**
-	 * @see LayoutManager#getConstraint(IFigure)
-	 */
-	@Override
-	public Object getConstraint(IFigure figure) {
-		return constraints.get(figure);
 	}
 
 	/**
@@ -118,15 +104,6 @@ public class XYLayout extends AbstractLayout {
 	}
 
 	/**
-	 * @see LayoutManager#remove(IFigure)
-	 */
-	@Override
-	public void remove(IFigure figure) {
-		super.remove(figure);
-		constraints.remove(figure);
-	}
-
-	/**
 	 * Sets the layout constraint of the given figure. The constraints can only be
 	 * of type {@link Rectangle}.
 	 *
@@ -135,14 +112,11 @@ public class XYLayout extends AbstractLayout {
 	 */
 	@Override
 	public void setConstraint(IFigure figure, Object newConstraint) {
-		super.setConstraint(figure, newConstraint);
-		if (newConstraint != null) {
-			if (!(newConstraint instanceof Rectangle rect)) {
-				throw new IllegalArgumentException("XYLayout was given " + newConstraint.getClass().getName() //$NON-NLS-1$
-						+ " as constraint for Figure. Rectangle expected!"); //$NON-NLS-1$
-			}
-			constraints.put(figure, rect);
+		if (newConstraint != null && !(newConstraint instanceof Rectangle)) {
+			throw new IllegalArgumentException("XYLayout was given " + newConstraint.getClass().getName() //$NON-NLS-1$
+					+ " as constraint for Figure. Rectangle expected!"); //$NON-NLS-1$
 		}
+		super.setConstraint(figure, newConstraint);
 	}
 
 }

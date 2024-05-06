@@ -1,7 +1,13 @@
 # GEF Classic 3.20.0 
 
+## Draw2d
+ - Introduction of new base class `org.eclipse.draw2d.AbstractConstraintLayout` that provides a generic constraint map management for 
+   layout implementations. 
+   Currently used by `XYLayout`,  `DelegatingLayout`, and in GEF `RulerLayout`.   
+
 ## GEF
-- Clients can now configure the accessible steps of tools through methods `accGetStep()`, `accStepIncrement` and `accStepReset` from `org.eclipse.gef.tools.AbstractTool`.
+ - Clients can now configure the accessible steps of tools through methods `accGetStep()`, `accStepIncrement` and `accStepReset` 
+   from `org.eclipse.gef.tools.AbstractTool`.
 
 # GEF Classic 3.19.0 (Eclipse 2024-03)
 
