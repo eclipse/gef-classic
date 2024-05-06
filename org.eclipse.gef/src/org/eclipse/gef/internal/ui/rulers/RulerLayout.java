@@ -12,10 +12,7 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.rulers;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.draw2d.AbstractLayout;
+import org.eclipse.draw2d.AbstractConstraintLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -28,9 +25,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author Pratik Shah
  * @since 3.0
  */
-public class RulerLayout extends AbstractLayout {
-
-	private final Map<IFigure, Integer> constraints = new HashMap<>();
+public class RulerLayout extends AbstractConstraintLayout {
 
 	/**
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure,
@@ -46,7 +41,7 @@ public class RulerLayout extends AbstractLayout {
 	 */
 	@Override
 	public Integer getConstraint(IFigure child) {
-		return constraints.get(child);
+		return (Integer) constraints.get(child);
 	}
 
 	/**
@@ -77,15 +72,6 @@ public class RulerLayout extends AbstractLayout {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.LayoutManager#remove(IFigure)
-	 */
-	@Override
-	public void remove(IFigure figure) {
-		super.remove(figure);
-		constraints.remove(figure);
-	}
-
-	/**
 	 * Sets the layout constraint of the given figure. The constraints can only be
 	 * of type {@link Integer}.
 	 *
@@ -93,14 +79,11 @@ public class RulerLayout extends AbstractLayout {
 	 */
 	@Override
 	public void setConstraint(IFigure figure, Object newConstraint) {
-		super.setConstraint(figure, newConstraint);
-		if (newConstraint != null) {
-			if (!(newConstraint instanceof Integer intConstraint)) {
-				throw new IllegalArgumentException("RulerLayout was given " + newConstraint.getClass().getName() //$NON-NLS-1$
-						+ " as constraint for Figure. Integer expected!"); //$NON-NLS-1$
-			}
-			constraints.put(figure, intConstraint);
+		if (newConstraint != null && !(newConstraint instanceof Integer)) {
+			throw new IllegalArgumentException("RulerLayout was given " + newConstraint.getClass().getName() //$NON-NLS-1$
+					+ " as constraint for Figure. Integer expected!"); //$NON-NLS-1$
 		}
+		super.setConstraint(figure, newConstraint);
 	}
 
 }

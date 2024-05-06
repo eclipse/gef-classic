@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.draw2d.geometry.Dimension;
 
 /**
@@ -24,9 +21,7 @@ import org.eclipse.draw2d.geometry.Dimension;
  * {@link Locator#relocate(IFigure target) relocate} method is responsible for
  * placing the child.
  */
-public class DelegatingLayout extends AbstractLayout {
-
-	private Map<IFigure, Object> constraints = new HashMap<>();
+public class DelegatingLayout extends AbstractConstraintLayout {
 
 	/**
 	 * Calculates the preferred size of the given Figure. For the DelegatingLayout,
@@ -46,14 +41,6 @@ public class DelegatingLayout extends AbstractLayout {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure)
-	 */
-	@Override
-	public Object getConstraint(IFigure child) {
-		return constraints.get(child);
-	}
-
-	/**
 	 * Lays out the given figure's children based on their {@link Locator}
 	 * constraint.
 	 *
@@ -62,7 +49,7 @@ public class DelegatingLayout extends AbstractLayout {
 	@Override
 	public void layout(IFigure parent) {
 		for (IFigure child : parent.getChildren()) {
-			Locator locator = (Locator) constraints.get(child);
+			Locator locator = (Locator) getConstraint(child);
 			if (locator != null) {
 				locator.relocate(child);
 			}
@@ -77,20 +64,6 @@ public class DelegatingLayout extends AbstractLayout {
 	@Override
 	public void remove(IFigure child) {
 		constraints.remove(child);
-	}
-
-	/**
-	 * Sets the constraint for the given figure.
-	 *
-	 * @param figure     the figure whose contraint is being set
-	 * @param constraint the new constraint
-	 */
-	@Override
-	public void setConstraint(IFigure figure, Object constraint) {
-		super.setConstraint(figure, constraint);
-		if (constraint != null) {
-			constraints.put(figure, constraint);
-		}
 	}
 
 }
