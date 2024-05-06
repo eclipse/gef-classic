@@ -12,10 +12,14 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import java.text.MessageFormat;
+
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.internal.Logger;
+import org.eclipse.draw2d.internal.Messages;
 
 /**
  * This class implements the {@link org.eclipse.draw2d.LayoutManager} interface
@@ -23,6 +27,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * constraints as defined by each component.
  */
 public class XYLayout extends AbstractConstraintLayout {
+	private static final Logger LOGGER = Logger.getLogger(XYLayout.class);
 
 	/**
 	 * Calculates and returns the preferred size of the input figure. Since in
@@ -113,8 +118,10 @@ public class XYLayout extends AbstractConstraintLayout {
 	@Override
 	public void setConstraint(IFigure figure, Object newConstraint) {
 		if (newConstraint != null && !(newConstraint instanceof Rectangle)) {
-			throw new IllegalArgumentException("XYLayout was given " + newConstraint.getClass().getName() //$NON-NLS-1$
-					+ " as constraint for Figure. Rectangle expected!"); //$NON-NLS-1$
+			LOGGER.warn(MessageFormat.format(Messages.LayoutManager_InvalidConstraint, //
+					getClass().getSimpleName(), //
+					newConstraint.getClass().getSimpleName(), //
+					Rectangle.class.getSimpleName()));
 		}
 		super.setConstraint(figure, newConstraint);
 	}

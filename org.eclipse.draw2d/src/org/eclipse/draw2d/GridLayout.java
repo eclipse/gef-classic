@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,6 +13,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ import org.eclipse.swt.SWT;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.internal.Logger;
+import org.eclipse.draw2d.internal.Messages;
 
 /**
  * Lays out children into a Grid arrangement in which overall aligment and
@@ -70,6 +73,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  *
  */
 public class GridLayout extends AbstractHintLayout {
+	private static final Logger LOGGER = Logger.getLogger(GridLayout.class);
 
 	/**
 	 * numColumns specifies the number of cell columns in the layout.
@@ -777,6 +781,12 @@ public class GridLayout extends AbstractHintLayout {
 	public void setConstraint(IFigure figure, Object newConstraint) {
 		super.setConstraint(figure, newConstraint);
 		if (newConstraint != null) {
+			if (!(newConstraint instanceof GridData)) {
+				LOGGER.warn(MessageFormat.format(Messages.LayoutManager_InvalidConstraint, //
+						getClass().getSimpleName(), //
+						newConstraint.getClass().getSimpleName(), //
+						GridData.class.getSimpleName()));
+			}
 			constraints.put(figure, newConstraint);
 
 		}

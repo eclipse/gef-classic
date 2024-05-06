@@ -15,6 +15,15 @@ package org.eclipse.gef.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.ILogListener;
+import org.eclipse.core.runtime.Platform;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -23,6 +32,7 @@ import org.eclipse.gef.internal.ui.rulers.RulerFigure;
 import org.eclipse.gef.internal.ui.rulers.RulerLayout;
 import org.eclipse.gef.rulers.RulerProvider;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,6 +43,9 @@ public class RulerLayoutTests {
 	private Figure dummy;
 	private Figure container;
 	private int constraint;
+	protected ILog log;
+	protected ILogListener logListener;
+	protected List<String> logMessages;
 
 	@Before
 	public void setUp() {
@@ -43,6 +56,15 @@ public class RulerLayoutTests {
 		container.add(figure, (Object) constraint);
 		container.add(dummy);
 		rulerLayout = (RulerLayout) container.getLayoutManager();
+		logMessages = new ArrayList<>();
+		logListener = (status, pluginId) -> logMessages.add(status.getMessage());
+		log = Platform.getLog(RulerLayout.class);
+		log.addLogListener(logListener);
+	}
+
+	@After
+	public void tearDown() {
+		log.removeLogListener(logListener);
 	}
 
 	/**
@@ -57,9 +79,23 @@ public class RulerLayoutTests {
 	/**
 	 * Use Case: Constraint must be of type int -> error
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testInvalidConstraint() {
 		container.add(figure, new Object());
+
+		assertEquals(logMessages.size(), 1);
+		assertEquals(logMessages.get(0), "RulerLayout was given Object as constraint for Figure. Integer expected!"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Use Case: No error is logged for valid constraints
+	 */
+	@Test
+	public void testValidConstraint() {
+		container.add(figure, (Integer) 1);
+
+		assertTrue(logMessages.isEmpty());
+		assertNotNull(rulerLayout.getConstraint(figure));
 	}
 
 	/**

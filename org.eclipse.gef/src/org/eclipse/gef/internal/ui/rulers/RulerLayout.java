@@ -12,10 +12,14 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.rulers;
 
+import java.text.MessageFormat;
+
 import org.eclipse.draw2d.AbstractConstraintLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.internal.Logger;
+import org.eclipse.draw2d.internal.Messages;
 
 /**
  * A custom layout manager for rulers. It is not meant to be used externally or
@@ -26,6 +30,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @since 3.0
  */
 public class RulerLayout extends AbstractConstraintLayout {
+	private static final Logger LOGGER = Logger.getLogger(RulerLayout.class);
 
 	/**
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure,
@@ -80,8 +85,10 @@ public class RulerLayout extends AbstractConstraintLayout {
 	@Override
 	public void setConstraint(IFigure figure, Object newConstraint) {
 		if (newConstraint != null && !(newConstraint instanceof Integer)) {
-			throw new IllegalArgumentException("RulerLayout was given " + newConstraint.getClass().getName() //$NON-NLS-1$
-					+ " as constraint for Figure. Integer expected!"); //$NON-NLS-1$
+			LOGGER.warn(MessageFormat.format(Messages.LayoutManager_InvalidConstraint, //
+					getClass().getSimpleName(), //
+					newConstraint.getClass().getSimpleName(), //
+					Integer.class.getSimpleName()));
 		}
 		super.setConstraint(figure, newConstraint);
 	}
