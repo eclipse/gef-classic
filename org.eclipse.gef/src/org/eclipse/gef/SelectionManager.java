@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 IBM Corporation and others.
+ * Copyright (c) 2006, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,10 +14,10 @@
 package org.eclipse.gef;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.swt.widgets.Control;
 
@@ -218,7 +218,7 @@ public class SelectionManager {
 	 * @param notifier  notifier
 	 * @since 3.2
 	 */
-	public void internalInitialize(EditPartViewer viewer, List selection, Runnable notifier) {
+	public void internalInitialize(EditPartViewer viewer, List<EditPart> selection, Runnable notifier) {
 		this.viewer = viewer;
 		this.selection = selection;
 		this.notifier = notifier;
@@ -269,13 +269,14 @@ public class SelectionManager {
 	 * @since 3.2
 	 */
 	public void setSelection(ISelection newSelection) {
-		if (!(newSelection instanceof IStructuredSelection)) {
+		if (!(newSelection instanceof IStructuredSelection structuredSelection)) {
 			return;
 		}
 
-		List orderedSelection = ((IStructuredSelection) newSelection).toList();
+		@SuppressWarnings("unchecked")
+		List<EditPart> orderedSelection = structuredSelection.toList();
 		// Convert to HashSet to optimize performance.
-		Collection hashset = new HashSet(orderedSelection);
+		Set<EditPart> hashset = new HashSet<>(orderedSelection);
 
 		// Fix for 458416: adjust the focus through the viewer only (to give
 		// AbstractEditPartViewer a change to update its focusPart field).
@@ -289,17 +290,11 @@ public class SelectionManager {
 		}
 		selection.clear();
 
-		if (!orderedSelection.isEmpty()) {
-			Iterator itr = orderedSelection.iterator();
-			while (true) {
-				EditPart part = (EditPart) itr.next();
-				selection.add(part);
-				if (!itr.hasNext()) {
-					part.setSelected(EditPart.SELECTED_PRIMARY);
-					break;
-				}
-				part.setSelected(EditPart.SELECTED);
-			}
+		Iterator<EditPart> itr = orderedSelection.iterator();
+		while (itr.hasNext()) {
+			EditPart part = itr.next();
+			selection.add(part);
+			part.setSelected(itr.hasNext() ? EditPart.SELECTED : EditPart.SELECTED_PRIMARY);
 		}
 		fireSelectionChanged();
 	}
