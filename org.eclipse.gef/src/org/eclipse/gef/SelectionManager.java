@@ -14,9 +14,9 @@
 package org.eclipse.gef;
 
 import java.lang.reflect.Field;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.swt.widgets.Control;
@@ -72,6 +72,7 @@ public class SelectionManager {
 	 * @since 3.2
 	 */
 	public void appendSelection(EditPart editpart) {
+		Objects.requireNonNull(editpart, "The selected edit part must not be null."); //$NON-NLS-1$
 		if (editpart != getFocus()) {
 			// Fix for 458416: adjust the focus through the viewer only (to give
 			// AbstractEditPartViewer a change to update its focusPart field).
@@ -275,8 +276,8 @@ public class SelectionManager {
 
 		@SuppressWarnings("unchecked")
 		List<EditPart> orderedSelection = structuredSelection.toList();
-		// Convert to HashSet to optimize performance.
-		Set<EditPart> hashset = new HashSet<>(orderedSelection);
+		// Convert to set to optimize performance. (Implicit null check)
+		Set<EditPart> set = Set.copyOf(orderedSelection);
 
 		// Fix for 458416: adjust the focus through the viewer only (to give
 		// AbstractEditPartViewer a change to update its focusPart field).
@@ -284,7 +285,7 @@ public class SelectionManager {
 		// here, so both focus part values should stay in sync.
 		viewer.setFocus(null);
 		for (EditPart part : selection) {
-			if (!hashset.contains(part)) {
+			if (!set.contains(part)) {
 				part.setSelected(EditPart.SELECTED_NONE);
 			}
 		}

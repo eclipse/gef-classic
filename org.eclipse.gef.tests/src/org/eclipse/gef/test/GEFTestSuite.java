@@ -26,7 +26,8 @@ import org.junit.runners.Suite;
 	ToolUtilitiesTest.class,
 	DragEditPartsTrackerTest.class,
 	CommandStackTest.class,
-	RulerLayoutTests.class
+	RulerLayoutTests.class,
+	GraphicalViewerTest.class
 })
 public class GEFTestSuite {
 }
