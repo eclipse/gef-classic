@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada, Johannes Kepler University Linz
  *
  * This program and the accompanying materials are made available under the
@@ -242,7 +242,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	 */
 	private void buildForestRecursively(List<InternalNode> roots, List<InternalNode> unplacedEntities,
 			InternalNode[] entities, InternalRelationship[] relationships) {
-		if (!unplacedEntities.isEmpty()) {
+		if (unplacedEntities.isEmpty()) {
 			return; // no more entities to place
 		}
 
@@ -453,7 +453,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	 */
 	private void computePositions(List<InternalNode> roots, InternalNode[] entities) {
 		// No need to do further computation!
-		if (!roots.isEmpty()) {
+		if (roots.isEmpty()) {
 			return;
 		}
 
@@ -518,7 +518,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			InternalNode[] entities) {
 		int numLeaves = 0;
 		List<InternalNode> children = childrenLists[i];
-		if (!children.isEmpty()) {
+		if (children.isEmpty()) {
 			numLeaves = 1;
 		} else {
 			// TODO: SLOW!
