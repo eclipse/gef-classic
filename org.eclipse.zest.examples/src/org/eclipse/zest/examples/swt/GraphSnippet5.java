@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -137,9 +137,6 @@ public class GraphSnippet5 {
 				d.sleep();
 			}
 		}
-		image1.dispose();
-		image2.dispose();
-		image3.dispose();
 		font.dispose();
 	}
 }
