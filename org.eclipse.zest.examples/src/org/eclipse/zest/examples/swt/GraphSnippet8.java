@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -35,18 +35,19 @@ import org.eclipse.draw2d.ColorConstants;
  *
  */
 public class GraphSnippet8 {
+	private static Graph graph;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Display display = new Display();
-		Shell shell = new Shell(display);
+		Shell shell = new Shell();
+		Display display = shell.getDisplay();
 		shell.setText("GraphSnippet8"); //$NON-NLS-1$
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		final Graph graph = new Graph(shell, SWT.NONE);
+		graph = new Graph(shell, SWT.NONE);
 
 		GraphNode a = new GraphNode(graph, SWT.NONE, "Root"); //$NON-NLS-1$
 		GraphNode b = new GraphNode(graph, SWT.NONE, "B"); //$NON-NLS-1$

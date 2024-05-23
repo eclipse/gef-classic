@@ -23,11 +23,12 @@ import org.eclipse.draw2d.Animation;
  *
  */
 public class AnimationSnippet {
+	private static Graph g;
 
 	public static void main(String[] args) {
 
-		Display d = new Display();
-		final Shell shell = new Shell(d);
+		final Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		shell.setText("Animation Example");
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		shell.setSize(400, 400);
@@ -35,7 +36,7 @@ public class AnimationSnippet {
 		Button b = new Button(shell, SWT.PUSH);
 		b.setText("Animate");
 
-		final Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 
 		final GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
 		final GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");

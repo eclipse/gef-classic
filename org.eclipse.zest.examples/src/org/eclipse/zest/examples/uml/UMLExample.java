@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -41,6 +42,7 @@ import org.eclipse.draw2d.Label;
  */
 public class UMLExample {
 	public static Color classColor = null;
+	private static Graph g;
 
 	public static IFigure createClassFigure1(Font classFont, Image classImage, Image publicField, Image privateField) {
 		Label classLabel1 = new Label("Table", classImage);
@@ -101,8 +103,8 @@ public class UMLExample {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 		classColor = new Color(null, 255, 255, 206);
@@ -114,7 +116,7 @@ public class UMLExample {
 		Image publicField = new Image(Display.getDefault(),
 				UMLClassFigure.class.getResourceAsStream("methpub_obj.gif"));
 
-		Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		GraphContainer c = new GraphContainer(g, SWT.NONE);
 		c.setText("A UML Container");

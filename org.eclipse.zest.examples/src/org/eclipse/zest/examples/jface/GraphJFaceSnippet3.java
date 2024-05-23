@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,9 +13,9 @@
 package org.eclipse.zest.examples.jface;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -23,7 +23,6 @@ import java.util.StringTokenizer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.jface.viewers.LabelProvider;
@@ -45,21 +44,6 @@ import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
  *
  */
 public class GraphJFaceSnippet3 {
-
-	public static final String GRAPH = """
-			a calls b
-			a calls c
-			b calld d
-			b calls e
-			c calls f
-			c calls g
-			d calls h
-			d calls i
-			e calls j
-			e calls k
-			f calls l
-			f calls m
-			"""; //$NON-NLS-1$
 
 	static class SimpleGraphContentProvider implements IGraphContentProvider {
 
@@ -106,24 +90,15 @@ public class GraphJFaceSnippet3 {
 
 	}
 
+	static GraphViewer viewer = null;
+
 	public static void main(String[] args) throws IOException {
-		Display display = new Display();
-		Shell shell = new Shell(display);
+		Shell shell = new Shell();
+		Display display = shell.getDisplay();
 		shell.setText("Simple Graph File Format"); //$NON-NLS-1$
-
-		FileDialog dialog = new FileDialog(shell, SWT.OPEN);
-		dialog.setFilterNames(new String[] { "Simple Graph Files (*.sgf)", "All Files (*.*)" }); //$NON-NLS-1$ //$NON-NLS-2$
-		dialog.setFilterExtensions(new String[] { "*.sgf", "*.*" }); // Windows wild cards //$NON-NLS-1$ //$NON-NLS-2$
-
-		String directory = System.getProperty("user.dir") + "/src/org/eclipse/zest/tests/jface/SimpleGraph.sgf"; // eclipse/zest/examples/jface/"; //$NON-NLS-1$ //$NON-NLS-2$
-		System.out.println(directory);
-		dialog.setFilterPath(directory);
-		// dialog.setFilterPath(System.getProperty("user.dir") +
-		// "src/org/eclipse/zest/examples/jface/"); //Windows path
 
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		shell.setSize(400, 400);
-		GraphViewer viewer = null;
 
 		viewer = new GraphViewer(shell, SWT.NONE);
 		viewer.setContentProvider(new SimpleGraphContentProvider());
@@ -131,14 +106,9 @@ public class GraphJFaceSnippet3 {
 		viewer.setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 
 		shell.open();
-		String fileName = dialog.open();
 
-		if (fileName == null) {
-			// use the sample graph
-			viewer.setInput(GRAPH);
-		} else {
-			FileReader fileReader = new FileReader(new File(fileName));
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
+		try (InputStream is = GraphJFaceSnippet3.class.getResourceAsStream("SimpleGraph.sgf")) { //$NON-NLS-1$
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
 			StringBuilder stringBuffer = new StringBuilder();
 			while (bufferedReader.ready()) {
 				stringBuffer.append(bufferedReader.readLine() + "\n"); //$NON-NLS-1$
@@ -151,6 +121,5 @@ public class GraphJFaceSnippet3 {
 				display.sleep();
 			}
 		}
-		display.dispose();
 	}
 }

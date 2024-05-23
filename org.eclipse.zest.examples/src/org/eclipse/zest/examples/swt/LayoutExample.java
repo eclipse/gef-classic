@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -26,26 +26,28 @@ import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.zest.layouts.constraints.BasicEdgeConstraints;
 
 /**
- * This snippet shows how to use the findFigureAt to get the figure under the
- * mouse
+ * This snippet shows how to use constraints. Nodes are attracted to the
+ * {@code root} node and repelled by {@code non-root} nodes. The attraction is
+ * proportional to the number of edges.
  *
  * @author Ian Bull
  *
  */
 public class LayoutExample {
+	private static Graph g;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// Create the shell
-		Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		shell.setText("GraphSnippet1");
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		final Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 		GraphNode root = new GraphNode(g, SWT.NONE, "Root");
 		for (int i = 0; i < 3; i++) {
 			GraphNode n = new GraphNode(g, SWT.NONE, "1 - " + i);

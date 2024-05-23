@@ -3,6 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Plugin.name
 Bundle-SymbolicName: org.eclipse.zest.examples
 Bundle-Version: 3.17.0.qualifier
+Export-Package: org.eclipse.zest.examples.jface;x-friends:="org.eclipse.zest.tests",
+ org.eclipse.zest.examples.swt;x-friends:="org.eclipse.zest.tests",
+ org.eclipse.zest.examples.uml;x-friends:="org.eclipse.zest.tests"
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -18,4 +21,6 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: %Plugin.providerName
 Automatic-Module-Name: org.eclipse.zest.examples
+Bundle-ClassPath: icons/,
+ .
 

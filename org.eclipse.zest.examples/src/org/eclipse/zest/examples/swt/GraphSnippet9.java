@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -29,18 +29,19 @@ import org.eclipse.zest.core.widgets.ZestStyles;
  *
  */
 public class GraphSnippet9 {
+	private static Graph graph;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Display display = new Display();
-		Shell shell = new Shell(display);
+		Shell shell = new Shell();
+		Display display = shell.getDisplay();
 		shell.setText("GraphSnippet9");
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		final Graph graph = new Graph(shell, SWT.NONE);
+		graph = new Graph(shell, SWT.NONE);
 
 		GraphNode a = new GraphNode(graph, ZestStyles.CONNECTIONS_DIRECTED, "Root");
 		GraphConnection connection = new GraphConnection(graph, SWT.NONE, a, a);

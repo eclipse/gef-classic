@@ -36,6 +36,7 @@ import org.eclipse.draw2d.Label;
  *
  */
 public class GraphSnippet4 {
+	private static Graph g;
 
 	/**
 	 * Merges 2 images so they appear beside each other
@@ -61,8 +62,8 @@ public class GraphSnippet4 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		shell.setText("Graph Snippet 4");
 		Image image1 = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
 		Image image2 = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
@@ -70,7 +71,7 @@ public class GraphSnippet4 {
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		GraphNode n1 = new GraphNode(g, SWT.NONE, "Information", image1);
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Warning", image2);

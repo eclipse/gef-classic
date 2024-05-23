@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -35,7 +35,7 @@ import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 public class ZoomSnippet {
-
+	private static Graph g;
 	private static Image image1;
 	private static Image classImage;
 
@@ -106,17 +106,16 @@ public class ZoomSnippet {
 	 */
 	public static void main(String[] args) {
 		// Create the shell
-		Display d = new Display();
-
 		image1 = new Image(Display.getDefault(), ZoomSnippet.class.getResourceAsStream("package_obj.gif"));
 		classImage = new Image(Display.getDefault(), ZoomSnippet.class.getResourceAsStream("class_obj.gif"));
 
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		shell.setText("GraphSnippet1");
 		shell.setLayout(new FillLayout());
 		shell.setSize(500, 800);
 
-		final Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 		createContainer(g);
 
 		CompositeLayoutAlgorithm compositeLayoutAlgorithm = new CompositeLayoutAlgorithm(

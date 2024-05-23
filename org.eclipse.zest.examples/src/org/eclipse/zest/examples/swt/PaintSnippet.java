@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -44,14 +44,15 @@ import org.eclipse.draw2d.SWTGraphics;
  *
  */
 public class PaintSnippet {
+	private static Graph g;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// Create the shell
-		final Display d = new Display();
-		final Shell shell = new Shell(d);
+		final Shell shell = new Shell();
+		final Display d = shell.getDisplay();
 		shell.setText("GraphSnippet1");
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
@@ -59,7 +60,7 @@ public class PaintSnippet {
 		Button b = new Button(shell, SWT.PUSH);
 		b.setText("Take Screenshot");
 
-		final Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 
 		GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");

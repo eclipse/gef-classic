@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -52,6 +52,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  *
  */
 public class GraphSnippet13 {
+	private static Graph g;
 
 	public static IFigure createPersonFigure(Image headImage) {
 		Figure person = new Figure();
@@ -106,13 +107,13 @@ public class GraphSnippet13 {
 	}
 
 	public static void main(String[] args) {
-		final Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		final Display d = shell.getDisplay();
 		shell.setText("GraphSnippet11");
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		final Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 		g.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -145,7 +146,7 @@ public class GraphSnippet13 {
 			}
 		});
 
-		Image zx = new Image(d, "icons/zxsnow.png");
+		Image zx = new Image(d, GraphSnippet13.class.getResourceAsStream("/zxsnow.png"));
 		IFigure tooltip = new Figure();
 		tooltip.setBorder(new MarginBorder(5, 5, 5, 5));
 		FlowLayout layout = new FlowLayout(false);
@@ -156,7 +157,7 @@ public class GraphSnippet13 {
 		tooltip.add(new Label("Name: " + "Chris Aniszczyk"));
 		tooltip.add(new Label("Location: " + "Austin, Texas"));
 
-		Image ibull = new Image(d, "icons/ibull.jpg");
+		Image ibull = new Image(d, GraphSnippet13.class.getResourceAsStream("/ibull.jpg"));
 		GraphContainer c1 = new GraphContainer(g, SWT.NONE);
 		c1.setText("Canada");
 		GraphContainer c2 = new GraphContainer(g, SWT.NONE);
