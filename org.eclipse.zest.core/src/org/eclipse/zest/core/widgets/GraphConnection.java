@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright 2005, 2023, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2005, 2024, CHISEL Group, University of Victoria, Victoria, BC,
+ *                       Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -162,11 +163,11 @@ public class GraphConnection extends GraphItem {
 			}
 		}
 		connectionFigure = null;
-		if (sourceContainerConnectionFigure != null) {
+		if (sourceContainerConnectionFigure != null && sourceContainerConnectionFigure.getParent() != null) {
 			sourceContainerConnectionFigure.getParent().remove(sourceContainerConnectionFigure);
 			sourceContainerConnectionFigure = null;
 		}
-		if (targetContainerConnectionFigure != null) {
+		if (targetContainerConnectionFigure != null && targetContainerConnectionFigure.getParent() != null) {
 			targetContainerConnectionFigure.getParent().remove(targetContainerConnectionFigure);
 			targetContainerConnectionFigure = null;
 		}
@@ -180,10 +181,10 @@ public class GraphConnection extends GraphItem {
 		(getSource()).removeSourceConnection(this);
 		(getDestination()).removeTargetConnection(this);
 		graphModel.removeConnection(this);
-		if (sourceContainerConnectionFigure != null) {
+		if (sourceContainerConnectionFigure != null && sourceContainerConnectionFigure.getParent() != null) {
 			sourceContainerConnectionFigure.getParent().remove(sourceContainerConnectionFigure);
 		}
-		if (targetContainerConnectionFigure != null) {
+		if (targetContainerConnectionFigure != null && targetContainerConnectionFigure.getParent() != null) {
 			targetContainerConnectionFigure.getParent().remove(targetContainerConnectionFigure);
 		}
 	}
