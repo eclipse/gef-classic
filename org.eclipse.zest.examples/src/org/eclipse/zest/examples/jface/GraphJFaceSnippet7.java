@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -127,7 +127,14 @@ public class GraphJFaceSnippet7 {
 	}
 
 	static class MyLabelProvider extends LabelProvider implements IFigureProvider {
+		final Font classFont = new Font(null, "Arial", 12, SWT.BOLD); //$NON-NLS-1$
 		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
+		final Image classImage = new Image(Display.getDefault(),
+				UMLClassFigure.class.getResourceAsStream("class_obj.gif")); //$NON-NLS-1$
+		final Image privateField = new Image(Display.getDefault(),
+				UMLClassFigure.class.getResourceAsStream("field_private_obj.gif")); //$NON-NLS-1$
+		final Image publicField = new Image(Display.getDefault(),
+				UMLClassFigure.class.getResourceAsStream("methpub_obj.gif")); //$NON-NLS-1$
 
 		@Override
 		public Image getImage(Object element) {
@@ -147,16 +154,17 @@ public class GraphJFaceSnippet7 {
 
 		@Override
 		public IFigure getFigure(Object element) {
-			Font classFont = new Font(null, "Arial", 12, SWT.BOLD); //$NON-NLS-1$
-			Image classImage = new Image(Display.getDefault(),
-					UMLClassFigure.class.getResourceAsStream("class_obj.gif")); //$NON-NLS-1$
-			Image privateField = new Image(Display.getDefault(),
-					UMLClassFigure.class.getResourceAsStream("field_private_obj.gif")); //$NON-NLS-1$
-			Image publicField = new Image(Display.getDefault(),
-					UMLClassFigure.class.getResourceAsStream("methpub_obj.gif")); //$NON-NLS-1$
 			return createClassFigure1(classFont, classImage, publicField, privateField);
 		}
 
+		@Override
+		public void dispose() {
+			super.dispose();
+			classFont.dispose();
+			classImage.dispose();
+			publicField.dispose();
+			privateField.dispose();
+		}
 	}
 
 	static GraphViewer viewer = null;
