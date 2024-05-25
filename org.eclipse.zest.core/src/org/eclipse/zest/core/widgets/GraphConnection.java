@@ -163,12 +163,18 @@ public class GraphConnection extends GraphItem {
 			}
 		}
 		connectionFigure = null;
-		if (sourceContainerConnectionFigure != null && sourceContainerConnectionFigure.getParent() != null) {
-			sourceContainerConnectionFigure.getParent().remove(sourceContainerConnectionFigure);
+		if (sourceContainerConnectionFigure != null) {
+			IFigure sourceContainerConnectionParent = sourceContainerConnectionFigure.getParent();
+			if (sourceContainerConnectionParent != null) {
+				sourceContainerConnectionParent.remove(sourceContainerConnectionFigure);
+			}
 			sourceContainerConnectionFigure = null;
 		}
 		if (targetContainerConnectionFigure != null && targetContainerConnectionFigure.getParent() != null) {
-			targetContainerConnectionFigure.getParent().remove(targetContainerConnectionFigure);
+			IFigure targetContainerConnectionParent = targetContainerConnectionFigure.getParent();
+			if (targetContainerConnectionParent != null) {
+				targetContainerConnectionParent.remove(targetContainerConnectionFigure);
+			}
 			targetContainerConnectionFigure = null;
 		}
 
