@@ -173,8 +173,8 @@ public class GraphJFaceSnippet7 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		shell.setText("GraphJFaceSnippet2"); //$NON-NLS-1$
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		shell.setSize(400, 400);

@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2007, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -47,6 +47,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  *
  */
 public class GraphSnippet12 {
+	private static Graph g;
 
 	public static IFigure createPersonFigure(Image headImage) {
 		Figure person = new Figure();
@@ -101,13 +102,13 @@ public class GraphSnippet12 {
 	}
 
 	public static void main(String[] args) {
-		final Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		final Display d = shell.getDisplay();
 		shell.setText("GraphSnippet11");
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		final Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 		g.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -140,8 +141,8 @@ public class GraphSnippet12 {
 			}
 		});
 
-		Image zx = new Image(d, "icons/zx.png");
-		Image ibull = new Image(d, "icons/ibull.jpg");
+		Image zx = new Image(d, GraphSnippet12.class.getResourceAsStream("/zx.png"));
+		Image ibull = new Image(d, GraphSnippet12.class.getResourceAsStream("/ibull.jpg"));
 		CGraphNode n = new CGraphNode(g, SWT.NONE, createPersonFigure(zx));
 		CGraphNode n2 = new CGraphNode(g, SWT.NONE, createPersonFigure(ibull));
 		GraphNode n3 = new GraphNode(g, SWT.NONE, "PDE");

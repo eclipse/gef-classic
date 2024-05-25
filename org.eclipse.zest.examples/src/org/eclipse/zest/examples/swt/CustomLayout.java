@@ -22,15 +22,16 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  *
  */
 public class CustomLayout {
+	private static Graph g;
 
 	public static void main(String[] args) {
-		Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		shell.setText("Custom Layout Example");
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 
 		GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");

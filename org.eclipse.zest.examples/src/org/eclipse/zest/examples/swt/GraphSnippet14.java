@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright 2023, Sebastian Hollersbacher.
+ * Copyright 2023, 2024 Sebastian Hollersbacher and others.
+ *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v2.0 which
  * accompanies this distribution, and is available at
@@ -35,15 +36,16 @@ import org.eclipse.draw2d.geometry.Rectangle;
  *
  */
 public class GraphSnippet14 {
+	private static Graph g;
 
 	public static void main(String[] args) {
-		Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		shell.setText("GraphSnippet14");
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		Graph g = new Graph(shell, SWT.NONE, true); // enable hide nodes
+		g = new Graph(shell, SWT.NONE, true); // enable hide nodes
 
 		GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");
