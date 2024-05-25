@@ -1,9 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2011 Fabian Steeg. All rights reserved. This program and
- * the accompanying materials are made available under the terms of the Eclipse
- * Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * <p/>
+ * Copyright (c) 2011, 2024 Fabian Steeg and others.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
  * Contributors: Fabian Steeg - initial implementation
  *******************************************************************************/
 package org.eclipse.zest.examples.jface;
@@ -17,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
 import org.eclipse.zest.core.viewers.ISelfStyleProvider;
@@ -81,6 +85,9 @@ public class GraphJFaceSnippet8 {
 
 		@Override
 		public String getText(Object element) {
+			if (element instanceof EntityConnectionData) {
+				return ""; //$NON-NLS-1$
+			}
 			return element.toString();
 		}
 
@@ -115,8 +122,8 @@ public class GraphJFaceSnippet8 {
 	static GraphViewer viewer = null;
 
 	public static void main(String[] args) {
-		Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		shell.setSize(400, 400);
 		viewer = new GraphViewer(shell, SWT.NONE);

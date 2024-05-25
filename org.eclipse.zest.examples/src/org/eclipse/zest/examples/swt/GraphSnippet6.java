@@ -34,13 +34,14 @@ import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
  *
  */
 public class GraphSnippet6 {
+	private static Graph g;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		shell.setText("GraphSnippet6");
 		Image image1 = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
 		Image image2 = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
@@ -48,7 +49,7 @@ public class GraphSnippet6 {
 		shell.setLayout(new FillLayout());
 		shell.setSize(800, 800);
 
-		Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		for (int i = 0; i < 80; i++) {
 			GraphNode n1 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, "Information",

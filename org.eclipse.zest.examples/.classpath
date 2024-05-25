@@ -11,5 +11,6 @@
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="icons"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

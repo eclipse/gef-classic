@@ -48,6 +48,7 @@ import org.eclipse.draw2d.ColorConstants;
  *
  */
 public class GraphSnippet5 {
+	private static Graph g;
 	public static final int BACKSPACE = 8;
 	public static final int ENTER = 13;
 
@@ -57,13 +58,13 @@ public class GraphSnippet5 {
 	public static void main(String[] args) {
 		final Map figureListing = new HashMap();
 		final StringBuffer stringBuffer = new StringBuffer();
-		final Display d = new Display();
+		final Shell shell = new Shell();
+		final Display d = shell.getDisplay();
 		FontData fontData = d.getSystemFont().getFontData()[0];
 		fontData.height = 42;
 
 		final Font font = new Font(d, fontData);
 
-		Shell shell = new Shell(d);
 		shell.setText("Graph Snippet 5");
 		Image image1 = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
 		Image image2 = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
@@ -71,7 +72,7 @@ public class GraphSnippet5 {
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		final Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		GraphNode n1 = new GraphNode(g, SWT.NONE, "org.eclipse.Information", image1);
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "org.eclipse.Warning", image2);

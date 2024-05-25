@@ -35,17 +35,18 @@ import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
  *
  */
 public class GraphSnippet2 {
+	private static Graph g;
 
 	public static void main(String[] args) {
-		Display d = new Display();
-		Shell shell = new Shell(d);
+		Shell shell = new Shell();
+		Display d = shell.getDisplay();
 		Image image1 = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
 		Image image2 = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 		Image image3 = Display.getDefault().getSystemImage(SWT.ICON_ERROR);
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		Graph g = new Graph(shell, SWT.NONE);
+		g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		GraphNode n1 = new GraphNode(g, SWT.NONE, "Information", image1);
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Warning", image2);
