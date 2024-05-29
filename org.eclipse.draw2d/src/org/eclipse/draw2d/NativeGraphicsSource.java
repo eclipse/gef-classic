@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -56,6 +56,9 @@ public final class NativeGraphicsSource implements GraphicsSource {
 
 		// canvas.update();
 
+		// canvas.update() paints too much and only works on Windows. Use
+		// readAndDispatch() to only paint the redraw() event.
+		canvas.getDisplay().readAndDispatch();
 		return null;
 	}
 

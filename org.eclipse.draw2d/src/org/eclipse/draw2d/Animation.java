@@ -251,7 +251,7 @@ public class Animation {
 	 * @since 3.2
 	 */
 	public static void run(int duration) {
-		if (state == 0) {
+		if (state == 0 || state == PLAYBACK) {
 			return;
 		}
 		try {
