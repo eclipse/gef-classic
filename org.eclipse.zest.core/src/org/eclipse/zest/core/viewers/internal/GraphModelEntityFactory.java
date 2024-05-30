@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                      BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.IFigureProvider;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;

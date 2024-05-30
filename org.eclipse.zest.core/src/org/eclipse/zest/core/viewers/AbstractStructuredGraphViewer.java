@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                      BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -10,7 +10,7 @@
  *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.zest.core.viewers.internal;
+package org.eclipse.zest.core.viewers;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -25,8 +25,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Widget;
 
-import org.eclipse.zest.core.viewers.AbstractZoomableViewer;
-import org.eclipse.zest.core.viewers.IGraphContentProvider;
+import org.eclipse.zest.core.viewers.internal.IStylingGraphModelFactory;
 import org.eclipse.zest.core.widgets.CGraphNode;
 import org.eclipse.zest.core.widgets.ConstraintAdapter;
 import org.eclipse.zest.core.widgets.Graph;
@@ -47,6 +46,8 @@ import org.eclipse.draw2d.IFigure;
  * instead.
  *
  * @author Del Myers
+ * @since 1.12
+ * @noextend This class is not intended to be subclassed by clients.
  */
 public abstract class AbstractStructuredGraphViewer extends AbstractZoomableViewer {
 	/**
@@ -233,11 +234,17 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		return this.connectionsMap.keySet().toArray();
 	}
 
-	Map<Object, GraphNode> getNodesMap() {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public Map<Object, GraphNode> getNodesMap() {
 		return this.nodesMap;
 	}
 
-	GraphNode addGraphModelContainer(Object element) {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public GraphNode addGraphModelContainer(Object element) {
 		GraphNode node = this.getGraphModelNode(element);
 		if (node == null) {
 			node = new GraphContainer((Graph) getControl(), SWT.NONE);
@@ -247,7 +254,10 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		return node;
 	}
 
-	GraphNode addGraphModelNode(IContainer container, Object element) {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public GraphNode addGraphModelNode(IContainer container, Object element) {
 		GraphNode node = this.getGraphModelNode(element);
 		if (node == null) {
 			node = new GraphNode(container, SWT.NONE);
@@ -289,7 +299,10 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		return new GraphConnection(graphModel, SWT.NONE, source, destination);
 	}
 
-	GraphNode addGraphModelNode(Object element, IFigure figure) {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public GraphNode addGraphModelNode(Object element, IFigure figure) {
 		GraphNode node = this.getGraphModelNode(element);
 		if (node == null) {
 			if (figure != null) {
@@ -305,7 +318,10 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		return node;
 	}
 
-	GraphConnection addGraphModelConnection(Object element, GraphNode source, GraphNode target) {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public GraphConnection addGraphModelConnection(Object element, GraphNode source, GraphNode target) {
 		GraphConnection connection = this.getGraphModelConnection(element);
 		if (connection == null) {
 			connection = createConnectionObject(getGraphControl(), source, target);
@@ -316,15 +332,24 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	}
 
-	GraphConnection getGraphModelConnection(Object obj) {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public GraphConnection getGraphModelConnection(Object obj) {
 		return this.connectionsMap.get(obj);
 	}
 
-	GraphNode getGraphModelNode(Object obj) {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public GraphNode getGraphModelNode(Object obj) {
 		return this.nodesMap.get(obj);
 	}
 
-	void removeGraphModelConnection(Object obj) {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public void removeGraphModelConnection(Object obj) {
 		GraphConnection connection = connectionsMap.get(obj);
 		if (connection != null) {
 			connectionsMap.remove(obj);
@@ -334,7 +359,10 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		}
 	}
 
-	void removeGraphModelNode(Object obj) {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public void removeGraphModelNode(Object obj) {
 		GraphNode node = nodesMap.get(obj);
 		if (node != null) {
 			nodesMap.remove(obj);
