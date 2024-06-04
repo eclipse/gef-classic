@@ -156,7 +156,7 @@ public class GraphSnippet12 {
 		new GraphConnection(g, SWT.NONE, n2, n5);
 		new GraphConnection(g, SWT.NONE, n3, n5);
 		new GraphConnection(g, SWT.NONE, n4, n5);
-		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		g.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		shell.open();
 		while (!shell.isDisposed()) {

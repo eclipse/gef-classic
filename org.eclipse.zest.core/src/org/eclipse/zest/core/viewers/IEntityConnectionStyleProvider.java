@@ -76,6 +76,13 @@ public interface IEntityConnectionStyleProvider extends IDisposable {
 	 * the default tooltip.
 	 *
 	 * @param entity
+	 * @deprecated Use
+	 *             {@link IEntityConnectionStyleProvider2#getTooltip(Object, Object)}
+	 *             instead.
+	 * @nooverride This default method is not intended to be re-implemented or
+	 *             extended by clients.
+	 * @noreference This method is not intended to be referenced by clients.
 	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	public IFigure getTooltip(Object entity);
 }

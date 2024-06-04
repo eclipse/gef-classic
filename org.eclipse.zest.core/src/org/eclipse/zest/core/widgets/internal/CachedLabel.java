@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2010, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                           BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -18,6 +18,8 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.zest.core.widgets.ILabeledFigure;
+
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
@@ -33,7 +35,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author Ian Bull
  *
  */
-public abstract class CachedLabel extends Label {
+public abstract class CachedLabel extends Label implements ILabeledFigure {
 
 	/*
 	 * (non-Javadoc)

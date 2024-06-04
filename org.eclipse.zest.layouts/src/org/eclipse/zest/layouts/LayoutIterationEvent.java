@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                      BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -21,7 +21,13 @@ import java.util.List;
  * allows the application to update the GUI to represent the new locations
  *
  * @author Casey Best and Rob Lintern
+ * @deprecated No longer used in Zest 2.x. This class will be removed in a
+ *             future release.
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noreference This class is not intended to be referenced by clients.
+ * @noinstantiate This class is not intended to be instantiated by clients.
  */
+@Deprecated(since = "2.0", forRemoval = true)
 public class LayoutIterationEvent {
 	private List relationshipsToLayout, entitiesToLayout;
 	private int iterationCompleted;

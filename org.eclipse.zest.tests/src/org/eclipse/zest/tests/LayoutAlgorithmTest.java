@@ -31,13 +31,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class LayoutAlgorithmTest {
-	private LayoutAlgorithm layoutAlgorithm;
+	private LayoutAlgorithm.Zest1 layoutAlgorithm;
 	private Set<String> logger;
 
 	@Before
 	public void setUp() {
 		logger = new HashSet<>();
-		layoutAlgorithm = new GridLayoutAlgorithm();
+		layoutAlgorithm = new GridLayoutAlgorithm.Zest1();
 	}
 
 	// Check for ConcurrentModificationException when the listeners are

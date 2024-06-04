@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2006, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                           BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -21,7 +21,14 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
  * an up-to-date list).
  *
  * @author Ian Bull
+ * @deprecated No longer used in Zest 2.x. This class will be removed in a
+ *             future release in accordance with the two year deprecation
+ *             policy.
+ * @noextend This interface is not intended to be extended by clients.
+ * @noreference This interface is not intended to be referenced by clients.
+ * @noimplement This interface is not intended to be implemented by clients.
  */
+@Deprecated(since = "1.12", forRemoval = true)
 public interface ConstraintAdapter {
 
 	/**

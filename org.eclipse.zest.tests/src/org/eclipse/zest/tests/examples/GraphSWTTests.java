@@ -575,7 +575,7 @@ public class GraphSWTTests extends AbstractGraphTest {
 	@Test
 	@Snippet(type = LayoutExample.class)
 	public void testLayoutExample() {
-		graph.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		graph.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		waitEventLoop(0);
 
 		double sumLengthInner = 0;

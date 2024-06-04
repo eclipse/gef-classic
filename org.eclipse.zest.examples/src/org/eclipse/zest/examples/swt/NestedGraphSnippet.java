@@ -92,9 +92,9 @@ public class NestedGraphSnippet {
 			c.setScale(0.25);
 		}
 		if (radial) {
-			c.setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+			c.setLayoutAlgorithm(new RadialLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		} else {
-			c.setLayoutAlgorithm(new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+			c.setLayoutAlgorithm(new TreeLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		}
 	}
 
@@ -115,9 +115,9 @@ public class NestedGraphSnippet {
 		g = new Graph(shell, SWT.NONE);
 		createContainer(g);
 
-		CompositeLayoutAlgorithm compositeLayoutAlgorithm = new CompositeLayoutAlgorithm(
+		CompositeLayoutAlgorithm.Zest1 compositeLayoutAlgorithm = new CompositeLayoutAlgorithm.Zest1(
 				LayoutStyles.NO_LAYOUT_NODE_RESIZING,
-				new LayoutAlgorithm[] { new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING),
+				new LayoutAlgorithm.Zest1[] { new GridLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING),
 						new HorizontalShift(LayoutStyles.NO_LAYOUT_NODE_RESIZING) });
 		// g.setLayoutAlgorithm(new
 		// GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);

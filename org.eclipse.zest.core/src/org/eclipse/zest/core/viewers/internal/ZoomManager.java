@@ -41,6 +41,7 @@ import org.eclipse.draw2d.Viewport;
  * @author Eric Bordeau
  */
 @SuppressWarnings("javadoc") // GEF is not in classpath
+//TODO zest 2.x: Move to org.eclipse.zest.core.widgets.internal
 public class ZoomManager extends org.eclipse.draw2d.zoom.AbstractZoomManager {
 
 	/**
