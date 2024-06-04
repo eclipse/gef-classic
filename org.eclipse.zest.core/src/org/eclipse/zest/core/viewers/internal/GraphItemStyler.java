@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2010, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                           BC, Canada.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -21,7 +21,9 @@ import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.zest.core.viewers.IConnectionStyleProvider;
+import org.eclipse.zest.core.viewers.IConnectionStyleProvider2;
 import org.eclipse.zest.core.viewers.IEntityConnectionStyleProvider;
+import org.eclipse.zest.core.viewers.IEntityConnectionStyleProvider2;
 import org.eclipse.zest.core.viewers.IEntityStyleProvider;
 import org.eclipse.zest.core.viewers.ISelfStyleProvider;
 import org.eclipse.zest.core.widgets.GraphConnection;
@@ -29,6 +31,7 @@ import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
 
+import org.eclipse.draw2d.ConnectionRouter;
 import org.eclipse.draw2d.IFigure;
 
 /**
@@ -141,6 +144,12 @@ public class GraphItemStyler {
 		if ((w = provider.getLineWidth(rel)) >= 0) {
 			conn.setLineWidth(w);
 		}
+		if (provider instanceof IConnectionStyleProvider2 provider2) {
+			ConnectionRouter cr;
+			if ((cr = provider2.getRouter(rel)) != null) {
+				conn.setRouter(cr);
+			}
+		}
 	}
 
 	/**
@@ -186,9 +195,21 @@ public class GraphItemStyler {
 		if ((c = provider.getHighlightColor(src, dest)) != null) {
 			conn.setHighlightColor(c);
 		}
+		if (provider instanceof IEntityConnectionStyleProvider2 provider2) {
+			IFigure tooltip;
+			if ((tooltip = provider2.getTooltip(src, dest)) != null) {
+				conn.setTooltip(tooltip);
+			}
+		}
 		int w = -1;
 		if ((w = provider.getLineWidth(src, dest)) >= 0) {
 			conn.setLineWidth(w);
+		}
+		if (provider instanceof IEntityConnectionStyleProvider2 provider2) {
+			ConnectionRouter cr;
+			if ((cr = provider2.getRouter(src, dest)) != null) {
+				conn.setRouter(cr);
+			}
 		}
 	}
 

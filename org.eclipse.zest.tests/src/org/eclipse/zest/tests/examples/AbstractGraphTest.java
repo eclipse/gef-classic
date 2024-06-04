@@ -122,8 +122,8 @@ public abstract class AbstractGraphTest {
 				graph = getGraph(lookup, annotation);
 
 				// Make sure the layout is reproducible
-				if (graph.getLayoutAlgorithm() instanceof SpringLayoutAlgorithm) {
-					graph.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+				if (graph.getLayoutAlgorithm() instanceof SpringLayoutAlgorithm.Zest1) {
+					graph.setLayoutAlgorithm(new GridLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 				}
 
 				robot = new GraphicalRobot(graph);

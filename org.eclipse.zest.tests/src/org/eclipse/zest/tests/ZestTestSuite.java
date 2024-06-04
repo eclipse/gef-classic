@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.zest.tests;
 
+import org.eclipse.zest.tests.cloudio.TagCloudTests;
 import org.eclipse.zest.tests.examples.GraphJFaceTests;
 import org.eclipse.zest.tests.examples.GraphSWTTests;
 import org.eclipse.zest.tests.examples.GraphUMLTests;
@@ -30,9 +31,12 @@ import org.junit.runners.Suite;
 	GraphSelectionTests.class,
 	GraphViewerTests.class,
 	LayoutAlgorithmTest.class,
+	LayoutAlgorithmTests.class,
 	GraphJFaceTests.class,
 	GraphSWTTests.class,
-	GraphUMLTests.class
+	GraphUMLTests.class,
+	TagCloudTests.class
 })
+
 public class ZestTestSuite {
 }

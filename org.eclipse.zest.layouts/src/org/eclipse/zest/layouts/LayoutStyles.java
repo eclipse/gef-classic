@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                      BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,9 +12,18 @@
  *******************************************************************************/
 package org.eclipse.zest.layouts;
 
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
+
 /**
  * @author Ian Bull
+ * @deprecated Since Zest 2.0, layout styles are set on the individual layout
+ *             algorithms (e.g. {@link TreeLayoutAlgorithm#isResizing()}). This
+ *             interface will be removed in a future release.
+ * @noextend This interface is not intended to be extended by clients.
+ * @noreference This interface is not intended to be referenced by clients.
+ * @noimplement This interface is not intended to be implemented by clients.
  */
+@Deprecated(since = "2.0", forRemoval = true)
 public interface LayoutStyles {
 
 	/** Default layout style constant. */

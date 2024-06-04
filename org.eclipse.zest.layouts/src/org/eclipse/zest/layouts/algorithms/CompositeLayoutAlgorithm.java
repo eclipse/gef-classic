@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright 2006, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2005-2010, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                           BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -7,7 +8,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria
+ * Contributors: The Chisel Group, University of Victoria - initial API and implementation
+ *               Mateusz Matela
+ *               Ian Bull
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
@@ -15,75 +18,119 @@ import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
 
-public class CompositeLayoutAlgorithm extends AbstractLayoutAlgorithm {
+public class CompositeLayoutAlgorithm implements LayoutAlgorithm {
 
-	LayoutAlgorithm[] algorithms = null;
+	/**
+	 * Collection of Zest 1.x methods. Used for backwards compatibility.
+	 *
+	 * @since 2.0
+	 * @deprecated Use {@link CompositeLayoutAlgorithm} instead. This class will be
+	 *             removed in a future release.
+	 * @noextend This class is not intended to be subclassed by clients.
+	 * @noreference This class is not intended to be referenced by clients.
+	 * @noinstantiate This class is not intended to be instantiated by clients.
+	 */
+	@Deprecated(since = "2.0", forRemoval = true)
+	public static class Zest1 extends AbstractLayoutAlgorithm {
 
-	public CompositeLayoutAlgorithm(int styles, LayoutAlgorithm[] algoirthms) {
-		super(styles);
-		this.algorithms = algoirthms;
-	}
+		LayoutAlgorithm.Zest1[] algorithms = null;
 
-	public CompositeLayoutAlgorithm(LayoutAlgorithm[] algoirthms) {
-		this(0, algoirthms);
-	}
+		public Zest1(int styles, LayoutAlgorithm.Zest1[] algoirthms) {
+			super(styles);
+			this.algorithms = algoirthms;
+		}
 
-	@Override
-	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
-			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
+		public Zest1(LayoutAlgorithm.Zest1[] algoirthms) {
+			this(0, algoirthms);
+		}
 
-		for (LayoutAlgorithm algorithm : algorithms) {
-			try {
-				algorithm.applyLayout(entitiesToLayout, relationshipsToConsider, boundsX, boundsY, boundsWidth,
-						boundsHeight, this.internalAsynchronous, this.internalContinuous);
-			} catch (InvalidLayoutConfiguration e) {
-				e.printStackTrace();
+		@Override
+		protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+				double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
+
+			for (LayoutAlgorithm.Zest1 algorithm : algorithms) {
+				try {
+					algorithm.applyLayout(entitiesToLayout, relationshipsToConsider, boundsX, boundsY, boundsWidth,
+							boundsHeight, this.internalAsynchronous, this.internalContinuous);
+				} catch (InvalidLayoutConfiguration e) {
+					e.printStackTrace();
+				}
 			}
+			for (InternalNode element : entitiesToLayout) {
+				element.getLayoutEntity().setLocationInLayout(element.getXInLayout(), element.getYInLayout());
+			}
+
+			// updateLayoutLocations(entitiesToLayout);
 		}
-		for (InternalNode element : entitiesToLayout) {
-			element.getLayoutEntity().setLocationInLayout(element.getXInLayout(), element.getYInLayout());
+
+		@Override
+		protected int getCurrentLayoutStep() {
+			// TODO Auto-generated method stub
+			return 0;
 		}
 
-		// updateLayoutLocations(entitiesToLayout);
+		@Override
+		protected int getTotalNumberOfLayoutSteps() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		protected boolean isValidConfiguration(boolean asynchronous, boolean continuous) {
+			// TODO Auto-generated method stub
+			return true;
+		}
+
+		@Override
+		protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
+				InternalRelationship[] relationshipsToConsider) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+				double x, double y, double width, double height) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void setLayoutArea(double x, double y, double width, double height) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+
+	private LayoutAlgorithm[] algorithms = null;
+
+	public CompositeLayoutAlgorithm(LayoutAlgorithm[] algorithms) {
+		this.algorithms = algorithms;
+	}
+
+	/**
+	 * @deprecated Since Zest 2.0, use
+	 *             {@link #CompositeLayoutAlgorithm(LayoutAlgorithm[])}
+	 */
+	@Deprecated
+	public CompositeLayoutAlgorithm(int style, LayoutAlgorithm[] layoutAlgorithms) {
+		this(layoutAlgorithms);
 	}
 
 	@Override
-	protected int getCurrentLayoutStep() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void applyLayout(boolean clean) {
+		for (LayoutAlgorithm algorithm : algorithms) {
+			algorithm.applyLayout(clean);
+		}
 	}
 
 	@Override
-	protected int getTotalNumberOfLayoutSteps() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void setLayoutContext(LayoutContext context) {
+		for (LayoutAlgorithm algorithm : algorithms) {
+			algorithm.setLayoutContext(context);
+		}
 	}
-
-	@Override
-	protected boolean isValidConfiguration(boolean asynchronous, boolean continuous) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
-			InternalRelationship[] relationshipsToConsider) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
-			double x, double y, double width, double height) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setLayoutArea(double x, double y, double width, double height) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

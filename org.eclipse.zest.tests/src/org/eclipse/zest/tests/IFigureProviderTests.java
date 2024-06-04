@@ -11,6 +11,7 @@ package org.eclipse.zest.tests;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.zest.core.viewers.GraphViewer;
@@ -18,6 +19,8 @@ import org.eclipse.zest.core.viewers.IFigureProvider;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.core.widgets.CGraphNode;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.tests.GraphViewerTests.SampleGraphContentProvider;
+import org.eclipse.zest.tests.GraphViewerTests.SampleGraphEntityContentProvider;
 
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.Ellipse;
@@ -72,7 +75,23 @@ public class IFigureProviderTests extends Assert {
 		testWith(new FullContentProvider());
 	}
 
-	private void testWith(IGraphContentProvider contentProvider) {
+	/**
+	 * Test with IGraphContentProvider that provides destinations and sources.
+	 */
+	@Test
+	public void testWithGraphProvider() {
+		testWith(new SampleGraphEntityContentProvider());
+	}
+
+	/**
+	 * Test with IGraphEntityContentProvider.
+	 */
+	@Test
+	public void testWithGraphEntityProvider() {
+		testWith(new SampleGraphContentProvider());
+	}
+
+	private void testWith(IStructuredContentProvider contentProvider) {
 		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(new CustomLabelProvider());
 		viewer.setInput(new Object());

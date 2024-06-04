@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                      BC, Canada.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -21,8 +21,12 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * @author Ian Bull
  *
  *         Used to represent algorithms that can continuously run.
- *
+ * @deprecated No longer used in Zest 2.x. This class will be removed in a
+ *             future release.
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noreference This class is not intended to be referenced by clients.
  */
+@Deprecated(since = "2.0", forRemoval = true)
 public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	double x, y, widht, height;

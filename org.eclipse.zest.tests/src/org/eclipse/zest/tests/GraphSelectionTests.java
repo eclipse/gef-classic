@@ -1,9 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2010 Fabian Steeg. All rights reserved. This program and
- * the accompanying materials are made available under the terms of the Eclipse
- * Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * <p/>
+ * Copyright (c) 2010, 2024 Fabian Steeg and others.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
  * Contributors: Fabian Steeg - initial tests
  *******************************************************************************/
 package org.eclipse.zest.tests;
@@ -133,6 +136,19 @@ public class GraphSelectionTests extends Assert {
 		assertEquals("Non-selection events should not be received", 0, selectionEvents.size()); //$NON-NLS-1$
 		graph.notifyListeners(SWT.Selection, event);
 		assertEquals("Selection events should be received", 1, selectionEvents.size()); //$NON-NLS-1$
+	}
+
+	@Test
+	public void testClearGraphCheckSelection() throws Exception {
+		graph.setSelection(nodes);
+		assertEquals(2, graph.getSelection().size());
+		graph.clear();
+		assertEquals(0, graph.getNodes().size());
+		assertEquals(0, graph.getConnections().size());
+		assertEquals(0, graph.getSelection().size());
+		setUp();
+		assertEquals(2, graph.getNodes().size());
+		assertEquals(1, graph.getConnections().size());
 	}
 
 	private static SelectionListener setupListener(final List<SelectionEvent> events) {

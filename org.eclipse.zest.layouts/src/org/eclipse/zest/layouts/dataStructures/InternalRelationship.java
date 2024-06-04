@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                      BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -23,14 +23,20 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * @author Ian Bull
+ * @deprecated No longer used in Zest 2.x. This class will be removed in a
+ *             future release.
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noreference This class is not intended to be referenced by clients.
+ * @noinstantiate This class is not intended to be instantiated by clients.
  */
+@Deprecated(since = "2.0", forRemoval = true)
 public class InternalRelationship implements LayoutRelationship {
 
-	private LayoutRelationship externalRelationship;
-	private InternalNode source;
-	private InternalNode destination;
+	private final LayoutRelationship externalRelationship;
+	private final InternalNode source;
+	private final InternalNode destination;
 	private Object layoutInfo;
-	private List bendPoints = new LinkedList();
+	private final List bendPoints = new LinkedList();
 	BasicEdgeConstraints basicEdgeConstraints = new BasicEdgeConstraints();
 
 	public InternalRelationship(LayoutRelationship externalRelationship, InternalNode source,

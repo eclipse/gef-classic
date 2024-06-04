@@ -7,7 +7,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria, Sebastian Hollersbacher
+ * Contributors: The Chisel Group, University of Victoria
+ *               Sebastian Hollersbacher
+ *               Mateusz Matela
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
@@ -23,10 +25,13 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.zest.core.widgets.internal.ContainerFigure;
 import org.eclipse.zest.core.widgets.internal.GraphLabel;
+import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
+import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FigureListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -66,11 +71,16 @@ public class GraphNode extends GraphItem {
 	private Color borderColor;
 	private Color borderHighlightColor;
 	private int borderWidth;
-	private Point currentLocation;
+	private PrecisionPoint currentLocation;
 	protected Dimension size;
 	private Font font;
 	private boolean cacheLabel;
 	private boolean visible = true;
+	/**
+	 * @deprecated Not used in Zest 2.x. This class will be removed in a future
+	 *             release.
+	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	private LayoutEntity layoutEntity;
 
 	protected Graph graph;
@@ -100,36 +110,56 @@ public class GraphNode extends GraphItem {
 		this(graphModel, style, null);
 	}
 
+	/**
+	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)} and
+	 *             {@link #setData(Object)}
+	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	public GraphNode(IContainer graphModel, int style, Object data) {
 		this(graphModel, style, "" /* text */, null /* image */, data);
 	}
 
+	/**
+	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)} and
+	 *             {@link #setData(Object)}
+	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	public GraphNode(IContainer graphModel, int style, String text) {
 		this(graphModel, style, text, null);
 	}
 
+	/**
+	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)},
+	 *             {@link #setText(String)} and {@link #setData(Object)}
+	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	public GraphNode(IContainer graphModel, int style, String text, Object data) {
 		this(graphModel, style, text, null /* image */, data);
 	}
 
+	/**
+	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)},
+	 *             {@link #setText(String)}, and {@link #setImage(Image)}
+	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	public GraphNode(IContainer graphModel, int style, String text, Image image) {
 		this(graphModel, style, text, image, null);
 	}
 
+	/**
+	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)},
+	 *             {@link #setText(String)}, {@link #setImage(Image)} and
+	 *             {@link #setData(Object)}
+	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	public GraphNode(IContainer graphModel, int style, String text, Image image, Object data) {
 		super(graphModel.getGraph(), style, data);
 		initModel(graphModel, text, image);
 		if (modelFigure == null) {
 			initFigure();
 		}
-
-		// This is a hack because JAVA sucks!
-		// I don't want to expose addNode so I can't put it in the
-		// IContainer interface.
-		if (this.parent.getItemType() == GRAPH) {
-			((Graph) this.parent).addNode(this);
-		} else if (this.parent.getItemType() == CONTAINER) {
-			((GraphContainer) this.parent).addNode(this);
+		if (this.parent instanceof IContainer2 parent2) {
+			parent2.addNode(this);
 		}
 		this.parent.getGraph().registerItem(this);
 	}
@@ -187,6 +217,14 @@ public class GraphNode extends GraphItem {
 		return "GraphModelNode: " + getText();
 	}
 
+	/**
+	 * @deprecated Not used in Zest 2.x. This class will be removed in a future
+	 *             release.
+	 * @nooverride This method is not intended to be re-implemented or extended by
+	 *             clients.
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	public LayoutEntity getLayoutEntity() {
 		return layoutEntity;
 	}
@@ -293,9 +331,14 @@ public class GraphNode extends GraphItem {
 	 * Sets the current location for this node.
 	 */
 	public void setLocation(double x, double y) {
-		currentLocation.x = (int) x;
-		currentLocation.y = (int) y;
-		refreshLocation();
+		if (currentLocation.preciseX() != x || currentLocation.preciseY() != y) {
+			currentLocation.setPreciseX(x);
+			currentLocation.setPreciseY(y);
+			refreshLocation();
+			if (getGraphModel().isDynamicLayoutEnabled() && parent instanceof IContainer2 parent2) {
+				parent2.getLayoutContext().fireNodeMovedEvent(this.getLayout());
+			}
+		}
 	}
 
 	/**
@@ -447,10 +490,8 @@ public class GraphNode extends GraphItem {
 		 * (GraphConnection) iter.next(); conn.highlight();
 		 * conn.getSource().highlightAdjacent(); } }
 		 */
-		if (parent.getItemType() == GraphItem.CONTAINER) {
-			((GraphContainer) parent).highlightNode(this);
-		} else {
-			((Graph) parent).highlightNode(this);
+		if (nodeFigure.getParent() instanceof ZestRootLayer rootLayer) {
+			rootLayer.highlightNode(nodeFigure);
 		}
 		highlighted = HIGHLIGHT_ON;
 		updateFigureForModel(modelFigure);
@@ -480,10 +521,8 @@ public class GraphNode extends GraphItem {
 		 * (GraphConnection) iter.next(); conn.unhighlight(); if (conn.getSource() !=
 		 * this) { conn.getSource().unhighlight(); } } } }
 		 */
-		if (parent.getItemType() == GraphItem.CONTAINER) {
-			((GraphContainer) parent).unhighlightNode(this);
-		} else {
-			((Graph) parent).unhighlightNode(this);
+		if (nodeFigure.getParent() instanceof ZestRootLayer rootLayer) {
+			rootLayer.unHighlightNode(nodeFigure);
 		}
 		highlighted = HIGHLIGHT_NONE;
 		updateFigureForModel(modelFigure);
@@ -504,6 +543,14 @@ public class GraphNode extends GraphItem {
 		}
 		nodeFigure.getParent().setConstraint(nodeFigure, bounds);
 
+		if (isFisheyeEnabled) {
+			Rectangle fishEyeBounds = calculateFishEyeBounds();
+			if (fishEyeBounds != null) {
+				fishEyeFigure.getParent().translateToRelative(fishEyeBounds);
+				fishEyeFigure.getParent().translateFromParent(fishEyeBounds);
+				fishEyeFigure.getParent().setConstraint(fishEyeFigure, fishEyeBounds);
+			}
+		}
 	}
 
 	/**
@@ -744,25 +791,14 @@ public class GraphNode extends GraphItem {
 			fishEyeFigure = createFishEyeFigure();
 
 			// Get the current Bounds
-			Rectangle rectangle = nodeFigure.getBounds().getCopy();
+			Rectangle rectangle = calculateFishEyeBounds();
 
 			FontData fontData = Display.getCurrent().getSystemFont().getFontData()[0];
 			fontData.setHeight(12);
 			fishEyeFont = new Font(Display.getCurrent(), fontData);
 			fishEyeFigure.setFont(fishEyeFont);
 
-			// Calculate how much we have to expand the current bounds to get to
-			// the new bounds
-			Dimension newSize = fishEyeFigure.getPreferredSize();
-			Rectangle currentSize = rectangle.getCopy();
-			nodeFigure.translateToAbsolute(currentSize);
-			int expandedH = (newSize.height - currentSize.height) / 2 + 1;
-			int expandedW = (newSize.width - currentSize.width) / 2 + 1;
-			Dimension expandAmount = new Dimension(expandedW, expandedH);
-			nodeFigure.translateToAbsolute(rectangle);
-			rectangle.expand(
-					new Insets(expandAmount.height, expandAmount.width, expandAmount.height, expandAmount.width));
-			if (expandedH <= 0 && expandedW <= 0) {
+			if (rectangle == null) {
 				return null;
 			}
 
@@ -781,6 +817,7 @@ public class GraphNode extends GraphItem {
 			this.fishEyeFont = null;
 		}
 		isFisheyeEnabled = false;
+		this.getGraphModel().removeFishEye(fishEyeFigure, nodeFigure, animate);
 		return null;
 	}
 
@@ -808,29 +845,38 @@ public class GraphNode extends GraphItem {
 			return;
 		}
 
-		if (!(currentFigure instanceof GraphLabel figure)) {
-			return;
-		}
+		IFigure figure = currentFigure;
 		IFigure toolTip;
 
-		if (!checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
-			figure.setText(this.getText());
-		}
-		figure.setIcon(getImage());
-
-		if (highlighted == HIGHLIGHT_ON) {
-			figure.setForegroundColor(getForegroundColor());
-			figure.setBackgroundColor(getHighlightColor());
-			figure.setBorderColor(getBorderHighlightColor());
-		} else {
-			figure.setForegroundColor(getForegroundColor());
-			figure.setBackgroundColor(getBackgroundColor());
-			figure.setBorderColor(getBorderColor());
+		if (figure instanceof ILabeledFigure labeledFigure) {
+			// update label text/icon for figures implementing ILabeledFigure
+			if (!checkStyle(ZestStyles.NODES_HIDE_TEXT) && !labeledFigure.getText().equals(this.getText())) {
+				labeledFigure.setText(this.getText());
+			}
+			if (labeledFigure.getIcon() != getImage()) {
+				labeledFigure.setIcon(getImage());
+			}
 		}
 
-		figure.setBorderWidth(getBorderWidth());
+		if (figure instanceof IStyleableFigure styleableFigure) {
+			// update styles (colors, border) for figures implementing
+			// IStyleableFigure
+			if (highlighted == HIGHLIGHT_ON) {
+				styleableFigure.setForegroundColor(getForegroundColor());
+				styleableFigure.setBackgroundColor(getHighlightColor());
+				styleableFigure.setBorderColor(getBorderHighlightColor());
+			} else {
+				styleableFigure.setForegroundColor(getForegroundColor());
+				styleableFigure.setBackgroundColor(getBackgroundColor());
+				styleableFigure.setBorderColor(getBorderColor());
+			}
 
-		figure.setFont(getFont());
+			styleableFigure.setBorderWidth(getBorderWidth());
+
+			if (figure.getFont() != getFont()) {
+				figure.setFont(getFont());
+			}
+		}
 
 		if (this.getTooltip() == null && hasCustomTooltip == false) {
 			// if we have a custom tooltip, don't try and create our own.
@@ -860,6 +906,32 @@ public class GraphNode extends GraphItem {
 			label.setText("");
 		}
 		updateFigureForModel(label);
+		label.addFigureListener(new FigureListener() {
+			private Dimension previousSize = label.getBounds().getSize();
+
+			@Override
+			public void figureMoved(IFigure source) {
+				if (Animation.isAnimating() || getLayout().isMinimized()) {
+					return;
+				}
+				Rectangle newBounds = nodeFigure.getBounds();
+				if (!newBounds.getSize().equals(previousSize)) {
+					previousSize = newBounds.getSize();
+					if (size.width >= 0 && size.height >= 0) {
+						size = newBounds.getSize();
+					}
+					currentLocation = new PrecisionPoint(nodeFigure.getBounds().getTopLeft());
+					if (parent instanceof IContainer2 parent2) {
+						parent2.getLayoutContext().fireNodeResizedEvent(getLayout());
+					}
+				} else if (currentLocation.x != newBounds.x || currentLocation.y != newBounds.y) {
+					currentLocation = new PrecisionPoint(nodeFigure.getBounds().getTopLeft());
+					if (parent instanceof IContainer2 parent2) {
+						parent2.getLayoutContext().fireNodeMovedEvent(getLayout());
+					}
+				}
+			}
+		});
 		return label;
 	}
 
@@ -878,11 +950,14 @@ public class GraphNode extends GraphItem {
 		if (highlighted == HIGHLIGHT_ON) {
 			label.setForegroundColor(getForegroundColor());
 			label.setBackgroundColor(getHighlightColor());
+			label.setBorderColor(getBorderHighlightColor());
 		} else {
 			label.setForegroundColor(getForegroundColor());
 			label.setBackgroundColor(getBackgroundColor());
+			label.setBorderColor(getBorderColor());
 		}
 
+		label.setBorderWidth(getBorderWidth());
 		label.setFont(getFont());
 		return label;
 	}
@@ -890,6 +965,26 @@ public class GraphNode extends GraphItem {
 	@Override
 	public boolean isVisible() {
 		return visible;
+	}
+
+	private Rectangle calculateFishEyeBounds() {
+		// Get the current Bounds
+		Rectangle rectangle = nodeFigure.getBounds().getCopy();
+
+		// Calculate how much we have to expand the current bounds to get to the
+		// new bounds
+		Dimension newSize = fishEyeFigure.getPreferredSize();
+		Rectangle currentSize = rectangle.getCopy();
+		nodeFigure.translateToAbsolute(currentSize);
+		int expandedH = Math.max((newSize.height - currentSize.height) / 2 + 1, 0);
+		int expandedW = Math.max((newSize.width - currentSize.width) / 2 + 1, 0);
+		Dimension expandAmount = new Dimension(expandedW, expandedH);
+		nodeFigure.translateToAbsolute(rectangle);
+		rectangle.expand(new Insets(expandAmount.height, expandAmount.width, expandAmount.height, expandAmount.width));
+		if (expandedH <= 0 && expandedW <= 0) {
+			return null;
+		}
+		return rectangle;
 	}
 
 	void addSourceConnection(GraphConnection connection) {
@@ -1042,5 +1137,23 @@ public class GraphNode extends GraphItem {
 
 	void paint() {
 
+	}
+
+	private InternalNodeLayout layout;
+
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public InternalNodeLayout getLayout() {
+		if (layout == null) {
+			layout = new InternalNodeLayout(this);
+		}
+		return layout;
+	}
+
+	void applyLayoutChanges() {
+		if (layout != null) {
+			layout.applyLayout();
+		}
 	}
 }

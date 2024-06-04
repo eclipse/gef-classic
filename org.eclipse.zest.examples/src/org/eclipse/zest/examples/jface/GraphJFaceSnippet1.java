@@ -125,7 +125,7 @@ public class GraphJFaceSnippet1 {
 
 		viewer.setContentProvider(new MyContentProvider());
 		viewer.setLabelProvider(new MyLabelProvider());
-		viewer.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
+		viewer.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		viewer.addSelectionChangedListener(event -> System.out.println("Selection changed: " + (event.getSelection())));
 		viewer.setInput(new Object());
 
