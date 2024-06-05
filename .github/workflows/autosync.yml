@@ -11,6 +11,6 @@ jobs:
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
-      - name: Sync release
+      - name: Sync master
         run: |
           gh repo sync ${{github.repository}} --branch master
