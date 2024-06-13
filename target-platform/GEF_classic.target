@@ -7,7 +7,7 @@
 <repository location="http://download.eclipse.org/cbi/updates/license"/>
 </location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="http://download.eclipse.org/staging/2024-06"/>
+		<repository location="http://download.eclipse.org/staging/2024-09"/>
 		<unit id="org.eclipse.sdk.feature.group" version="0.0.0"/>
 	</location>
 </locations>
