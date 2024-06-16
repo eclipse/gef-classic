@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.parts.GraphicalViewerImpl;
@@ -30,7 +31,7 @@ public class GraphicalViewerTest {
 
 	@Before
 	public void setUp() {
-		viewer = new GraphicalViewerImpl();
+		viewer = PlatformUI.getWorkbench().getDisplay().syncCall(GraphicalViewerImpl::new);
 	}
 
 	/**
