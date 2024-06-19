@@ -319,7 +319,7 @@ public class FigureCanvas extends Canvas {
 			if (getVerticalBar().getVisible() != result.showV) {
 				getVerticalBar().setVisible(result.showV);
 			}
-			Rectangle r = new Rectangle(getClientArea());
+			Rectangle r = new Rectangle(result.viewportArea);
 			r.setLocation(0, 0);
 			getLightweightSystem().getRootFigure().setBounds(r);
 		} finally {
