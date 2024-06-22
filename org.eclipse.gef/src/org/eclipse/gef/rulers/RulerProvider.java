@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -83,7 +83,7 @@ public abstract class RulerProvider {
 	 * A list of <code>RulerChangeListener</code>s that have to be notified of
 	 * changes in ruler/guide properties.
 	 */
-	protected List listeners = new ArrayList();
+	protected List<RulerChangeListener> listeners = new ArrayList<>();
 
 	/**
 	 * The given listener will be notified of changes in ruler properties.
