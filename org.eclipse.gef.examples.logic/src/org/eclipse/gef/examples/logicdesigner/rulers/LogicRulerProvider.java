@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2022 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -44,12 +44,12 @@ public class LogicRulerProvider extends RulerProvider {
 				} else {
 					guide.removePropertyChangeListener(guideListener);
 				}
-				for (Object listener : listeners) {
-					((RulerChangeListener) listener).notifyGuideReparented(guide);
+				for (RulerChangeListener listener : listeners) {
+					listener.notifyGuideReparented(guide);
 				}
 			} else {
-				for (Object listener : listeners) {
-					((RulerChangeListener) listener).notifyUnitsChanged(ruler.getUnit());
+				for (RulerChangeListener listener : listeners) {
+					listener.notifyUnitsChanged(ruler.getUnit());
 				}
 			}
 		}
@@ -58,13 +58,12 @@ public class LogicRulerProvider extends RulerProvider {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(LogicGuide.PROPERTY_CHILDREN)) {
-				for (Object listener : listeners) {
-					((RulerChangeListener) listener).notifyPartAttachmentChanged(evt.getNewValue(),
-							evt.getSource());
+				for (RulerChangeListener listener : listeners) {
+					listener.notifyPartAttachmentChanged(evt.getNewValue(), evt.getSource());
 				}
 			} else {
-				for (Object listener : listeners) {
-					((RulerChangeListener) listener).notifyGuideMoved(evt.getSource());
+				for (RulerChangeListener listener : listeners) {
+					listener.notifyGuideMoved(evt.getSource());
 				}
 			}
 		}
