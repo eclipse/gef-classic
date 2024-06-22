@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
@@ -83,7 +84,7 @@ public abstract class RulerProvider {
 	 * A list of <code>RulerChangeListener</code>s that have to be notified of
 	 * changes in ruler/guide properties.
 	 */
-	protected List<RulerChangeListener> listeners = new ArrayList<>();
+	protected List<RulerChangeListener> listeners = new CopyOnWriteArrayList<>();
 
 	/**
 	 * The given listener will be notified of changes in ruler properties.
