@@ -206,6 +206,8 @@
       <repositoryList>
         <repository
             url="https://download.eclipse.org/cbi/updates/license"/>
+        <repository
+            url="https://download.eclipse.org/technology/swtbot/releases/latest"/>
       </repositoryList>
     </targlet>
   </setupTask>

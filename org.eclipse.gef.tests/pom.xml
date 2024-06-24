@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.eclipse.gef.plugins</groupId>
 	<artifactId>org.eclipse.gef.tests</artifactId>
-	<version>3.13.400-SNAPSHOT</version>
+	<version>3.14.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<profiles>
 		<profile>
@@ -48,9 +48,35 @@
 					<includes>
 						<include>**/GEFTestSuite.class</include>
 					</includes>
-					<useUIHarness>false</useUIHarness>
+					<useUIHarness>true</useUIHarness>
 					<useUIThread>false</useUIThread>
 					<argLine>${test.vmargs}</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<dependency-resolution>
+						<extraRequirements>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.gef.examples.flow</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.gef.examples.logic</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.gef.examples.shapes</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+						</extraRequirements>
+					</dependency-resolution>
 				</configuration>
 			</plugin>
 		</plugins>
