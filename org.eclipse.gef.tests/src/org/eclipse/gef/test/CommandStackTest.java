@@ -6,11 +6,14 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
+import org.eclipse.gef.commands.CommandStackEventListener;
+import org.eclipse.gef.commands.CommandStackListener;
 
 import org.junit.Test;
 
@@ -138,5 +141,35 @@ public class CommandStackTest {
 		assertEquals(0, commandStackEvents.get(1).getDetail() & CommandStack.PRE_MASK);
 		assertNotEquals(0, commandStackEvents.get(1).getDetail() & CommandStack.POST_MASK);
 
+	}
+
+	@Test
+	@SuppressWarnings("static-method")
+	public void testConcurrentModification() {
+		CommandStack stack = new CommandStack();
+		CommandStackEventListener listener = new CommandStackEventListener() {
+			@Override
+			public void stackChanged(CommandStackEvent event) {
+				stack.removeCommandStackEventListener(this);
+			}
+		};
+		stack.addCommandStackEventListener(listener);
+		stack.execute(new Command() {
+		});
+	}
+
+	@Test
+	@SuppressWarnings("static-method")
+	public void testConcurrentModification2() {
+		CommandStack stack = new CommandStack();
+		CommandStackListener listener = new CommandStackListener() {
+			@Override
+			public void commandStackChanged(EventObject event) {
+				stack.removeCommandStackListener(this);
+			}
+		};
+		stack.addCommandStackListener(listener);
+		stack.execute(new Command() {
+		});
 	}
 }
