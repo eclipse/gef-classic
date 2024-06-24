@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * An implementation of a command stack. A stack manages the executing, undoing,
@@ -125,7 +126,7 @@ public class CommandStack {
 	 */
 	public static final int PRE_MASK = PRE_EXECUTE | PRE_UNDO | PRE_REDO | PRE_FLUSH | PRE_MARK_SAVE;
 
-	private final List<CommandStackEventListener> eventListeners = new ArrayList<>();
+	private final List<CommandStackEventListener> eventListeners = new CopyOnWriteArrayList<>();
 
 	/**
 	 * The list of {@link CommandStackListener}s.
@@ -134,7 +135,7 @@ public class CommandStack {
 	 *             {@link #notifyListeners()}
 	 */
 	@Deprecated
-	protected List<CommandStackListener> listeners = new ArrayList<>();
+	protected List<CommandStackListener> listeners = new CopyOnWriteArrayList<>();
 
 	private final Stack<Command> redoable = new Stack<>();
 
