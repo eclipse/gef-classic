@@ -14,6 +14,7 @@
 package org.eclipse.gef.test.swtbot;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -21,6 +22,7 @@ import java.util.List;
 
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 
 import org.junit.Test;
 
@@ -104,6 +106,22 @@ public class FlowDiagramTests extends AbstractSWTBotTests {
 
 		bot.toolbarButtonWithTooltip("Redo Delete").click();
 		assertNull(editor.getEditPart("Sleep....."));
+	}
+
+	/**
+	 * Checks whether one or more elements can be selected with the marquee
+	 * selection tool. Note that the current viewer is null at the start of this
+	 * test, as it is only set when the cursor is moved inside the editor.
+	 *
+	 * @see <a href="https://github.com/eclipse/gef-classic/issues/466">here</a>
+	 */
+	@Test
+	public void testMarqueeSelection() {
+		SWTBotGefEditor editor = bot.gefEditor("GEF Flow Example");
+		editor.activateTool("Marquee");
+
+		UIThreadRunnable.syncExec(() -> editor.drag(0, 0, 500, 500));
+		assertFalse("At least one edit part should be selected", editor.selectedEditParts().isEmpty());
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -441,7 +441,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 */
 	@Override
 	protected boolean handleButtonDown(int button) {
-		if (!isCurrentViewerGraphical()) {
+		if (!isViewerGraphical(getCurrentViewer())) {
 			return true;
 		}
 		if (button != 1) {
@@ -677,11 +677,11 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 */
 	@Override
 	protected boolean isViewerImportant(EditPartViewer viewer) {
-		return isCurrentViewerGraphical();
+		return isViewerGraphical(viewer);
 	}
 
-	private boolean isCurrentViewerGraphical() {
-		return getCurrentViewer() instanceof GraphicalViewer;
+	private static boolean isViewerGraphical(EditPartViewer viewer) {
+		return viewer instanceof GraphicalViewer;
 	}
 
 	/**
