@@ -113,19 +113,19 @@ public class InternalImages {
 		DESC_MATCH_WIDTH_DIS = createDescriptor("icons/matchwidth_d.gif"); //$NON-NLS-1$
 		DESC_MATCH_HEIGHT_DIS = createDescriptor("icons/matchheight_d.gif"); //$NON-NLS-1$
 
-		DESC_VERT_ALIGN_BOTTOM = createDescriptor("icons/alignbottom.gif"); //$NON-NLS-1$
-		DESC_HORZ_ALIGN_CENTER = createDescriptor("icons/aligncenter.gif"); //$NON-NLS-1$
-		DESC_HORZ_ALIGN_LEFT = createDescriptor("icons/alignleft.gif"); //$NON-NLS-1$
-		DESC_VERT_ALIGN_MIDDLE = createDescriptor("icons/alignmid.gif"); //$NON-NLS-1$
-		DESC_HORZ_ALIGN_RIGHT = createDescriptor("icons/alignright.gif"); //$NON-NLS-1$
-		DESC_VERT_ALIGN_TOP = createDescriptor("icons/aligntop.gif"); //$NON-NLS-1$
+		DESC_VERT_ALIGN_BOTTOM = createDescriptor("icons/alignbottom.png"); //$NON-NLS-1$
+		DESC_HORZ_ALIGN_CENTER = createDescriptor("icons/aligncenter.png"); //$NON-NLS-1$
+		DESC_HORZ_ALIGN_LEFT = createDescriptor("icons/alignleft.png"); //$NON-NLS-1$
+		DESC_VERT_ALIGN_MIDDLE = createDescriptor("icons/alignmid.png"); //$NON-NLS-1$
+		DESC_HORZ_ALIGN_RIGHT = createDescriptor("icons/alignright.png"); //$NON-NLS-1$
+		DESC_VERT_ALIGN_TOP = createDescriptor("icons/aligntop.png"); //$NON-NLS-1$
 
-		DESC_VERT_ALIGN_BOTTOM_DIS = createDescriptor("icons/alignbottom_d.gif"); //$NON-NLS-1$
-		DESC_HORZ_ALIGN_CENTER_DIS = createDescriptor("icons/aligncenter_d.gif"); //$NON-NLS-1$
-		DESC_HORZ_ALIGN_LEFT_DIS = createDescriptor("icons/alignleft_d.gif"); //$NON-NLS-1$
-		DESC_VERT_ALIGN_MIDDLE_DIS = createDescriptor("icons/alignmid_d.gif"); //$NON-NLS-1$
-		DESC_HORZ_ALIGN_RIGHT_DIS = createDescriptor("icons/alignright_d.gif"); //$NON-NLS-1$
-		DESC_VERT_ALIGN_TOP_DIS = createDescriptor("icons/aligntop_d.gif"); //$NON-NLS-1$
+		DESC_VERT_ALIGN_BOTTOM_DIS = createDescriptor("icons/alignbottom_d.png"); //$NON-NLS-1$
+		DESC_HORZ_ALIGN_CENTER_DIS = createDescriptor("icons/aligncenter_d.png"); //$NON-NLS-1$
+		DESC_HORZ_ALIGN_LEFT_DIS = createDescriptor("icons/alignleft_d.png"); //$NON-NLS-1$
+		DESC_VERT_ALIGN_MIDDLE_DIS = createDescriptor("icons/alignmid_d.png"); //$NON-NLS-1$
+		DESC_HORZ_ALIGN_RIGHT_DIS = createDescriptor("icons/alignright_d.png"); //$NON-NLS-1$
+		DESC_VERT_ALIGN_TOP_DIS = createDescriptor("icons/aligntop_d.png"); //$NON-NLS-1$
 
 		DESC_SEPARATOR = createDescriptor("icons/separator.gif"); //$NON-NLS-1$
 		DESC_FOLDER_OPEN = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
