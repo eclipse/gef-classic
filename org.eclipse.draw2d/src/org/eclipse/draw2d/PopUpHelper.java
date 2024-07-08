@@ -84,7 +84,7 @@ public abstract class PopUpHelper {
 	 * @since 2.0
 	 */
 	protected Shell createShell() {
-		return new Shell(control.getShell(), shellStyle);
+		return new Shell(control.getDisplay(), shellStyle);
 	}
 
 	/**
