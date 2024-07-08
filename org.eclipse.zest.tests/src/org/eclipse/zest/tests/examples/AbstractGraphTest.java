@@ -129,7 +129,7 @@ public abstract class AbstractGraphTest {
 				robot = new GraphicalRobot(graph);
 				shell = graph.getShell();
 				// Wait for layout to be applied
-				waitEventLoop(10);
+				waitEventLoop(0);
 				// Run the actual test
 				statement.evaluate();
 			} catch (Throwable e) {
