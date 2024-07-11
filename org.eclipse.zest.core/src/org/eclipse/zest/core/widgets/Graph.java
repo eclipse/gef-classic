@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright 2005, 2010, 2023, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2005-2010, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -7,17 +8,24 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria, Sebastian Hollersbacher
+ * Contributors: The Chisel Group, University of Victoria
+ *               Sebastian Hollersbacher
+ *               Mateusz Matela
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -28,21 +36,26 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.zest.core.viewers.internal.ZoomManager;
+import org.eclipse.zest.core.widgets.gestures.RotateGestureListener;
+import org.eclipse.zest.core.widgets.gestures.ZoomGestureListener;
 import org.eclipse.zest.core.widgets.internal.ContainerFigure;
-import org.eclipse.zest.core.widgets.internal.RevealListener;
 import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.LayoutStyles;
-import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
+import org.eclipse.zest.layouts.interfaces.ExpandCollapseManager;
 
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.ConnectionRouter;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
@@ -67,8 +80,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author Ian Bull
  *
  * @author Sebastian Hollersbacher
+ * @since 1.0
  */
-public class Graph extends FigureCanvas implements IContainer {
+public class Graph extends FigureCanvas implements IContainer2 {
 
 	// CLASS CONSTANTS
 	public static final int ANIMATION_TIME = 500;
@@ -93,8 +107,10 @@ public class Graph extends FigureCanvas implements IContainer {
 	private final List<GraphNode> nodes;
 	protected List<GraphConnection> connections;
 	private List<GraphItem> selectedItems = null;
+	Set subgraphFigures;
 	private HideNodeHelper hoverNode = null;
 	IFigure fisheyedFigure = null;
+	private final ArrayList fisheyeListeners = new ArrayList();
 	private List<SelectionListener> selectionListeners = null;
 
 	/** This maps all visible nodes to their model element. */
@@ -104,18 +120,20 @@ public class Graph extends FigureCanvas implements IContainer {
 	private int connectionStyle;
 	private int nodeStyle;
 	private List<ConstraintAdapter> constraintAdapters;
-	private List<RevealListener> revealListeners = null;
-
 	private ScalableFreeformLayeredPane fishEyeLayer = null;
-	LayoutAlgorithm layoutAlgorithm = null;
+	private InternalLayoutContext layoutContext = null;
+	private volatile boolean shouldSheduleLayout;
+	private volatile Runnable scheduledLayoutRunnable = null;
+	private volatile boolean scheduledLayoutClean = false;
 	private Dimension preferredSize = null;
 	int style = 0;
 
 	private ScalableFreeformLayeredPane rootlayer;
 	private ZestRootLayer zestRootLayer;
 
-	private boolean hasPendingLayoutRequest;
 	private boolean enableHideNodes;
+	private ConnectionRouter defaultConnectionRouter;
+	private ZoomManager zoomManager = null;
 
 	/**
 	 * Constructor for a Graph. This widget represents the root of the graph, and
@@ -149,6 +167,20 @@ public class Graph extends FigureCanvas implements IContainer {
 		LIGHT_YELLOW = new Color(Display.getDefault(), 255, 255, 206);
 
 		this.setViewport(new FreeformViewport());
+
+		this.getVerticalBar().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Graph.this.redraw();
+			}
+
+		});
+		this.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Graph.this.redraw();
+			}
+		});
 
 		// @tag CGraph.workaround : this allows me to handle mouse events
 		// outside of the canvas
@@ -189,17 +221,12 @@ public class Graph extends FigureCanvas implements IContainer {
 		this.selectionListeners = new ArrayList<>();
 		this.figure2ItemMap = new HashMap<>();
 		this.enableHideNodes = enableHideNodes;
+		this.subgraphFigures = new HashSet<>();
 
-		revealListeners = new ArrayList<>(1);
 		this.addPaintListener(event -> {
-			// Go through the reveal list and let everyone know that the
-			// view is now available. Remove the listeners so they are
-			// only called once!
-			Iterator<RevealListener> iterator = revealListeners.iterator();
-			while (iterator.hasNext()) {
-				RevealListener reveallisetner = iterator.next();
-				reveallisetner.revealed(Graph.this);
-				iterator.remove();
+			if (shouldSheduleLayout) {
+				applyLayoutInternal(true);
+				shouldSheduleLayout = false;
 			}
 
 			/*
@@ -208,6 +235,19 @@ public class Graph extends FigureCanvas implements IContainer {
 			 */
 		});
 
+		this.addControlListener(new ControlAdapter() {
+			@Override
+			public void controlResized(ControlEvent e) {
+				if (preferredSize.width == -1 || preferredSize.height == -1) {
+					getLayoutContext().fireBoundsChangedEvent();
+				}
+			}
+		});
+		if ((style & (ZestStyles.GESTURES_DISABLED)) == 0) {
+			// Only add default gestures if not disabled by style bit
+			this.addGestureListener(new ZoomGestureListener());
+			this.addGestureListener(new RotateGestureListener());
+		}
 		this.addDisposeListener(event -> release());
 	}
 
@@ -246,7 +286,11 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * Adds a new constraint adapter to the list of constraint adapters
 	 *
 	 * @param constraintAdapter
+	 * @deprecated No longer used in Zest 2.x. This class will be removed in a
+	 *             future release in accordance with the two year deprecation
+	 *             policy.
 	 */
+	@Deprecated(since = "2.0", forRemoval = true)
 	public void addConstraintAdapter(ConstraintAdapter constraintAdapter) {
 		this.constraintAdapters.add(constraintAdapter);
 	}
@@ -255,7 +299,11 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * Sets the constraint adapters on this model
 	 *
 	 * @param constraintAdapters
+	 * @deprecated No longer used in Zest 2.x. This class will be removed in a
+	 *             future release in accordance with the two year deprecation
+	 *             policy.
 	 */
+	@Deprecated(since = "2.0", forRemoval = true)
 	public void setConstraintAdapters(List<ConstraintAdapter> constraintAdapters) {
 		this.constraintAdapters = constraintAdapters;
 	}
@@ -362,7 +410,10 @@ public class Graph extends FigureCanvas implements IContainer {
 	 *
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem#getGraphModel
 	 * ()
+	 *
+	 * @deprecated Use {@link #getGraph()} instead.
 	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	public Graph getGraphModel() {
 		return this;
 	}
@@ -377,16 +428,59 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	/**
-	 * Runs the layout on this graph. It uses the reveal listener to run the layout
-	 * only if the view is visible. Otherwise it will be deferred until after the
-	 * view is available.
+	 * Runs the layout on this graph. If the view is not visible layout will be
+	 * deferred until after the view is available.
 	 */
 	@Override
 	public void applyLayout() {
-		if (!hasPendingLayoutRequest) {
-			hasPendingLayoutRequest = true;
-			this.addRevealListener(control -> Display.getDefault().asyncExec(this::applyLayoutInternal));
+		scheduleLayoutOnReveal(true);
+	}
+
+	/**
+	 * Apply this graphs's layout cleanly and display all changes.
+	 *
+	 * @since 1.13
+	 */
+	@SuppressWarnings("removal")
+	public void applyLayoutNow() {
+		if (getLayoutAlgorithm() instanceof LayoutAlgorithm.Zest1) {
+			applyLayoutInternal(true);
+		} else {
+			getLayoutContext().applyLayout(true);
+			layoutContext.flushChanges(false);
 		}
+	}
+
+	/**
+	 * Enables or disables dynamic layout (that is layout algorithm performing
+	 * layout in background or when certain events occur). Dynamic layout should be
+	 * disabled before doing a long series of changes in the graph to make sure that
+	 * layout algorithm won't interfere with these changes.
+	 *
+	 * Enabling dynamic layout causes the layout algorithm to be applied even if
+	 * it's not actually a dynamic algorithm.
+	 *
+	 * @param enabled
+	 *
+	 * @since 1.13
+	 */
+	public void setDynamicLayout(boolean enabled) {
+		if (getLayoutContext().isBackgroundLayoutEnabled() != enabled) {
+			layoutContext.setBackgroundLayoutEnabled(enabled);
+			if (enabled) {
+				scheduleLayoutOnReveal(false);
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @return true if dynamic layout is enabled (see
+	 *         {@link #setDynamicLayout(boolean)})
+	 * @since 1.13
+	 */
+	public boolean isDynamicLayoutEnabled() {
+		return getLayoutContext().isBackgroundLayoutEnabled();
 	}
 
 	/**
@@ -398,6 +492,31 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	public void setPreferredSize(int width, int height) {
 		this.preferredSize = new Dimension(width, height);
+		getLayoutContext().fireBoundsChangedEvent();
+	}
+
+	/**
+	 * @return the preferred size of the layout area.
+	 * @since 1.13
+	 */
+	public Dimension getPreferredSize() {
+		if (preferredSize.width < 0 || preferredSize.height < 0) {
+			org.eclipse.swt.graphics.Point size = getSize();
+			double scale = getZoomManager().getZoom();
+			return new Dimension((int) (size.x / scale + 0.5), (int) (size.y / scale + 0.5));
+		}
+		return preferredSize;
+	}
+
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	@Override
+	public InternalLayoutContext getLayoutContext() {
+		if (layoutContext == null) {
+			layoutContext = new InternalLayoutContext(this);
+		}
+		return layoutContext;
 	}
 
 	/**
@@ -405,14 +524,67 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	@Override
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
-		this.layoutAlgorithm = algorithm;
+		getLayoutContext().setLayoutAlgorithm(algorithm);
 		if (applyLayout) {
 			applyLayout();
 		}
 	}
 
+	/**
+	 * @since 1.13
+	 */
+	public void setSubgraphFactory(SubgraphFactory factory) {
+		getLayoutContext().setSubgraphFactory(factory);
+	}
+
+	/**
+	 * @since 1.13
+	 */
+	public SubgraphFactory getSubgraphFactory() {
+		return getLayoutContext().getSubgraphFactory();
+	}
+
+	/**
+	 * @since 1.13
+	 */
+	public void setExpandCollapseManager(ExpandCollapseManager expandCollapseManager) {
+		getLayoutContext().setExpandCollapseManager(expandCollapseManager);
+	}
+
+	/**
+	 * @since 1.13
+	 */
+	public ExpandCollapseManager getExpandCollapseManager() {
+		return getLayoutContext().getExpandCollapseManager();
+	}
+
+	/**
+	 * Adds a filter used for hiding elements from layout algorithm.
+	 *
+	 * NOTE: If a node or subgraph if filtered out, all connections adjacent to it
+	 * should also be filtered out. Otherwise layout algorithm may behave in an
+	 * unexpected way.
+	 *
+	 * @param filter filter to add
+	 * @since 1.13
+	 */
+	public void addLayoutFilter(LayoutFilter filter) {
+		getLayoutContext().addFilter(filter);
+	}
+
 	public LayoutAlgorithm getLayoutAlgorithm() {
-		return this.layoutAlgorithm;
+		return getLayoutContext().getLayoutAlgorithm();
+	}
+
+	/**
+	 * Removes given layout filter. If it had not been added to this graph, this
+	 * method does nothing.
+	 *
+	 * @param filter filter to remove
+	 * @since 1.13
+	 */
+	public void removeLayoutFilter(LayoutFilter filter) {
+		getLayoutContext().removeFilter(filter);
 	}
 
 	/**
@@ -478,12 +650,15 @@ public class Graph extends FigureCanvas implements IContainer {
 	// /////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE METHODS. These are NON API
 	// /////////////////////////////////////////////////////////////////////////////////
-	class DragSupport implements GraphDragSupport {
+	private class DragSupport implements GraphDragSupport {
 		/**
 		 *
 		 */
 		Graph graph = null;
 		Point lastLocation = null;
+		IFigure draggedSubgraphFigure = null;
+		/** locations of dragged items relative to cursor position */
+		ArrayList relativeLocations = new ArrayList();
 		GraphItem fisheyedItem = null;
 		boolean isDragging = false;
 
@@ -496,59 +671,65 @@ public class Graph extends FigureCanvas implements IContainer {
 			if (!isDragging) {
 				return;
 			}
+			if (selectedItems.isEmpty()) {
+				IFigure figureUnderMouse = getFigureAt(lastLocation.x, lastLocation.y);
+				if (subgraphFigures.contains(figureUnderMouse)) {
+					draggedSubgraphFigure = figureUnderMouse;
+				}
+			}
+
 			Point mousePoint = new Point(me.x, me.y);
-			Point tempPoint = mousePoint.getCopy();
-			if (!selectedItems.isEmpty()) {
-				for (GraphItem item : selectedItems) {
+			if (!selectedItems.isEmpty() || draggedSubgraphFigure != null) {
+
+				if (relativeLocations.isEmpty()) {
+					for (Object selectedItem : selectedItems) {
+						GraphItem item = (GraphItem) selectedItem;
+						if ((item.getItemType() == GraphItem.NODE) || (item.getItemType() == GraphItem.CONTAINER)) {
+							relativeLocations.add(getRelativeLocation(item.getFigure()));
+						}
+					}
+					if (draggedSubgraphFigure != null) {
+						relativeLocations.add(getRelativeLocation(draggedSubgraphFigure));
+					}
+				}
+
+				Iterator locationsIterator = relativeLocations.iterator();
+				for (Object selectedItem : selectedItems) {
+					GraphItem item = (GraphItem) selectedItem;
 					if ((item.getItemType() == GraphItem.NODE) || (item.getItemType() == GraphItem.CONTAINER)) {
-						// @tag Zest.selection Zest.move : This is where the
-						// node movement is tracked
-						GraphNode node = (GraphNode) item;
 						Point pointCopy = mousePoint.getCopy();
+						Point relativeLocation = (Point) locationsIterator.next();
 
-						Point tempLastLocation = lastLocation.getCopy();
-						node.getNodeFigure().getParent().translateToRelative(tempLastLocation);
-						node.getNodeFigure().getParent().translateFromParent(tempLastLocation);
+						item.getFigure().getParent().translateToRelative(pointCopy);
+						item.getFigure().getParent().translateFromParent(pointCopy);
 
-						node.getNodeFigure().getParent().translateToRelative(pointCopy);
-						node.getNodeFigure().getParent().translateFromParent(pointCopy);
-						Point delta = new Point(pointCopy.x - tempLastLocation.x, pointCopy.y - tempLastLocation.y);
-						node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
-
-						/*
-						 * else if (item.getItemType() == GraphItem.CONTAINER) { GraphContainer
-						 * container = (GraphContainer) item;
-						 * container.setLocation(container.getLocation().x + delta.x,
-						 * container.getLocation().y + delta.y); }
-						 */
+						((GraphNode) item).setLocation(relativeLocation.x + pointCopy.x,
+								relativeLocation.y + pointCopy.y);
 					} else {
 						// There is no movement for connection
 					}
 				}
-				if (fisheyedFigure != null) {
+				if (draggedSubgraphFigure != null) {
 					Point pointCopy = mousePoint.getCopy();
+					draggedSubgraphFigure.getParent().translateToRelative(pointCopy);
+					draggedSubgraphFigure.getParent().translateFromParent(pointCopy);
+					Point relativeLocation = (Point) locationsIterator.next();
+					pointCopy.x += relativeLocation.x;
+					pointCopy.y += relativeLocation.y;
 
-					Point tempLastLocation = lastLocation.getCopy();
-					fisheyedFigure.translateToRelative(tempLastLocation);
-					fisheyedFigure.translateFromParent(tempLastLocation);
-
-					fisheyedFigure.translateToRelative(pointCopy);
-					fisheyedFigure.translateFromParent(pointCopy);
-					Point delta = new Point(pointCopy.x - tempLastLocation.x, pointCopy.y - tempLastLocation.y);
-					Point point = new Point(fisheyedFigure.getBounds().x + delta.x,
-							fisheyedFigure.getBounds().y + delta.y);
-					// TODO fisheyedFigure.parent not reset after leaving subgraph
-					fishEyeLayer.setConstraint(fisheyedFigure, new Rectangle(point, fisheyedFigure.getSize()));
-					fishEyeLayer.getUpdateManager().performUpdate();
-					// fisheyedFigure.setBounds(new Rectangle(point2,
-					// fisheyedFigure.getSize()));
-					// fisheyedFigure.setLocation(new
-					// Point(fisheyedFigure.getBounds().x + delta.x,
-					// fisheyedFigure.getBounds().y + delta.y));
+					draggedSubgraphFigure.setLocation(pointCopy);
 				}
 			}
-			lastLocation = tempPoint;
-			// oldLocation = mousePoint;
+		}
+
+		private Point getRelativeLocation(IFigure figure) {
+			Point location = figure.getBounds().getTopLeft();
+			Point mousePointCopy = lastLocation.getCopy();
+			figure.getParent().translateToRelative(mousePointCopy);
+			figure.getParent().translateFromParent(mousePointCopy);
+			location.x -= mousePointCopy.x;
+			location.y -= mousePointCopy.y;
+			return location;
 		}
 
 		@Override
@@ -595,10 +776,15 @@ public class Graph extends FigureCanvas implements IContainer {
 				}
 
 				if (itemUnderMouse == fisheyedItem) {
-
-				} else if (itemUnderMouse != null && itemUnderMouse.getItemType() == GraphItem.NODE) {
+					return;
+				}
+				if (fisheyedItem != null) {
+					((GraphNode) fisheyedItem).fishEye(false, true);
+					fisheyedItem = null;
+				}
+				if (itemUnderMouse != null && itemUnderMouse.getItemType() == GraphItem.NODE) {
 					fisheyedItem = itemUnderMouse;
-					fisheyedFigure = ((GraphNode) itemUnderMouse).fishEye(true, true);
+					IFigure fisheyedFigure = ((GraphNode) itemUnderMouse).fishEye(true, true);
 					if (fisheyedFigure == null) {
 						// If there is no fisheye figure (this means that the
 						// node does not support a fish eye)
@@ -707,7 +893,7 @@ public class Graph extends FigureCanvas implements IContainer {
 					}
 					for (GraphConnection connection : new ArrayList<GraphConnection>(g.getConnections())) {
 						g.removeConnection(connection);
-						container.graph.addConnection(connection, ZestRootLayer.EDGES_ON_TOP);
+						container.graph.addConnection(connection, false);
 						container.graph.registerItem(connection);
 						connection.registerConnection(connection.getSource(), connection.getDestination());
 						connection.setVisible(true);
@@ -833,7 +1019,8 @@ public class Graph extends FigureCanvas implements IContainer {
 		@Override
 		public void mouseReleased(org.eclipse.draw2d.MouseEvent me) {
 			isDragging = false;
-
+			relativeLocations.clear();
+			draggedSubgraphFigure = null;
 		}
 
 	}
@@ -921,78 +1108,6 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	/**
-	 * Moves the edge to the highlight layer. This moves the edge above the nodes
-	 *
-	 * @param connection
-	 */
-	void highlightEdge(GraphConnection connection) {
-		IFigure figure = connection.getConnectionFigure();
-		if (figure != null && !connection.isHighlighted()) {
-			zestRootLayer.highlightConnection(figure);
-		}
-	}
-
-	/**
-	 * Moves the edge from the edge feedback layer back to the edge layer
-	 *
-	 * @param graphConnection
-	 */
-	void unhighlightEdge(GraphConnection connection) {
-		IFigure figure = connection.getConnectionFigure();
-		if (figure != null && connection.isHighlighted()) {
-			zestRootLayer.unHighlightConnection(figure);
-		}
-	}
-
-	/**
-	 * Moves the node onto the node feedback layer
-	 *
-	 * @param node
-	 */
-	void highlightNode(GraphNode node) {
-		IFigure figure = node.getNodeFigure();
-		if (figure != null && !node.isHighlighted()) {
-			zestRootLayer.highlightNode(figure);
-		}
-	}
-
-	/**
-	 * Moves the node onto the node feedback layer
-	 *
-	 * @param node
-	 */
-	void highlightNode(GraphContainer node) {
-		IFigure figure = node.getNodeFigure();
-		if (figure != null && !node.isHighlighted()) {
-			zestRootLayer.highlightNode(figure);
-		}
-	}
-
-	/**
-	 * Moves the node off the node feedback layer
-	 *
-	 * @param node
-	 */
-	void unhighlightNode(GraphContainer node) {
-		IFigure figure = node.getNodeFigure();
-		if (figure != null && node.isHighlighted()) {
-			zestRootLayer.unHighlightNode(figure);
-		}
-	}
-
-	/**
-	 * Moves the node off the node feedback layer
-	 *
-	 * @param node
-	 */
-	void unhighlightNode(GraphNode node) {
-		IFigure figure = node.getNodeFigure();
-		if (figure != null && node.isHighlighted()) {
-			zestRootLayer.unHighlightNode(figure);
-		}
-	}
-
-	/**
 	 * Converts the list of GraphModelConnection objects into an array and returns
 	 * it.
 	 *
@@ -1003,6 +1118,11 @@ public class Graph extends FigureCanvas implements IContainer {
 		return connections.toArray(connsArray);
 	}
 
+	/**
+	 * @deprecated Not used in Zest 2.x. This method will be removed in a future
+	 *             release in accordance with the two year deprecation policy.
+	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	LayoutRelationship[] getConnectionsToLayout(List<GraphNode> nodesToLayout) {
 		// @tag zest.bug.156528-Filters.follows : make sure not to layout
 		// filtered connections, if the style says so.
@@ -1028,6 +1148,11 @@ public class Graph extends FigureCanvas implements IContainer {
 		return entities;
 	}
 
+	/**
+	 * @deprecated Not used in Zest 2.x. This method will be removed in a future
+	 *             release in accordance with the two year deprecation policy.
+	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	LayoutEntity[] getNodesToLayout(List<? extends GraphNode> nodes) {
 		// @tag zest.bug.156528-Filters.follows : make sure not to layout
 		// filtered nodes, if the style says so.
@@ -1050,12 +1175,30 @@ public class Graph extends FigureCanvas implements IContainer {
 		return entities;
 	}
 
+	/**
+	 * Clear the graph of all its content.
+	 *
+	 * @since 1.13
+	 */
+	public void clear() {
+		for (Object element : new ArrayList(connections)) {
+			removeConnection((GraphConnection) element);
+		}
+		for (Object element : new HashSet(subgraphFigures)) {
+			removeSubgraphFigure((IFigure) element);
+		}
+		for (Object element : new ArrayList(nodes)) {
+			removeNode((GraphNode) element);
+		}
+	}
+
 	void removeConnection(GraphConnection connection) {
 		IFigure figure = connection.getConnectionFigure();
 		PolylineConnection sourceContainerConnectionFigure = connection.getSourceContainerConnectionFigure();
 		PolylineConnection targetContainerConnectionFigure = connection.getTargetContainerConnectionFigure();
 		connection.removeFigure();
 		this.getConnections().remove(connection);
+		this.selectedItems.remove(connection);
 		figure2ItemMap.remove(figure);
 		if (sourceContainerConnectionFigure != null) {
 			figure2ItemMap.remove(sourceContainerConnectionFigure);
@@ -1063,22 +1206,20 @@ public class Graph extends FigureCanvas implements IContainer {
 		if (targetContainerConnectionFigure != null) {
 			figure2ItemMap.remove(targetContainerConnectionFigure);
 		}
+		getLayoutContext().fireConnectionRemovedEvent(connection.getLayout());
 	}
 
 	void removeNode(GraphNode node) {
 		IFigure figure = node.getNodeFigure();
 		if (figure.getParent() != null) {
-			if (figure.getParent() instanceof ZestRootLayer) {
-				((ZestRootLayer) figure.getParent()).removeNode(figure);
-			} else {
-				figure.getParent().remove(figure);
-			}
+			figure.getParent().remove(figure);
 		}
 		this.getNodes().remove(node);
 		if (this.getSelection() != null) {
 			this.getSelection().remove(node);
 		}
 		figure2ItemMap.remove(figure);
+		node.getLayout().dispose();
 	}
 
 	void addConnection(GraphConnection connection, boolean addToEdgeLayer) {
@@ -1086,6 +1227,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		if (addToEdgeLayer) {
 			zestRootLayer.addConnection(connection.getFigure());
 		}
+		getLayoutContext().fireConnectionAddedEvent(connection.getLayout());
 	}
 
 	/*
@@ -1106,14 +1248,28 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * }
 	 */
 
-	void addNode(GraphNode node) {
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	@Override
+	public void addNode(GraphNode node) {
 		nodes.add(node);
 		zestRootLayer.addNode(node.getNodeFigure());
+		getLayoutContext().fireNodeAddedEvent(node.getLayout());
 	}
 
-	void addNode(GraphContainer graphContainer) {
-		nodes.add(graphContainer);
-		zestRootLayer.addNode(graphContainer.getNodeFigure());
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	@Override
+	public void addSubgraphFigure(IFigure figure) {
+		zestRootLayer.addSubgraph(figure);
+		subgraphFigures.add(figure);
+	}
+
+	void removeSubgraphFigure(IFigure figure) {
+		subgraphFigures.remove(figure);
+		figure.getParent().remove(figure);
 	}
 
 	void registerItem(GraphItem item) {
@@ -1173,7 +1329,11 @@ public class Graph extends FigureCanvas implements IContainer {
 	 *
 	 * @param object
 	 * @param constraint
+	 * @deprecated No longer used in Zest 2.x. This class will be removed in a
+	 *             future release in accordance with the two year deprecation
+	 *             policy.
 	 */
+	@Deprecated(since = "2.0", forRemoval = true)
 	void invokeConstraintAdapters(Object object, LayoutConstraint constraint) {
 		if (constraintAdapters == null) {
 			return;
@@ -1183,92 +1343,85 @@ public class Graph extends FigureCanvas implements IContainer {
 		}
 	}
 
-	private void applyLayoutInternal() {
-		hasPendingLayoutRequest = false;
+	private void applyLayoutInternal(boolean clean) {
+		if (getLayoutContext().getLayoutAlgorithm() == null) {
+			return;
+		}
 
 		if (this.getNodes().isEmpty()) {
 			return;
 		}
+		scheduledLayoutClean = scheduledLayoutClean || clean;
+		synchronized (this) {
+			if (scheduledLayoutRunnable == null) {
+				Display.getDefault().asyncExec(scheduledLayoutRunnable = () -> {
+					int layoutStyle = 0;
 
-		int layoutStyle = 0;
+					if ((nodeStyle & ZestStyles.NODES_NO_LAYOUT_RESIZE) > 0) {
+						layoutStyle = LayoutStyles.NO_LAYOUT_NODE_RESIZING;
+					}
 
-		if ((nodeStyle & ZestStyles.NODES_NO_LAYOUT_RESIZE) > 0) {
-			layoutStyle = LayoutStyles.NO_LAYOUT_NODE_RESIZING;
-		}
+					if ((nodeStyle & ZestStyles.NODES_NO_LAYOUT_ANIMATION) == 0) {
+						Animation.markBegin();
+					}
+					if (getLayoutAlgorithm() instanceof LayoutAlgorithm.Zest1 zest1) {
+						try {
+							zest1.setStyle(zest1.getStyle() | layoutStyle);
 
-		if (layoutAlgorithm == null) {
-			layoutAlgorithm = new TreeLayoutAlgorithm(layoutStyle);
-		}
+							// calculate the size for the layout algorithm
+							Dimension d = this.getViewport().getSize();
+							d.width = d.width - 10;
+							d.height = d.height - 10;
 
-		layoutAlgorithm.setStyle(layoutAlgorithm.getStyle() | layoutStyle);
+							if (this.preferredSize.width >= 0) {
+								d.width = preferredSize.width;
+							}
+							if (this.preferredSize.height >= 0) {
+								d.height = preferredSize.height;
+							}
 
-		// calculate the size for the layout algorithm
-		Dimension d = this.getViewport().getSize();
-		d.width = d.width - 10;
-		d.height = d.height - 10;
+							if (d.isEmpty()) {
+								return;
+							}
+							LayoutRelationship[] connectionsToLayout = getConnectionsToLayout(nodes);
+							LayoutEntity[] nodesToLayout = getNodesToLayout(getNodes());
 
-		if (this.preferredSize.width >= 0) {
-			d.width = preferredSize.width;
-		}
-		if (this.preferredSize.height >= 0) {
-			d.height = preferredSize.height;
-		}
+							zest1.applyLayout(nodesToLayout, connectionsToLayout, 0, 0, d.width, d.height, false,
+									false);
 
-		if (d.isEmpty()) {
-			return;
-		}
-		LayoutRelationship[] connectionsToLayout = getConnectionsToLayout(nodes);
-		LayoutEntity[] nodesToLayout = getNodesToLayout(getNodes());
-
-		try {
-			if ((nodeStyle & ZestStyles.NODES_NO_LAYOUT_ANIMATION) == 0) {
-				Animation.markBegin();
+						} catch (InvalidLayoutConfiguration e) {
+							e.printStackTrace();
+						}
+					} else {
+						getLayoutContext().applyLayout(scheduledLayoutClean);
+						layoutContext.flushChanges(false);
+					}
+					Animation.run(ANIMATION_TIME);
+					getLightweightSystem().getUpdateManager().performUpdate();
+					synchronized (Graph.this) {
+						scheduledLayoutRunnable = null;
+						scheduledLayoutClean = false;
+					}
+				});
 			}
-			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 0, 0, d.width, d.height, false, false);
-			if ((nodeStyle & ZestStyles.NODES_NO_LAYOUT_ANIMATION) == 0) {
-				Animation.run(ANIMATION_TIME);
-			}
-			getLightweightSystem().getUpdateManager().performUpdate();
-
-		} catch (InvalidLayoutConfiguration e) {
-			e.printStackTrace();
 		}
-
-	}
-
-	interface MyRunnable extends Runnable {
-		public boolean isVisible();
 	}
 
 	/**
-	 * Adds a reveal listener to the view. Note: A reveal listener will only every
-	 * be called ONCE!!! even if a view comes and goes. There is no remove reveal
-	 * listener. This is used to defer some events until after the view is revealed.
+	 * Schedules a layout to be performed after the view is revealed (or
+	 * immediately, if the view is already revealed).
 	 *
-	 * @param revealListener
+	 * @param clean
 	 */
-	private void addRevealListener(final RevealListener revealListener) {
+	private void scheduleLayoutOnReveal(final boolean clean) {
 
-		MyRunnable myRunnable = new MyRunnable() {
-			boolean isVisible;
+		final boolean[] isVisibleSync = new boolean[1];
+		Display.getDefault().syncExec(() -> isVisibleSync[0] = isVisible());
 
-			@Override
-			public boolean isVisible() {
-				return this.isVisible;
-			}
-
-			@Override
-			public void run() {
-				isVisible = Graph.this.isVisible();
-			}
-
-		};
-		Display.getDefault().syncExec(myRunnable);
-
-		if (myRunnable.isVisible()) {
-			revealListener.revealed(this);
+		if (isVisibleSync[0]) {
+			applyLayoutInternal(clean);
 		} else {
-			revealListeners.add(revealListener);
+			shouldSheduleLayout = true;
 		}
 	}
 
@@ -1293,6 +1446,13 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		zestRootLayer.addLayoutListener(LayoutAnimator.getDefault());
 		fishEyeLayer.addLayoutListener(LayoutAnimator.getDefault());
+
+		rootlayer.addCoordinateListener(source -> {
+			if (preferredSize.width == -1 && preferredSize.height == -1) {
+				getLayoutContext().fireBoundsChangedEvent();
+			}
+		});
+
 		return rootlayer;
 	}
 
@@ -1334,6 +1494,11 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		fishEyeLayer.setConstraint(fishEyeFigure, bounds);
 
+		for (Object fisheyeListener : fisheyeListeners) {
+			FisheyeListener listener = (FisheyeListener) fisheyeListener;
+			listener.fisheyeRemoved(this, regularFigure, fishEyeFigure);
+		}
+
 		if (animate) {
 			Animation.run(FISHEYE_ANIMATION_TIME * 2);
 		}
@@ -1356,6 +1521,10 @@ public class Graph extends FigureCanvas implements IContainer {
 			// this.fishEyeLayer.getChildren().remove(oldFigure);
 			this.fishEyeLayer.remove(oldFigure);
 			this.fishEyeLayer.add(newFigure);
+			for (Object fisheyeListener : fisheyeListeners) {
+				FisheyeListener listener = (FisheyeListener) fisheyeListener;
+				listener.fisheyeReplaced(this, oldFigure, newFigure);
+			}
 			// this.fishEyeLayer.getChildren().add(newFigure);
 			// this.fishEyeLayer.invalidate();
 			// this.fishEyeLayer.repaint();
@@ -1399,6 +1568,11 @@ public class Graph extends FigureCanvas implements IContainer {
 		fishEyeLayer.add(endFigure);
 		fishEyeLayer.setConstraint(endFigure, newBounds);
 
+		for (Object fisheyeListener : fisheyeListeners) {
+			FisheyeListener listener = (FisheyeListener) fisheyeListener;
+			listener.fisheyeAdded(this, startFigure, endFigure);
+		}
+
 		if (animate) {
 			Animation.run(FISHEYE_ANIMATION_TIME);
 		}
@@ -1409,6 +1583,24 @@ public class Graph extends FigureCanvas implements IContainer {
 	public Graph getGraph() {
 		// @tag refactor : Is this method really needed
 		return this.getGraphModel();
+	}
+
+	/**
+	 * Adds a listener that will be notified when fisheyed figures change in this
+	 * graph.
+	 *
+	 * @param listener listener to add
+	 * @since 1.13
+	 */
+	public void addFisheyeListener(FisheyeListener listener) {
+		fisheyeListeners.add(listener);
+	}
+
+	/**
+	 * @since 1.13
+	 */
+	public void removeFisheyeListener(FisheyeListener listener) {
+		fisheyeListeners.remove(listener);
 	}
 
 	@Override
@@ -1427,4 +1619,103 @@ public class Graph extends FigureCanvas implements IContainer {
 		return figure2ItemMap.get(figure);
 	}
 
+	/**
+	 * @since 1.13
+	 */
+	public void setExpanded(GraphNode node, boolean expanded) {
+		layoutContext.setExpanded(node.getLayout(), expanded);
+		rootlayer.invalidate();
+	}
+
+	/**
+	 * @since 1.13
+	 */
+	public boolean canExpand(GraphNode node) {
+		return layoutContext.canExpand(node.getLayout());
+	}
+
+	/**
+	 * @since 1.13
+	 */
+	public boolean canCollapse(GraphNode node) {
+		return layoutContext.canCollapse(node.getLayout());
+	}
+
+	/**
+	 * @since 1.12
+	 */
+	@Override
+	public Widget getItem() {
+		return this;
+	}
+
+	/**
+	 * @since 1.12
+	 */
+	@Override
+	public DisplayIndependentRectangle getLayoutBounds() {
+		Dimension preferredSize = this.getPreferredSize();
+		return new DisplayIndependentRectangle(0, 0, preferredSize.width, preferredSize.height);
+	}
+
+	/**
+	 * Sets the default connection router for the graph view, but does not apply it
+	 * retroactively.
+	 *
+	 * @param defaultConnectionRouter
+	 * @since 1.12
+	 */
+	void setDefaultConnectionRouter(ConnectionRouter defaultConnectionRouter) {
+		this.defaultConnectionRouter = defaultConnectionRouter;
+	}
+
+	/**
+	 * Returns the default connection router for the graph view.
+	 *
+	 * @return the default connection router; may be null.
+	 * @since 1.12
+	 */
+	ConnectionRouter getDefaultConnectionRouter() {
+		return defaultConnectionRouter;
+	}
+
+	/**
+	 * Sets the default connection router for all connections that have no
+	 * connection routers attached to them.
+	 *
+	 * @since 1.12
+	 */
+	void applyConnectionRouter() {
+		for (GraphConnection conn : getConnections()) {
+			conn.getConnectionFigure().setConnectionRouter(defaultConnectionRouter);
+		}
+		this.getRootLayer().getUpdateManager().performUpdate();
+	}
+
+	/**
+	 * Updates the connection router and applies to to all existing connections that
+	 * have no connection routers set to them.
+	 *
+	 * @param connectionRouter
+	 * @since 1.13
+	 */
+	public void setRouter(ConnectionRouter connectionRouter) {
+		setDefaultConnectionRouter(connectionRouter);
+		applyConnectionRouter();
+	}
+
+	/**
+	 * Returns the ZoomManager component used for scaling the graph widget.
+	 *
+	 * @return the ZoomManager component
+	 * @since 1.13
+	 */
+	// @tag zest.bug.156286-Zooming.fix.experimental : expose the zoom manager
+	// for new actions.
+	public ZoomManager getZoomManager() {
+		if (zoomManager == null) {
+			zoomManager = new ZoomManager(getRootLayer(), getViewport());
+		}
+		return zoomManager;
+	}
 }

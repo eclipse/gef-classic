@@ -1,9 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2011 Fabian Steeg. All rights reserved. This program and
- * the accompanying materials are made available under the terms of the Eclipse
- * Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * <p/>
+ * Copyright (c) 2011, 2024 Fabian Steeg and others.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
  * Contributors: Fabian Steeg - initial tests
  *******************************************************************************/
 package org.eclipse.zest.tests;
@@ -11,6 +14,7 @@ package org.eclipse.zest.tests;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.zest.core.viewers.GraphViewer;
@@ -18,6 +22,8 @@ import org.eclipse.zest.core.viewers.IFigureProvider;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.core.widgets.CGraphNode;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.tests.GraphViewerTests.SampleGraphContentProvider;
+import org.eclipse.zest.tests.GraphViewerTests.SampleGraphEntityContentProvider;
 
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.Ellipse;
@@ -72,7 +78,23 @@ public class IFigureProviderTests extends Assert {
 		testWith(new FullContentProvider());
 	}
 
-	private void testWith(IGraphContentProvider contentProvider) {
+	/**
+	 * Test with IGraphContentProvider that provides destinations and sources.
+	 */
+	@Test
+	public void testWithGraphProvider() {
+		testWith(new SampleGraphEntityContentProvider());
+	}
+
+	/**
+	 * Test with IGraphEntityContentProvider.
+	 */
+	@Test
+	public void testWithGraphEntityProvider() {
+		testWith(new SampleGraphContentProvider());
+	}
+
+	private void testWith(IStructuredContentProvider contentProvider) {
 		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(new CustomLabelProvider());
 		viewer.setInput(new Object());

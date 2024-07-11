@@ -128,8 +128,8 @@ public class UMLExample {
 		new GraphConnection(g, SWT.NONE, n1, n2);
 		new GraphConnection(g, SWT.NONE, n, n1);
 
-		c.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
-		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		c.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		g.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		shell.open();
 		while (!shell.isDisposed()) {

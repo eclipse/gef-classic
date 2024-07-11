@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                      BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -100,11 +100,11 @@ public class SimpleSWTExample {
 	private static final double INITIAL_NODE_WIDTH = 20;
 	private static final double INITIAL_NODE_HEIGHT = 15;
 
-	protected static ArrayList<AbstractLayoutAlgorithm> algorithms = new ArrayList<>(
-			Arrays.asList(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING),
-					new TreeLayoutAlgorithm(LayoutStyles.NONE), new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE),
-					new RadialLayoutAlgorithm(LayoutStyles.NONE), new GridLayoutAlgorithm(LayoutStyles.NONE),
-					new HorizontalLayoutAlgorithm(LayoutStyles.NONE), new VerticalLayoutAlgorithm(LayoutStyles.NONE)));
+	protected static ArrayList<AbstractLayoutAlgorithm> algorithms = new ArrayList<>(Arrays.asList(
+			new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING),
+			new TreeLayoutAlgorithm.Zest1(LayoutStyles.NONE), new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE),
+			new RadialLayoutAlgorithm.Zest1(LayoutStyles.NONE), new GridLayoutAlgorithm.Zest1(LayoutStyles.NONE),
+			new HorizontalLayoutAlgorithm(LayoutStyles.NONE), new VerticalLayoutAlgorithm(LayoutStyles.NONE)));
 
 	@SuppressWarnings("nls")
 	protected static ArrayList<String> algorithmNames = new ArrayList<>(
@@ -126,7 +126,7 @@ public class SimpleSWTExample {
 	private final ToolBar toolBar;
 	private final Label lblProgress;
 
-	private LayoutAlgorithm currentLayoutAlgorithm;
+	private LayoutAlgorithm.Zest1 currentLayoutAlgorithm;
 	protected SimpleNode selectedEntity;
 	protected SimpleNode hoverEntity;
 
@@ -162,7 +162,7 @@ public class SimpleSWTExample {
 		lblProgress.setText("Progress: "); //$NON-NLS-1$
 
 		for (int i = 0; i < algorithms.size(); i++) {
-			final LayoutAlgorithm algorithm = algorithms.get(i);
+			final LayoutAlgorithm.Zest1 algorithm = algorithms.get(i);
 			String algorithmName = algorithmNames.get(i);
 			final boolean algorithmAnimate = algorithmAnimates.get(i).booleanValue();
 			ToolItem algorithmButton = new ToolItem(toolBar, SWT.PUSH);

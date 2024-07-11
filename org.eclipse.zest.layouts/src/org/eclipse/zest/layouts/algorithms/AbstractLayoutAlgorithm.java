@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada, Johannes Kepler University Linz
+ *                      Canada, Johannes Kepler University Linz and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -35,6 +35,7 @@ import org.eclipse.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
 import org.eclipse.zest.layouts.progress.ProgressEvent;
 import org.eclipse.zest.layouts.progress.ProgressListener;
 
@@ -50,8 +51,13 @@ import org.eclipse.zest.layouts.progress.ProgressListener;
  * @author Chris Callendar
  * @author Rob Lintern
  * @author Chris Bennett
+ * @deprecated No longer used in Zest 2.x. This class will be removed in a
+ *             future release.
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noreference This class is not intended to be referenced by clients.
  */
-public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppable {
+@Deprecated(since = "2.0", forRemoval = true)
+public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm.Zest1, Stoppable {
 
 	public void removeRelationships(Collection<? extends LayoutRelationship> collection) {
 
@@ -992,6 +998,22 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		if (this.creationThread != Thread.currentThread()) {
 			throw new RuntimeException("Invalid Thread Access."); //$NON-NLS-1$
 		}
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void setLayoutContext(LayoutContext context) {
+		throw new UnsupportedOperationException("Not supported in Zest 1.x"); //$NON-NLS-1$
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void applyLayout(boolean clean) {
+		throw new UnsupportedOperationException("Not supported in Zest 1.x"); //$NON-NLS-1$
 	}
 
 }

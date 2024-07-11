@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005-2006, 2024 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005-2010, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -11,6 +11,11 @@
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.viewers;
+
+import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.zest.core.viewers.internal.ZoomManager;
+
+import org.eclipse.draw2d.zoom.ZoomListener;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;
@@ -25,11 +30,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-
-import org.eclipse.jface.action.ContributionItem;
-import org.eclipse.zest.core.viewers.internal.ZoomManager;
-
-import org.eclipse.draw2d.zoom.ZoomListener;
 
 /**
  * A contribution item that adds a combo to a toolbar or coolbar, or a list of
@@ -78,6 +78,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	 */
 	public ZoomContributionViewItem(IZoomableWorkbenchPart part) {
 		zoomManager = part.getZoomableViewer().getZoomManager();
+		zoomManager.addZoomListener(this);
 	}
 
 	/*
@@ -124,6 +125,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 		Combo combo = createCombo(parent);
 		item.setControl(combo);
 		item.setWidth(combo.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
+		refreshCombo(false);
 	}
 
 	private Combo createCombo(Composite parent) {
@@ -226,6 +228,13 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 		int index = combo.indexOf(zoom);
 		if (index > 0) {
 			combo.select(index);
+		} else {
+			int no = zoomLevels.length;
+			if (combo.getItemCount() > no) {
+				combo.remove(no);
+			}
+			combo.add(zoom, no);
+			combo.select(no);
 		}
 		combo.setEnabled(true);
 	}
@@ -253,6 +262,9 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 		}
 		if (fMenu != null) {
 			fMenu = null;
+		}
+		if (zoomManager != null) {
+			zoomManager.removeZoomListener(this);
 		}
 		// @tag zest.bug.159667-ZoomDispose : make sure that we no longer listen to the
 		// part service.

@@ -55,7 +55,7 @@ public class GraphSnippet10 {
 		connection.setLineWidth(3);
 		new GraphConnection(g, SWT.NONE, n2, n3);
 		new GraphConnection(g, SWT.NONE, n3, n);
-		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		g.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		Button button = new Button(shell, SWT.PUSH);
 		button.setText("Change Curve");
