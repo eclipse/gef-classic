@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -32,6 +32,7 @@ import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
@@ -84,6 +85,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.internal.InternalGEFPlugin;
 import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.ui.views.palette.PaletteView;
@@ -1557,37 +1559,44 @@ public class FlyoutPaletteComposite extends Composite {
 		 * @return the cursor
 		 */
 		public static Cursor getCursor(int code) {
-			Display display = Display.getCurrent();
 			if (cursors[code] == null) {
-				ImageDescriptor source = null;
-				ImageDescriptor mask = null;
 				switch (code) {
 				case LEFT:
-					source = PlatformUI.getWorkbench().getSharedImages()
-							.getImageDescriptor(ISharedImages.IMG_OBJS_DND_LEFT_SOURCE);
-					mask = PlatformUI.getWorkbench().getSharedImages()
-							.getImageDescriptor(ISharedImages.IMG_OBJS_DND_LEFT_MASK);
-					cursors[LEFT] = new Cursor(display, source.getImageData(), mask.getImageData(), 16, 16);
+					cursors[LEFT] = createCursor(ISharedImages.IMG_OBJS_DND_LEFT_SOURCE,
+							ISharedImages.IMG_OBJS_DND_LEFT_MASK);
 					break;
 				case RIGHT:
-					source = PlatformUI.getWorkbench().getSharedImages()
-							.getImageDescriptor(ISharedImages.IMG_OBJS_DND_RIGHT_SOURCE);
-					mask = PlatformUI.getWorkbench().getSharedImages()
-							.getImageDescriptor(ISharedImages.IMG_OBJS_DND_RIGHT_MASK);
-					cursors[RIGHT] = new Cursor(display, source.getImageData(), mask.getImageData(), 16, 16);
+					cursors[RIGHT] = createCursor(ISharedImages.IMG_OBJS_DND_RIGHT_SOURCE,
+							ISharedImages.IMG_OBJS_DND_RIGHT_MASK);
 					break;
 				default:
 				case INVALID:
-					source = PlatformUI.getWorkbench().getSharedImages()
-							.getImageDescriptor(ISharedImages.IMG_OBJS_DND_INVALID_SOURCE);
-					mask = PlatformUI.getWorkbench().getSharedImages()
-							.getImageDescriptor(ISharedImages.IMG_OBJS_DND_INVALID_MASK);
-					cursors[INVALID] = new Cursor(display, source.getImageData(), mask.getImageData(), 16, 16);
+					cursors[INVALID] = createCursor(ISharedImages.IMG_OBJS_DND_INVALID_SOURCE,
+							ISharedImages.IMG_OBJS_DND_INVALID_MASK);
 					break;
 				}
 			}
 			return cursors[code];
 		}
 
+		/**
+		 * Creates a new cursor using the shared images as source and mask,
+		 * respectively. The cursors are created with respect to the current device
+		 * zoom, with the hotspot being the center of the image.<br>
+		 * The strings passed as arguments must belong to the source and mask ids of a
+		 * cursor contributed by {@link ISharedImages}.
+		 */
+		private static Cursor createCursor(String sourceName, String maskName) {
+			ImageDescriptor source = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(sourceName);
+			ImageDescriptor mask = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(maskName);
+			int deviceZoom = InternalGEFPlugin.getOrDefaultDeviceZoom();
+			// Scales the image if the display is using neither 100% nor 200% zoom
+			ImageData sourceData = InternalGEFPlugin.scaledImageData(source, deviceZoom);
+			ImageData maskData = InternalGEFPlugin.scaledImageData(mask, deviceZoom);
+			// Hotspot should be the center of the image. e.g. (16, 16) on 100% zoom
+			int hotspotX = sourceData.width / 2;
+			int hotspotY = sourceData.height / 2;
+			return new Cursor(null, sourceData, maskData, hotspotX, hotspotY);
+		}
 	}
 }

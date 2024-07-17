@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -15,10 +15,11 @@ package org.eclipse.gef;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.core.runtime.Platform;
+
 import org.eclipse.draw2d.Cursors;
 
 import org.eclipse.gef.internal.Internal;
+import org.eclipse.gef.internal.InternalGEFPlugin;
 
 /**
  * A shared collection of Cursors.
@@ -44,8 +45,6 @@ public class SharedCursors extends Cursors {
 	 */
 	public static final Cursor CURSOR_TREE_MOVE;
 
-	private static int deviceZoom = -1;
-
 	static {
 		CURSOR_PLUG = createCursor("icons/plug-cursor.png"); //$NON-NLS-1$
 		CURSOR_PLUG_NOT = createCursor("icons/plugnot-cursor.png"); //$NON-NLS-1$
@@ -55,26 +54,8 @@ public class SharedCursors extends Cursors {
 
 	private static Cursor createCursor(String sourceName) {
 		ImageDescriptor src = ImageDescriptor.createFromFile(Internal.class, sourceName);
-		return new Cursor(null, src.getImageData(getDeviceZoom()), 0, 0);
-	}
-
-	private static int getDeviceZoom() {
-		if (deviceZoom == -1) {
-			deviceZoom = 100; // default value
-			String deviceZoomProperty = System.getProperty("org.eclipse.swt.internal.deviceZoom"); //$NON-NLS-1$
-			if (deviceZoomProperty != null) {
-				try {
-					deviceZoom = Integer.parseInt(deviceZoomProperty);
-				} catch (NumberFormatException ex) {
-					// if the property can not be parsed we keep the default 100% zoom level
-				}
-			}
-		}
-		// On Mac and Linux X11 ImageData for cursors should always be created with 100% device zoom 
-		return Platform.getOS().equals(Platform.OS_MACOSX) ||
-				(Platform.getOS().equals(Platform.OS_LINUX) && "x11".equalsIgnoreCase(System.getenv("XDG_SESSION_TYPE"))) //$NON-NLS-1$ //$NON-NLS-2$
-				? 100 
-				: deviceZoom;
+		int deviceZoom = InternalGEFPlugin.getOrDefaultDeviceZoom();
+		return new Cursor(null, InternalGEFPlugin.scaledImageData(src, deviceZoom), 0, 0);
 	}
 
 }
