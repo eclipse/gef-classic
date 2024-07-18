@@ -105,13 +105,13 @@ public class InternalImages {
 		DESC_ZOOM_IN = createDescriptor("icons/zoom_in.gif"); //$NON-NLS-1$
 		DESC_ZOOM_OUT = createDescriptor("icons/zoom_out.gif"); //$NON-NLS-1$
 
-		DESC_MATCH_SIZE = createDescriptor("icons/matchsize.gif"); //$NON-NLS-1$
-		DESC_MATCH_WIDTH = createDescriptor("icons/matchwidth.gif"); //$NON-NLS-1$
-		DESC_MATCH_HEIGHT = createDescriptor("icons/matchheight.gif"); //$NON-NLS-1$
+		DESC_MATCH_SIZE = createDescriptor("icons/matchsize.png"); //$NON-NLS-1$
+		DESC_MATCH_WIDTH = createDescriptor("icons/matchwidth.png"); //$NON-NLS-1$
+		DESC_MATCH_HEIGHT = createDescriptor("icons/matchheight.png"); //$NON-NLS-1$
 
-		DESC_MATCH_SIZE_DIS = createDescriptor("icons/matchsize_d.gif"); //$NON-NLS-1$
-		DESC_MATCH_WIDTH_DIS = createDescriptor("icons/matchwidth_d.gif"); //$NON-NLS-1$
-		DESC_MATCH_HEIGHT_DIS = createDescriptor("icons/matchheight_d.gif"); //$NON-NLS-1$
+		DESC_MATCH_SIZE_DIS = createDescriptor("icons/matchsize_d.png"); //$NON-NLS-1$
+		DESC_MATCH_WIDTH_DIS = createDescriptor("icons/matchwidth_d.png"); //$NON-NLS-1$
+		DESC_MATCH_HEIGHT_DIS = createDescriptor("icons/matchheight_d.png"); //$NON-NLS-1$
 
 		DESC_VERT_ALIGN_BOTTOM = createDescriptor("icons/alignbottom.png"); //$NON-NLS-1$
 		DESC_HORZ_ALIGN_CENTER = createDescriptor("icons/aligncenter.png"); //$NON-NLS-1$
