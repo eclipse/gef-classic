@@ -69,7 +69,7 @@ import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.Graphics;
@@ -809,7 +809,7 @@ public class FlyoutPaletteComposite extends Composite {
 		}
 
 		private void updateState() {
-			setCursor(isInState(STATE_EXPANDED | STATE_PINNED_OPEN) ? Cursors.SIZEWE : null);
+			setCursor(isInState(STATE_EXPANDED | STATE_PINNED_OPEN) ? CursorProviders.SIZEWE.get() : null);
 		}
 
 		private class SashDragManager extends MouseAdapter implements MouseMoveListener {
@@ -887,7 +887,7 @@ public class FlyoutPaletteComposite extends Composite {
 			final Tracker tracker = new Tracker(FlyoutPaletteComposite.this, SWT.RIGHT | SWT.LEFT);
 			Rectangle[] rects = new Rectangle[1];
 			rects[0] = sash.getBounds();
-			tracker.setCursor(Cursors.SIZEE);
+			tracker.setCursor(CursorProviders.SIZEE.get());
 			tracker.setRectangles(rects);
 			if (tracker.open()) {
 				int deltaX = sash.getBounds().x - tracker.getRectangles()[0].x;
@@ -1183,7 +1183,7 @@ public class FlyoutPaletteComposite extends Composite {
 		}
 
 		private void init() {
-			setCursor(Cursors.ARROW);
+			setCursor(CursorProviders.ARROW.get());
 			lws = new LightweightSystem();
 			lws.setControl(this);
 			final ArrowButton b = new ArrowButton(getArrowDirection());
@@ -1326,7 +1326,7 @@ public class FlyoutPaletteComposite extends Composite {
 			lws = new LightweightSystem();
 			lws.setControl(this);
 			lws.setContents(contents);
-			setCursor(Cursors.SIZEALL);
+			setCursor(CursorProviders.SIZEALL.get());
 			FONT_MGR.register(this);
 			new TitleDragManager(this);
 			final MenuManager manager = new MenuManager();

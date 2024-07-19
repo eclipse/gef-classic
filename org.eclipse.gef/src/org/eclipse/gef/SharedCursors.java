@@ -25,6 +25,7 @@ import org.eclipse.gef.internal.Internal;
  *
  * @since 2.0
  */
+@SuppressWarnings("removal")
 public class SharedCursors extends Cursors {
 
 	/**

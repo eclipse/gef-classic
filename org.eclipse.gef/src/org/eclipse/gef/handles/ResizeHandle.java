@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,7 +14,7 @@ package org.eclipse.gef.handles;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.Locator;
 
 import org.eclipse.gef.DragTracker;
@@ -41,7 +41,7 @@ public class ResizeHandle extends SquareHandle {
 	public ResizeHandle(GraphicalEditPart owner, int direction) {
 		setOwner(owner);
 		setLocator(new RelativeHandleLocator(owner.getFigure(), direction));
-		setCursor(Cursors.getDirectionalCursor(direction, owner.getFigure().isMirrored()));
+		setCursorProvider(CursorProviders.getDirectionalCursor(direction, owner.getFigure().isMirrored()));
 		cursorDirection = direction;
 	}
 

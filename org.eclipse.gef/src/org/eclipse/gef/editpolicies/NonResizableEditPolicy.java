@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FocusBorder;
 import org.eclipse.draw2d.Graphics;
@@ -30,7 +30,6 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Handle;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
-import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.AbstractHandle;
 import org.eclipse.gef.handles.HandleBounds;
@@ -105,11 +104,11 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	protected void createDragHandle(List handles, int direction) {
 		if (isDragAllowed()) {
 			// display 'resize' handles to allow dragging (drag tracker)
-			NonResizableHandleKit.addHandle(getHost(), handles, direction, getDragTracker(), SharedCursors.SIZEALL);
+			NonResizableHandleKit.addHandle(getHost(), handles, direction, getDragTracker(), CursorProviders.SIZEALL);
 		} else {
 			// display 'resize' handles to indicate selection only (selection
 			// tracker)
-			NonResizableHandleKit.addHandle(getHost(), handles, direction, getSelectTracker(), SharedCursors.ARROW);
+			NonResizableHandleKit.addHandle(getHost(), handles, direction, getSelectTracker(), CursorProviders.ARROW);
 		}
 	}
 
@@ -144,10 +143,10 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	protected void createMoveHandle(List handles) {
 		if (isDragAllowed()) {
 			// display 'move' handle to allow dragging
-			ResizableHandleKit.addMoveHandle(getHost(), handles, getDragTracker(), Cursors.SIZEALL);
+			ResizableHandleKit.addMoveHandle(getHost(), handles, getDragTracker(), CursorProviders.SIZEALL);
 		} else {
 			// display 'move' handle only to indicate selection
-			ResizableHandleKit.addMoveHandle(getHost(), handles, getSelectTracker(), SharedCursors.ARROW);
+			ResizableHandleKit.addMoveHandle(getHost(), handles, getSelectTracker(), CursorProviders.ARROW);
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,7 +14,7 @@ package org.eclipse.gef.tools;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -54,7 +54,7 @@ public class CreationTool extends TargetingTool {
 	 */
 	public CreationTool() {
 		setDefaultCursor(SharedCursors.CURSOR_TREE_ADD);
-		setDisabledCursor(Cursors.NO);
+		setDisabledCursor(CursorProviders.NO.get());
 	}
 
 	/**

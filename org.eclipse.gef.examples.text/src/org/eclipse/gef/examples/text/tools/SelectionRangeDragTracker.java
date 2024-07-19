@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2023 IBM Corporation and others.
+ * Copyright (c) 2004, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -15,7 +15,7 @@ package org.eclipse.gef.examples.text.tools;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.tools.SimpleDragTracker;
@@ -57,7 +57,7 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 
 	@Override
 	protected Cursor calculateCursor() {
-		return Cursors.IBEAM;
+		return CursorProviders.IBEAM.get();
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -16,7 +16,7 @@ import java.util.Iterator;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -95,9 +95,9 @@ public class RulerDragTracker extends SimpleDragTracker {
 			return super.getDefaultCursor();
 		}
 		if (isCreationValid()) {
-			return source.isHorizontal() ? Cursors.SIZEE : Cursors.SIZEN;
+			return source.isHorizontal() ? CursorProviders.SIZEE.get() : CursorProviders.SIZEN.get();
 		}
-		return Cursors.NO;
+		return CursorProviders.NO.get();
 	}
 
 	@Override

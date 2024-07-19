@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2023 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -20,7 +20,8 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProvider;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
@@ -51,7 +52,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 
 	private AccessibleEditPart accPart;
 	private GuideLineFigure guideLineFig;
-	private Cursor cursor = null;
+	private CursorProvider cursor = null;
 	private final ZoomListener zoomListener = zoom -> handleZoomChanged();
 
 	private final RulerChangeListener listener = new RulerChangeListener.Stub() {
@@ -180,7 +181,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 		if (cursor == null) {
 			return getFigure().getCursor();
 		}
-		return cursor;
+		return cursor.get();
 	}
 
 	/*
@@ -195,7 +196,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 			@Override
 			protected Cursor calculateCursor() {
 				if (isInState(STATE_INVALID)) {
-					return Cursors.NO;
+					return CursorProviders.NO.get();
 				}
 				return getCurrentCursor();
 			}
@@ -292,7 +293,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 		}
 	}
 
-	public void setCurrentCursor(Cursor c) {
+	public void setCurrentCursor(CursorProvider c) {
 		cursor = c;
 	}
 

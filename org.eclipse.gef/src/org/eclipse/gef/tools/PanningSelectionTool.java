@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -16,7 +16,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.geometry.Point;
 
@@ -85,7 +85,7 @@ public class PanningSelectionTool extends SelectionTool {
 	@Override
 	protected Cursor getDefaultCursor() {
 		if (isInState(PAN | PAN_IN_PROGRESS)) {
-			return Cursors.HAND;
+			return CursorProviders.HAND.get();
 		}
 		return super.getDefaultCursor();
 	}

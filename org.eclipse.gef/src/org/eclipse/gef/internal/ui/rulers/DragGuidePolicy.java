@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -15,6 +15,7 @@ package org.eclipse.gef.internal.ui.rulers;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
@@ -23,7 +24,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
-import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.editparts.ZoomManager;
@@ -229,7 +229,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 		if (isDeleteRequest(req)) {
 			getHostFigure().setVisible(false);
 			getGuideEditPart().getGuideLineFigure().setVisible(false);
-			getGuideEditPart().setCurrentCursor(SharedCursors.ARROW);
+			getGuideEditPart().setCurrentCursor(CursorProviders.ARROW);
 			eraseAttachedPartsFeedback(request);
 		} else {
 			int newPosition;
@@ -245,7 +245,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 				getGuideEditPart().updateLocationOfFigures(newPosition);
 				showAttachedPartsFeedback(req);
 			} else {
-				getGuideEditPart().setCurrentCursor(SharedCursors.NO);
+				getGuideEditPart().setCurrentCursor(CursorProviders.NO);
 				getGuideEditPart().updateLocationOfFigures(getGuideEditPart().getZoomedPosition());
 				eraseAttachedPartsFeedback(request);
 			}

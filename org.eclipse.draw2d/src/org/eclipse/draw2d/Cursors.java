@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -18,7 +18,15 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * A collection of cursors.
+ *
+ * @deprecated Using static cursors is fundamentally flawed when considering
+ *             dynamic DPI changes. The static cursors created by this class are
+ *             created with respect to the current display zoom. Those objects
+ *             are not updated, should this value change at a later time.
+ *             Clients need to listen to the {@link SWT#ZoomChanged} event and
+ *             update their cursors via {@link CursorProviders}.
  */
+@Deprecated(since = "3.17", forRemoval = true)
 public class Cursors {
 
 	/**

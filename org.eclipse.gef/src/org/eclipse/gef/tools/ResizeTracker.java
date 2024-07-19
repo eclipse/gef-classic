@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -19,7 +19,7 @@ import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.core.runtime.Platform;
 
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -31,7 +31,6 @@ import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
-import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.SnapToHelper;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
@@ -103,7 +102,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	public ResizeTracker(GraphicalEditPart owner, int direction) {
 		this.owner = owner;
 		this.direction = direction;
-		setDisabledCursor(SharedCursors.NO);
+		setDisabledCursor(CursorProviders.NO.get());
 	}
 
 	/**
@@ -210,7 +209,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 */
 	@Override
 	protected Cursor getDefaultCursor() {
-		return Cursors.getDirectionalCursor(direction, getTargetEditPart().getFigure().isMirrored());
+		return CursorProviders.getDirectionalCursor(direction, getTargetEditPart().getFigure().isMirrored()).get();
 	}
 
 	/**

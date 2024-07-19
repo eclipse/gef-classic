@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2023 IBM Corporation and others.
+ * Copyright (c) 2005, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,11 +12,10 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.scrollpane;
 
-import org.eclipse.swt.graphics.Cursor;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.CompoundBorder;
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProvider;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.LabeledContainer;
 import org.eclipse.draw2d.LineBorder;
@@ -123,42 +122,42 @@ public class InternalFrame extends LabeledContainer {
 			}
 			position = getClientArea().getCopy().shrink(4, 4).getPosition(mouseLocation);
 			move = false;
-			Cursor newCursor = null;
+			CursorProvider newCursor = null;
 
 			switch (position) {
 			case PositionConstants.NONE:
 				break;
 			case PositionConstants.SOUTH_EAST:
-				newCursor = Cursors.SIZESE;
+				newCursor = CursorProviders.SIZESE;
 				break;
 			case PositionConstants.SOUTH:
-				newCursor = Cursors.SIZES;
+				newCursor = CursorProviders.SIZES;
 				break;
 			case PositionConstants.EAST:
-				newCursor = Cursors.SIZEE;
+				newCursor = CursorProviders.SIZEE;
 				break;
 			case PositionConstants.NORTH_EAST:
-				newCursor = Cursors.SIZENE;
+				newCursor = CursorProviders.SIZENE;
 				break;
 			case PositionConstants.NORTH_WEST:
-				newCursor = Cursors.SIZENW;
+				newCursor = CursorProviders.SIZENW;
 				break;
 			case PositionConstants.SOUTH_WEST:
-				newCursor = Cursors.SIZESW;
+				newCursor = CursorProviders.SIZESW;
 				break;
 			case PositionConstants.NORTH:
 				if (mouseLocation.y > (getBounds().y + getInsets().left)) {
 					// Special case: MOVE and NOT RESIZE
 					move = true;
 				} else {
-					newCursor = Cursors.SIZEN;
+					newCursor = CursorProviders.SIZEN;
 				}
 				break;
 			case PositionConstants.WEST:
-				newCursor = Cursors.SIZEW;
+				newCursor = CursorProviders.SIZEW;
 				break;
 			}
-			setCursor(newCursor);
+			setCursorProvider(newCursor);
 		}
 
 		@Override
@@ -183,7 +182,7 @@ public class InternalFrame extends LabeledContainer {
 
 		@Override
 		public void mouseExited(MouseEvent me) {
-			setCursor(null);
+			setCursorProvider((CursorProvider) null);
 		}
 	}
 

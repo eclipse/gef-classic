@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,12 +13,12 @@
 package org.eclipse.gef.handles;
 
 import org.eclipse.draw2d.BendpointLocator;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.Locator;
 
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.RequestConstants;
-import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.tools.ConnectionBendpointTracker;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.gef.tools.ConnectionBendpointTracker;
 public class BendpointMoveHandle extends BendpointHandle {
 
 	{
-		setCursor(SharedCursors.SIZEALL);
+		setCursorProvider(CursorProviders.SIZEALL);
 	}
 
 	/**

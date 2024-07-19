@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.Locator;
 
 import org.eclipse.gef.EditPart;
@@ -61,7 +61,7 @@ public class NonResizableHandle extends MoveHandle {
 		setOpaque(false);
 		border = new CornerTriangleBorder(false);
 		setBorder(border);
-		setCursor(Cursors.SIZEALL);
+		setCursorProvider(CursorProviders.SIZEALL);
 		setDragTracker(new DragEditPartsTracker(getOwner()));
 	}
 

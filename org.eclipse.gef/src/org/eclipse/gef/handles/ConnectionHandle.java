@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -16,7 +16,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 
 /**
  * The base implementation for handles used with editparts whose figure is a
@@ -33,7 +33,7 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	 * Creates a new ConnectionHandle.
 	 */
 	public ConnectionHandle() {
-		setCursor(Cursors.CROSS);
+		setCursorProvider(CursorProviders.CROSS);
 	}
 
 	/**
@@ -45,9 +45,9 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	public ConnectionHandle(boolean fixed) {
 		setFixed(fixed);
 		if (fixed) {
-			setCursor(Cursors.NO);
+			setCursorProvider(CursorProviders.NO);
 		} else {
-			setCursor(Cursors.CROSS);
+			setCursorProvider(CursorProviders.CROSS);
 		}
 	}
 
@@ -109,9 +109,9 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	public void setFixed(boolean fixed) {
 		this.fixed = fixed;
 		if (fixed) {
-			setCursor(Cursors.NO);
+			setCursorProvider(CursorProviders.NO);
 		} else {
-			setCursor(Cursors.CROSS);
+			setCursorProvider(CursorProviders.CROSS);
 		}
 	}
 

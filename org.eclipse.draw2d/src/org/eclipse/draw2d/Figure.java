@@ -34,6 +34,7 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Translatable;
+import org.eclipse.draw2d.internal.WrappedCursorProvider;
 
 /**
  * The base implementation for graphical figures.
@@ -76,7 +77,7 @@ public class Figure implements IFigure {
 
 	private IFigure parent;
 	private IClippingStrategy clippingStrategy = null;
-	private Cursor cursor;
+	private CursorProvider cursor;
 
 	private PropertyChangeSupport propertyListeners;
 	private final EventListenerList eventListeners = new EventListenerList();
@@ -680,7 +681,7 @@ public class Figure implements IFigure {
 		if (cursor == null && getParent() != null) {
 			return getParent().getCursor();
 		}
-		return cursor;
+		return cursor != null ? cursor.get() : null;
 	}
 
 	/**
@@ -1730,7 +1731,12 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setCursor(Cursor cursor) {
-		if (this.cursor == cursor) {
+		setCursorProvider(new WrappedCursorProvider(cursor));
+	}
+
+	@Override
+	public void setCursorProvider(CursorProvider cursor) {
+		if (Objects.equals(this.cursor, cursor)) {
 			return;
 		}
 		this.cursor = cursor;

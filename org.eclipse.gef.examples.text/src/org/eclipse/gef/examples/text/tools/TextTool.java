@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2023 IBM Corporation and others.
+ * Copyright (c) 2004, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Caret;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.UpdateListener;
 import org.eclipse.draw2d.UpdateManager;
@@ -132,7 +132,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		EditPart target = getTargetEditPart();
 		if (target instanceof TextEditPart textTarget) {
 			if (textTarget.acceptsCaret()) {
-				return Cursors.IBEAM;
+				return CursorProviders.IBEAM.get();
 			}
 		}
 		return super.calculateCursor();

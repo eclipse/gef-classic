@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2023 Google, Inc.
+ * Copyright (c) 2011, 2024 Google, Inc. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -289,12 +289,12 @@ public class FigurePaintingTest extends BaseTestCase {
 		actualLogger.assertEmpty();
 		//
 		// check invoke updateCursor() during setCursor()
-		testFigure.setCursor(null);
+		testFigure.setCursorProvider(null);
 		expectedLogger.log("updateCursor()");
 		actualLogger.assertEquals(expectedLogger);
 		//
 		// check not invoke updateCursor() during setCursor() if cursor not change
-		testFigure.setCursor(null);
+		testFigure.setCursorProvider(null);
 		actualLogger.assertEmpty();
 	}
 

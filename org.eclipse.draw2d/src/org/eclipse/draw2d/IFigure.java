@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -886,8 +886,18 @@ public interface IFigure {
 	 * Sets the cursor.
 	 *
 	 * @param cursor The new cursor
+	 * @deprecated Use {@link #setCursorProvider(CursorProvider)} instead.
 	 */
+	@Deprecated(since = "3.17", forRemoval = true)
 	void setCursor(Cursor cursor);
+
+	/**
+	 * Sets the cursor.
+	 *
+	 * @param cursor The new cursor
+	 * @since 3.17
+	 */
+	void setCursorProvider(CursorProvider cursor);
 
 	/**
 	 * Sets this IFigure to be enabled.

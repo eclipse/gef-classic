@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -15,7 +15,7 @@ package org.eclipse.gef.editpolicies;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.PositionConstants;
 
 import org.eclipse.gef.Handle;
@@ -90,7 +90,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	protected void createResizeHandle(List handles, int direction) {
 		if ((resizeDirections & direction) == direction) {
 			ResizableHandleKit.addHandle(getHost(), handles, direction, getResizeTracker(direction),
-					Cursors.getDirectionalCursor(direction, getHostFigure().isMirrored()));
+					CursorProviders.getDirectionalCursor(direction, getHostFigure().isMirrored()));
 		} else {
 			// display 'resize' handle to allow dragging or indicate selection
 			// only

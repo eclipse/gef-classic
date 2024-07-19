@@ -24,7 +24,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
@@ -221,7 +221,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * {@link #BEHAVIOR_NODES_CONTAINED}.
 	 */
 	public MarqueeSelectionTool() {
-		setDefaultCursor(Cursors.CROSS);
+		setDefaultCursor(CursorProviders.CROSS.get());
 		setUnloadWhenFinished(false);
 	}
 
@@ -759,9 +759,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 		}
 		super.setViewer(viewer);
 		if (viewer instanceof GraphicalViewer) {
-			setDefaultCursor(Cursors.CROSS);
+			setDefaultCursor(CursorProviders.CROSS.get());
 		} else {
-			setDefaultCursor(Cursors.NO);
+			setDefaultCursor(CursorProviders.NO.get());
 		}
 	}
 

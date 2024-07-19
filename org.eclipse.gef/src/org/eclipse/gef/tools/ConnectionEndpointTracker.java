@@ -21,7 +21,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 
@@ -55,7 +55,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 */
 	public ConnectionEndpointTracker(ConnectionEditPart cep) {
 		setConnectionEditPart(cep);
-		setDisabledCursor(Cursors.NO);
+		setDisabledCursor(CursorProviders.NO.get());
 	}
 
 	/**

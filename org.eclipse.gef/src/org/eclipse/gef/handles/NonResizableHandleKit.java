@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -16,12 +16,14 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Cursor;
 
+import org.eclipse.draw2d.CursorProvider;
+import org.eclipse.draw2d.CursorProviders;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.internal.WrappedCursorProvider;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Handle;
-import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.tools.DragEditPartsTracker;
 
 /**
@@ -38,8 +40,26 @@ public class NonResizableHandleKit {
 	 * @param handles the List to add the four corner handles to
 	 * @param tracker the handles' DragTracker
 	 * @param cursor  the handles' Cursor
+	 * @deprecated Use
+	 *             {@link #addCornerHandles(GraphicalEditPart, List, DragTracker, CursorProvider)}
+	 *             instead.
 	 */
+	@Deprecated(since = "3.19", forRemoval = true)
 	public static void addCornerHandles(GraphicalEditPart part, List handles, DragTracker tracker, Cursor cursor) {
+		addCornerHandles(part, handles, tracker, new WrappedCursorProvider(cursor));
+	}
+
+	/**
+	 * Fills the given List with handles at each corner of a figure.
+	 *
+	 * @param part    the handles' GraphicalEditPart
+	 * @param handles the List to add the four corner handles to
+	 * @param tracker the handles' DragTracker
+	 * @param cursor  the handles' Cursor
+	 * @since 3.19
+	 */
+	public static void addCornerHandles(GraphicalEditPart part, List handles, DragTracker tracker,
+			CursorProvider cursor) {
 		handles.add(createHandle(part, PositionConstants.SOUTH_EAST, tracker, cursor));
 		handles.add(createHandle(part, PositionConstants.SOUTH_WEST, tracker, cursor));
 		handles.add(createHandle(part, PositionConstants.NORTH_WEST, tracker, cursor));
@@ -80,9 +100,29 @@ public class NonResizableHandleKit {
 	 * @param direction the integer constant from PositionConstants that refers to
 	 *                  the handle direction
 	 * @param cursor    the Cursor to use when hovering over this handle
+	 * @deprecated Use
+	 *             {@link #addHandle(GraphicalEditPart, List, int, DragTracker, CursorProvider)}
+	 *             instead.
 	 */
+	@Deprecated(since = "3.19", forRemoval = true)
 	public static void addHandle(GraphicalEditPart part, List handles, int direction, DragTracker tracker,
 			Cursor cursor) {
+		addHandle(part, handles, direction, tracker, new WrappedCursorProvider(cursor));
+	}
+
+	/**
+	 * Adds a single handle in the given direction to the given List.
+	 *
+	 * @param tracker   the DragTracker to assign to this handle
+	 * @param part      the owner GraphicalEditPart of the handle
+	 * @param handles   the List to add the handle to
+	 * @param direction the integer constant from PositionConstants that refers to
+	 *                  the handle direction
+	 * @param cursor    the Cursor to use when hovering over this handle
+	 * @since 3.19
+	 */
+	public static void addHandle(GraphicalEditPart part, List handles, int direction, DragTracker tracker,
+			CursorProvider cursor) {
 		handles.add(createHandle(part, direction, tracker, cursor));
 	}
 
@@ -93,6 +133,7 @@ public class NonResizableHandleKit {
 	 * @param handles the List to add the handles to
 	 * @deprecated
 	 */
+	@Deprecated
 	public static void addHandles(GraphicalEditPart part, List handles) {
 		addMoveHandle(part, handles);
 		addCornerHandles(part, handles);
@@ -136,14 +177,14 @@ public class NonResizableHandleKit {
 
 	static Handle createHandle(GraphicalEditPart owner, int direction) {
 		ResizeHandle handle = new ResizeHandle(owner, direction);
-		handle.setCursor(SharedCursors.SIZEALL);
+		handle.setCursorProvider(CursorProviders.SIZEALL);
 		handle.setDragTracker(new DragEditPartsTracker(owner));
 		return handle;
 	}
 
-	static Handle createHandle(GraphicalEditPart owner, int direction, DragTracker tracker, Cursor cursor) {
+	static Handle createHandle(GraphicalEditPart owner, int direction, DragTracker tracker, CursorProvider cursor) {
 		ResizeHandle handle = new ResizeHandle(owner, direction);
-		handle.setCursor(cursor);
+		handle.setCursorProvider(cursor);
 		handle.setDragTracker(tracker);
 		return handle;
 	}
