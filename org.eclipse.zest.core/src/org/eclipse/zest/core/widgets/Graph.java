@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005, 2010, 2023, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2005, 2010, 2024, CHISEL Group, University of Victoria, Victoria, BC, Canada.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -58,6 +58,7 @@ import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.internal.FileImageDataProvider;
 
 /**
  * Holds the nodes and connections for the graph.
@@ -73,6 +74,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	// CLASS CONSTANTS
 	public static final int ANIMATION_TIME = 500;
 	public static final int FISHEYE_ANIMATION_TIME = 100;
+	private static final Image BACK_ARROW = FileImageDataProvider.createImage(Graph.class, "/icons/back_arrow.png"); //$NON-NLS-1$
 
 	// @tag CGraph.Colors : These are the colour constants for the graph, they
 	// are disposed on clean-up
@@ -688,9 +690,7 @@ public class Graph extends FigureCanvas implements IContainer {
 				}
 				g.setLayoutAlgorithm(container.getLayoutAlgorithm(), false);
 
-				Image img = new Image(Display.getDefault(),
-						Graph.class.getResourceAsStream("../../../../../icons/back_arrow.gif"));
-				Button backButton = new Button(img);
+				Button backButton = new Button(BACK_ARROW);
 				backButton.setBounds(new Rectangle(new Point(0, 0), backButton.getPreferredSize()));
 				backButton.addActionListener(event -> {
 					for (GraphNode node : new ArrayList<>(g.getNodes())) {
