@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,10 +12,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.draw2d.internal.FileImageDataProvider;
 
 /**
  * A Checkbox is a toggle figure which toggles between the checked and unchecked
@@ -23,21 +22,10 @@ import org.eclipse.swt.graphics.Image;
  * represent it.
  */
 public final class CheckBox extends Toggle {
-
 	private Label label = null;
 
-	static final Image UNCHECKED = createImage("images/checkboxenabledoff.gif"); //$NON-NLS-1$
-	static final Image CHECKED = createImage("images/checkboxenabledon.gif"); //$NON-NLS-1$
-
-	private static Image createImage(String name) {
-		InputStream stream = CheckBox.class.getResourceAsStream(name);
-		Image image = new Image(null, stream);
-		try {
-			stream.close();
-		} catch (IOException ioe) {
-		}
-		return image;
-	}
+	static final Image UNCHECKED = FileImageDataProvider.createImage(CheckBox.class, "images/checkboxenabledoff.png"); //$NON-NLS-1$
+	static final Image CHECKED = FileImageDataProvider.createImage(CheckBox.class, "images/checkboxenabledon.png"); //$NON-NLS-1$
 
 	/**
 	 * Constructs a CheckBox with no text.
