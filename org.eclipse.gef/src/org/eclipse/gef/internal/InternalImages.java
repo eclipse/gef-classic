@@ -98,9 +98,9 @@ public class InternalImages {
 		DESC_BLOCK_LTR = createDescriptor("icons/style_paragraph_ltr.gif"); //$NON-NLS-1$
 		DESC_BLOCK_RTL = createDescriptor("icons/style_paragraph_rtl.gif"); //$NON-NLS-1$
 
-		DESC_BLOCK_ALIGN_LEFT = createDescriptor("icons/style_paragraph_left.gif"); //$NON-NLS-1$
-		DESC_BLOCK_ALIGN_CENTER = createDescriptor("icons/style_paragraph_center.gif"); //$NON-NLS-1$
-		DESC_BLOCK_ALIGN_RIGHT = createDescriptor("icons/style_paragraph_right.gif"); //$NON-NLS-1$
+		DESC_BLOCK_ALIGN_LEFT = createDescriptor("icons/style_paragraph_left.png"); //$NON-NLS-1$
+		DESC_BLOCK_ALIGN_CENTER = createDescriptor("icons/style_paragraph_center.png"); //$NON-NLS-1$
+		DESC_BLOCK_ALIGN_RIGHT = createDescriptor("icons/style_paragraph_right.png"); //$NON-NLS-1$
 
 		DESC_ZOOM_IN = createDescriptor("icons/zoom_in.png"); //$NON-NLS-1$
 		DESC_ZOOM_OUT = createDescriptor("icons/zoom_out.png"); //$NON-NLS-1$
