@@ -1093,8 +1093,8 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		public MoveDownAction() {
 			setEnabled(false);
 			setText(PaletteMessages.MOVE_DOWN_LABEL);
-			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/next_nav.gif"));//$NON-NLS-1$
-			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/move_down_disabled.gif"));//$NON-NLS-1$
+			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/next_nav.png"));//$NON-NLS-1$
+			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/move_down_disabled.png"));//$NON-NLS-1$
 		}
 
 		@Override
@@ -1120,8 +1120,8 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		public MoveUpAction() {
 			setEnabled(false);
 			setText(PaletteMessages.MOVE_UP_LABEL);
-			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/prev_nav.gif"));//$NON-NLS-1$
-			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/move_up_disabled.gif")); //$NON-NLS-1$
+			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/prev_nav.png"));//$NON-NLS-1$
+			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/move_up_disabled.png")); //$NON-NLS-1$
 		}
 
 		@Override

@@ -86,7 +86,7 @@ public class InternalImages {
 	/**
 	 * Can be used to access the cached pinned image by using {@link #get(String)}.
 	 */
-	public static final String IMG_PALETTE = "icons/palette_view.gif";//$NON-NLS-1$
+	public static final String IMG_PALETTE = "icons/palette_view.png";//$NON-NLS-1$
 
 	private static final Map<String, Image> overloadedImages = new HashMap<>();
 
@@ -102,8 +102,8 @@ public class InternalImages {
 		DESC_BLOCK_ALIGN_CENTER = createDescriptor("icons/style_paragraph_center.gif"); //$NON-NLS-1$
 		DESC_BLOCK_ALIGN_RIGHT = createDescriptor("icons/style_paragraph_right.gif"); //$NON-NLS-1$
 
-		DESC_ZOOM_IN = createDescriptor("icons/zoom_in.gif"); //$NON-NLS-1$
-		DESC_ZOOM_OUT = createDescriptor("icons/zoom_out.gif"); //$NON-NLS-1$
+		DESC_ZOOM_IN = createDescriptor("icons/zoom_in.png"); //$NON-NLS-1$
+		DESC_ZOOM_OUT = createDescriptor("icons/zoom_out.png"); //$NON-NLS-1$
 
 		DESC_MATCH_SIZE = createDescriptor("icons/matchsize.png"); //$NON-NLS-1$
 		DESC_MATCH_WIDTH = createDescriptor("icons/matchwidth.png"); //$NON-NLS-1$
@@ -129,7 +129,7 @@ public class InternalImages {
 
 		DESC_SEPARATOR = createDescriptor("icons/separator.gif"); //$NON-NLS-1$
 		DESC_FOLDER_OPEN = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
-		DESC_FOLDER_CLOSED = createDescriptor("icons/folder_closed.gif"); //$NON-NLS-1$
+		DESC_FOLDER_CLOSED = createDescriptor("icons/folder_closed.png"); //$NON-NLS-1$
 
 		ICON_MATCH_WIDTH = createDescriptor("icons/sizehz.gif"); //$NON-NLS-1$
 		ICON_MATCH_HEIGHT = createDescriptor("icons/sizevt.gif"); //$NON-NLS-1$

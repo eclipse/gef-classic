@@ -60,7 +60,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 		setMenuCreator(this);
 
 		if (hasIcon) {
-			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/palette_layout.gif")); //$NON-NLS-1$
+			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/palette_layout.png")); //$NON-NLS-1$
 		}
 
 		setToolTipText(PaletteMessages.LAYOUT_MENU_LABEL);

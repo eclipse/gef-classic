@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.2333332 4.2333335"
+   version="1.1"
+   id="svg944"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs941">
+    <linearGradient
+       xlink:href="#linearGradient4217"
+       id="linearGradient4223"
+       x1="7.421936"
+       y1="1037.5259"
+       x2="7.421936"
+       y2="1048.2209"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.99602473,0,0,0.99543561,0.01881768,4.7460957)" />
+    <linearGradient
+       id="linearGradient4217">
+      <stop
+         style="stop-color:#a48944;stop-opacity:1"
+         offset="0"
+         id="stop4219" />
+      <stop
+         style="stop-color:#8b877b;stop-opacity:1"
+         offset="1"
+         id="stop4221" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient4281"
+       id="linearGradient4287"
+       x1="10.915962"
+       y1="1046.2192"
+       x2="14.274718"
+       y2="1049.5337"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.117023,0,0,1.1994714,-1.3808519,-209.00036)" />
+    <linearGradient
+       id="linearGradient4281">
+      <stop
+         style="stop-color:#87877d;stop-opacity:1"
+         offset="0"
+         id="stop4283" />
+      <stop
+         style="stop-color:#71706b;stop-opacity:1"
+         offset="1"
+         id="stop4285" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient4384"
+       id="linearGradient4390"
+       x1="13.162096"
+       y1="1048.3848"
+       x2="10.791148"
+       y2="1046.0867"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient4384">
+      <stop
+         style="stop-color:#855831;stop-opacity:1;"
+         offset="0"
+         id="stop4386" />
+      <stop
+         id="stop4178"
+         offset="0.41498923"
+         style="stop-color:#855831;stop-opacity:1;" />
+      <stop
+         id="stop4392"
+         offset="0.48587924"
+         style="stop-color:#ffffff;stop-opacity:1" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop4388" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient4384"
+       id="linearGradient4390-5"
+       x1="13.162096"
+       y1="1048.3848"
+       x2="10.791148"
+       y2="1046.0867"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#linearGradient4749"
+       id="linearGradient4755"
+       x1="1.6861235"
+       y1="1040.7402"
+       x2="14.375154"
+       y2="1040.7402"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,1,1,0,-1036.3626,1036.3626)" />
+    <linearGradient
+       id="linearGradient4749">
+      <stop
+         style="stop-color:#ffffee;stop-opacity:1"
+         offset="0"
+         id="stop4751" />
+      <stop
+         style="stop-color:#fbdd83;stop-opacity:1"
+         offset="1"
+         id="stop4753" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient4741"
+       id="linearGradient4747"
+       x1="1.0625"
+       y1="1050.0809"
+       x2="15.565599"
+       y2="1050.0809"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,1,1,0,-1036.3626,1036.3626)" />
+    <linearGradient
+       id="linearGradient4741">
+      <stop
+         style="stop-color:#bd8416;stop-opacity:1"
+         offset="0"
+         id="stop4743" />
+      <stop
+         style="stop-color:#a66b10;stop-opacity:1"
+         offset="1"
+         id="stop4745" />
+    </linearGradient>
+  </defs>
+  <g
+     id="layer1">
+    <g
+       id="layer1-7"
+       style="display:inline"
+       transform="matrix(0.26458333,0,0,0.26458333,0,-274.20427)">
+      <path
+         style="fill:url(#linearGradient4755);fill-opacity:1;stroke:url(#linearGradient4747);stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         d="m 2.5,1044.8626 h 3 v -5.7812 c 0,-0.6679 0.5509,-1.2188 1.2188,-1.2188 h 2.5625 c 0.6678,0 1.2187,0.5508 1.2187,1.2188 v 5.7812 h 3 v 1 l -5.5,5.5 -5.5,-5.5 z"
+         id="rect3968" />
+    </g>
+  </g>
+</svg>
