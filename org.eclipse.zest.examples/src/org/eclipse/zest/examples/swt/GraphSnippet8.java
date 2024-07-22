@@ -91,7 +91,7 @@ public class GraphSnippet8 {
 		connection.setLineColor(ColorConstants.red);
 		connection.setLineWidth(3);
 
-		TreeLayoutAlgorithm treeLayoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+		TreeLayoutAlgorithm.Zest1 treeLayoutAlgorithm = new TreeLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 		Filter filter = item -> {
 
 			// Get the "Connection" from the Layout Item

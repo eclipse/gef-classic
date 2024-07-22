@@ -12,6 +12,8 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.zest.core.viewers,
  org.eclipse.zest.core.viewers.internal;x-internal:=true,
  org.eclipse.zest.core.widgets,
+ org.eclipse.zest.core.widgets.custom,
+ org.eclipse.zest.core.widgets.gestures,
  org.eclipse.zest.core.widgets.internal;x-friends:="org.eclipse.zest.tests"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: org.eclipse.zest.core

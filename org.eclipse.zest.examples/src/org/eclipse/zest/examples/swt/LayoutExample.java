@@ -58,7 +58,7 @@ public class LayoutExample {
 			new GraphConnection(g, SWT.NONE, root, n);
 		}
 
-		SpringLayoutAlgorithm springLayoutAlgorithm = new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+		SpringLayoutAlgorithm.Zest1 springLayoutAlgorithm = new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 
 		ConstraintAdapter constraintAdapters = (object, constraint) -> {
 			if (constraint instanceof BasicEdgeConstraints basicEdgeConstraints) {

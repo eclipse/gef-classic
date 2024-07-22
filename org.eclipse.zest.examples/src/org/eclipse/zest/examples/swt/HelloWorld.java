@@ -46,7 +46,7 @@ public class HelloWorld {
 		GraphNode hello = new GraphNode(g, SWT.NONE, "Hello");
 		GraphNode world = new GraphNode(g, SWT.NONE, "World");
 		new GraphConnection(g, SWT.NONE, hello, world);
-		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		g.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		shell.open();
 		while (!shell.isDisposed()) {

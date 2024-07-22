@@ -60,7 +60,7 @@ public class GraphSnippet11 {
 		createConnection(g, n, n2, ColorConstants.darkGray, 60);
 		createConnection(g, n, n2, ColorConstants.darkGray, -60);
 		createConnection(g, n, n2, ColorConstants.black, 0);
-		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		g.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		shell.open();
 		while (!shell.isDisposed()) {
