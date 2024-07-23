@@ -75,12 +75,12 @@ public class SharedImages {
 	static {
 		DESC_SELECTION_TOOL_16 = createDescriptor("icons/arrow16.gif"); //$NON-NLS-1$
 		DESC_SELECTION_TOOL_24 = createDescriptor("icons/arrow24.gif"); //$NON-NLS-1$
-		DESC_MARQUEE_TOOL_16 = createDescriptor("icons/marquee16.gif"); //$NON-NLS-1$
-		DESC_MARQUEE_TOOL_24 = createDescriptor("icons/marquee24.gif"); //$NON-NLS-1$
-		DESC_MARQUEE_TOOL_NODES_16 = createDescriptor("icons/marquee_nodes16.gif"); //$NON-NLS-1$
-		DESC_MARQUEE_TOOL_NODES_24 = createDescriptor("icons/marquee_nodes24.gif"); //$NON-NLS-1$
-		DESC_MARQUEE_TOOL_CONNECTIONS_16 = createDescriptor("icons/marquee_wires16.gif"); //$NON-NLS-1$
-		DESC_MARQUEE_TOOL_CONNECTIONS_24 = createDescriptor("icons/marquee_wires24.gif"); //$NON-NLS-1$
+		DESC_MARQUEE_TOOL_16 = createDescriptor("icons/marquee16.png"); //$NON-NLS-1$
+		DESC_MARQUEE_TOOL_24 = createDescriptor("icons/marquee24.png"); //$NON-NLS-1$
+		DESC_MARQUEE_TOOL_NODES_16 = createDescriptor("icons/marquee_nodes16.png"); //$NON-NLS-1$
+		DESC_MARQUEE_TOOL_NODES_24 = createDescriptor("icons/marquee_nodes24.png"); //$NON-NLS-1$
+		DESC_MARQUEE_TOOL_CONNECTIONS_16 = createDescriptor("icons/marquee_wires16.png"); //$NON-NLS-1$
+		DESC_MARQUEE_TOOL_CONNECTIONS_24 = createDescriptor("icons/marquee_wires24.png"); //$NON-NLS-1$
 	}
 
 	private static ImageDescriptor createDescriptor(String filename) {
