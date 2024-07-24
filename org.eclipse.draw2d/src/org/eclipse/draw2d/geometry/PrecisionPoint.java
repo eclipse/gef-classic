@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -22,19 +22,21 @@ public class PrecisionPoint extends Point {
 	/**
 	 * Double value for X
 	 *
-	 * @noreference
+	 * @noreference This field is not intended to be referenced by clients.
 	 * @deprecated Use {@link #setPreciseX(double)} and {@link #preciseX()} instead.
 	 *             This field will become private in future versions.
 	 */
+	@Deprecated(since = "3.7", forRemoval = true)
 	public double preciseX;
 
 	/**
 	 * Double value for Y
 	 *
-	 * @noreference
+	 * @noreference This field is not intended to be referenced by clients.
 	 * @deprecated Use {@link #setPreciseY(double)} and {@link #preciseY()} instead.
 	 *             This field will become private in future versions.
 	 */
+	@Deprecated(since = "3.7", forRemoval = true)
 	public double preciseY;
 
 	/**
@@ -301,12 +303,14 @@ public class PrecisionPoint extends Point {
 	/**
 	 * Updates the integer fields using the precise versions.
 	 *
+	 * @noreference This method is not intended to be referenced by clients.
 	 * @deprecated This method should not be accessed by clients any more (it will
 	 *             be made private in future releases). The update of integer and
 	 *             precision fields is performed automatically if {@link #preciseX}
 	 *             and {@link #preciseY} field values are not manipulated directly,
 	 *             but only via respective methods offered by this class.
 	 */
+	@Deprecated(since = "3.7", forRemoval = true)
 	public final void updateInts() {
 		updateXInt();
 		updateYInt();

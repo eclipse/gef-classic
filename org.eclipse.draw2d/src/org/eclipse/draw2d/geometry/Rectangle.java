@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -188,9 +188,10 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @param insets Insets to be removed from the Rectangle
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
+	 * @noreference This method is not intended to be referenced by clients.
 	 * @deprecated Use {@link #shrink(Insets)} instead.
 	 */
-	@Deprecated
+	@Deprecated(since = "3.7", forRemoval = true)
 	public Rectangle crop(Insets insets) {
 		return shrink(insets);
 	}
@@ -352,8 +353,9 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @param insets Insets being cropped from the Rectangle
 	 * @return Cropped new Rectangle
 	 * @deprecated Use {@link #getShrinked(Insets)} instead.
+	 * @noreference This method is not intended to be referenced by clients.
 	 */
-	@Deprecated
+	@Deprecated(since = "3.7", forRemoval = true)
 	public Rectangle getCropped(Insets insets) {
 		return getShrinked(insets);
 	}
@@ -1261,12 +1263,13 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @param d Dimension being unioned
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
+	 * @noreference This method is not intended to be referenced by clients.
 	 * @deprecated Union with a dimension generally does not make much sense, thus
 	 *             deprecating this. Use {@link Dimension#max(Dimension, Dimension)}
 	 *             and {@link #setSize(Dimension)} to implement the desired behavior
 	 *             instead.
 	 */
-	@Deprecated
+	@Deprecated(since = "3.7", forRemoval = true)
 	public Rectangle union(Dimension d) {
 		width = Math.max(width, d.width);
 		height = Math.max(height, d.height);
