@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -74,8 +74,10 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 * @param x x value
 	 * @param y y value
 	 * @since 2.0
+	 * @noreference This constructor is not intended to be referenced by clients.
 	 * @deprecated Use {@link PrecisionPoint} or {@link #Point(int, int)} instead.
 	 */
+	@Deprecated(since = "3.7", forRemoval = true)
 	public Point(double x, double y) {
 		this.x = (int) x;
 		this.y = (int) y;
@@ -195,8 +197,10 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 * @param p The reference Point
 	 * @return distance<sup>2</sup>
 	 * @since 2.0
+	 * @noreference This method is not intended to be referenced by clients.
 	 * @deprecated Use {@link #getDistance(Point)} and square the result instead.
 	 */
+	@Deprecated(since = "3.7", forRemoval = true)
 	public int getDistance2(Point p) {
 		long i = p.x() - x;
 		long j = p.y() - y;
@@ -213,9 +217,11 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 *
 	 * @param p The reference Point
 	 * @return the orthogonal distance
+	 * @noreference This method is not intended to be referenced by clients.
 	 * @deprecated May not be guaranteed by precision subclasses and should thus not
 	 *             be used any more.
 	 */
+	@Deprecated(since = "3.7", forRemoval = true)
 	public int getDistanceOrthogonal(Point p) {
 		return Math.abs(y - p.y()) + Math.abs(x - p.x());
 	}

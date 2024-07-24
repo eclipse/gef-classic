@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -215,8 +215,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @param p the Point supplying the dimensional values
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
+	 * @noreference This method is not intended to be referenced by clients.
 	 * @deprecated Use {@link #expand(int, int)} instead.
 	 */
+	@Deprecated(since = "3.7", forRemoval = true)
 	public Dimension expand(Point p) {
 		return expand(p.x(), p.y());
 	}
@@ -248,8 +250,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @param d the dimension being compared
 	 * @return a new dimension representing the difference
 	 * @since 2.0
+	 * @noreference This method is not intended to be referenced by clients.
 	 * @deprecated Use {@link #getShrinked(Dimension)} instead.
 	 */
+	@Deprecated(since = "3.7", forRemoval = true)
 	public Dimension getDifference(Dimension d) {
 		return getShrinked(d);
 	}
