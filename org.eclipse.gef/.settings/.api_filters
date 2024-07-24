@@ -1,5 +1,69 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="org.eclipse.gef" version="2">
+    <resource path="META-INF/MANIFEST.MF">
+        <filter comment="Both the console and stack view have been marked as deprecared since forever" id="923795461">
+            <message_arguments>
+                <message_argument value="3.19.0"/>
+                <message_argument value="3.18.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="org.eclipse.gef.ui.console.DebugGEF">
+        <filter comment="Both the console and stack view have been marked as deprecared since forever" id="305324134">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.ui.console.DebugGEF"/>
+                <message_argument value="org.eclipse.gef_3.19.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="org.eclipse.gef.ui.console.DebugGEFAction">
+        <filter comment="Both the console and stack view have been marked as deprecared since forever" id="305324134">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.ui.console.DebugGEFAction"/>
+                <message_argument value="org.eclipse.gef_3.19.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="org.eclipse.gef.ui.stackview.CommandStackInspector">
+        <filter comment="Both the console and stack view have been marked as deprecared since forever" id="305324134">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.ui.stackview.CommandStackInspector"/>
+                <message_argument value="org.eclipse.gef_3.19.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="org.eclipse.gef.ui.stackview.CommandStackInspectorPage">
+        <filter comment="Both the console and stack view have been marked as deprecared since forever" id="305324134">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.ui.stackview.CommandStackInspectorPage"/>
+                <message_argument value="org.eclipse.gef_3.19.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="org.eclipse.gef.ui.stackview.CommandStackViewerAction">
+        <filter comment="Both the console and stack view have been marked as deprecared since forever" id="305324134">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.ui.stackview.CommandStackViewerAction"/>
+                <message_argument value="org.eclipse.gef_3.19.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="org.eclipse.gef.ui.stackview.TreeContentProvider">
+        <filter comment="Both the console and stack view have been marked as deprecared since forever" id="305324134">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.ui.stackview.TreeContentProvider"/>
+                <message_argument value="org.eclipse.gef_3.19.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="org.eclipse.gef.ui.stackview.TreeLabelProvider">
+        <filter comment="Both the console and stack view have been marked as deprecared since forever" id="305324134">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.ui.stackview.TreeLabelProvider"/>
+                <message_argument value="org.eclipse.gef_3.19.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/org/eclipse/gef/ui/actions/AlignmentRetargetAction.java" type="org.eclipse.gef.ui.actions.AlignmentRetargetAction">
         <filter id="571473929">
             <message_arguments>
