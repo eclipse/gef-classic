@@ -1370,7 +1370,7 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void remove(IFigure figure) {
-		if ((figure.getParent() != this)) {
+		if (figure == null || figure.getParent() != this) {
 			throw new IllegalArgumentException("Figure is not a child"); //$NON-NLS-1$
 		}
 		if (getFlag(FLAG_REALIZED)) {
