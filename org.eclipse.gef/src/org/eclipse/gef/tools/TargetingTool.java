@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,12 +12,15 @@
  *******************************************************************************/
 package org.eclipse.gef.tools;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.jface.util.Throttler;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
@@ -29,6 +32,7 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
+import org.eclipse.gef.internal.InternalGEFPlugin;
 import org.eclipse.gef.requests.TargetRequest;
 
 /**
@@ -59,6 +63,7 @@ public abstract class TargetingTool extends AbstractTool {
 	private Request targetRequest;
 	private EditPart targetEditPart;
 	private AutoexposeHelper exposeHelper;
+	private Throttler throttler;
 
 	/**
 	 * Creates the target request that will be used with the target editpart. This
@@ -101,7 +106,7 @@ public abstract class TargetingTool extends AbstractTool {
 		}
 		if (exposeHelper.step(getLocation())) {
 			handleAutoexpose();
-			Display.getCurrent().asyncExec(new QueuedAutoexpose());
+			scheduleAutoexpose();
 		} else {
 			setAutoexposeHelper(null);
 		}
@@ -211,6 +216,24 @@ public abstract class TargetingTool extends AbstractTool {
 	 */
 	protected void handleAutoexpose() {
 		handleMove();
+	}
+
+	/**
+	 * This method is called after an autoexpose occured. Depending on whether the
+	 * {@link InternalGEFPlugin#PROP_THROTTLER_DURATION} system property is set, the
+	 * next {@link QueuedAutoexpose} is scheduled using either
+	 * {@link Display#asyncExec(Runnable)} or {@link Throttler#trottledAsyncExec}.
+	 */
+	private void scheduleAutoexpose() {
+		if (InternalGEFPlugin.getOrDefaultThrottlerDuration() == 0) {
+			Display.getCurrent().asyncExec(new QueuedAutoexpose());
+		} else {
+			if (throttler == null) {
+				throttler = new Throttler(Display.getCurrent(),
+						Duration.ofMillis(InternalGEFPlugin.getOrDefaultThrottlerDuration()), QueuedAutoexpose::new);
+			}
+			throttler.throttledAsyncExec();
+		}
 	}
 
 	/**
@@ -366,7 +389,7 @@ public abstract class TargetingTool extends AbstractTool {
 		if (exposeHelper == null) {
 			return;
 		}
-		Display.getCurrent().asyncExec(new QueuedAutoexpose());
+		scheduleAutoexpose();
 	}
 
 	/**

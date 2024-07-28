@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.util.Throttler;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -33,6 +34,21 @@ public class InternalGEFPlugin extends AbstractUIPlugin {
 
 	private static BundleContext context;
 	private static AbstractUIPlugin singleton;
+
+	/**
+	 * The fully-qualified name responsible defining the minimum duration (in ms)
+	 * between two executions of a runnable (from runnable to return until next run)
+	 * when using the {@link Throttler} class within GEF. The value must be a
+	 * non-negative integer. This value is expected to be set only once at the start
+	 * of the application.
+	 */
+	private static final String PROP_THROTTLER_DURATION = "org.eclipse.gef.throttlerDuration"; //$NON-NLS-1$
+	/**
+	 * The cached value of the {@link #PROP_THROTTLER_DURATION} system property.
+	 * This value is {@code null}, if {@link #getOrDefaultThrottlerDuration()}
+	 * hasn't been called yet or if the system property contains an invalid integer.
+	 */
+	private static Integer THROTTLER_DURATION;
 
 	public InternalGEFPlugin() {
 		singleton = this;
@@ -90,6 +106,33 @@ public class InternalGEFPlugin extends AbstractUIPlugin {
 		} catch (NumberFormatException e) {
 			return 100;
 		}
+	}
+
+	/**
+	 * Convenience method for getting the minimum duration (in ms) between two
+	 * executions of a runnable (from runnable to return until next run) when using
+	 * the {@link Throttler} class. This value can be configured using the
+	 * {@link #PROP_THROTTLER_DURATION} system property.<br>
+	 * The value must be a non-negative integer, where {@code 0} indicates that no
+	 * throttling is done (i.e. the current behavior}. For negative or invalid
+	 * values, an {@link IllegalArgumentException} is thrown.
+	 */
+	public static int getOrDefaultThrottlerDuration() {
+		if (THROTTLER_DURATION == null) {
+			String durationString = System.getProperty(PROP_THROTTLER_DURATION, "0"); //$NON-NLS-1$
+			try {
+				int duration = Integer.parseInt(durationString); // $NON-NLS-1$
+				if (duration < 0) {
+					throw new IllegalArgumentException("The system property \"%s\" must be a non-negative integer: %s" //$NON-NLS-1$
+							.formatted(THROTTLER_DURATION, durationString));
+				}
+				THROTTLER_DURATION = duration;
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("The system property \"%s\" must be a valid integer: %s" //$NON-NLS-1$
+						.formatted(THROTTLER_DURATION, durationString));
+			}
+		}
+		return THROTTLER_DURATION;
 	}
 
 	/**
