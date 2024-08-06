@@ -479,13 +479,16 @@ public class Figure implements IFigure {
 		PRIVATE_POINT.setLocation(x, y);
 		translateFromParent(PRIVATE_POINT);
 
-		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT)) {
+		x = PRIVATE_POINT.x;
+		y = PRIVATE_POINT.y;
+
+		if (!getClientArea(Rectangle.SINGLETON).contains(x, y)) {
 			return null;
 		}
 
 		for (IFigure fig : getChildrenRevIterable()) {
-			if (fig.isVisible() && fig.isEnabled() && fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
-				fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x, PRIVATE_POINT.y);
+			if (fig.isVisible() && fig.isEnabled() && fig.containsPoint(x, y)) {
+				fig = fig.findMouseEventTargetAt(x, y);
 				if (fig != null) {
 					return fig;
 				}
