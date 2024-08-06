@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.eclipse.draw2d.plugins</groupId>
 	<artifactId>org.eclipse.draw2d.tests</artifactId>
-	<version>3.13.100-SNAPSHOT</version>
+	<version>3.14.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<profiles>
 		<profile>
@@ -44,12 +44,36 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<!-- Overwrites default goal! -->
+						<id>default-test</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>**/Draw2dTestSuite.class</include>
+							</includes>
+							<useUIHarness>false</useUIHarness>
+							<useUIThread>false</useUIThread>
+						</configuration>
+					</execution>
+					<execution>
+						<id>swtbot-test</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>**/SWTBotTestSuite.class</include>
+							</includes>
+							<useUIHarness>true</useUIHarness>
+							<useUIThread>false</useUIThread>
+						</configuration>
+					</execution>
+				</executions>
 				<configuration>
-					<includes>
-						<include>**/Draw2dTestSuite.class</include>
-					</includes>
-					<useUIHarness>false</useUIHarness>
-					<useUIThread>false</useUIThread>
 					<argLine>${test.vmargs}</argLine>
 				</configuration>
 			</plugin>
