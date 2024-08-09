@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,14 +13,13 @@
 package org.eclipse.gef.internal.ui.rulers;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
-
-import org.eclipse.gef.SharedCursors;
 
 /**
  * @author Pratik Shah
@@ -30,16 +29,16 @@ public class GuideFigure extends Figure {
 	private static final Dimension H_PREFSIZE = new Dimension(9, 11);
 	private static final Dimension V_PREFSIZE = new Dimension(11, 9);
 
-	private boolean horizontal;
+	private final boolean horizontal;
 	private boolean drawFocus;
 
 	public GuideFigure(boolean isHorizontal) {
 		horizontal = isHorizontal;
 		setBackgroundColor(ColorConstants.button);
 		if (horizontal) {
-			setCursor(SharedCursors.SIZENS);
+			setCursor(Cursors.SIZENS);
 		} else {
-			setCursor(SharedCursors.SIZEWE);
+			setCursor(Cursors.SIZEWE);
 		}
 	}
 

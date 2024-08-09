@@ -14,13 +14,13 @@ package org.eclipse.gef.rulers;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
@@ -108,6 +108,7 @@ public abstract class RulerProvider {
 	 * @param guide The guide whose accessibility information is requested
 	 * @see org.eclipse.swt.accessibility.AccessibleAdapter#getDescription(AccessibleEvent)
 	 */
+	@SuppressWarnings("static-method")
 	public void getAccGuideDescription(AccessibleEvent e, Object guide) {
 		e.result = GEFMessages.Guide_Desc;
 	}
@@ -120,6 +121,7 @@ public abstract class RulerProvider {
 	 * @param guide The guide whose accessibility information is requested
 	 * @see org.eclipse.swt.accessibility.AccessibleAdapter#getName(AccessibleEvent)
 	 */
+	@SuppressWarnings("static-method")
 	public void getAccGuideName(AccessibleEvent e, Object guide) {
 		e.result = GEFMessages.Guide_Label;
 	}
@@ -142,8 +144,9 @@ public abstract class RulerProvider {
 	 * @param guide the guide to which the model parts are attached.
 	 * @return list of attached model objects
 	 */
-	public List getAttachedModelObjects(Object guide) {
-		return Collections.EMPTY_LIST;
+	@SuppressWarnings("static-method")
+	public List<? extends Object> getAttachedModelObjects(Object guide) {
+		return Collections.emptyList();
 	}
 
 	/**
@@ -153,19 +156,19 @@ public abstract class RulerProvider {
 	 * @param viewer the GraphicalViewer in which these EditParts are shown.
 	 * @return list of attached edit parts
 	 */
-	public List getAttachedEditParts(Object guide, GraphicalViewer viewer) {
-		List attachedModelObjects = getAttachedModelObjects(guide);
-		List attachedEditParts = new ArrayList(attachedModelObjects.size());
-		Iterator i = attachedModelObjects.iterator();
+	public List<? extends EditPart> getAttachedEditParts(Object guide, GraphicalViewer viewer) {
+		List<? extends Object> attachedModelObjects = getAttachedModelObjects(guide);
+		List<EditPart> attachedEditParts = new ArrayList<>(attachedModelObjects.size());
 
-		while (i.hasNext()) {
-			Object editPart = viewer.getEditPartRegistry().get(i.next());
+		for (Object attachedModelObject : attachedModelObjects) {
+			EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(attachedModelObject);
 			if (editPart != null) {
 				attachedEditParts.add(editPart);
 			}
 		}
 
 		return attachedEditParts;
+
 	}
 
 	/**
@@ -175,6 +178,7 @@ public abstract class RulerProvider {
 	 * @param position The pixel position where the new guide is to be created
 	 * @return UnexecutableCommand
 	 */
+	@SuppressWarnings("static-method")
 	public Command getCreateGuideCommand(int position) {
 		return UnexecutableCommand.INSTANCE;
 	}
@@ -186,6 +190,7 @@ public abstract class RulerProvider {
 	 * @param guide The guide that is to be deleted
 	 * @return UnexecutableCommand
 	 */
+	@SuppressWarnings("static-method")
 	public Command getDeleteGuideCommand(Object guide) {
 		return UnexecutableCommand.INSTANCE;
 	}
@@ -198,8 +203,7 @@ public abstract class RulerProvider {
 	 *         exists at the given position
 	 */
 	public Object getGuideAt(int position) {
-		List guides = getGuides();
-		for (Object guide : guides) {
+		for (Object guide : getGuides()) {
 			if (position == getGuidePosition(guide)) {
 				return guide;
 			}
@@ -215,6 +219,7 @@ public abstract class RulerProvider {
 	 * @param positionDelta The amount by which the guide is to be moved
 	 * @return UnexecutableCommand
 	 */
+	@SuppressWarnings("static-method")
 	public Command getMoveGuideCommand(Object guide, int positionDelta) {
 		return UnexecutableCommand.INSTANCE;
 	}
@@ -225,6 +230,7 @@ public abstract class RulerProvider {
 	 *
 	 * @return an empty list
 	 */
+	@SuppressWarnings("static-method")
 	public List<? extends Object> getGuides() {
 		return Collections.emptyList();
 	}
@@ -235,6 +241,7 @@ public abstract class RulerProvider {
 	 *
 	 * @return an empty array
 	 */
+	@SuppressWarnings("static-method")
 	public int[] getGuidePositions() {
 		return new int[0];
 	}
@@ -246,6 +253,7 @@ public abstract class RulerProvider {
 	 * @param guide The guide whose position is to be determined
 	 * @return <code>Integer.MIN_VALUE</code>
 	 */
+	@SuppressWarnings("static-method")
 	public int getGuidePosition(Object guide) {
 		return Integer.MIN_VALUE;
 	}
@@ -256,6 +264,7 @@ public abstract class RulerProvider {
 	 *
 	 * @return <code>null</code>
 	 */
+	@SuppressWarnings("static-method")
 	public Object getRuler() {
 		return null;
 	}
@@ -266,6 +275,7 @@ public abstract class RulerProvider {
 	 *
 	 * @return UNIT_INCHES
 	 */
+	@SuppressWarnings("static-method")
 	public int getUnit() {
 		return UNIT_INCHES;
 	}
