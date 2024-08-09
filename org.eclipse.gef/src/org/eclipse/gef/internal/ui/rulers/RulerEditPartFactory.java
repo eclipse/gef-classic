@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -40,19 +40,11 @@ public class RulerEditPartFactory implements EditPartFactory {
 		// to null
 		EditPart part = null;
 		if (isRuler(model)) {
-			part = createRulerEditPart(parentEditPart, model);
+			part = new RulerEditPart(model);
 		} else if (model != null) {
-			part = createGuideEditPart(parentEditPart, model);
+			part = new GuideEditPart(model);
 		}
 		return part;
-	}
-
-	protected EditPart createGuideEditPart(EditPart parentEditPart, Object model) {
-		return new GuideEditPart(model);
-	}
-
-	protected EditPart createRulerEditPart(EditPart parentEditPart, Object model) {
-		return new RulerEditPart(model);
 	}
 
 	protected Object getHorizontalRuler() {

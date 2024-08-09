@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2023 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -106,14 +106,10 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	 */
 	@Override
 	protected IFigure createFigure() {
-		guideLineFig = createGuideLineFigure();
+		guideLineFig = new GuideLineFigure();
 		getGuideLayer().add(getGuideLineFigure());
 		getGuideLayer().setConstraint(getGuideLineFigure(), Boolean.valueOf(isHorizontal()));
 		return new GuideFigure(isHorizontal());
-	}
-
-	protected GuideLineFigure createGuideLineFigure() {
-		return new GuideLineFigure();
 	}
 
 	/*
@@ -241,6 +237,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	}
 
 	protected void handlePartAttachmentChanged(Object part) {
+		// nothing to do here
 	}
 
 	protected void handleZoomChanged() {
@@ -265,9 +262,8 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	public void removeNotify() {
 		GraphicalEditPart nextSelection = null;
 		if (getParent().isActive()) {
-			// This guide is being deleted (but the ruler is still active). If
-			// this guide
-			// is selected, determine which part is to be selected next.
+			// This guide is being deleted (but the ruler is still active). If this guide is
+			// selected, determine which part is to be selected next.
 			int thisPos = getRulerProvider().getGuidePosition(getModel());
 			if (getSelected() != SELECTED_NONE || hasFocus()) {
 				int minDistance = -1;

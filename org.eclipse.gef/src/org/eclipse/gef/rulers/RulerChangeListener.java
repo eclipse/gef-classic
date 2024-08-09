@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -69,6 +69,7 @@ public interface RulerChangeListener {
 		 */
 		@Override
 		public void notifyUnitsChanged(int newUnit) {
+			// nothing to do in the stub
 		}
 
 		/**
@@ -76,6 +77,7 @@ public interface RulerChangeListener {
 		 */
 		@Override
 		public void notifyGuideReparented(Object guide) {
+			// nothing to do in the stub
 		}
 
 		/**
@@ -83,6 +85,7 @@ public interface RulerChangeListener {
 		 */
 		@Override
 		public void notifyGuideMoved(Object guide) {
+			// nothing to do in the stub
 		}
 
 		/**
@@ -90,6 +93,7 @@ public interface RulerChangeListener {
 		 */
 		@Override
 		public void notifyPartAttachmentChanged(Object part, Object guide) {
+			// nothing to do in the stub
 		}
 	}
 
