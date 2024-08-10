@@ -292,11 +292,11 @@ public class CreationTool extends TargetingTool {
 		if (model == null || viewer == null) {
 			return;
 		}
-		Object editpart = viewer.getEditPartRegistry().get(model);
+		EditPart editpart = viewer.getEditPartForModel(model);
 		viewer.flush();
-		if (editpart instanceof EditPart ep && ep.isSelectable()) {
+		if (editpart != null && editpart.isSelectable()) {
 			// Force the new object to get positioned in the viewer.
-			viewer.select((EditPart) editpart);
+			viewer.select(editpart);
 		}
 	}
 

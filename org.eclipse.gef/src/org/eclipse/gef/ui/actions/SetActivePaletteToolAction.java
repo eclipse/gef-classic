@@ -24,8 +24,8 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
  */
 public class SetActivePaletteToolAction extends Action {
 
-	private PaletteViewer viewer;
-	private ToolEntry entry;
+	private final PaletteViewer viewer;
+	private final ToolEntry entry;
 
 	/**
 	 * Creates a new SetActivePaletteToolAction with the given entry to set, as well
@@ -57,7 +57,7 @@ public class SetActivePaletteToolAction extends Action {
 			// context menu is open for palette stacks so we need to indicate
 			// that the focus needs to change to the tool entry that the user
 			// has just selected. See GraphicalViewerKeyHandler.procesSelect().
-			EditPart part = (EditPart) viewer.getEditPartRegistry().get(entry);
+			EditPart part = viewer.getEditPartForModel(entry);
 			viewer.appendSelection(part);
 			viewer.setFocus(part);
 		}

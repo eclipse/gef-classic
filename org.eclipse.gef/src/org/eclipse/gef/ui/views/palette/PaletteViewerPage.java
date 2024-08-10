@@ -84,12 +84,12 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 	@Override
 	public <T> T getAdapter(final Class<T> adapter) {
 		if (adapter == EditPart.class && viewer != null) {
-			return adapter.cast(viewer.getEditPartRegistry().get(viewer.getPaletteRoot()));
+			return adapter.cast(viewer.getEditPartForModel(viewer.getPaletteRoot()));
 		}
 		if (adapter == IFigure.class && viewer != null) {
-			Object obj = viewer.getEditPartRegistry().get(viewer.getPaletteRoot());
-			if (obj instanceof GraphicalEditPart) {
-				return adapter.cast(((GraphicalEditPart) obj).getFigure());
+			EditPart ep = viewer.getEditPartForModel(viewer.getPaletteRoot());
+			if (ep instanceof GraphicalEditPart gep) {
+				return adapter.cast(gep.getFigure());
 			}
 		}
 		return null;

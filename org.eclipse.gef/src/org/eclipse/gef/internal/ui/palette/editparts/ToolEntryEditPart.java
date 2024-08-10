@@ -118,7 +118,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 		@Override
 		protected boolean handleNativeDragFinished(DragSourceEvent event) {
-			getPaletteViewer().setActiveTool(null);
+			getViewer().setActiveTool(null);
 			return true;
 		}
 	}
@@ -195,7 +195,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 			// win hack because button down is delayed
 			if (getParent() instanceof IPaletteStackEditPart psEP && SWT.getPlatform().equals("win32")) { //$NON-NLS-1$
-				Point nds = getPaletteViewer().getControl().toControl(event.display.getCursorLocation());
+				Point nds = getViewer().getControl().toControl(event.display.getCursorLocation());
 				if (mouseDownLoc != null
 						&& (Math.abs(nds.x - mouseDownLoc.x) + Math.abs(nds.y - mouseDownLoc.y)) < WIN_THRESHOLD) {
 					getButtonModel().setArmed(false);
@@ -393,7 +393,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	public IFigure createFigure() {
 		customLabel = new DetailedLabelFigure();
 		Clickable button = new ToolEntryToggle(customLabel);
-		button.addActionListener(event -> getPaletteViewer().setActiveTool(getModel()));
+		button.addActionListener(event -> getViewer().setActiveTool(getModel()));
 		return button;
 	}
 
@@ -498,7 +498,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	@Override
 	public void removeNotify() {
 		if (getButtonModel().isSelected()) {
-			getPaletteViewer().setActiveTool(null);
+			getViewer().setActiveTool(null);
 		}
 		super.removeNotify();
 	}
@@ -510,14 +510,14 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	@Override
 	public void restoreState(IMemento memento) {
 		if (Boolean.parseBoolean(memento.getString(ACTIVE_STATE))) {
-			getPaletteViewer().setActiveTool(getModel());
+			getViewer().setActiveTool(getModel());
 		}
 		super.restoreState(memento);
 	}
 
 	@Override
 	public void saveState(IMemento memento) {
-		memento.putString(ACTIVE_STATE, Boolean.toString(getPaletteViewer().getActiveTool() == getModel()));
+		memento.putString(ACTIVE_STATE, Boolean.toString(getViewer().getActiveTool() == getModel()));
 		super.saveState(memento);
 	}
 
@@ -536,8 +536,8 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	@Override
 	public void setSelected(int value) {
 		super.setSelected(value);
-		if (value == SELECTED_PRIMARY && getPaletteViewer().getControl() != null
-				&& !getPaletteViewer().getControl().isDisposed() && getPaletteViewer().getControl().isFocusControl()) {
+		if (value == SELECTED_PRIMARY && getViewer().getControl() != null && !getViewer().getControl().isDisposed()
+				&& getViewer().getControl().isFocusControl()) {
 			getFigure().requestFocus();
 		}
 	}

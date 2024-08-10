@@ -15,6 +15,7 @@ package org.eclipse.gef.editparts;
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 
 /**
  * Responsible for locating <i>layers</i> in a <code>GraphicalViewer</code>.
@@ -57,7 +58,18 @@ public interface LayerManager {
 		 * @return the <code>LayerManager</code>
 		 */
 		public static LayerManager find(EditPart part) {
-			return (LayerManager) part.getViewer().getEditPartRegistry().get(ID);
+			return find(part.getViewer());
+		}
+
+		/**
+		 * Finds the LayerManager given a Viewer.
+		 *
+		 * @param viewer the viewer for which to search in
+		 * @return the <code>LayerManager</code>
+		 * @since 3.19
+		 */
+		public static LayerManager find(EditPartViewer viewer) {
+			return (LayerManager) viewer.getEditPartForModel(ID);
 		}
 	}
 

@@ -363,7 +363,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 				GraphicalEditPart editpart = (GraphicalEditPart) element;
 				exclusionSet.add(editpart.getFigure());
 			}
-			LayerManager layerManager = (LayerManager) getCurrentViewer().getEditPartRegistry().get(LayerManager.ID);
+			LayerManager layerManager = LayerManager.Helper.find(getCurrentViewer());
 			if (layerManager != null) {
 				exclusionSet.add(layerManager.getLayer(LayerConstants.CONNECTION_LAYER));
 			}

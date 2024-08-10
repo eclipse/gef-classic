@@ -23,7 +23,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ConnectionEditPart;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
@@ -185,12 +184,12 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (LogicElement.CHILDREN.equals(prop)) {
-			if (evt.getOldValue() instanceof Integer) {
+			if (evt.getOldValue() instanceof Integer intVal) {
 				// new child
-				addChild(createChild(evt.getNewValue()), ((Integer) evt.getOldValue()).intValue());
+				addChild(createChild(evt.getNewValue()), intVal.intValue());
 			} else {
 				// remove child
-				removeChild((EditPart) getViewer().getEditPartRegistry().get(evt.getOldValue()));
+				removeChild(getViewer().getEditPartForModel(evt.getOldValue()));
 			}
 		} else if (LogicElement.INPUTS.equals(prop)) {
 			refreshTargetConnections();

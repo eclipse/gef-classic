@@ -62,7 +62,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 	public void activate() {
 		// in case the model is out of sync
 		checkActiveEntrySync();
-		getPaletteViewer().addPaletteListener(paletteListener);
+		getViewer().addPaletteListener(paletteListener);
 		super.activate();
 	}
 
@@ -79,7 +79,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 		int index = -1;
 
 		if (oldValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(oldValue);
+			part = (GraphicalEditPart) getViewer().getEditPartForModel(oldValue);
 			// if part is null, its no longer a child.
 			if (part != null) {
 				oldFigure = part.getFigure();
@@ -90,7 +90,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 		}
 
 		if (newValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(newValue);
+			part = (GraphicalEditPart) getViewer().getEditPartForModel(newValue);
 			newFigure = part.getFigure();
 		}
 
@@ -115,7 +115,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 
 	@Override
 	public void deactivate() {
-		getPaletteViewer().removePaletteListener(paletteListener);
+		getViewer().removePaletteListener(paletteListener);
 		super.deactivate();
 	}
 
@@ -229,7 +229,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 
 	@Override
 	public PaletteEditPart getActiveEntry() {
-		return (PaletteEditPart) getViewer().getEditPartRegistry().get(getStack().getActiveEntry());
+		return (PaletteEditPart) getViewer().getEditPartForModel(getStack().getActiveEntry());
 	}
 
 }

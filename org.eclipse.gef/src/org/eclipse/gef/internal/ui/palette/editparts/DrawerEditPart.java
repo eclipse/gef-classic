@@ -104,7 +104,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	}
 
 	private PaletteAnimator getPaletteAnimator() {
-		return (PaletteAnimator) getViewer().getEditPartRegistry().get(PaletteAnimator.class);
+		return getViewer().getPaletteAnimator();
 	}
 
 	@Override

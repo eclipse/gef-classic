@@ -164,7 +164,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	}
 
 	public IFigure getGuideLayer() {
-		LayerManager lm = (LayerManager) diagramViewer.getEditPartRegistry().get(LayerManager.ID);
+		LayerManager lm = LayerManager.Helper.find(diagramViewer);
 		if (lm != null) {
 			return lm.getLayer(LayerConstants.GUIDE_LAYER);
 		}
@@ -208,7 +208,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 
 	public void handleGuideReparented(Object guide) {
 		refreshChildren();
-		EditPart guidePart = (EditPart) getViewer().getEditPartRegistry().get(guide);
+		EditPart guidePart = getViewer().getEditPartForModel(guide);
 		if (guidePart != null) {
 			getViewer().select(guidePart);
 		}

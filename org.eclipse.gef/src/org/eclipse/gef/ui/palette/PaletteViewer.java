@@ -42,6 +42,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog;
+import org.eclipse.gef.ui.palette.editparts.PaletteAnimator;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
@@ -89,6 +90,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	private final PreferenceListener prefListener = new PreferenceListener();
 	private PaletteViewerPreferences prefs = PREFERENCE_STORE;
 	private Font font = null;
+	private PaletteAnimator paletteAnimator;
 
 	/**
 	 * Constructor
@@ -196,6 +198,16 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	}
 
 	/**
+	 * Gets the PaletteAnimator for this palette
+	 *
+	 * @return the palletteAnimator to be used for palette animations
+	 * @since 3.19
+	 */
+	public PaletteAnimator getPaletteAnimator() {
+		return paletteAnimator;
+	}
+
+	/**
 	 * Returns the palette's root model.
 	 *
 	 * @return the palette root
@@ -214,7 +226,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	}
 
 	private ToolEntryEditPart getToolEntryEditPart(ToolEntry entry) {
-		return (ToolEntryEditPart) getEditPartRegistry().get(entry);
+		return (ToolEntryEditPart) getEditPartForModel(entry);
 	}
 
 	/**
@@ -271,7 +283,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 * @return true if expanded
 	 */
 	public boolean isExpanded(PaletteDrawer drawer) {
-		EditPart ep = (EditPart) getEditPartRegistry().get(drawer);
+		EditPart ep = getEditPartForModel(drawer);
 		if (ep instanceof DrawerEditPart dep) {
 			return dep.isExpanded();
 		}
@@ -285,7 +297,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 * @return true if pinned
 	 */
 	public boolean isPinned(PaletteDrawer drawer) {
-		EditPart ep = (EditPart) getEditPartRegistry().get(drawer);
+		EditPart ep = getEditPartForModel(drawer);
 		if (ep instanceof DrawerEditPart dep) {
 			return dep.isPinnedOpen();
 		}
@@ -316,7 +328,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 */
 	public boolean restoreState(IMemento memento) {
 		try {
-			PaletteEditPart part = (PaletteEditPart) getEditPartRegistry().get(getPaletteRoot());
+			PaletteEditPart part = (PaletteEditPart) getEditPartForModel(getPaletteRoot());
 			if (part != null) {
 				part.restoreState(memento);
 			}
@@ -357,7 +369,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 */
 	public void saveState(IMemento memento) {
 		// Bug# 69026 - The PaletteRoot can be null initially for VEP
-		PaletteEditPart base = (PaletteEditPart) getEditPartRegistry().get(getPaletteRoot());
+		PaletteEditPart base = (PaletteEditPart) getEditPartForModel(getPaletteRoot());
 		if (base != null) {
 			base.saveState(memento);
 		}
@@ -394,6 +406,17 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 			}
 		}
 		fireModeChanged();
+	}
+
+	/**
+	 * Sets the PaletteAnimator for this palette
+	 *
+	 * @param paletteAnimator the PaletteAnimator to be used for this
+	 *                        palletteViewer's children
+	 * @since 3.19
+	 */
+	public void setPaletteAnimator(PaletteAnimator paletteAnimator) {
+		this.paletteAnimator = paletteAnimator;
 	}
 
 	/**

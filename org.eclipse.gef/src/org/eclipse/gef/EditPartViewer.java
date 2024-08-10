@@ -281,7 +281,20 @@ public interface EditPartViewer extends org.eclipse.jface.viewers.ISelectionProv
 	 *
 	 * @return the registry map
 	 */
-	Map getEditPartRegistry();
+	Map<Object, EditPart> getEditPartRegistry();
+
+	/**
+	 * Convenience method to look up an edit part for a given model element in the
+	 * EditPart registry.
+	 *
+	 * See also {@link #getEditPartRegistry()} for details on the EditPart registry.
+	 *
+	 * @param model the model object for which an EditPart is looked up
+	 * @return the edit part or null if for the given model no EditPart is
+	 *         registered
+	 * @since 3.19
+	 */
+	EditPart getEditPartForModel(Object model);
 
 	/**
 	 * Returns the <i>focus</i> <code>EditPart</code>. Focus refers to keyboard

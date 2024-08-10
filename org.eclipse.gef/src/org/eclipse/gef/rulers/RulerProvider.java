@@ -161,7 +161,7 @@ public abstract class RulerProvider {
 		List<EditPart> attachedEditParts = new ArrayList<>(attachedModelObjects.size());
 
 		for (Object attachedModelObject : attachedModelObjects) {
-			EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(attachedModelObject);
+			EditPart editPart = viewer.getEditPartForModel(attachedModelObject);
 			if (editPart != null) {
 				attachedEditParts.add(editPart);
 			}
