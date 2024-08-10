@@ -225,8 +225,8 @@ public abstract class RulerProvider {
 	 *
 	 * @return an empty list
 	 */
-	public List getGuides() {
-		return Collections.EMPTY_LIST;
+	public List<? extends Object> getGuides() {
+		return Collections.emptyList();
 	}
 
 	/**

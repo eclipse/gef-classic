@@ -51,13 +51,17 @@ public class Digraph1GraphEditPart extends AbstractGraphicalEditPart {
 		return freeformLayer;
 	}
 
+	@Override
+	public Digraph1Graph getModel() {
+		return (Digraph1Graph) super.getModel();
+	}
+
 	/*
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
 	@Override
 	protected List<Digraph1Node> getModelChildren() {
-		List<Digraph1Node> nodes = ((Digraph1Graph) getModel()).getNodes();
-		return nodes;
+		return getModel().getNodes();
 	}
 
 }

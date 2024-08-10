@@ -94,7 +94,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * <code>null</code> values encountered.
 	 */
 	protected static class EditPolicyIterator {
-		private Object[] list;
+		private final Object[] list;
 		private int offset = 0;
 		private final int length;
 
@@ -109,6 +109,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 		 * @deprecated this constructor should not be used
 		 * @param list the list of policies.
 		 */
+		@Deprecated
 		public EditPolicyIterator(List list) {
 			this(list.toArray());
 		}
@@ -166,7 +167,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 
 		activateEditPolicies();
 
-		getChildren().forEach(c -> c.activate());
+		getChildren().forEach(EditPart::activate);
 
 		fireActivated();
 	}
@@ -254,7 +255,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	public void addNotify() {
 		register();
 		createEditPolicies();
-		getChildren().forEach(c -> c.addNotify());
+		getChildren().forEach(EditPart::addNotify);
 		refresh();
 	}
 
@@ -293,7 +294,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	@Override
 	public void deactivate() {
-		getChildren().forEach(c -> c.deactivate());
+		getChildren().forEach(EditPart::deactivate);
 		deactivateEditPolicies();
 		setFlag(FLAG_ACTIVE, false);
 		fireDeactivated();
@@ -313,6 +314,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * @param message a debug message
 	 * @deprecated in 3.1
 	 */
+	@Deprecated
 	protected final void debug(String message) {
 	}
 
@@ -323,6 +325,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * @param message Message to be passed
 	 * @deprecated in 3.1
 	 */
+	@Deprecated
 	protected final void debugFeedback(String message) {
 	}
 
@@ -574,8 +577,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 *
 	 * @return the List of children
 	 */
-	protected List getModelChildren() {
-		return Collections.EMPTY_LIST;
+	@SuppressWarnings("static-method")
+	protected List<? extends Object> getModelChildren() {
+		return Collections.emptyList();
 	}
 
 	/**
@@ -766,7 +770,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 			}
 		}
 
-		List modelObjects = getModelChildren();
+		List<? extends Object> modelObjects = getModelChildren();
 		List<? extends EditPart> curChildren = getChildren();
 		int i;
 		for (i = 0; i < modelObjects.size(); i++) {
@@ -952,7 +956,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 			getViewer().setFocus(null);
 		}
 
-		getChildren().forEach(c -> c.removeNotify());
+		getChildren().forEach(EditPart::removeNotify);
 		unregister();
 	}
 

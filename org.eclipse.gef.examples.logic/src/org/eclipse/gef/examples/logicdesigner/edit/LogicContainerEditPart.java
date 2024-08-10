@@ -31,7 +31,7 @@ public abstract class LogicContainerEditPart extends LogicEditPart {
 		return new AccessibleGraphicalEditPart() {
 			@Override
 			public void getName(AccessibleEvent e) {
-				e.result = getLogicDiagram().toString();
+				e.result = getModel().toString();
 			}
 		};
 	}
@@ -50,8 +50,9 @@ public abstract class LogicContainerEditPart extends LogicEditPart {
 	 *
 	 * @return LogicDiagram of this.
 	 */
-	protected LogicDiagram getLogicDiagram() {
-		return (LogicDiagram) getModel();
+	@Override
+	public LogicDiagram getModel() {
+		return (LogicDiagram) super.getModel();
 	}
 
 	/**
@@ -61,7 +62,7 @@ public abstract class LogicContainerEditPart extends LogicEditPart {
 	 */
 	@Override
 	protected List<LogicElement> getModelChildren() {
-		return getLogicDiagram().getChildren();
+		return getModel().getChildren();
 	}
 
 }
