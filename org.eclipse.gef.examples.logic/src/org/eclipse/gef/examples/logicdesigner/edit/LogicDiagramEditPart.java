@@ -198,11 +198,11 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 			cLayer.setAntialias(SWT.ON);
 		}
 
-		if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANUAL)) {
+		if (getModel().getConnectionRouter().equals(LogicDiagram.ROUTER_MANUAL)) {
 			AutomaticRouter router = new FanRouter();
 			router.setNextRouter(new BendpointConnectionRouter());
 			cLayer.setConnectionRouter(router);
-		} else if (getLogicDiagram().getConnectionRouter().equals(LogicDiagram.ROUTER_MANHATTAN)) {
+		} else if (getModel().getConnectionRouter().equals(LogicDiagram.ROUTER_MANHATTAN)) {
 			cLayer.setConnectionRouter(new ManhattanConnectionRouter());
 		} else {
 			cLayer.setConnectionRouter(new ShortestPathConnectionRouter(getFigure()));

@@ -44,7 +44,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	private AccessibleEditPart accPart;
 	private RulerProvider rulerProvider;
 	private boolean horizontal;
-	private RulerChangeListener listener = new RulerChangeListener.Stub() {
+	private final RulerChangeListener listener = new RulerChangeListener.Stub() {
 		@Override
 		public void notifyGuideReparented(Object guide) {
 			handleGuideReparented(guide);
@@ -177,7 +177,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<? extends Object> getModelChildren() {
 		return getRulerProvider().getGuides();
 	}
 
@@ -198,9 +198,8 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	public EditPart getTargetEditPart(Request request) {
 		if (request.getType().equals(REQ_MOVE)) {
 			return this;
-		} else {
-			return super.getTargetEditPart(request);
 		}
+		return super.getTargetEditPart(request);
 	}
 
 	public ZoomManager getZoomManager() {

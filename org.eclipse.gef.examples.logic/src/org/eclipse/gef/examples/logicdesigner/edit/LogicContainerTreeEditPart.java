@@ -52,8 +52,9 @@ public class LogicContainerTreeEditPart extends LogicTreeEditPart {
 	 *
 	 * @return Model of this.
 	 */
-	protected LogicDiagram getLogicDiagram() {
-		return (LogicDiagram) getModel();
+	@Override
+	public LogicDiagram getModel() {
+		return (LogicDiagram) super.getModel();
 	}
 
 	/**
@@ -64,7 +65,7 @@ public class LogicContainerTreeEditPart extends LogicTreeEditPart {
 	 */
 	@Override
 	protected List<LogicElement> getModelChildren() {
-		return getLogicDiagram().getChildren();
+		return getModel().getChildren();
 	}
 
 }

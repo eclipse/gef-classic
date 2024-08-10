@@ -85,8 +85,8 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 	 * @return <code>null</code>
 	 */
 	@Override
-	protected List getModelChildren() {
-		return Collections.EMPTY_LIST;
+	protected List<LogicElement> getModelChildren() {
+		return Collections.emptyList();
 	}
 
 	@Override
