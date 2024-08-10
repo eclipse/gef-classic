@@ -140,7 +140,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 */
 	@Override
 	public Handle findHandleAt(Point p) {
-		LayerManager layermanager = (LayerManager) getEditPartRegistry().get(LayerManager.ID);
+		LayerManager layermanager = getLayerManager();
 		if (layermanager == null) {
 			return null;
 		}
@@ -216,7 +216,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * @return the LayerManager
 	 */
 	protected LayerManager getLayerManager() {
-		return (LayerManager) getEditPartRegistry().get(LayerManager.ID);
+		return LayerManager.Helper.find(this);
 	}
 
 	/**

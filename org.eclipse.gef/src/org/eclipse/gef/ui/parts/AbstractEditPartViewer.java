@@ -354,8 +354,16 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#getEditPartRegistry()
 	 */
 	@Override
-	public Map getEditPartRegistry() {
+	public Map<Object, EditPart> getEditPartRegistry() {
 		return mapIDToEditPart;
+	}
+
+	/**
+	 * @see EditPartViewer#getEditPartForModel(Object)
+	 */
+	@Override
+	public final EditPart getEditPartForModel(Object model) {
+		return getEditPartRegistry().get(model);
 	}
 
 	/**

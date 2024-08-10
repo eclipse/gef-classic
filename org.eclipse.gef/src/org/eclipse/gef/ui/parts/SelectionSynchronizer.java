@@ -61,13 +61,9 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 * @param part   a part from another viewer
 	 * @return <code>null</code> or a corresponding editpart
 	 */
+	@SuppressWarnings("static-method")
 	protected EditPart convert(EditPartViewer viewer, EditPart part) {
-		Object temp = viewer.getEditPartRegistry().get(part.getModel());
-		EditPart newPart = null;
-		if (temp != null) {
-			newPart = (EditPart) temp;
-		}
-		return newPart;
+		return viewer.getEditPartForModel(part.getModel());
 	}
 
 	/**

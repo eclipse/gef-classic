@@ -274,9 +274,9 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * Get the model element for this palette edit part.
 	 *
 	 * @return the model element.
-	 * @deprecated use getModel() instead
+	 * @deprecated use {@link #getModel()} instead
 	 */
-	@Deprecated
+	@Deprecated(since = "3.19", forRemoval = true)
 	protected PaletteEntry getPaletteEntry() {
 		return getModel();
 	}
@@ -285,9 +285,11 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * Get the palette viewer for this palette edit part.
 	 *
 	 * @return the palette viewer.
+	 * @deprecated use {@link #getViewer()} instead
 	 */
+	@Deprecated(since = "3.19", forRemoval = true)
 	protected PaletteViewer getPaletteViewer() {
-		return (PaletteViewer) getViewer();
+		return getViewer();
 	}
 
 	/**
@@ -296,7 +298,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * @return the palette viewer preferences.
 	 */
 	protected PaletteViewerPreferences getPreferenceSource() {
-		return ((PaletteViewer) getViewer()).getPaletteViewerPreferences();
+		return getViewer().getPaletteViewerPreferences();
 	}
 
 	/**
@@ -334,6 +336,15 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 			return null;
 		}
 		return text;
+	}
+
+	/**
+	 * @see org.eclipse.gef.EditPart#getViewer()
+	 * @since 3.19
+	 */
+	@Override
+	public PaletteViewer getViewer() {
+		return (PaletteViewer) super.getViewer();
 	}
 
 	/**

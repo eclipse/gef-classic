@@ -266,7 +266,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 		}
 		if (part instanceof IPaletteStackEditPart) {
 			PaletteEntry activeEntry = ((PaletteStack) part.getModel()).getActiveEntry();
-			part = (EditPart) getViewer().getEditPartRegistry().get(activeEntry);
+			part = getViewer().getEditPartForModel(activeEntry);
 		}
 		getViewer().select(part);
 		getViewer().reveal(part);

@@ -115,7 +115,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	public void activate() {
 		// in case the model is out of sync
 		checkActiveEntrySync();
-		getPaletteViewer().addPaletteListener(paletteListener);
+		getViewer().addPaletteListener(paletteListener);
 		super.activate();
 	}
 
@@ -130,7 +130,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 		Clickable clickable = null;
 
 		if (newValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(newValue);
+			part = (GraphicalEditPart) getViewer().getEditPartForModel(newValue);
 			clickable = (Clickable) part.getFigure();
 			clickable.setVisible(true);
 			clickable.addChangeListener(clickableListener);
@@ -140,7 +140,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 		}
 
 		if (oldValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(oldValue);
+			part = (GraphicalEditPart) getViewer().getEditPartForModel(oldValue);
 			// if part is null, its no longer a child.
 			if (part != null) {
 				clickable = (Clickable) part.getFigure();
@@ -198,7 +198,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 		}
 		arrowFigure.removeActionListener(actionListener);
 		arrowFigure.removeChangeListener(clickableArrowListener);
-		getPaletteViewer().removePaletteListener(paletteListener);
+		getViewer().removePaletteListener(paletteListener);
 		super.deactivate();
 	}
 
@@ -232,17 +232,17 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 
 		getChildren().forEach(part -> {
 			PaletteEntry entry = part.getModel();
-			menuManager.add(new SetActivePaletteToolAction(getPaletteViewer(), entry.getLabel(), entry.getSmallIcon(),
+			menuManager.add(new SetActivePaletteToolAction(getViewer(), entry.getLabel(), entry.getSmallIcon(),
 					getStack().getActiveEntry().equals(entry), (ToolEntry) entry));
 		});
 
-		menu = menuManager.createContextMenu(getPaletteViewer().getControl());
+		menu = menuManager.createContextMenu(getViewer().getControl());
 
 		// make the menu open below the figure
 		Rectangle figureBounds = getFigure().getBounds().getCopy();
 		getFigure().translateToAbsolute(figureBounds);
 
-		Point menuLocation = getPaletteViewer().getControl().toDisplay(figureBounds.getBottomLeft().x,
+		Point menuLocation = getViewer().getControl().toDisplay(figureBounds.getBottomLeft().x,
 				figureBounds.getBottomLeft().y);
 
 		// remove feedback from the arrow Figure and children figures
@@ -293,7 +293,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 
 	@Override
 	public PaletteEditPart getActiveEntry() {
-		return (PaletteEditPart) getViewer().getEditPartRegistry().get(getStack().getActiveEntry());
+		return (PaletteEditPart) getViewer().getEditPartForModel(getStack().getActiveEntry());
 	}
 
 }

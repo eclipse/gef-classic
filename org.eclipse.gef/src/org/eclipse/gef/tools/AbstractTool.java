@@ -296,7 +296,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param figure the feedback being added
 	 */
 	protected void addFeedback(IFigure figure) {
-		LayerManager lm = (LayerManager) getCurrentViewer().getEditPartRegistry().get(LayerManager.ID);
+		LayerManager lm = LayerManager.Helper.find(getCurrentViewer());
 		if (lm == null) {
 			return;
 		}
@@ -1376,7 +1376,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param figure the figure being removed
 	 */
 	protected void removeFeedback(IFigure figure) {
-		LayerManager lm = (LayerManager) getCurrentViewer().getEditPartRegistry().get(LayerManager.ID);
+		LayerManager lm = LayerManager.Helper.find(getCurrentViewer());
 		if (lm == null) {
 			return;
 		}

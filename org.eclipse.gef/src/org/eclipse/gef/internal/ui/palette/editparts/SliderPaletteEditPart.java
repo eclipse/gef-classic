@@ -18,14 +18,11 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ToolbarLayout;
 
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.editparts.PaletteAnimator;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 import org.eclipse.gef.ui.palette.editparts.PaletteToolbarLayout;
 
 public class SliderPaletteEditPart extends PaletteEditPart {
-
-	private PaletteAnimator controller;
 
 	public SliderPaletteEditPart(PaletteRoot paletteRoot) {
 		super(paletteRoot);
@@ -55,8 +52,8 @@ public class SliderPaletteEditPart extends PaletteEditPart {
 	@Override
 	protected void registerVisuals() {
 		super.registerVisuals();
-		controller = new PaletteAnimator(((PaletteViewer) getViewer()).getPaletteViewerPreferences());
-		getViewer().getEditPartRegistry().put(PaletteAnimator.class, controller);
+		PaletteAnimator controller = new PaletteAnimator(getViewer().getPaletteViewerPreferences());
+		getViewer().setPaletteAnimator(controller);
 		ToolbarLayout layout = new PaletteToolbarLayout();
 		getFigure().setLayoutManager(layout);
 		getFigure().addLayoutListener(controller);

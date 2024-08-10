@@ -35,6 +35,7 @@ class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener 
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	public TreeViewerTransferDragListener(EditPartViewer viewer, Transfer xfer) {
 		super(viewer, xfer);
 	}
@@ -67,7 +68,7 @@ class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener 
 		List list = new ArrayList();
 		Object editpart;
 		for (int i = 0; i < modelSelection.size(); i++) {
-			editpart = getViewer().getEditPartRegistry().get(modelSelection.get(i));
+			editpart = getViewer().getEditPartForModel(modelSelection.get(i));
 			if (editpart != null) {
 				list.add(editpart);
 			}

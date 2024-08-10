@@ -38,7 +38,7 @@ public abstract class ExampleTextCommand extends Command implements TextCommand 
 	}
 
 	protected static TextEditPart lookupModel(GraphicalTextViewer viewer, ModelElement model) {
-		return (TextEditPart) viewer.getEditPartRegistry().get(model);
+		return (TextEditPart) viewer.getEditPartForModel(model);
 	}
 
 }

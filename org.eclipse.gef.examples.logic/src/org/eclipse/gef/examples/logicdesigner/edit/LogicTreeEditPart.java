@@ -21,7 +21,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 
 import org.eclipse.gef.examples.logicdesigner.model.LED;
@@ -92,12 +91,12 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 	@Override
 	public void propertyChange(PropertyChangeEvent change) {
 		if (change.getPropertyName().equals(LogicElement.CHILDREN)) {
-			if (change.getOldValue() instanceof Integer) {
+			if (change.getOldValue() instanceof Integer intVal) {
 				// new child
-				addChild(createChild(change.getNewValue()), ((Integer) change.getOldValue()).intValue());
+				addChild(createChild(change.getNewValue()), intVal.intValue());
 			} else {
 				// remove child
-				removeChild((EditPart) getViewer().getEditPartRegistry().get(change.getOldValue()));
+				removeChild(getViewer().getEditPartForModel(change.getOldValue()));
 			}
 		} else {
 			refreshVisuals();

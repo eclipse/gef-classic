@@ -1190,7 +1190,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * this method if they need to unregister this EditPart in additional ways.
 	 */
 	protected void unregisterModel() {
-		Map registry = getViewer().getEditPartRegistry();
+		Map<Object, EditPart> registry = getViewer().getEditPartRegistry();
 		if (registry.get(getModel()) == this) {
 			registry.remove(getModel());
 		}

@@ -16,7 +16,6 @@ import java.util.Arrays;
 
 import org.eclipse.jface.action.Action;
 
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.ui.rulers.GuideEditPart;
@@ -31,7 +30,7 @@ import org.eclipse.gef.rulers.RulerProvider;
  */
 public class CreateGuideAction extends Action {
 
-	private EditPartViewer viewer;
+	private final EditPartViewer viewer;
 
 	/**
 	 * Constructor
@@ -71,7 +70,7 @@ public class CreateGuideAction extends Action {
 
 		// Create the guide and reveal it
 		viewer.getEditDomain().getCommandStack().execute(provider.getCreateGuideCommand(newPosition));
-		viewer.reveal((EditPart) viewer.getEditPartRegistry().get(provider.getGuideAt(newPosition)));
+		viewer.reveal(viewer.getEditPartForModel(provider.getGuideAt(newPosition)));
 	}
 
 }

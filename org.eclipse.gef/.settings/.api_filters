@@ -64,6 +64,14 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/org/eclipse/gef/EditPartViewer.java" type="org.eclipse.gef.EditPartViewer">
+        <filter id="403804204">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.EditPartViewer"/>
+                <message_argument value="getEditPartForModel(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/org/eclipse/gef/ui/actions/AlignmentRetargetAction.java" type="org.eclipse.gef.ui.actions.AlignmentRetargetAction">
         <filter id="571473929">
             <message_arguments>

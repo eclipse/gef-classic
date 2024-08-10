@@ -326,8 +326,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @return the ConnectionEditPart
 	 */
 	protected ConnectionEditPart createOrFindConnection(Object model) {
-		ConnectionEditPart conx = (ConnectionEditPart) getViewer().getEditPartRegistry().get(model);
-		if (conx != null) {
+		if (getViewer().getEditPartForModel(model) instanceof ConnectionEditPart conx) {
 			return conx;
 		}
 		return createConnection(model);
@@ -484,8 +483,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @return The requested layer or <code>null</code> if it doesn't exist
 	 */
 	protected IFigure getLayer(Object layer) {
-		LayerManager manager = (LayerManager) getViewer().getEditPartRegistry().get(LayerManager.ID);
-		return manager.getLayer(layer);
+		return LayerManager.Helper.find(this).getLayer(layer);
 	}
 
 	/**

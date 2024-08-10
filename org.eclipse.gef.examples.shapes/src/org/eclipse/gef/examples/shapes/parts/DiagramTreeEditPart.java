@@ -97,7 +97,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 	 * @return the corresponding EditPart or null
 	 */
 	private EditPart getEditPartForChild(Object child) {
-		return (EditPart) getViewer().getEditPartRegistry().get(child);
+		return getViewer().getEditPartForModel(child);
 	}
 
 	/*
