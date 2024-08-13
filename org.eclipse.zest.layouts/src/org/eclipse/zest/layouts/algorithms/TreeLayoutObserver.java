@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.zest.layouts.interfaces.ConnectionLayout;
@@ -44,6 +45,7 @@ public class TreeLayoutObserver {
 	 * structure made of <code>TreeNode</code>'s subclasses.
 	 */
 	public static class TreeNodeFactory {
+		@SuppressWarnings("static-method")
 		public TreeNode createTreeNode(NodeLayout nodeLayout, TreeLayoutObserver observer) {
 			return new TreeNode(nodeLayout, observer);
 		}
@@ -61,7 +63,7 @@ public class TreeLayoutObserver {
 		protected int numOfLeaves = 0;
 		protected int numOfDescendants = 0;
 		protected int order = 0;
-		protected final List children = new ArrayList();
+		protected final List<TreeNode> children = new ArrayList<>();
 		protected TreeNode parent;
 		protected boolean firstChild = false, lastChild = false;
 
@@ -135,7 +137,7 @@ public class TreeLayoutObserver {
 		 *
 		 * @return an unmodifiable list of this node's children
 		 */
-		public List getChildren() {
+		public List<? extends TreeNode> getChildren() {
 			return Collections.unmodifiableList(children);
 		}
 
@@ -200,8 +202,8 @@ public class TreeLayoutObserver {
 				height = 0;
 				numOfLeaves = 0;
 				numOfDescendants = 0;
-				for (ListIterator iterator = children.listIterator(); iterator.hasNext();) {
-					TreeNode child = (TreeNode) iterator.next();
+				for (ListIterator<TreeNode> iterator = children.listIterator(); iterator.hasNext();) {
+					TreeNode child = iterator.next();
 					child.depth = this.depth + 1;
 					child.order = this.order + this.numOfLeaves;
 					child.precomputeTree();
@@ -226,7 +228,7 @@ public class TreeLayoutObserver {
 			NodeLayout[] predecessingNodes = node.getPredecessingNodes();
 			parent = null;
 			for (NodeLayout predecessingNode : predecessingNodes) {
-				TreeNode potentialParent = (TreeNode) owner.layoutToTree.get(predecessingNode);
+				TreeNode potentialParent = owner.layoutToTree.get(predecessingNode);
 				if (!children.contains(potentialParent) && isBetterParent(potentialParent)) {
 					parent = potentialParent;
 				}
@@ -329,7 +331,7 @@ public class TreeLayoutObserver {
 
 		@Override
 		public boolean nodeRemoved(LayoutContext context, NodeLayout node) {
-			TreeNode treeNode = (TreeNode) layoutToTree.get(node);
+			TreeNode treeNode = layoutToTree.get(node);
 			treeNode.parent.children.remove(treeNode);
 			superRoot.precomputeTree();
 			for (Object treeListener : treeListeners) {
@@ -353,8 +355,8 @@ public class TreeLayoutObserver {
 
 		@Override
 		public boolean connectionRemoved(LayoutContext context, ConnectionLayout connection) {
-			TreeNode node1 = (TreeNode) layoutToTree.get(connection.getSource());
-			TreeNode node2 = (TreeNode) layoutToTree.get(connection.getTarget());
+			TreeNode node1 = layoutToTree.get(connection.getSource());
+			TreeNode node2 = layoutToTree.get(connection.getTarget());
 			if (node1.parent == node2) {
 				node1.findNewParent();
 				if (node1.parent != node2) {
@@ -374,8 +376,8 @@ public class TreeLayoutObserver {
 
 		@Override
 		public boolean connectionAdded(LayoutContext context, ConnectionLayout connection) {
-			TreeNode source = (TreeNode) layoutToTree.get(connection.getSource());
-			TreeNode target = (TreeNode) layoutToTree.get(connection.getTarget());
+			TreeNode source = layoutToTree.get(connection.getSource());
+			TreeNode target = layoutToTree.get(connection.getTarget());
 			if (source == target) {
 				return false;
 			}
@@ -397,18 +399,17 @@ public class TreeLayoutObserver {
 		}
 
 		private void fireParentChanged(TreeNode node, TreeNode previousParent) {
-			for (Object treeListener : treeListeners) {
-				TreeListener listener = (TreeListener) treeListener;
+			for (TreeListener listener : treeListeners) {
 				listener.parentChanged(node, previousParent);
 			}
 		}
 	};
 
-	private final HashMap layoutToTree = new HashMap();
+	private final Map<NodeLayout, TreeNode> layoutToTree = new HashMap<>();
 	private final TreeNodeFactory factory;
 	private final LayoutContext context;
 	private TreeNode superRoot;
-	private final ArrayList treeListeners = new ArrayList();
+	private final List<TreeListener> treeListeners = new ArrayList<>();
 
 	/**
 	 * Creates a
@@ -464,7 +465,7 @@ public class TreeLayoutObserver {
 	 * @return
 	 */
 	public TreeNode getTreeNode(NodeLayout node) {
-		TreeNode treeNode = (TreeNode) layoutToTree.get(node);
+		TreeNode treeNode = layoutToTree.get(node);
 		if (treeNode == null) {
 			treeNode = factory.createTreeNode(node, this);
 			layoutToTree.put(node, treeNode);
@@ -498,8 +499,8 @@ public class TreeLayoutObserver {
 	 * @param nodes
 	 */
 	private void createTrees(NodeLayout[] nodes) {
-		HashSet alreadyVisited = new HashSet();
-		LinkedList nodesToAdd = new LinkedList();
+		Set<NodeLayout> alreadyVisited = new HashSet<>();
+		LinkedList<Object[]> nodesToAdd = new LinkedList<>();
 		for (NodeLayout node : nodes) {
 			NodeLayout root = findRoot(node, alreadyVisited);
 			if (root != null) {
@@ -508,9 +509,10 @@ public class TreeLayoutObserver {
 			}
 		}
 		while (!nodesToAdd.isEmpty()) {
-			Object[] dequeued = (Object[]) nodesToAdd.removeFirst();
-			TreeNode currentNode = factory.createTreeNode((NodeLayout) dequeued[0], this);
-			layoutToTree.put(dequeued[0], currentNode);
+			Object[] dequeued = nodesToAdd.removeFirst();
+			NodeLayout nodeLayout = (NodeLayout) dequeued[0];
+			TreeNode currentNode = factory.createTreeNode(nodeLayout, this);
+			layoutToTree.put(nodeLayout, currentNode);
 			TreeNode currentRoot = (TreeNode) dequeued[1];
 
 			currentRoot.addChild(currentNode);
@@ -537,8 +539,8 @@ public class TreeLayoutObserver {
 	 *                       does, method stops and returns null).
 	 * @return
 	 */
-	private NodeLayout findRoot(NodeLayout nodeLayout, Set alreadyVisited) {
-		HashSet alreadyVisitedRoot = new HashSet();
+	private static NodeLayout findRoot(NodeLayout nodeLayout, Set<NodeLayout> alreadyVisited) {
+		Set<NodeLayout> alreadyVisitedRoot = new HashSet<>();
 		while (true) {
 			if (alreadyVisited.contains(nodeLayout)) {
 				return null;
