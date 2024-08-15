@@ -201,12 +201,10 @@ public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
 		map.clear();
 		createLayers();
 		padLayers();
-		for (ArrayList<NodeWrapper> layer : layers) { // reduce and refine
-														// iteratively, depending on
-														// the depth of the graph
-			reduceCrossings();
-			refineLayers();
-		}
+		layers.forEach(layer -> { // reduce and refine
+			reduceCrossings();    // iteratively, depending on
+			refineLayers();       // the depth of the graph
+		});
 		reduceCrossings();
 		calculatePositions();
 	}
