@@ -42,8 +42,6 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 
 	/**
 	 * Computes a single iteration of the layout algorithm
-	 *
-	 * @return
 	 */
 	protected abstract void computeOneIteration(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height);

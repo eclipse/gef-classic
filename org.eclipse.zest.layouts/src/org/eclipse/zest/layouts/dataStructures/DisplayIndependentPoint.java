@@ -55,7 +55,6 @@ public class DisplayIndependentPoint {
 	 *
 	 * @param currentBounds
 	 * @param targetBounds
-	 * @return
 	 */
 	public DisplayIndependentPoint convert(DisplayIndependentRectangle currentBounds,
 			DisplayIndependentRectangle targetBounds) {
@@ -72,7 +71,6 @@ public class DisplayIndependentPoint {
 	 * specified coordinate system
 	 *
 	 * @param bounds
-	 * @return
 	 */
 	public DisplayIndependentPoint convertToPercent(DisplayIndependentRectangle bounds) {
 		double newX = (bounds.width == 0) ? 0 : (x - bounds.x) / bounds.width;
@@ -85,7 +83,6 @@ public class DisplayIndependentPoint {
 	 * specified coordinate system
 	 *
 	 * @param bounds
-	 * @return
 	 */
 	public DisplayIndependentPoint convertFromPercent(DisplayIndependentRectangle bounds) {
 		double newX = bounds.x + x * bounds.width;

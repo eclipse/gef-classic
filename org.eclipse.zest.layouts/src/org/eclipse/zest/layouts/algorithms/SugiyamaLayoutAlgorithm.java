@@ -49,6 +49,7 @@ import org.eclipse.draw2d.geometry.Dimension;
  * @author Rene Kuhlemann
  * @since 2.0
  */
+@SuppressWarnings("javadoc")
 public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
 
 	// Tree direction constants

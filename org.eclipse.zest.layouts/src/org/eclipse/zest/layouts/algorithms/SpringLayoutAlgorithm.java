@@ -37,15 +37,6 @@ import org.eclipse.zest.layouts.interfaces.SubgraphLayout;
  * The SpringLayoutAlgorithm has its own data repository and relation
  * repository. A user can populate the repository, specify the layout
  * conditions, do the computation and query the computed results.
- * <p>
- * Instructions for using SpringLayoutAlgorithm: <br>
- * 1. Instantiate a SpringLayout object; <br>
- * 2. Populate the data repository using {@link #add add(...)}; <br>
- * 3. Populate the relation repository using {@link #addRelation
- * addRelation(...)}; <br>
- * 4. Execute {@link #compute compute()}; <br>
- * 5. Execute {@link #fitWithinBounds fitWithinBounds(...)}; <br>
- * 6. Query the computed results(node size and node position).
  *
  * @version 2.0
  * @author Ian Bull
@@ -280,8 +271,6 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 
 		/**
 		 * Gets the max time this algorithm will run for
-		 *
-		 * @return
 		 */
 		@SuppressWarnings("static-method")
 		public long getSpringTimeout() {
@@ -333,7 +322,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		/**
 		 * Sets the number of iterations to be used.
 		 *
-		 * @param gravitation The number of iterations.
+		 * @param iterations The number of iterations.
 		 */
 		@SuppressWarnings("static-method")
 		public void setIterations(int iterations) {
@@ -1134,8 +1123,6 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 
 	/**
 	 * Gets the max time this algorithm will run for
-	 *
-	 * @return
 	 */
 	public long getSpringTimeout() {
 		return maxTimeMS;
@@ -1182,7 +1169,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 	/**
 	 * Sets the number of iterations to be used.
 	 *
-	 * @param gravitation The number of iterations.
+	 * @param iterations The number of iterations.
 	 */
 	public void setIterations(int iterations) {
 		sprIterations = iterations;

@@ -609,7 +609,6 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm.Zest1, 
 	 *
 	 * @param x
 	 * @param y
-	 * @return
 	 */
 	protected DisplayIndependentPoint getLocalLocation(InternalNode[] entitiesToLayout, double x, double y,
 			DisplayIndependentRectangle realBounds) {

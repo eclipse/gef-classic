@@ -32,8 +32,8 @@ public interface LayoutListener {
 	 * is returned, it means that the receiving listener has intercepted this event.
 	 * Intercepted events will not be passed to the rest of the listeners. If the
 	 * event is not intercepted by any listener,
-	 * {@link LayoutAlgorithm#applyLayout() applyLayout()} will be called on the
-	 * context's main algorithm.LayoutListener
+	 * {@link LayoutAlgorithm#applyLayout(boolean) applyLayout(boolean)} will be
+	 * called on the context's main algorithm.LayoutListener
 	 *
 	 * @param context the layout context that fired the event
 	 * @param node    the node that has moved
@@ -50,8 +50,8 @@ public interface LayoutListener {
 	 * If true is returned, it means that the receiving listener has intercepted
 	 * this event. Intercepted events will not be passed to the rest of the
 	 * listeners. If the event is not intercepted by any listener,
-	 * {@link LayoutAlgorithm#applyLayout() applyLayout()} will be called on the
-	 * context's main algorithm.
+	 * {@link LayoutAlgorithm#applyLayout(boolean) applyLayout(boolean)} will be
+	 * called on the context's main algorithm.
 	 *
 	 * @param context the layout context that fired the event
 	 * @param node    the node that was resized
@@ -64,8 +64,8 @@ public interface LayoutListener {
 	 * within observed context. If true is returned, it means that the receiving
 	 * listener has intercepted this event. Intercepted events will not be passed to
 	 * the rest of the listeners. If the event is not intercepted by any listener,
-	 * {@link LayoutAlgorithm#applyLayout() applyLayout()} will be called on the
-	 * context's main algorithm.
+	 * {@link LayoutAlgorithm#applyLayout(boolean) applyLayout(boolean)} will be
+	 * called on the context's main algorithm.
 	 *
 	 * @param context  the layout context that fired the event
 	 * @param subgraph the subgraph that has moved
@@ -82,8 +82,8 @@ public interface LayoutListener {
 	 * If true is returned, it means that the receiving listener has intercepted
 	 * this event. Intercepted events will not be passed to the rest of the
 	 * listeners. If the event is not intercepted by any listener,
-	 * {@link LayoutAlgorithm#applyLayout() applyLayout()} will be called on the
-	 * context's main algorithm.
+	 * {@link LayoutAlgorithm#applyLayout(boolean) applyLayout(boolean)} will be
+	 * called on the context's main algorithm.
 	 *
 	 * @param context  the layout context that fired the event
 	 * @param subgraph the subgraph that was resized
