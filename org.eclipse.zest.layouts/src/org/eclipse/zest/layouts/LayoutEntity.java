@@ -32,8 +32,8 @@ import org.eclipse.zest.layouts.interfaces.NodeLayout;
 @Deprecated(since = "2.0", forRemoval = true)
 public interface LayoutEntity extends Comparable, LayoutItem {
 
-	public final static String ATTR_PREFERRED_WIDTH = "tree-preferred-width";
-	public final static String ATTR_PREFERRED_HEIGHT = "tree-preferred-height";
+	public final static String ATTR_PREFERRED_WIDTH = "tree-preferred-width"; //$NON-NLS-1$
+	public final static String ATTR_PREFERRED_HEIGHT = "tree-preferred-height"; //$NON-NLS-1$
 
 	public void setLocationInLayout(double x, double y);
 
