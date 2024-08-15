@@ -42,6 +42,7 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 	 * @noreference This class is not intended to be referenced by clients.
 	 * @noinstantiate This class is not intended to be instantiated by clients.
 	 */
+	@SuppressWarnings("unchecked")
 	@Deprecated(since = "2.0", forRemoval = true)
 	public static class Zest1 extends AbstractLayoutAlgorithm {
 
@@ -192,6 +193,7 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 			}
 		}
 
+		@SuppressWarnings("static-method")
 		protected int[] calculateNumberOfRowsAndCols_square(int numChildren, double boundX, double boundY,
 				double boundWidth, double boundHeight) {
 			int rows = Math.max(1, (int) Math.sqrt(numChildren * boundHeight / boundWidth));
@@ -241,6 +243,7 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 			return result;
 		}
 
+		@SuppressWarnings("static-method")
 		protected int[] calculateNumberOfRowsAndCols_rectangular(int numChildren) {
 			int rows = Math.max(1, (int) Math.ceil(Math.sqrt(numChildren)));
 			int cols = Math.max(1, (int) Math.ceil(Math.sqrt(numChildren)));
