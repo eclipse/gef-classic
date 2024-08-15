@@ -27,6 +27,7 @@ import java.util.List;
  * @noreference This class is not intended to be referenced by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
+@SuppressWarnings("rawtypes")
 @Deprecated(since = "2.0", forRemoval = true)
 public class LayoutIterationEvent {
 	private List relationshipsToLayout, entitiesToLayout;

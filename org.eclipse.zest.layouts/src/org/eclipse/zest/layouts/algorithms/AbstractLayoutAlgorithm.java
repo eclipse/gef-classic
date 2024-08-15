@@ -56,6 +56,7 @@ import org.eclipse.zest.layouts.progress.ProgressListener;
  * @noextend This class is not intended to be subclassed by clients.
  * @noreference This class is not intended to be referenced by clients.
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 @Deprecated(since = "2.0", forRemoval = true)
 public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm.Zest1, Stoppable {
 
@@ -74,9 +75,9 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm.Zest1, 
 	private double widthToHeightRatio;
 
 	class InternalComparator implements Comparator<InternalNode> {
-		Comparator externalComparator = null;
+		Comparator<LayoutEntity> externalComparator = null;
 
-		public InternalComparator(Comparator externalComparator) {
+		public InternalComparator(Comparator<LayoutEntity> externalComparator) {
 			this.externalComparator = externalComparator;
 		}
 
@@ -475,6 +476,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm.Zest1, 
 	 *
 	 * @param relationshipsToConsider
 	 */
+	@SuppressWarnings("static-method")
 	protected void updateBendPoints(InternalRelationship[] relationshipsToConsider) {
 		for (InternalRelationship relationship : relationshipsToConsider) {
 			List bendPoints = relationship.getBendPoints();
@@ -830,6 +832,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm.Zest1, 
 	 * nodes or not. If the size is not included, the bounds will only be guaranteed
 	 * to include the center of each node.
 	 */
+	@SuppressWarnings("static-method")
 	protected DisplayIndependentRectangle getLayoutBounds(InternalNode[] entitiesToLayout, boolean includeNodeSize) {
 		double rightSide = Double.MIN_VALUE;
 		double bottomSide = Double.MIN_VALUE;

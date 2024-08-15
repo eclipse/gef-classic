@@ -13,6 +13,7 @@
 package org.eclipse.zest.layouts.dataStructures;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.constraints.BasicEntityConstraint;
@@ -26,11 +27,12 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
  * @noreference This class is not intended to be referenced by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
+@SuppressWarnings("rawtypes")
 @Deprecated(since = "2.0", forRemoval = true)
 public class InternalNode implements Comparable, LayoutEntity {
 
 	private LayoutEntity entity = null;
-	private HashMap attributeMap = new HashMap();
+	private final Map<Object, Object> attributeMap = new HashMap<>();
 	BasicEntityConstraint basicEntityConstraint = new BasicEntityConstraint();
 
 	public InternalNode(LayoutEntity entity) {
@@ -150,11 +152,13 @@ public class InternalNode implements Comparable, LayoutEntity {
 
 	// TODO: Fix all these preferred stuff!!!!! NOW!
 
+	@SuppressWarnings("static-method")
 	public boolean hasPreferredWidth() {
 		return false;
 		// return enity.getAttributeInLayout(LayoutEntity.ATTR_PREFERRED_WIDTH) != null;
 	}
 
+	@SuppressWarnings("static-method")
 	public double getPreferredWidth() {
 		return 0.0;
 //	    if (hasPreferredWidth()) {
@@ -164,12 +168,14 @@ public class InternalNode implements Comparable, LayoutEntity {
 //	    }
 	}
 
+	@SuppressWarnings("static-method")
 	public boolean hasPreferredHeight() {
 		return false;
 		// return entity.getAttributeInLayout(LayoutEntity.ATTR_PREFERRED_HEIGHT) !=
 		// null;
 	}
 
+	@SuppressWarnings("static-method")
 	public double getPreferredHeight() {
 		return 0.0;
 //	    if (hasPreferredHeight()) {

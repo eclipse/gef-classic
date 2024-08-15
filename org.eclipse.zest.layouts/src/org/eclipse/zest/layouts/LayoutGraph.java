@@ -25,6 +25,7 @@ import java.util.List;
  * @noreference This interface is not intended to be referenced by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
+@SuppressWarnings("rawtypes")
 @Deprecated(since = "2.0", forRemoval = true)
 public interface LayoutGraph {
 

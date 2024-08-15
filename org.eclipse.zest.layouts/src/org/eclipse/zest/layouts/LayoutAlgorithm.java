@@ -29,6 +29,7 @@ import org.eclipse.zest.layouts.progress.ProgressListener;
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  */
+@SuppressWarnings("rawtypes")
 public interface LayoutAlgorithm {
 
 	/**
