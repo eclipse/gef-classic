@@ -85,9 +85,7 @@ public interface LayoutRelationship extends LayoutItem {
 	public void clearBendPoints();
 
 	/**
-	 * Classes should update the specirfied layout constraint if recognized
-	 *
-	 * @return
+	 * Classes should update the specified layout constraint if recognized
 	 */
 	public void populateLayoutConstraint(LayoutConstraint constraint);
 }

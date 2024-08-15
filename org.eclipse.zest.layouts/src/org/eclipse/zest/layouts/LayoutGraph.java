@@ -33,7 +33,6 @@ public interface LayoutGraph {
 	 * Adds a node to this graph.
 	 *
 	 * @param node The new node.
-	 * @return LayoutEntity The created node
 	 */
 	public void addEntity(LayoutEntity node);
 

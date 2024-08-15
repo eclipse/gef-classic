@@ -58,7 +58,6 @@ public interface LayoutContext {
 	 *
 	 * @param layoutEntity1
 	 * @param layoutEntity2
-	 * @return
 	 */
 	public ConnectionLayout[] getConnections(EntityLayout layoutEntity1, EntityLayout layoutEntity2);
 
@@ -111,8 +110,8 @@ public interface LayoutContext {
 
 	/**
 	 * Sets the main layout algorithm for this context. Main algorithm will be used
-	 * to relayout graph items using {@link LayoutAlgorithm#applyLayout()} after
-	 * every event that is not intercepted by any listener.
+	 * to relayout graph items using {@link LayoutAlgorithm#applyLayout(boolean)}
+	 * after every event that is not intercepted by any listener.
 	 *
 	 * @param algorithm
 	 */
