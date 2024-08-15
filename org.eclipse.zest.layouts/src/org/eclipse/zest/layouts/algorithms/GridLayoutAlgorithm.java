@@ -417,6 +417,7 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 		return calculateNumberOfRowsAndCols_rectangular(numChildren);
 	}
 
+	@SuppressWarnings("static-method")
 	protected int[] calculateNumberOfRowsAndCols_square(int numChildren, double boundX, double boundY,
 			double boundWidth, double boundHeight) {
 		int rows = Math.max(1, (int) Math.sqrt(numChildren * boundHeight / boundWidth));
@@ -467,6 +468,7 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 		return new int[] { cols, rows };
 	}
 
+	@SuppressWarnings("static-method")
 	protected int[] calculateNumberOfRowsAndCols_rectangular(int numChildren) {
 		int rows = Math.max(1, (int) Math.ceil(Math.sqrt(numChildren)));
 		int cols = Math.max(1, (int) Math.ceil(Math.sqrt(numChildren)));

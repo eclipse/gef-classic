@@ -132,7 +132,7 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 
 		public SubgraphLayout collapseAllChildrenIntoSubgraph(SubgraphLayout subgraph, boolean includeYourself) {
 			expanded = false;
-			ArrayList allChildren = new ArrayList();
+			List<NodeLayout> allChildren = new ArrayList<>();
 			LinkedList<SpaceTreeNode> nodesToVisit = new LinkedList<>();
 			nodesToVisit.addLast(this);
 			while (!nodesToVisit.isEmpty()) {
@@ -151,7 +151,7 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 				setSubgraph(null);
 				return null;
 			}
-			NodeLayout[] childrenArray = (NodeLayout[]) allChildren.toArray(new NodeLayout[allChildren.size()]);
+			NodeLayout[] childrenArray = allChildren.toArray(new NodeLayout[allChildren.size()]);
 			if (subgraph == null) {
 				subgraph = context.createSubgraph(childrenArray);
 				subgraph.setDirection(getSubgraphDirection());
