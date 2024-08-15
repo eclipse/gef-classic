@@ -132,7 +132,7 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 		 *                                layout can place the entities.
 		 * @param y                       The top side of the bounds in which the layout
 		 *                                can place the entities.
-		 * @param Width                   The width of the bounds in which the layout
+		 * @param width                   The width of the bounds in which the layout
 		 *                                can place the entities.
 		 * @param height                  The height of the bounds in which the layout
 		 *                                can place the entities.
@@ -683,7 +683,7 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 	}
 
 	/**
-	 * @param nodeSpaceSize the nodeSpaceSize to set
+	 * @param nodeSpace the nodeSpaceSize to set
 	 * @since 2.0
 	 */
 	public void setNodeSpace(Dimension nodeSpace) {

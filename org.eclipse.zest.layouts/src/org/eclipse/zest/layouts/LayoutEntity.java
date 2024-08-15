@@ -53,8 +53,6 @@ public interface LayoutEntity extends Comparable, LayoutItem {
 
 	/**
 	 * Classes should update the specified layout constraint if recognized
-	 *
-	 * @return
 	 */
 	public void populateLayoutConstraint(LayoutConstraint constraint);
 }

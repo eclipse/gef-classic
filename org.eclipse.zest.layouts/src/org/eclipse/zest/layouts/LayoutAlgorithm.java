@@ -126,10 +126,6 @@ public interface LayoutAlgorithm {
 		 */
 		public void setStyle(int style);
 
-		/**
-		 *
-		 * @return
-		 */
 		public int getStyle();
 
 		public void addEntity(LayoutEntity entity);
