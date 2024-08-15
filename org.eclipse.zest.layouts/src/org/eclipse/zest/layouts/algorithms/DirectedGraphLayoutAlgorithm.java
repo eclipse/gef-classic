@@ -17,7 +17,6 @@ package org.eclipse.zest.layouts.algorithms;
 import java.lang.reflect.Field;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -51,29 +50,6 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 	 */
 	@Deprecated(since = "2.0", forRemoval = true)
 	public static class Zest1 extends AbstractLayoutAlgorithm {
-
-		class ExtendedDirectedGraphLayout extends DirectedGraphLayout {
-
-			@Override
-			public void visit(DirectedGraph graph) {
-				Field field;
-				try {
-					field = DirectedGraphLayout.class.getDeclaredField("steps");
-					field.setAccessible(true);
-					Object object = field.get(this);
-					Deque<?> steps = (Deque<?>) object;
-					steps.remove(10);
-					steps.remove(9);
-					steps.remove(8);
-					steps.remove(2);
-					field.setAccessible(false);
-					super.visit(graph);
-				} catch (SecurityException | ReflectiveOperationException | IllegalArgumentException e) {
-					e.printStackTrace();
-				}
-			}
-
-		}
 
 		public Zest1(int styles) {
 			super(styles);
@@ -152,7 +128,7 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 
 	}
 
-	class ExtendedDirectedGraphLayout extends DirectedGraphLayout {
+	static class ExtendedDirectedGraphLayout extends DirectedGraphLayout {
 
 		@Override
 		public void visit(DirectedGraph graph) {
@@ -161,20 +137,14 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 				field = DirectedGraphLayout.class.getDeclaredField("steps");
 				field.setAccessible(true);
 				Object object = field.get(this);
-				List steps = (List) object;
-				// steps.remove(10);
-				// steps.remove(9);
-				// steps.remove(8);
-				// steps.remove(2);
+				Deque<?> steps = (Deque<?>) object;
+				steps.remove(10);
+				steps.remove(9);
+				steps.remove(8);
+				steps.remove(2);
 				field.setAccessible(false);
 				super.visit(graph);
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
+			} catch (SecurityException | ReflectiveOperationException | IllegalArgumentException e) {
 				e.printStackTrace();
 			}
 		}
@@ -227,7 +197,7 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 		if (!clean) {
 			return;
 		}
-		HashMap mapping = new HashMap();
+		Map<EntityLayout, Node> mapping = new HashMap<>();
 		DirectedGraph graph = new DirectedGraph();
 		EntityLayout[] entities = context.getEntities();
 		for (EntityLayout element : entities) {
@@ -238,8 +208,8 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 		}
 		ConnectionLayout[] connections = context.getConnections();
 		for (ConnectionLayout connection : connections) {
-			Node source = (Node) mapping.get(getEntity(connection.getSource()));
-			Node dest = (Node) mapping.get(getEntity(connection.getTarget()));
+			Node source = mapping.get(getEntity(connection.getSource()));
+			Node dest = mapping.get(getEntity(connection.getTarget()));
 			if (source != null && dest != null) {
 				Edge edge = new Edge(connection, source, dest);
 				graph.edges.add(edge);
@@ -259,7 +229,7 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 		}
 	}
 
-	private EntityLayout getEntity(NodeLayout node) {
+	private static EntityLayout getEntity(NodeLayout node) {
 		if (!node.isPruned()) {
 			return node;
 		}
