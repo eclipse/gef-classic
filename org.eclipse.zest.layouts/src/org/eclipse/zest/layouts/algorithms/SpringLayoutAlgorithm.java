@@ -231,6 +231,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @param move The move-control value.
 		 */
+		@SuppressWarnings("static-method")
 		public void setSpringMove(double move) {
 			sprMove = move;
 		}
@@ -241,6 +242,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @return The move-control value.
 		 */
+		@SuppressWarnings("static-method")
 		public double getSpringMove() {
 			return sprMove;
 		}
@@ -250,6 +252,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @param strain The strain-control value.
 		 */
+		@SuppressWarnings("static-method")
 		public void setSpringStrain(double strain) {
 			sprStrain = strain;
 		}
@@ -260,6 +263,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @return The strain-control value.
 		 */
+		@SuppressWarnings("static-method")
 		public double getSpringStrain() {
 			return sprStrain;
 		}
@@ -269,6 +273,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @param length The length-control value.
 		 */
+		@SuppressWarnings("static-method")
 		public void setSpringLength(double length) {
 			sprLength = length;
 		}
@@ -278,6 +283,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @return
 		 */
+		@SuppressWarnings("static-method")
 		public long getSpringTimeout() {
 			return maxTimeMS;
 		}
@@ -287,6 +293,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @param timeout
 		 */
+		@SuppressWarnings("static-method")
 		public void setSpringTimeout(long timeout) {
 			maxTimeMS = timeout;
 		}
@@ -297,6 +304,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @return The length-control value.
 		 */
+		@SuppressWarnings("static-method")
 		public double getSpringLength() {
 			return sprLength;
 		}
@@ -306,6 +314,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @param gravitation The gravitation-control value.
 		 */
+		@SuppressWarnings("static-method")
 		public void setSpringGravitation(double gravitation) {
 			sprGravitation = gravitation;
 		}
@@ -316,6 +325,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @return The gravitation-control value.
 		 */
+		@SuppressWarnings("static-method")
 		public double getSpringGravitation() {
 			return sprGravitation;
 		}
@@ -325,6 +335,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @param gravitation The number of iterations.
 		 */
+		@SuppressWarnings("static-method")
 		public void setIterations(int iterations) {
 			sprIterations = iterations;
 		}
@@ -334,6 +345,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @return The number of iterations.
 		 */
+		@SuppressWarnings("static-method")
 		public int getIterations() {
 			return sprIterations;
 		}
@@ -344,6 +356,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 *
 		 * @param random The random placement value.
 		 */
+		@SuppressWarnings("static-method")
 		public void setRandom(boolean random) {
 			sprRandom = random;
 		}
@@ -352,14 +365,17 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		 * Returns whether or not this SpringLayoutAlgorithm will layout the nodes
 		 * randomly before beginning iterations.
 		 */
+		@SuppressWarnings("static-method")
 		public boolean getRandom() {
 			return sprRandom;
 		}
 
+		@SuppressWarnings("static-method")
 		public void setWeight(String relType, double weight) {
 			relTypeToWeightMap.put(relType, Double.valueOf(weight));
 		}
 
+		@SuppressWarnings("static-method")
 		public double getWeight(String relType) {
 			Double weight = relTypeToWeightMap.get(relType);
 			return (weight == null) ? 1 : weight.doubleValue();
@@ -1201,27 +1217,21 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 
 	private long startTime = 0;
 
-	private int[] counter;
-
-	private int[] counterX;
-
-	private int[] counterY;
-
 	private void initLayout() {
 		entities = context.getEntities();
 		bounds = context.getBounds();
 		loadLocations();
 
 		srcDestToSumOfWeights = new double[entities.length][entities.length];
-		HashMap entityToPosition = new HashMap();
+		Map<EntityLayout, Integer> entityToPosition = new HashMap<>();
 		for (int i = 0; i < entities.length; i++) {
 			entityToPosition.put(entities[i], Integer.valueOf(i));
 		}
 
 		ConnectionLayout[] connections = context.getConnections();
 		for (ConnectionLayout connection : connections) {
-			Integer source = (Integer) entityToPosition.get(getEntity(connection.getSource()));
-			Integer target = (Integer) entityToPosition.get(getEntity(connection.getTarget()));
+			Integer source = entityToPosition.get(getEntity(connection.getSource()));
+			Integer target = entityToPosition.get(getEntity(connection.getTarget()));
 			if (source == null || target == null) {
 				continue;
 			}
@@ -1240,7 +1250,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 		startTime = System.currentTimeMillis();
 	}
 
-	private EntityLayout getEntity(NodeLayout node) {
+	private static EntityLayout getEntity(NodeLayout node) {
 		if (!node.isPruned()) {
 			return node;
 		}
@@ -1260,8 +1270,6 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 			sizeH = new double[length];
 			forcesX = new double[length];
 			forcesY = new double[length];
-			counterX = new int[length];
-			counterY = new int[length];
 		}
 		for (int i = 0; i < entities.length; i++) {
 			DisplayIndependentPoint location = entities[i].getLocation();
