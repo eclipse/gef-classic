@@ -43,36 +43,31 @@ public class HorizontalShiftAlgorithm implements LayoutAlgorithm {
 		if (!clean) {
 			return;
 		}
-		ArrayList rowsList = new ArrayList();
+		List<List<EntityLayout>> rowsList = new ArrayList<>();
 		EntityLayout[] entities = context.getEntities();
 
 		for (EntityLayout element : entities) {
 			addToRowList(element, rowsList);
 		}
 
-		Collections.sort(rowsList, (o1, o2) -> {
-			List a0 = (List) o1;
-			List a1 = (List) o2;
-			EntityLayout entity0 = (EntityLayout) a0.get(0);
-			EntityLayout entity1 = (EntityLayout) a1.get(0);
+		Collections.sort(rowsList, (a0, a1) -> {
+			EntityLayout entity0 = a0.get(0);
+			EntityLayout entity1 = a1.get(0);
 			return (int) (entity0.getLocation().y - entity1.getLocation().y);
 		});
 
-		Comparator entityComparator = (o1,
-				o2) -> (int) (((EntityLayout) o1).getLocation().y - ((EntityLayout) o2).getLocation().y);
+		Comparator<EntityLayout> entityComparator = (o1, o2) -> (int) (o1.getLocation().y - o2.getLocation().y);
 		DisplayIndependentRectangle bounds = context.getBounds();
 		int heightSoFar = 0;
 
-		for (Object element : rowsList) {
-			List currentRow = (List) element;
+		for (List<EntityLayout> currentRow : rowsList) {
 			Collections.sort(currentRow, entityComparator);
 
 			int i = 0;
 			int width = (int) (bounds.width / 2 - currentRow.size() * 75);
 
-			heightSoFar += ((EntityLayout) currentRow.get(0)).getSize().height + VSPACING;
-			for (Object element2 : currentRow) {
-				EntityLayout entity = (EntityLayout) element2;
+			heightSoFar += currentRow.get(0).getSize().height + VSPACING;
+			for (EntityLayout entity : currentRow) {
 				DisplayIndependentDimension size = entity.getSize();
 				i++;
 				entity.setLocation(width + 10 * i + size.width / 2, heightSoFar + size.height / 2);
@@ -86,19 +81,18 @@ public class HorizontalShiftAlgorithm implements LayoutAlgorithm {
 		this.context = context;
 	}
 
-	private void addToRowList(EntityLayout entity, ArrayList rowsList) {
+	private static void addToRowList(EntityLayout entity, List<List<EntityLayout>> rowsList) {
 		double layoutY = entity.getLocation().y;
 
-		for (Object element : rowsList) {
-			List currentRow = (List) element;
-			EntityLayout currentRowEntity = (EntityLayout) currentRow.get(0);
+		for (List<EntityLayout> currentRow : rowsList) {
+			EntityLayout currentRowEntity = currentRow.get(0);
 			double currentRowY = currentRowEntity.getLocation().y;
 			if (layoutY >= currentRowY - DELTA && layoutY <= currentRowY + DELTA) {
 				currentRow.add(entity);
 				return;
 			}
 		}
-		List newRow = new ArrayList();
+		List<EntityLayout> newRow = new ArrayList<>();
 		newRow.add(entity);
 		rowsList.add(newRow);
 	}
