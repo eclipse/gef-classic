@@ -220,7 +220,7 @@ public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
 		for (int level = 1; nodes.isEmpty() == false; level++) {
 			if (level > MAX_LAYERS) {
 				throw new RuntimeException(
-						"Graphical tree exceeds maximum depth of " + MAX_LAYERS + "! (Graph not directed? Cycles?)");
+						"Graphical tree exceeds maximum depth of " + MAX_LAYERS + "! (Graph not directed? Cycles?)"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			List<NodeLayout> layer = new ArrayList<>();
 			for (NodeLayout item : nodes) {

@@ -55,14 +55,14 @@ public class InternalRelationship implements LayoutRelationship {
 
 	public InternalNode getSource() {
 		if (this.source == null) {
-			throw new RuntimeException("Source is null");
+			throw new RuntimeException("Source is null"); //$NON-NLS-1$
 		}
 		return this.source;
 	}
 
 	public InternalNode getDestination() {
 		if (this.destination == null) {
-			throw new RuntimeException("Dest is null");
+			throw new RuntimeException("Dest is null"); //$NON-NLS-1$
 		}
 		return this.destination;
 	}

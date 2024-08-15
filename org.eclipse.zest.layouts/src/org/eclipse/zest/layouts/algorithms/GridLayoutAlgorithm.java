@@ -52,7 +52,7 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 
 		@Override
 		public void setLayoutArea(double x, double y, double width, double height) {
-			throw new RuntimeException("Operation not implemented");
+			throw new RuntimeException("Operation not implemented"); //$NON-NLS-1$
 		}
 
 		int rows, cols, numChildren;
