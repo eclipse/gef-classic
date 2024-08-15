@@ -134,7 +134,7 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 		public void visit(DirectedGraph graph) {
 			Field field;
 			try {
-				field = DirectedGraphLayout.class.getDeclaredField("steps");
+				field = DirectedGraphLayout.class.getDeclaredField("steps"); //$NON-NLS-1$
 				field.setAccessible(true);
 				Object object = field.get(this);
 				Deque<?> steps = (Deque<?>) object;

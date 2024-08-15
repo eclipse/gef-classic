@@ -47,7 +47,7 @@ public class DisplayIndependentPoint {
 
 	@Override
 	public String toString() {
-		return "(" + x + ", " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "(%d, %d)".formatted(x, y); //$NON-NLS-1$
 	}
 
 	/**

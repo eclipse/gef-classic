@@ -33,6 +33,6 @@ public class DisplayIndependentDimension {
 
 	@Override
 	public String toString() {
-		return "(" + width + ", " + height + ")";
+		return "(%d, %d)".formatted(width, height); //$NON-NLS-1$
 	}
 }

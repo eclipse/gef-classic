@@ -39,7 +39,7 @@ public class BoxLayoutAlgorithm extends GridLayoutAlgorithm {
 
 	public void setOrientation(int orientation) {
 		if ((orientation != HORIZONTAL) && (orientation != VERTICAL)) {
-			throw new RuntimeException("Invalid orientation: " + orientation);
+			throw new RuntimeException("Invalid orientation: " + orientation); //$NON-NLS-1$
 		}
 		this.orientation = orientation;
 	}

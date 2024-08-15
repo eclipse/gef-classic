@@ -229,7 +229,7 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 			case RIGHT_LEFT:
 				return node.getSize().height;
 			}
-			throw new RuntimeException("invalid direction");
+			throw new RuntimeException("invalid direction"); //$NON-NLS-1$
 		}
 
 		public double spaceRequiredForChildren() {
@@ -409,12 +409,12 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 		public String toString() {
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < depth; i++) {
-				sb.append(" ");
+				sb.append(" "); //$NON-NLS-1$
 			}
 			if (node != null) {
 				sb.append(node.toString());
 			}
-			sb.append("|" + this.order);
+			sb.append("|" + this.order); //$NON-NLS-1$
 			sb.append('\n');
 			for (SpaceTreeNode child : getChildren()) {
 				sb.append(child.toString());
@@ -602,7 +602,7 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 		private void moveNodeForward(SpaceTreeNode nodeToMove, double newPosition) {
 			int nodeIndex = nodes.indexOf(nodeToMove);
 			if (nodeIndex == -1) {
-				throw new IllegalArgumentException("node not on this layer");
+				throw new IllegalArgumentException("node not on this layer"); //$NON-NLS-1$
 			}
 			// move forward -> check space to the 'right'
 			NodeSnapshot[][] snapShot = takeSnapShot();
@@ -710,7 +710,7 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 		private void moveNodeBackward(SpaceTreeNode nodeToMove, double newPosition) {
 			int nodeIndex = nodes.indexOf(nodeToMove);
 			if (nodeIndex == -1) {
-				throw new IllegalArgumentException("node not on this layer");
+				throw new IllegalArgumentException("node not on this layer"); //$NON-NLS-1$
 			}
 			// move backward -> check space to the 'left'
 			// move and collapse until there's enough space
@@ -812,9 +812,9 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 		@Override
 		public String toString() {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append("Layer ").append(depth).append(": ");
+			buffer.append("Layer ").append(depth).append(": "); //$NON-NLS-1$//$NON-NLS-2$
 			for (SpaceTreeNode node : nodes) {
-				buffer.append(node.node).append(", ");
+				buffer.append(node.node).append(", "); //$NON-NLS-1$
 			}
 			return buffer.toString();
 		}
@@ -1085,7 +1085,7 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 		}
 		if ((direction != TOP_DOWN) && (direction != BOTTOM_UP) && (direction != LEFT_RIGHT)
 				&& (direction != RIGHT_LEFT)) {
-			throw new IllegalArgumentException("Invalid direction: " + direction);
+			throw new IllegalArgumentException("Invalid direction: " + direction); //$NON-NLS-1$
 		}
 		this.direction = direction;
 		directionChanged = true;

@@ -202,7 +202,7 @@ public class InternalNode implements Comparable, LayoutEntity {
 	 */
 	@Override
 	public String toString() {
-		return (entity != null ? entity.toString() : "");
+		return (entity != null ? entity.toString() : ""); //$NON-NLS-1$
 	}
 
 	double layoutHeight;

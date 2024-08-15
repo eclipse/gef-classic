@@ -703,7 +703,7 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 	public void setDirection(int direction) {
 		if ((direction != TOP_DOWN) && (direction != BOTTOM_UP) && (direction != LEFT_RIGHT)
 				&& (direction != RIGHT_LEFT)) {
-			throw new IllegalArgumentException("Invalid direction: " + direction);
+			throw new IllegalArgumentException("Invalid direction: " + direction); //$NON-NLS-1$
 		}
 		this.direction = direction;
 	}
