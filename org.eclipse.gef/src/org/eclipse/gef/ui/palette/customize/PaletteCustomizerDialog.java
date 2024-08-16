@@ -688,7 +688,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 		if (titleImage == null) {
 			titleImage = new Image(composite.getDisplay(),
-					ImageDescriptor.createFromFile(Internal.class, "icons/customizer_dialog_title.gif").getImageData()); //$NON-NLS-1$
+					ImageDescriptor.createFromFile(Internal.class, "icons/customizer_dialog_title.png").getImageData()); //$NON-NLS-1$
 			composite.addDisposeListener(e -> {
 				titleImage.dispose();
 				titleImage = null;
@@ -1156,8 +1156,8 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			}
 
 			setText(PaletteMessages.NEW_LABEL);
-			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/add.gif")); //$NON-NLS-1$
-			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/add-disabled.gif")); //$NON-NLS-1$
+			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/add.png")); //$NON-NLS-1$
+			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/add-disabled.png")); //$NON-NLS-1$
 		}
 
 		private void addActionToMenu(Menu parent, IAction action) {
