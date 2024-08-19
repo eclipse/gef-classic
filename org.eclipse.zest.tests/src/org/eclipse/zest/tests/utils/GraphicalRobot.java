@@ -15,9 +15,9 @@ package org.eclipse.zest.tests.utils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
@@ -28,10 +28,11 @@ import org.eclipse.draw2d.Clickable;
 /**
  * Utility class to simulate user events (clicks, etc.) on a {@link Graph}.
  */
-public class GraphicalRobot {
+public class GraphicalRobot extends SWTBot {
 	private final Graph graph;
 
 	public GraphicalRobot(Graph graph) {
+		super(graph.getShell());
 		this.graph = graph;
 	}
 
@@ -108,31 +109,9 @@ public class GraphicalRobot {
 	 * @param node The graph node to select.
 	 */
 	public void select(GraphNode node) {
-		graph.setSelection(new GraphItem[] { node });
-		select(graph);
-	}
-
-	/**
-	 * This method simulates a {@link SWT#Selection} event using the given
-	 * {@code widget}. Events are sent to the argument.
-	 *
-	 * @param widget The widget to select.
-	 */
-	@SuppressWarnings("static-method")
-	public void select(Widget widget) {
 		Event event = createMouseEvent(SWT.Selection, 1, 1);
-		widget.notifyListeners(event.type, event);
-	}
-
-	/**
-	 * This method simulates a {@link SWT#FocusOut} event using the given
-	 * {@code widget}. Events are sent to the argument.
-	 *
-	 * @param widget The widget whose focus has been lost.
-	 */
-	@SuppressWarnings("static-method")
-	public void focusOut(Widget widget) {
-		widget.notifyListeners(SWT.FocusOut, new Event());
+		graph.setSelection(new GraphItem[] { node });
+		graph.notifyListeners(event.type, event);
 	}
 
 	/**

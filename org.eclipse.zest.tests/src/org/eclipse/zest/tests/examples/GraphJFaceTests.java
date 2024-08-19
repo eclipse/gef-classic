@@ -19,8 +19,6 @@ import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.VarHandle;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.eclipse.swt.widgets.Button;
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.zest.core.viewers.GraphViewer;
@@ -175,8 +173,7 @@ public class GraphJFaceTests extends AbstractGraphTest {
 		assertEquals(graph.getConnections().size(), 3);
 		assertEquals(graph.getNodes().size(), 3);
 
-		Button refresh = findButtonByName(graph.getShell(), "Refresh");
-		robot.select(refresh);
+		robot.button("Refresh").click();
 
 		assertConnection(graph.getConnections().get(0), "Paper", "Rock");
 		assertConnection(graph.getConnections().get(1), "Scissors", "Paper");

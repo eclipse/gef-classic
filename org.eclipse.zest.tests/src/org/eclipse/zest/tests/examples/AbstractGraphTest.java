@@ -26,14 +26,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
 
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.zest.core.widgets.Graph;
@@ -51,7 +46,6 @@ import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 import org.eclipse.zest.tests.utils.GraphicalRobot;
 import org.eclipse.zest.tests.utils.Snippet;
-import org.eclipse.zest.tests.utils.WidgetVisitor;
 
 import org.eclipse.draw2d.EventDispatcher;
 import org.eclipse.draw2d.IFigure;
@@ -382,52 +376,6 @@ public abstract class AbstractGraphTest {
 	}
 
 	/**
-	 * @return the {@link Button} with given text.
-	 */
-	protected static Button findButtonByName(Shell shell, String text) {
-		return findWidget(shell, Button.class, b -> text.equals(b.getText()));
-	}
-
-	/**
-	 * @return the first {@link Text} in the given {@link Shell}.
-	 */
-	protected static Text findText(Shell shell) {
-		return findWidget(shell, Text.class, t -> true);
-	}
-
-	/**
-	 * @return the first {@link Canvas} in the given {@link Shell}.
-	 */
-	protected static Canvas findCanvas(Shell shell) {
-		return findWidget(shell, Canvas.class, t -> true);
-	}
-
-	/**
-	 * Convenience method for finding a given {@link Widget} in a {@link Shell}.
-	 * type.
-	 *
-	 * @return The first widget of type {@code T}, matching the predicate. Returns
-	 *         {@code null} if no such widget is found.
-	 */
-	private static <T extends Widget> T findWidget(Shell shell, Class<T> clazz, Predicate<T> predicate) {
-		AtomicReference<T> ref = new AtomicReference<>();
-		new WidgetVisitor() {
-			@Override
-			public boolean visit(Widget w) {
-				if (clazz.isAssignableFrom(w.getClass())) {
-					T widget = clazz.cast(w);
-					if (predicate.test(widget)) {
-						ref.set(widget);
-						return false;
-					}
-				}
-				return true;
-			}
-		}.traverse(shell);
-		return ref.get();
-	}
-
-	/**
 	 * Pumps the event loop for the given number of milliseconds. At least one
 	 * events loop will be executed.
 	 */
@@ -435,7 +383,7 @@ public abstract class AbstractGraphTest {
 		long start = System.currentTimeMillis();
 		do {
 			while (Display.getCurrent().readAndDispatch()) {
-				// do nothing
+				Thread.yield();
 			}
 		} while (System.currentTimeMillis() - start < time);
 	}

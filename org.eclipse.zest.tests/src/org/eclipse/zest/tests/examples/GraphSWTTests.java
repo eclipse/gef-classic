@@ -31,12 +31,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphContainer;
@@ -116,8 +118,7 @@ public class GraphSWTTests extends AbstractGraphTest {
 		AtomicInteger repaintCount = new AtomicInteger();
 		graph.addPaintListener(event -> repaintCount.incrementAndGet());
 
-		Button button = findButtonByName(graph.getShell(), "Animate");
-		robot.select(button);
+		robot.button("Animate").click();
 
 		assertTrue("Animation was likely not drawn!", repaintCount.get() > 0);
 		assertNoOverlap(graph);
@@ -172,28 +173,39 @@ public class GraphSWTTests extends AbstractGraphTest {
 
 			// The NodeSearchDialog should now be active
 			dialogShell = graph.getDisplay().getActiveShell();
-			Text text = findText(dialogShell);
-			Button next = findButtonByName(dialogShell, "Next");
+			SWTBot dialogRobot = new SWTBot(dialogShell);
+			SWTBotText textRobot = dialogRobot.text();
+			SWTBotButton buttonRobot = dialogRobot.button("Next");
 
-			text.setText("Paper");
-			robot.focusOut(text);
-			robot.select(next);
+			textRobot.setText("Paper");
+			focusOut(textRobot);
+			buttonRobot.click();
 			assertEquals(graph.getSelection(), List.of(node1));
 
-			text.setText("Rock");
-			robot.focusOut(text);
-			robot.select(next);
+			textRobot.setText("Rock");
+			focusOut(textRobot);
+			buttonRobot.click();
 			assertEquals(graph.getSelection(), List.of(node2));
 
-			text.setText("Scissor");
-			robot.focusOut(text);
-			robot.select(next);
+			textRobot.setText("Scissors");
+			focusOut(textRobot);
+			buttonRobot.click();
 			assertEquals(graph.getSelection(), List.of(node3));
 		} finally {
 			if (dialogShell != null) {
 				dialogShell.dispose();
 			}
 		}
+	}
+
+	/**
+	 * This method simulates a {@link SWT#FocusOut} event using the given
+	 * {@code widget}. Events are sent to the argument.
+	 *
+	 * @param widget The widget whose focus has been lost.
+	 */
+	private static void focusOut(SWTBotText robot) {
+		robot.widget.notifyListeners(SWT.FocusOut, new Event());
 	}
 
 	/**
@@ -418,10 +430,9 @@ public class GraphSWTTests extends AbstractGraphTest {
 		assertConnection(connection2, "Rock", "Scissors");
 		assertConnection(connection3, "Scissors", "Paper");
 
-		Button button = findButtonByName(graph.getShell(), "Change Curve");
 		for (int i = 0; i < 4; ++i) {
 			if (i > 0) {
-				robot.select(button);
+				robot.button("Change Curve").click();
 			}
 			// Old connection is removed and a new one is added
 			assertArc(graph.getConnections().get(2), i * 10 /* ° */);
@@ -692,12 +703,12 @@ public class GraphSWTTests extends AbstractGraphTest {
 		graph.selectAll();
 		waitEventLoop(0);
 
-		Button button = findButtonByName(graph.getShell(), "Take Screenshot");
-		robot.select(button);
+		robot.button("Take Screenshot").click();
 		waitEventLoop(0);
 
 		Shell popupShell = graph.getDisplay().getActiveShell();
-		Canvas popupCanvas = findCanvas(popupShell);
+		SWTBot popupRobot = new SWTBot(popupShell);
+		Canvas popupCanvas = popupRobot.canvas().widget;
 		Rectangle bounds = popupCanvas.getBounds();
 
 		GC gc = new GC(popupCanvas);
