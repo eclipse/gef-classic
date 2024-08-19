@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.eclipse.zest.layouts" version="2">
+    <resource path="src/org/eclipse/zest/layouts/algorithms/CompositeLayoutAlgorithm.java" type="org.eclipse.zest.layouts.algorithms.CompositeLayoutAlgorithm">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="LayoutAlgorithm"/>
+                <message_argument value="CompositeLayoutAlgorithm"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/zest/layouts/algorithms/DirectedGraphLayoutAlgorithm.java" type="org.eclipse.zest.layouts.algorithms.DirectedGraphLayoutAlgorithm">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="LayoutAlgorithm"/>
+                <message_argument value="DirectedGraphLayoutAlgorithm"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/zest/layouts/algorithms/GridLayoutAlgorithm.java" type="org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="LayoutAlgorithm"/>
+                <message_argument value="GridLayoutAlgorithm"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/zest/layouts/algorithms/HorizontalShiftAlgorithm.java" type="org.eclipse.zest.layouts.algorithms.HorizontalShiftAlgorithm">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="LayoutAlgorithm"/>
+                <message_argument value="HorizontalShiftAlgorithm"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/zest/layouts/algorithms/RadialLayoutAlgorithm.java" type="org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="LayoutAlgorithm"/>
+                <message_argument value="RadialLayoutAlgorithm"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/zest/layouts/algorithms/SpaceTreeLayoutAlgorithm.java" type="org.eclipse.zest.layouts.algorithms.SpaceTreeLayoutAlgorithm">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="LayoutAlgorithm"/>
+                <message_argument value="SpaceTreeLayoutAlgorithm"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/zest/layouts/algorithms/SpringLayoutAlgorithm.java" type="org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="LayoutAlgorithm"/>
+                <message_argument value="SpringLayoutAlgorithm"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/zest/layouts/algorithms/SugiyamaLayoutAlgorithm.java" type="org.eclipse.zest.layouts.algorithms.SugiyamaLayoutAlgorithm">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="LayoutAlgorithm"/>
+                <message_argument value="SugiyamaLayoutAlgorithm"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/zest/layouts/algorithms/TreeLayoutAlgorithm.java" type="org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="LayoutAlgorithm"/>
+                <message_argument value="TreeLayoutAlgorithm"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
