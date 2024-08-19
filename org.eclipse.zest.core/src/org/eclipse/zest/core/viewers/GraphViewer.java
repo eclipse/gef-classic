@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2010, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                           BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -29,12 +29,13 @@ import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.zest.core.viewers.internal.AbstractStructuredGraphViewer;
 import org.eclipse.zest.core.viewers.internal.GraphModelEntityFactory;
 import org.eclipse.zest.core.viewers.internal.GraphModelEntityRelationshipFactory;
 import org.eclipse.zest.core.viewers.internal.GraphModelFactory;
 import org.eclipse.zest.core.viewers.internal.IStylingGraphModelFactory;
+import org.eclipse.zest.core.viewers.internal.TreeModelEntityFactory;
 import org.eclipse.zest.core.viewers.internal.ZoomManager;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphItem;
@@ -45,14 +46,16 @@ import org.eclipse.zest.layouts.LayoutAlgorithm;
  * out, but do not continually update their layout locations.
  *
  * @author Ian Bull
+ *
  * @author Chris Callendar
+ *
+ * @noextend This class is not intended to be subclassed by clients.
  */
 public class GraphViewer extends AbstractStructuredGraphViewer implements ISelectionProvider {
 
 	protected Graph graph = null;
 	private IStylingGraphModelFactory modelFactory = null;
 	private List<ISelectionChangedListener> selectionChangedListeners = null;
-	ZoomManager zoomManager = null;
 
 	/**
 	 * Initializes the viewer.
@@ -70,6 +73,18 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	public void setControl(Graph graphModel) {
 		this.graph = graphModel;
+		hookControl(this.graph);
+	}
+
+	/**
+	 * Initializes the viewer.
+	 *
+	 * @param graph The initial graph widget
+	 * @since 1.13
+	 */
+	public GraphViewer(Graph graph) {
+		super(graph.getStyle());
+		this.graph = graph;
 		hookControl(this.graph);
 	}
 
@@ -102,6 +117,14 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 			}
 
 		});
+	}
+
+	@Override
+	protected void inputChanged(Object input, Object oldInput) {
+		graph.setDynamicLayout(false);
+		super.inputChanged(input, oldInput);
+		graph.setDynamicLayout(true);
+		graph.applyLayout();
 	}
 
 	/**
@@ -165,6 +188,9 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 			modelFactory = null;
 			super.setContentProvider(contentProvider);
 		} else if (contentProvider instanceof IGraphEntityRelationshipContentProvider) {
+			modelFactory = null;
+			super.setContentProvider(contentProvider);
+		} else if (contentProvider instanceof ITreeContentProvider) {
 			modelFactory = null;
 			super.setContentProvider(contentProvider);
 		} else {
@@ -269,20 +295,78 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * NOTE: If a layout algorithm is set in the receiver, layout is performed after
+	 * the refresh.
+	 */
+	@Override
+	public void refresh(Object element) {
+		boolean dynamicLayoutEnabled = graph.isDynamicLayoutEnabled();
+		graph.setDynamicLayout(false);
+		super.refresh(element);
+		graph.setDynamicLayout(dynamicLayoutEnabled);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * NOTE: If a layout algorithm is set in the receiver, layout is performed after
+	 * the refresh.
+	 */
+	@Override
+	public void refresh(Object element, boolean updateLabels) {
+		boolean dynamicLayoutEnabled = graph.isDynamicLayoutEnabled();
+		graph.setDynamicLayout(false);
+		super.refresh(element, updateLabels);
+		graph.setDynamicLayout(dynamicLayoutEnabled);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * NOTE: If a layout algorithm is set in the receiver, layout is performed after
+	 * the update.
+	 */
+	@Override
+	public void update(Object element, String[] properties) {
+		boolean dynamicLayoutEnabled = graph.isDynamicLayoutEnabled();
+		graph.setDynamicLayout(false);
+		super.update(element, properties);
+		graph.setDynamicLayout(dynamicLayoutEnabled);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * NOTE: If a layout algorithm is set in the receiver, layout is performed after
+	 * the update.
+	 */
+	@Override
+	public void update(Object[] elements, String[] properties) {
+		boolean dynamicLayoutEnabled = graph.isDynamicLayoutEnabled();
+		graph.setDynamicLayout(false);
+		super.update(elements, properties);
+		graph.setDynamicLayout(dynamicLayoutEnabled);
+	}
+
 	// @tag zest.bug.156286-Zooming.fix.experimental : expose the zoom manager
 	// for new actions.
 	@Override
 	protected ZoomManager getZoomManager() {
-		if (zoomManager == null) {
-			zoomManager = new ZoomManager(getGraphControl().getRootLayer(), getGraphControl().getViewport());
-		}
-		return zoomManager;
+		return getGraphControl().getZoomManager();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
+	 *
+	 * @noreference This method is not intended to be referenced by clients.
+	 *
+	 * @nooverride This method is not intended to be re-implemented or extended by
+	 * clients.
 	 */
 	@Override
 	protected IStylingGraphModelFactory getFactory() {
@@ -293,6 +377,8 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 				modelFactory = new GraphModelEntityFactory(this);
 			} else if (getContentProvider() instanceof IGraphEntityRelationshipContentProvider) {
 				modelFactory = new GraphModelEntityRelationshipFactory(this);
+			} else if (getContentProvider() instanceof ITreeContentProvider) {
+				modelFactory = new TreeModelEntityFactory(this);
 			}
 		}
 		return modelFactory;

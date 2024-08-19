@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada, Johannes Kepler University Linz
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
+ *                      Canada, Johannes Kepler University Linz and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -19,6 +19,15 @@ import org.eclipse.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 
+/**
+ * @deprecated No longer used in Zest 2.x. This class will be removed in a
+ *             future release in accordance with the two year deprecation
+ *             policy.
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noreference This class is not intended to be referenced by clients.
+ * @noinstantiate This class is not intended to be instantiated by clients.
+ */
+@Deprecated(since = "2.0", forRemoval = true)
 public class DynamicScreen {
 
 	private final TreeSet<InternalNode> xCoords = new TreeSet<>(new XComparator());

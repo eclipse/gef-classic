@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                      BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -85,11 +85,11 @@ public class SimpleSwingExample {
 	// private static final Color RELATIONSHIP_HIGHLIGHT_COLOR = new Color (255,
 	// 200, 125);
 
-	public static SpringLayoutAlgorithm SPRING = new SpringLayoutAlgorithm(LayoutStyles.NONE);
-	public static TreeLayoutAlgorithm TREE_VERT = new TreeLayoutAlgorithm(LayoutStyles.NONE);
+	public static SpringLayoutAlgorithm.Zest1 SPRING = new SpringLayoutAlgorithm.Zest1(LayoutStyles.NONE);
+	public static TreeLayoutAlgorithm.Zest1 TREE_VERT = new TreeLayoutAlgorithm.Zest1(LayoutStyles.NONE);
 	public static HorizontalTreeLayoutAlgorithm TREE_HORIZ = new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE);
-	public static RadialLayoutAlgorithm RADIAL = new RadialLayoutAlgorithm(LayoutStyles.NONE);
-	public static GridLayoutAlgorithm GRID = new GridLayoutAlgorithm(LayoutStyles.NONE);
+	public static RadialLayoutAlgorithm.Zest1 RADIAL = new RadialLayoutAlgorithm.Zest1(LayoutStyles.NONE);
+	public static GridLayoutAlgorithm.Zest1 GRID = new GridLayoutAlgorithm.Zest1(LayoutStyles.NONE);
 	public static HorizontalLayoutAlgorithm HORIZ = new HorizontalLayoutAlgorithm(LayoutStyles.NONE);
 	public static VerticalLayoutAlgorithm VERT = new VerticalLayoutAlgorithm(LayoutStyles.NONE);
 
@@ -126,7 +126,7 @@ public class SimpleSwingExample {
 	private JToggleButton btnAsynchronous;
 	private JButton btnStop;
 
-	private LayoutAlgorithm currentLayoutAlgorithm;
+	private LayoutAlgorithm.Zest1 currentLayoutAlgorithm;
 	protected String currentLayoutAlgorithmName;
 	protected SimpleNode selectedEntity;
 	protected Point mouseDownPoint;
@@ -138,7 +138,7 @@ public class SimpleSwingExample {
 
 	}
 
-	protected void addAlgorithm(LayoutAlgorithm algorithm, String name, boolean animate) {
+	protected void addAlgorithm(LayoutAlgorithm.Zest1 algorithm, String name, boolean animate) {
 		algorithms.add(algorithm);
 		algorithmNames.add(name);
 	}
@@ -196,11 +196,11 @@ public class SimpleSwingExample {
 
 		try {
 			SwingUtilities.invokeAndWait(() -> {
-				SPRING = new SpringLayoutAlgorithm(LayoutStyles.NONE);
-				TREE_VERT = new TreeLayoutAlgorithm(LayoutStyles.NONE);
+				SPRING = new SpringLayoutAlgorithm.Zest1(LayoutStyles.NONE);
+				TREE_VERT = new TreeLayoutAlgorithm.Zest1(LayoutStyles.NONE);
 				TREE_HORIZ = new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE);
-				RADIAL = new RadialLayoutAlgorithm(LayoutStyles.NONE);
-				GRID = new GridLayoutAlgorithm(LayoutStyles.NONE);
+				RADIAL = new RadialLayoutAlgorithm.Zest1(LayoutStyles.NONE);
+				GRID = new GridLayoutAlgorithm.Zest1(LayoutStyles.NONE);
 				HORIZ = new HorizontalLayoutAlgorithm(LayoutStyles.NONE);
 				VERT = new VerticalLayoutAlgorithm(LayoutStyles.NONE);
 
@@ -222,7 +222,7 @@ public class SimpleSwingExample {
 				addAlgorithm(VERT, "Vert", false);
 
 				for (int i = 0; i < algorithms.size(); i++) {
-					final LayoutAlgorithm algorithm = (LayoutAlgorithm) algorithms.get(i);
+					final LayoutAlgorithm.Zest1 algorithm = (LayoutAlgorithm.Zest1) algorithms.get(i);
 					final String algorithmName = (String) algorithmNames.get(i);
 					// final boolean algorithmAnimate =
 					// ((Boolean)algorithmAnimates.get(i)).booleanValue();
