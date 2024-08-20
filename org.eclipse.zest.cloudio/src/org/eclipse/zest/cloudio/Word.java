@@ -51,7 +51,7 @@ public class Word {
 	}
 
 	public void setFontData(FontData[] fontData) {
-		Assert.isLegal(fontData != null, "FontData-Array must not be null!");
+		Assert.isLegal(fontData != null, "FontData-Array must not be null!"); //$NON-NLS-1$
 		this.fontData = fontData.clone();
 	}
 
@@ -71,14 +71,14 @@ public class Word {
 	}
 
 	public void setColor(Color color) {
-		Assert.isLegal(color != null, "Color must not be null!");
-		Assert.isLegal(!color.isDisposed(), "Color is disposed!");
+		Assert.isLegal(color != null, "Color must not be null!"); //$NON-NLS-1$
+		Assert.isLegal(!color.isDisposed(), "Color is disposed!"); //$NON-NLS-1$
 		this.color = color;
 	}
 
 	public Color getColor() {
-		Assert.isLegal(color != null, "Color must not be null!");
-		Assert.isLegal(!color.isDisposed(), "Color is disposed!");
+		Assert.isLegal(color != null, "Color must not be null!"); //$NON-NLS-1$
+		Assert.isLegal(!color.isDisposed(), "Color is disposed!"); //$NON-NLS-1$
 		return color;
 	}
 
