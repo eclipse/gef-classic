@@ -1355,6 +1355,9 @@ public class Graph extends FigureCanvas implements IContainer2 {
 		synchronized (this) {
 			if (scheduledLayoutRunnable == null) {
 				Display.getDefault().asyncExec(scheduledLayoutRunnable = () -> {
+					if (Graph.this.isDisposed()) {
+						return;
+					}
 					int layoutStyle = 0;
 
 					if ((nodeStyle & ZestStyles.NODES_NO_LAYOUT_RESIZE) > 0) {
