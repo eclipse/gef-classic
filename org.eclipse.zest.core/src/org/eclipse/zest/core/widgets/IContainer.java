@@ -54,7 +54,7 @@ public interface IContainer {
 	 */
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout);
 
-	public List getNodes();
+	public List<? extends GraphNode> getNodes();
 
 	/* protected void highlightNode(GraphNode node); */
 
