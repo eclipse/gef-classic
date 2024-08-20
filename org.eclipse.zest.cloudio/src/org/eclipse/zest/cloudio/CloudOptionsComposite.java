@@ -223,6 +223,7 @@ public class CloudOptionsComposite extends Composite {
 		return buttons;
 	}
 
+	@SuppressWarnings("static-method")
 	protected Image createImageFromColor(RGB rgb, int size) {
 		Image image;
 		Color color = new Color(Display.getDefault(), rgb);
