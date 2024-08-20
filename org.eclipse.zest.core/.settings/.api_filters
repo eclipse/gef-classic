@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="org.eclipse.zest.core" version="2">
+    <resource path="src/org/eclipse/zest/core/widgets/GraphConnection.java" type="org.eclipse.zest.core.widgets.GraphConnection$GraphLayoutConnection">
+        <filter id="574619656">
+            <message_arguments>
+                <message_argument value="LayoutRelationship"/>
+                <message_argument value="GraphLayoutConnection"/>
+            </message_arguments>
+        </filter>
+        <filter id="640712815">
+            <message_arguments>
+                <message_argument value="LayoutBendPoint"/>
+                <message_argument value="GraphLayoutConnection"/>
+                <message_argument value="getIsControlPoint()"/>
+            </message_arguments>
+        </filter>
+        <filter id="640712815">
+            <message_arguments>
+                <message_argument value="LayoutBendPoint"/>
+                <message_argument value="GraphLayoutConnection"/>
+                <message_argument value="getX()"/>
+            </message_arguments>
+        </filter>
+        <filter id="640712815">
+            <message_arguments>
+                <message_argument value="LayoutBendPoint"/>
+                <message_argument value="GraphLayoutConnection"/>
+                <message_argument value="getY()"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/org/eclipse/zest/core/widgets/GraphContainer.java" type="org.eclipse.zest.core.widgets.GraphContainer">
         <filter id="572522506">
             <message_arguments>
