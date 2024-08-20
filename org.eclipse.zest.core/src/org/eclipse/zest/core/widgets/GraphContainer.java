@@ -15,7 +15,6 @@
 package org.eclipse.zest.core.widgets;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,6 +58,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  *
  * @author Sebastian Hollersbacher
  */
+@SuppressWarnings("removal")
 public class GraphContainer extends GraphNode implements IContainer2 {
 
 	private static final double SCALED_WIDTH = 300;
@@ -121,6 +121,7 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	/**
 	 * Custom figures cannot be set on a GraphContainer.
 	 */
+	@SuppressWarnings("static-method")
 	public void setCustomFigure(IFigure nodeFigure) {
 		throw new RuntimeException("Operation not supported:  Containers cannot have custom figures"); //$NON-NLS-1$
 	}
@@ -176,13 +177,11 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 		updateFigureForModel(getModelFigure());
 	}
 
-	private static void addNodeToOrderedList(List orderedNodeList, GraphNode node) {
-		Iterator orderedNodeIterator = orderedNodeList.iterator();
+	private static void addNodeToOrderedList(List<GraphNode> orderedNodeList, GraphNode node) {
 		int counter = 0;
-		while (orderedNodeIterator.hasNext()) {
+		for (GraphNode nextOrderedNode : orderedNodeList) {
 			// Look through the list of nodes below and find the right spot for
 			// this
-			GraphNode nextOrderedNode = (GraphNode) orderedNodeIterator.next();
 			if (nextOrderedNode.getLocation().y + nextOrderedNode.getBounds().height > node.getLocation().y
 					+ node.getBounds().height) {
 				break;
@@ -200,11 +199,9 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	 * @param yValue
 	 * @return
 	 */
-	private static List getOrderedNodesBelowY(List nodes, int yValue, GraphNode yValueNode) {
-		Iterator iterator = nodes.iterator();
-		LinkedList orderedNode = new LinkedList();
-		while (iterator.hasNext()) {
-			GraphNode node = (GraphNode) iterator.next();
+	private static List<GraphNode> getOrderedNodesBelowY(List<? extends GraphNode> nodes, int yValue, GraphNode yValueNode) {
+		LinkedList<GraphNode> orderedNode = new LinkedList<>();
+		for (GraphNode node : nodes) {
 			if (node == yValueNode) {
 				continue;
 			}
@@ -214,12 +211,7 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 			}
 		}
 		// Convert this to an arrayList for faster access
-		List arrayList = new ArrayList();
-		iterator = orderedNode.iterator();
-		while (iterator.hasNext()) {
-			arrayList.add(iterator.next());
-		}
-		return arrayList;
+		return new ArrayList<>(orderedNode);
 	}
 
 	/**
@@ -265,14 +257,14 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	private void moveNodesUp(Rectangle containerBounds, GraphNode graphContainer) {
 
 		// Get all nodes below this container, in order
-		List orderedNodesBelowY = getOrderedNodesBelowY(parent.getNodes(), containerBounds.y, graphContainer);
+		List<GraphNode> orderedNodesBelowY = getOrderedNodesBelowY(parent.getNodes(), containerBounds.y, graphContainer);
 		int leftSide = containerBounds.x;
 		int rightSide = containerBounds.x + containerBounds.width;
-		List nodesToConsider = new LinkedList(orderedNodesBelowY);
+		List<GraphNode> nodesToConsider = new LinkedList<>(orderedNodesBelowY);
 		addNodeToOrderedList(orderedNodesBelowY, graphContainer);
 
 		while (!nodesToConsider.isEmpty()) {
-			GraphNode node = (GraphNode) nodesToConsider.get(0);
+			GraphNode node = nodesToConsider.get(0);
 			if (nodeInStripe(leftSide, rightSide, node)) {
 				leftSide = Math.min(leftSide, node.getBounds().x);
 				rightSide = Math.max(rightSide, node.getBounds().x + node.getBounds().width);
@@ -287,7 +279,7 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 				}
 				int j = i - 1;
 				while (j >= 0) {
-					GraphNode pastNode = (GraphNode) orderedNodesBelowY.get(j);
+					GraphNode pastNode = orderedNodesBelowY.get(j);
 					// if (nodeInStripe(leftSide, rightSide, pastNode)) {
 					if (nodeInStripe(node.getBounds().x, node.getBounds().x + node.getBounds().width, pastNode)) {
 						previousNode = pastNode;
@@ -356,20 +348,18 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	private void moveNodesDown(Rectangle containerBounds, GraphContainer graphContainer) {
 
 		// Find all nodes below here
-		List nodesBelowHere = getOrderedNodesBelowY(parent.getNodes(), containerBounds.y, graphContainer);
-		Iterator nodesBelowHereIterator = nodesBelowHere.iterator();
-		List nodesToMove = new LinkedList();
+		List<GraphNode> nodesBelowHere = getOrderedNodesBelowY(parent.getNodes(), containerBounds.y, graphContainer);
+		List<GraphNode> nodesToMove = new LinkedList<>();
 		int left = containerBounds.x;
 		int right = containerBounds.x + containerBounds.width;
-		while (nodesBelowHereIterator.hasNext()) {
-			GraphNode node = (GraphNode) nodesBelowHereIterator.next();
+		for (GraphNode node : nodesBelowHere) {
 			if (nodeInStripe(left, right, node)) {
 				nodesToMove.add(node);
 				left = Math.min(left, node.getBounds().x);
 				right = Math.max(right, node.getBounds().x + node.getBounds().width);
 			}
 		}
-		List intersectingNodes = intersectingNodes(containerBounds, nodesToMove, graphContainer);
+		List<GraphNode> intersectingNodes = intersectingNodes(containerBounds, nodesToMove, graphContainer);
 		int delta = getMaxMovement(containerBounds, intersectingNodes);
 		if (delta > 0) {
 			shiftNodesDown(nodesToMove, delta);
@@ -403,11 +393,9 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	 * @param nodesToCheck
 	 * @return
 	 */
-	private List intersectingNodes(Rectangle bounds, List nodesToCheck, GraphNode node) {
-		List result = new LinkedList();
-		Iterator nodes = nodesToCheck.iterator();
-		while (nodes.hasNext()) {
-			GraphNode nodeToCheck = (GraphNode) nodes.next();
+	private static List<GraphNode> intersectingNodes(Rectangle bounds, List<GraphNode> nodesToCheck, GraphNode node) {
+		List<GraphNode> result = new LinkedList<>();
+		for (GraphNode nodeToCheck : nodesToCheck) {
 			if (node == nodeToCheck) {
 				continue;
 			}
@@ -426,11 +414,9 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	 * @param nodesToMove
 	 * @return
 	 */
-	private int getMaxMovement(Rectangle bounds, List nodesToMove) {
-		Iterator iterator = nodesToMove.iterator();
+	private static int getMaxMovement(Rectangle bounds, List<GraphNode> nodesToMove) {
 		int maxMovement = 0;
-		while (iterator.hasNext()) {
-			GraphNode node = (GraphNode) iterator.next();
+		for (GraphNode node : nodesToMove) {
 			int yValue = node.getLocation().y;
 			int distanceFromBottom = (bounds.y + bounds.height) - yValue;
 			maxMovement = Math.max(maxMovement, distanceFromBottom);
@@ -444,11 +430,8 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	 * @param nodesToShift
 	 * @param amount
 	 */
-	private void shiftNodesDown(List nodesToShift, int amount) {
-		Iterator iterator = nodesToShift.iterator();
-		while (iterator.hasNext()) {
-			GraphNode node = (GraphNode) iterator.next();
-
+	private static void shiftNodesDown(List<GraphNode> nodesToShift, int amount) {
+		for (GraphNode node : nodesToShift) {
 			node.setLocation(node.getLocation().x, node.getLocation().y + amount);
 		}
 	}
@@ -531,7 +514,6 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	 *
 	 */
 	@Override
-	@SuppressWarnings("removal")
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
 		this.layoutAlgorithm = algorithm;
 		if (!(layoutAlgorithm instanceof LayoutAlgorithm.Zest1)) {
@@ -805,14 +787,14 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 		return containerFigure;
 	}
 
-	private void registerToParent(IContainer parent) {
+	private static void registerToParent(IContainer parent) {
 		if (parent.getItemType() == GRAPH) {
 			createSelectionListener();
 			parent.getGraph().addSelectionListener(selectionListener);
 		}
 	}
 
-	private void createSelectionListener() {
+	private static void createSelectionListener() {
 		if (selectionListener == null) {
 			selectionListener = new SelectionListener() {
 				@Override
@@ -959,7 +941,7 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	 * @since 1.12
 	 */
 	@Override
-	public List getConnections() {
+	public List<GraphConnection> getConnections() {
 		return filterConnections(getGraph().getConnections());
 
 	}
@@ -971,10 +953,9 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 		}
 	}
 
-	private List filterConnections(List connections) {
-		List result = new ArrayList();
-		for (Object connection2 : connections) {
-			GraphConnection connection = (GraphConnection) connection2;
+	private List<GraphConnection> filterConnections(List<? extends GraphConnection> connections) {
+		List<GraphConnection> result = new ArrayList<>();
+		for (GraphConnection connection : connections) {
 			if (connection.getSource().getParent() == this && connection.getDestination().getParent() == this) {
 				result.add(connection);
 			}
