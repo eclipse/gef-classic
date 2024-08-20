@@ -82,7 +82,7 @@ public class SmallRect {
 
 	@Override
 	public String toString() {
-		return "Rectangle {" + x + ", " + y + ", " + width + ", " + height + "}";
+		return "Rectangle {%d, %d, %d, %d}".formatted(x, y, width, height); //$NON-NLS-1$
 	}
 
 }

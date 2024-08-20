@@ -223,13 +223,13 @@ public class TagCloud extends Canvas {
 	 */
 	public TagCloud(Composite parent, int style, int accuracy, int maxSize) {
 		super(parent, style);
-		Assert.isLegal(accuracy > 0, "Parameter accuracy must be greater than 0, but was " + accuracy);
-		Assert.isLegal(maxSize > 0, "Parameter maxSize must be greater than 0, but was " + maxSize);
+		Assert.isLegal(accuracy > 0, "Parameter accuracy must be greater than 0, but was " + accuracy); //$NON-NLS-1$
+		Assert.isLegal(maxSize > 0, "Parameter maxSize must be greater than 0, but was " + maxSize); //$NON-NLS-1$
 		int tmp = maxSize;
 		while (tmp > accuracy) {
 			tmp /= 2;
 		}
-		Assert.isLegal(tmp == accuracy, "Paramter maxSize must be a ");
+		Assert.isLegal(tmp == accuracy, "Paramter maxSize must be a "); //$NON-NLS-1$
 		this.accuracy = accuracy;
 		this.maxSize = maxSize;
 		cloudArea = new Rectangle(0, 0, maxSize, maxSize);
@@ -448,7 +448,7 @@ public class TagCloud extends Canvas {
 	protected void calcExtents(IProgressMonitor monitor) {
 		checkWidget();
 		if (monitor != null) {
-			monitor.subTask("Calculating word boundaries...");
+			monitor.subTask(Messages.TagCloud_CalculatingWordBoundaries);
 		}
 		if (wordsToUse == null) {
 			return;
@@ -578,7 +578,7 @@ public class TagCloud extends Canvas {
 	protected int layoutWords(Collection<Word> wordsToUse, IProgressMonitor monitor) {
 		checkWidget();
 		if (monitor != null) {
-			monitor.subTask("Placing words...");
+			monitor.subTask(Messages.TagCloud_PlacingWords);
 		}
 		Rectangle r = new Rectangle(Integer.MAX_VALUE, Integer.MAX_VALUE, 0, 0);
 		final Rectangle cloudArea = getCloudArea();
@@ -601,7 +601,7 @@ public class TagCloud extends Canvas {
 				Point point = layouter.getInitialOffset(word, cloudArea);
 				boolean result = layouter.layout(point, word, cloudArea, cloudMatrix);
 				if (!result) {
-					System.err.println("Failed to place " + word.string);
+					System.err.println("Failed to place " + word.string); //$NON-NLS-1$
 					continue;
 				}
 				success++;
@@ -688,18 +688,18 @@ public class TagCloud extends Canvas {
 	 */
 	public int setWords(List<Word> values, IProgressMonitor monitor) {
 		checkWidget();
-		Assert.isLegal(values != null, "List must not be null!");
+		Assert.isLegal(values != null, "List must not be null!"); //$NON-NLS-1$
 		for (Word word : values) {
-			Assert.isLegal(word != null, "Word must not be null!");
-			Assert.isLegal(word.string != null, "Word must define a string!");
-			Assert.isLegal(word.getColor() != null, "A word must define a color");
-			Assert.isLegal(word.getFontData() != null, "A word must define a fontdata array");
+			Assert.isLegal(word != null, "Word must not be null!"); //$NON-NLS-1$
+			Assert.isLegal(word.string != null, "Word must define a string!"); //$NON-NLS-1$
+			Assert.isLegal(word.getColor() != null, "A word must define a color"); //$NON-NLS-1$
+			Assert.isLegal(word.getFontData() != null, "A word must define a fontdata array"); //$NON-NLS-1$
 			Assert.isLegal(word.weight >= 0,
-					"Word weight must be between 0 and 1 (inclusive), but value was " + word.weight);
+					"Word weight must be between 0 and 1 (inclusive), but value was " + word.weight); //$NON-NLS-1$
 			Assert.isLegal(word.weight <= 1,
-					"Word weight must be between 0 and 1 (inclusive), but value was " + word.weight);
-			Assert.isLegal(word.angle >= -90, "Angle must be between -90 and +90 (inclusive), but was " + word.angle);
-			Assert.isLegal(word.angle <= 90, "Angle must be between -90 and +90 (inclusive), but was " + word.angle);
+					"Word weight must be between 0 and 1 (inclusive), but value was " + word.weight); //$NON-NLS-1$
+			Assert.isLegal(word.angle >= -90, "Angle must be between -90 and +90 (inclusive), but was " + word.angle); //$NON-NLS-1$
+			Assert.isLegal(word.angle <= 90, "Angle must be between -90 and +90 (inclusive), but was " + word.angle); //$NON-NLS-1$
 		}
 		this.wordsToUse = new ArrayList<>(values);
 		if (boost > 0) {
@@ -762,7 +762,7 @@ public class TagCloud extends Canvas {
 	}
 
 	private void resetMask() {
-		Word word = new Word("mask");
+		Word word = new Word("mask"); //$NON-NLS-1$
 		word.tree = new RectTree(new SmallRect(0, 0, cloudArea.width, cloudArea.height), accuracy);
 		calcWordExtents(word, mask);
 		word.tree.place(cloudMatrix, RectTree.BACKGROUND);
@@ -1042,7 +1042,7 @@ public class TagCloud extends Canvas {
 	 */
 	public void setSelection(Set<Word> words) {
 		checkWidget();
-		Assert.isNotNull(words, "Selection must not be null!");
+		Assert.isNotNull(words, "Selection must not be null!"); //$NON-NLS-1$
 		if (wordsToUse == null) {
 			return;
 		}
@@ -1109,14 +1109,14 @@ public class TagCloud extends Canvas {
 	 */
 	public void setSelectionColor(Color color) {
 		checkWidget();
-		Assert.isLegal(color != null, "Color must not be null!");
+		Assert.isLegal(color != null, "Color must not be null!"); //$NON-NLS-1$
 		this.highlightColor = color;
 	}
 
 	@Override
 	public void setBackground(Color color) {
 		checkWidget();
-		Assert.isLegal(color != null, "Color must not be null!");
+		Assert.isLegal(color != null, "Color must not be null!"); //$NON-NLS-1$
 		super.setBackground(color);
 	}
 
@@ -1143,8 +1143,8 @@ public class TagCloud extends Canvas {
 			}
 			placedWords = layoutWords(wordsToUse, monitor);
 		} catch (Exception e) {
-			MessageDialog.openError(getShell(), "Exception while layouting data",
-					"An exception occurred while layouting: " + e.getMessage());
+			MessageDialog.openError(getShell(), Messages.TagCloud_ErrorWhileLayouting_Title,
+					Messages.TagCloud_ErrorWhileLayouting_Message + e.getMessage());
 			e.printStackTrace();
 		}
 		// zoomFit();
@@ -1196,7 +1196,7 @@ public class TagCloud extends Canvas {
 	 */
 	public void setMaxFontSize(int maxSize) {
 		checkWidget();
-		Assert.isLegal(maxSize > 0, "Font Size must be greater than zero, but was " + maxSize + "!");
+		Assert.isLegal(maxSize > 0, "Font Size must be greater than zero, but was " + maxSize + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		maxFontSize = maxSize;
 	}
 
@@ -1208,8 +1208,8 @@ public class TagCloud extends Canvas {
 	 */
 	public void setOpacity(int opacity) {
 		checkWidget();
-		Assert.isLegal(opacity > 0, "Opacity must be greater than zero: " + opacity);
-		Assert.isLegal(opacity < 256, "Opacity must be less than 256: " + opacity);
+		Assert.isLegal(opacity > 0, "Opacity must be greater than zero: " + opacity); //$NON-NLS-1$
+		Assert.isLegal(opacity < 256, "Opacity must be less than 256: " + opacity); //$NON-NLS-1$
 		this.opacity = opacity;
 	}
 
@@ -1221,7 +1221,7 @@ public class TagCloud extends Canvas {
 	 */
 	public void setMinFontSize(int size) {
 		checkWidget();
-		Assert.isLegal(size > 0, "Font Size must be greater zero: " + size);
+		Assert.isLegal(size > 0, "Font Size must be greater zero: " + size); //$NON-NLS-1$
 		this.minFontSize = size;
 	}
 
@@ -1246,7 +1246,7 @@ public class TagCloud extends Canvas {
 	 */
 	public void setBoost(int boost) {
 		checkWidget();
-		Assert.isLegal(boost >= 0, "Boost cannot be negative");
+		Assert.isLegal(boost >= 0, "Boost cannot be negative"); //$NON-NLS-1$
 		this.boost = boost;
 	}
 
@@ -1367,7 +1367,7 @@ public class TagCloud extends Canvas {
 
 	public void setLayouter(ILayouter layouter) {
 		checkWidget();
-		Assert.isLegal(layouter != null, "Layouter must not be null!");
+		Assert.isLegal(layouter != null, "Layouter must not be null!"); //$NON-NLS-1$
 		this.layouter = layouter;
 	}
 

@@ -36,11 +36,11 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
-	public static final String ADD = "add.gif";
+	public static final String ADD = "add.gif"; //$NON-NLS-1$
 
-	public static final String REMOVE = "remove.gif";
+	public static final String REMOVE = "remove.gif"; //$NON-NLS-1$
 
-	public static final String TOGGLE_COLORS = "toggle_colors.gif";
+	public static final String TOGGLE_COLORS = "toggle_colors.gif"; //$NON-NLS-1$
 
 	/**
 	 * The constructor
@@ -65,7 +65,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	private void loadImage(ImageLoader il, String fileName) throws IOException {
-		InputStream stream = getBundle().getResource("img/" + fileName).openStream();
+		InputStream stream = getBundle().getResource("img/" + fileName).openStream(); //$NON-NLS-1$
 		ImageData[] data = il.load(stream);
 		Image image = new Image(Display.getDefault(), data[0]);
 		getImageRegistry().put(fileName, image);
