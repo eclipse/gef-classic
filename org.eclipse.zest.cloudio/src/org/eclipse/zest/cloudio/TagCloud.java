@@ -635,7 +635,6 @@ public class TagCloud extends Canvas {
 				e.printStackTrace();
 			}
 		}
-		// drawRects(gc);
 		gc.dispose();
 		if (success == 0) {
 			return success;
@@ -659,23 +658,6 @@ public class TagCloud extends Canvas {
 			monitor.worked(10);
 		}
 		return success;
-	}
-
-	/**
-	 * Test method to visualize the area occupied by each word.
-	 *
-	 * @param gc
-	 */
-	private void drawRects(GC gc) {
-		gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
-		gc.setAlpha(120);
-		for (int i = 0; i < maxSize; i += accuracy) {
-			for (int j = 0; j < maxSize; j += accuracy) {
-				if (!cloudMatrix.isEmpty(i / accuracy, j / accuracy)) {
-					gc.fillRectangle((i), (j), accuracy, accuracy);
-				}
-			}
-		}
 	}
 
 	/**
@@ -768,7 +750,7 @@ public class TagCloud extends Canvas {
 		word.tree.place(cloudMatrix, RectTree.BACKGROUND);
 	}
 
-	private int getNumberOfThreads() {
+	private static int getNumberOfThreads() {
 		return Runtime.getRuntime().availableProcessors();
 	}
 
@@ -990,7 +972,7 @@ public class TagCloud extends Canvas {
 		return me;
 	}
 
-	private void fireMouseEvent(MouseEvent me, int type, Set<EventListener> listeners) {
+	private static void fireMouseEvent(MouseEvent me, int type, Set<EventListener> listeners) {
 		for (EventListener listener : listeners) {
 			if (listener instanceof MouseListener ml) {
 				switch (type) {
