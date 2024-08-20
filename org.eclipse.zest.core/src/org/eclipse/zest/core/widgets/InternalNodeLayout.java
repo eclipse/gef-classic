@@ -15,6 +15,9 @@ package org.eclipse.zest.core.widgets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.swt.widgets.Item;
 
@@ -26,6 +29,7 @@ import org.eclipse.zest.layouts.interfaces.NodeLayout;
 import org.eclipse.zest.layouts.interfaces.SubgraphLayout;
 
 import org.eclipse.draw2d.FigureListener;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
@@ -37,14 +41,14 @@ class InternalNodeLayout implements NodeLayout {
 	 */
 	private final static FigureListener figureListener = source -> {
 		// hide figures of minimized nodes
-		GraphNode node = (GraphNode) InternalNodeLayout.figureToNode.get(source);
+		GraphNode node = InternalNodeLayout.figureToNode.get(source);
 		if (node.getLayout().isMinimized() && source.getSize().equals(0, 0)) {
 			source.setVisible(false);
 		} else {
 			source.setVisible(node.isVisible());
 		}
 	};
-	private final static HashMap figureToNode = new HashMap();
+	private final static Map<IFigure, GraphNode> figureToNode = new HashMap<>();
 
 	private DisplayIndependentPoint location;
 	private DisplayIndependentDimension size;
@@ -197,8 +201,8 @@ class InternalNodeLayout implements NodeLayout {
 		if (isPruned()) {
 			return new NodeLayout[0];
 		}
-		ArrayList result = new ArrayList();
-		HashSet addedSubgraphs = new HashSet();
+		List<EntityLayout> result = new ArrayList<>();
+		Set<SubgraphLayout> addedSubgraphs = new HashSet<>();
 		NodeLayout[] successingNodes = getSuccessingNodes();
 		for (NodeLayout successingNode : successingNodes) {
 			if (!successingNode.isPruned()) {
@@ -211,7 +215,7 @@ class InternalNodeLayout implements NodeLayout {
 				}
 			}
 		}
-		return (EntityLayout[]) result.toArray(new EntityLayout[result.size()]);
+		return result.toArray(new EntityLayout[result.size()]);
 	}
 
 	@Override
@@ -219,8 +223,8 @@ class InternalNodeLayout implements NodeLayout {
 		if (isPruned()) {
 			return new NodeLayout[0];
 		}
-		ArrayList result = new ArrayList();
-		HashSet addedSubgraphs = new HashSet();
+		List<EntityLayout> result = new ArrayList<>();
+		Set<SubgraphLayout> addedSubgraphs = new HashSet<>();
 		NodeLayout[] predecessingNodes = getPredecessingNodes();
 		for (NodeLayout predecessingNode : predecessingNodes) {
 			if (!predecessingNode.isPruned()) {
@@ -233,43 +237,39 @@ class InternalNodeLayout implements NodeLayout {
 				}
 			}
 		}
-		return (EntityLayout[]) result.toArray(new EntityLayout[result.size()]);
+		return result.toArray(new EntityLayout[result.size()]);
 	}
 
 	@Override
 	public ConnectionLayout[] getIncomingConnections() {
-		ArrayList result = new ArrayList();
-		for (Object element : node.getTargetConnections()) {
-			GraphConnection connection = (GraphConnection) element;
+		List<ConnectionLayout> result = new ArrayList<>();
+		for (GraphConnection connection : node.getTargetConnections()) {
 			if (!ownerLayoutContext.isLayoutItemFiltered(connection)) {
 				result.add(connection.getLayout());
 			}
 		}
-		for (Object element : node.getSourceConnections()) {
-			GraphConnection connection = (GraphConnection) element;
+		for (GraphConnection connection : node.getSourceConnections()) {
 			if (!connection.isDirected() && !ownerLayoutContext.isLayoutItemFiltered(connection)) {
 				result.add(connection.getLayout());
 			}
 		}
-		return (ConnectionLayout[]) result.toArray(new ConnectionLayout[result.size()]);
+		return result.toArray(new ConnectionLayout[result.size()]);
 	}
 
 	@Override
 	public ConnectionLayout[] getOutgoingConnections() {
-		ArrayList result = new ArrayList();
-		for (Object element : node.getSourceConnections()) {
-			GraphConnection connection = (GraphConnection) element;
+		List<ConnectionLayout> result = new ArrayList<>();
+		for (GraphConnection connection : node.getSourceConnections()) {
 			if (!ownerLayoutContext.isLayoutItemFiltered(connection)) {
 				result.add(connection.getLayout());
 			}
 		}
-		for (Object element : node.getTargetConnections()) {
-			GraphConnection connection = (GraphConnection) element;
+		for (GraphConnection connection : node.getTargetConnections()) {
 			if (!connection.isDirected() && !ownerLayoutContext.isLayoutItemFiltered(connection)) {
 				result.add(connection.getLayout());
 			}
 		}
-		return (ConnectionLayout[]) result.toArray(new ConnectionLayout[result.size()]);
+		return result.toArray(new ConnectionLayout[result.size()]);
 	}
 
 	@Override
