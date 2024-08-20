@@ -40,6 +40,7 @@ import org.eclipse.draw2d.IFigure;
  * @author Del Myers
  */
 // @tag bug(151327-Styles) : created to help resolve this bug
+@SuppressWarnings("removal")
 public class GraphItemStyler {
 	public static void styleItem(GraphItem item, final IBaseLabelProvider labelProvider) {
 
