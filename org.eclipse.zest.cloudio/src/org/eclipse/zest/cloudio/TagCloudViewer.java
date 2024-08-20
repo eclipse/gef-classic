@@ -150,6 +150,7 @@ public class TagCloudViewer extends ContentViewer {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				List<Object> data = new ArrayList<>();
+				@SuppressWarnings("unchecked")
 				Set<Word> selected = (Set<Word>) e.data;
 				for (Word word : selected) {
 					if (word.data != null) {
