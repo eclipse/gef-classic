@@ -89,7 +89,6 @@ public class DefaultLayouter implements ILayouter {
 	 *
 	 * @param word
 	 * @param cloudArea
-	 * @return
 	 */
 	@Override
 	public boolean layout(Point offset, final Word word, final Rectangle cloudArea, CloudMatrix mainTree) {

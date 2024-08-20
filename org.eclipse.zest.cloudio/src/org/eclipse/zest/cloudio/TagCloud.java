@@ -246,7 +246,7 @@ public class TagCloud extends Canvas {
 	/**
 	 * Creates a new Tag cloud on the given parent. To add scroll bars to the cloud,
 	 * use {@link SWT#HORIZONTAL} and {@link SWT#VERTICAL}. This is a shortcut to
-	 * {@link TagCloud#TagCloud(Composite, int, int, int), which sets the accuracy
+	 * {@link TagCloud#TagCloud(Composite, int, int, int)}, which sets the accuracy
 	 * to <code>5</code> and the maximum size of the drawable area to
 	 * <code>5120</code>.
 	 *
@@ -385,8 +385,6 @@ public class TagCloud extends Canvas {
 
 	/**
 	 * Returns the maximum cloud area.
-	 *
-	 * @return
 	 */
 	protected Rectangle getCloudArea() {
 		return cloudArea;
@@ -686,7 +684,7 @@ public class TagCloud extends Canvas {
 	 * starting with the element at position 0.
 	 *
 	 * @param values
-	 * @param maxWords
+	 * @param monitor
 	 */
 	public int setWords(List<Word> values, IProgressMonitor monitor) {
 		checkWidget();
@@ -1098,8 +1096,6 @@ public class TagCloud extends Canvas {
 
 	/**
 	 * Returns the set of selected elements. Never returns <code>null</code>.
-	 *
-	 * @return
 	 */
 	public Set<Word> getSelection() {
 		checkWidget();
@@ -1128,7 +1124,6 @@ public class TagCloud extends Canvas {
 	 * Does a full relayout of all displayed elements.
 	 *
 	 * @param monitor
-	 * @return
 	 */
 	public int layoutCloud(IProgressMonitor monitor, boolean recalc) {
 		checkWidget();
@@ -1234,8 +1229,6 @@ public class TagCloud extends Canvas {
 	 * Returns the {@link ImageData} of the text layer image (all rendered elements,
 	 * unscaled, without highlighted selection). Can be used to print or export the
 	 * cloud.
-	 *
-	 * @return
 	 */
 	public ImageData getImageData() {
 		checkWidget();

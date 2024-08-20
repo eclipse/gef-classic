@@ -231,8 +231,6 @@ public class TagCloudViewer extends ContentViewer {
 
 	/**
 	 * Returns the {@link TagCloud} managed by this viewer.
-	 *
-	 * @return
 	 */
 	public TagCloud getCloud() {
 		return cloud;
@@ -311,8 +309,6 @@ public class TagCloudViewer extends ContentViewer {
 	 * Sets the maximum number of elements which will be displayed by the cloud.
 	 * Note that there is no guarantee that this amount of elements will actually be
 	 * displayed, as this depends on additional factors.
-	 *
-	 * @return
 	 */
 	public void setMaxWords(int words) {
 		this.maxWords = words;
@@ -355,8 +351,6 @@ public class TagCloudViewer extends ContentViewer {
 	 * Returns the maximum number of elements which will be displayed by the cloud.
 	 * Note that there is no guarantee that this amount of elements will actually be
 	 * displayed, as this depends on additional factors.
-	 *
-	 * @return
 	 */
 	public int getMaxWords() {
 		return maxWords;
