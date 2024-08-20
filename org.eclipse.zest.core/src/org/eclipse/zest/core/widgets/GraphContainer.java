@@ -596,7 +596,7 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 				zest1.applyLayout(nodesToLayout, connectionsToLayout, 25, 25, d.width - 50, d.height - 50, false,
 						false);
 			} else {
-				layoutAlgorithm.applyLayout(false);
+				layoutAlgorithm.applyLayout(true);
 				layoutContext.flushChanges(false);
 			}
 			Animation.run(ANIMATION_TIME);
