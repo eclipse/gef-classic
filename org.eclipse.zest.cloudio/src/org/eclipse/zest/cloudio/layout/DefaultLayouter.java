@@ -28,9 +28,9 @@ import org.eclipse.zest.cloudio.util.RectTree;
  */
 public class DefaultLayouter implements ILayouter {
 
-	public static final String X_AXIS_VARIATION = "xaxis";
+	public static final String X_AXIS_VARIATION = "xaxis"; //$NON-NLS-1$
 
-	public static final String Y_AXIS_VARIATION = "yaxis";
+	public static final String Y_AXIS_VARIATION = "yaxis"; //$NON-NLS-1$
 
 	private final Random random = new Random();
 
@@ -93,7 +93,7 @@ public class DefaultLayouter implements ILayouter {
 	 */
 	@Override
 	public boolean layout(Point offset, final Word word, final Rectangle cloudArea, CloudMatrix mainTree) {
-		Assert.isLegal(word != null, "Word cannot be null!");
+		Assert.isLegal(word != null, "Word cannot be null!"); //$NON-NLS-1$
 		Point next = new Point(-word.width / 2, -word.height / 2);
 		next.x += random.nextInt(25);
 		next.y += random.nextInt(25);
@@ -139,19 +139,19 @@ public class DefaultLayouter implements ILayouter {
 	public void setOption(String optionName, Object object) {
 		if (X_AXIS_VARIATION.equals(optionName)) {
 			Integer value = (Integer) object;
-			Assert.isLegal(value >= 0, "Parameter must be between 0 and 100 (inclusive): " + value);
-			Assert.isLegal(value <= 100, "Parameter must be between 0 and 100 (inclusive): " + value);
+			Assert.isLegal(value >= 0, "Parameter must be between 0 and 100 (inclusive): " + value); //$NON-NLS-1$
+			Assert.isLegal(value <= 100, "Parameter must be between 0 and 100 (inclusive): " + value); //$NON-NLS-1$
 			this.xAxisVariation = value;
 			return;
 		}
 		if (Y_AXIS_VARIATION.equals(optionName)) {
 			Integer value = (Integer) object;
-			Assert.isLegal(value >= 0, "Parameter must be between 0 and 100 (inclusive): " + value);
-			Assert.isLegal(value <= 100, "Parameter must be between 0 and 100 (inclusive): " + value);
+			Assert.isLegal(value >= 0, "Parameter must be between 0 and 100 (inclusive): " + value); //$NON-NLS-1$
+			Assert.isLegal(value <= 100, "Parameter must be between 0 and 100 (inclusive): " + value); //$NON-NLS-1$
 			this.yAxisVariation = value;
 			return;
 		}
-		System.err.println("Unrecognized option: " + optionName);
+		System.err.println("Unrecognized option: " + optionName); //$NON-NLS-1$
 	}
 
 }

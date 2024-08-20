@@ -62,8 +62,8 @@ public class TagCloudViewer extends ContentViewer {
 	 * @param cloud
 	 */
 	public TagCloudViewer(TagCloud cloud) {
-		Assert.isLegal(cloud != null, "TagCloud must not be null!");
-		Assert.isLegal(!cloud.isDisposed(), "TagCloud must not be disposed!");
+		Assert.isLegal(cloud != null, "TagCloud must not be null!"); //$NON-NLS-1$
+		Assert.isLegal(!cloud.isDisposed(), "TagCloud must not be disposed!"); //$NON-NLS-1$
 		this.cloud = cloud;
 		initListeners();
 	}
@@ -281,17 +281,17 @@ public class TagCloudViewer extends ContentViewer {
 			word.setFontData(labelProvider.getFontData(element));
 			word.angle = labelProvider.getAngle(element);
 			word.data = element;
-			Assert.isLegal(word.string != null, "Labelprovider must return a String for each element");
-			Assert.isLegal(word.getColor() != null, "Labelprovider must return a Color for each element");
-			Assert.isLegal(word.getFontData() != null, "Labelprovider must return a FontData for each element");
+			Assert.isLegal(word.string != null, "Labelprovider must return a String for each element"); //$NON-NLS-1$
+			Assert.isLegal(word.getColor() != null, "Labelprovider must return a Color for each element"); //$NON-NLS-1$
+			Assert.isLegal(word.getFontData() != null, "Labelprovider must return a FontData for each element"); //$NON-NLS-1$
 			Assert.isLegal(word.weight >= 0,
-					"Labelprovider must return a weight between 0 and 1 (inclusive), but value was " + word.weight);
+					"Labelprovider must return a weight between 0 and 1 (inclusive), but value was " + word.weight); //$NON-NLS-1$
 			Assert.isLegal(word.weight <= 1,
-					"Labelprovider must return a weight between 0 and 1 (inclusive), but value was " + word.weight);
+					"Labelprovider must return a weight between 0 and 1 (inclusive), but value was " + word.weight); //$NON-NLS-1$
 			Assert.isLegal(word.angle >= -90,
-					"Angle of an element must be between -90 and +90 (inclusive), but was " + word.angle);
+					"Angle of an element must be between -90 and +90 (inclusive), but was " + word.angle); //$NON-NLS-1$
 			Assert.isLegal(word.angle <= 90,
-					"Angle of an element must be between -90 and +90 (inclusive), but was " + word.angle);
+					"Angle of an element must be between -90 and +90 (inclusive), but was " + word.angle); //$NON-NLS-1$
 			words.add(word);
 			i++;
 			word.id = i;
@@ -302,7 +302,7 @@ public class TagCloudViewer extends ContentViewer {
 		}
 		selection.clear();
 		if (monitor != null) {
-			monitor.subTask("Layouting...");
+			monitor.subTask(Messages.TagCloudViewer_Layouting);
 		}
 		cloud.setWords(words, monitor);
 	}

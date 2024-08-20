@@ -99,7 +99,7 @@ public class CloudOptionsComposite extends Composite {
 	public CloudOptionsComposite(Composite parent, int style, TagCloudViewer viewer) {
 		super(parent, style);
 		Assert.isLegal(viewer.getLabelProvider() instanceof IEditableCloudLabelProvider,
-				"Cloud label provider must be of type " + IEditableCloudLabelProvider.class);
+				"Cloud label provider must be of type " + IEditableCloudLabelProvider.class); //$NON-NLS-1$
 		this.viewer = viewer;
 		setLayout(new GridLayout());
 		addGroups();
@@ -161,7 +161,7 @@ public class CloudOptionsComposite extends Composite {
 		buttons.setLayout(new GridLayout(2, false));
 		buttons.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		Label l = new Label(buttons, SWT.NONE);
-		l.setText("Fonts");
+		l.setText(Messages.CloudOptionsComposite_Fonts);
 		GridData gd = new GridData();
 		gd.horizontalSpan = 2;
 		l.setLayoutData(gd);
@@ -185,7 +185,7 @@ public class CloudOptionsComposite extends Composite {
 		tv.setInput(fonts);
 		Button add = new Button(comp, SWT.FLAT);
 		add.setImage(Activator.getDefault().getImageRegistry().get(Activator.ADD));
-		add.setToolTipText("Add font...");
+		add.setToolTipText(Messages.CloudOptionsComposite_AddFonts);
 		add.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -204,7 +204,7 @@ public class CloudOptionsComposite extends Composite {
 			}
 		});
 		Button remove = new Button(comp, SWT.FLAT);
-		remove.setToolTipText("Remove selected fonts");
+		remove.setToolTipText(Messages.CloudOptionsComposite_RemoveSelectedFont);
 		remove.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -240,7 +240,7 @@ public class CloudOptionsComposite extends Composite {
 		buttons.setLayout(new GridLayout(2, false));
 		buttons.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		Label l = new Label(buttons, SWT.NONE);
-		l.setText("Colors");
+		l.setText(Messages.CloudOptionsComposite_Colors);
 		GridData gd = new GridData();
 		gd.horizontalSpan = 2;
 		l.setLayoutData(gd);
@@ -280,7 +280,7 @@ public class CloudOptionsComposite extends Composite {
 		tv.setInput(colors);
 		Button add = new Button(comp, SWT.FLAT);
 		add.setImage(Activator.getDefault().getImageRegistry().get(Activator.ADD));
-		add.setToolTipText("Add color...");
+		add.setToolTipText(Messages.CloudOptionsComposite_AddColor);
 		add.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -299,7 +299,7 @@ public class CloudOptionsComposite extends Composite {
 			}
 		});
 		Button remove = new Button(comp, SWT.FLAT);
-		remove.setToolTipText("Remove selected colors");
+		remove.setToolTipText(Messages.CloudOptionsComposite_RemoveSelectedColors);
 		remove.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -317,7 +317,7 @@ public class CloudOptionsComposite extends Composite {
 		});
 		remove.setImage(Activator.getDefault().getImageRegistry().get(Activator.REMOVE));
 		Button toggle = new Button(comp, SWT.FLAT);
-		toggle.setToolTipText("Toggle Colors");
+		toggle.setToolTipText(Messages.CloudOptionsComposite_ToggleColors);
 		toggle.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -340,7 +340,7 @@ public class CloudOptionsComposite extends Composite {
 		comp.setLayoutData(gd);
 		final Button bg = new Button(comp, SWT.FLAT);
 		bg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		bg.setText("Background");
+		bg.setText(Messages.CloudOptionsComposite_Background);
 		bg.setImage(createImageFromColor(viewer.getCloud().getBackground().getRGB(), 16));
 		bg.addSelectionListener(new SelectionListener() {
 
@@ -368,7 +368,7 @@ public class CloudOptionsComposite extends Composite {
 		});
 		final Button sel = new Button(comp, SWT.FLAT);
 		sel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		sel.setText("Selection");
+		sel.setText(Messages.CloudOptionsComposite_Selection);
 		sel.setImage(createImageFromColor(viewer.getCloud().getSelectionColor().getRGB(), 16));
 		sel.addSelectionListener(new SelectionListener() {
 
@@ -402,11 +402,11 @@ public class CloudOptionsComposite extends Composite {
 		buttons.setLayout(new GridLayout(2, true));
 		buttons.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		Label l = new Label(buttons, SWT.NONE);
-		l.setText("Number of Words");
+		l.setText(Messages.CloudOptionsComposite_NumberOfWords);
 		final Combo words = new Combo(buttons, SWT.DROP_DOWN | SWT.READ_ONLY);
 		words.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		words.setItems("100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300",
-				"1400", "1500", "1600", "1700", "1800", "1900", "2000");
+		words.setItems("100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
+				"1400", "1500", "1600", "1700", "1800", "1900", "2000"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		words.select(2);
 		words.addSelectionListener(new SelectionListener() {
 
@@ -422,10 +422,10 @@ public class CloudOptionsComposite extends Composite {
 		});
 
 		l = new Label(buttons, SWT.NONE);
-		l.setText("Max Font Size");
+		l.setText(Messages.CloudOptionsComposite_MaxFontSize);
 		final Combo font = new Combo(buttons, SWT.DROP_DOWN | SWT.READ_ONLY);
 		font.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		font.setItems("50", "100", "150", "200", "250", "300", "350", "400", "450", "500");
+		font.setItems("50", "100", "150", "200", "250", "300", "350", "400", "450", "500"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
 		font.select(1);
 		font.addSelectionListener(new SelectionListener() {
 
@@ -441,10 +441,10 @@ public class CloudOptionsComposite extends Composite {
 		});
 
 		l = new Label(buttons, SWT.NONE);
-		l.setText("Min Font Size");
+		l.setText(Messages.CloudOptionsComposite_MinFontSize);
 		final Combo minFont = new Combo(buttons, SWT.DROP_DOWN | SWT.READ_ONLY);
 		minFont.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		minFont.setItems("10", "15", "20", "25", "30", "35", "40", "45", "50");
+		minFont.setItems("10", "15", "20", "25", "30", "35", "40", "45", "50"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 		minFont.select(1);
 		minFont.addSelectionListener(new SelectionListener() {
 
@@ -460,10 +460,10 @@ public class CloudOptionsComposite extends Composite {
 		});
 
 		l = new Label(buttons, SWT.NONE);
-		l.setText("Boost");
+		l.setText(Messages.CloudOptionsComposite_Boost);
 		final Combo boost = new Combo(buttons, SWT.DROP_DOWN | SWT.READ_ONLY);
 		boost.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		boost.setItems("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+		boost.setItems("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
 		boost.select(0);
 		boost.addSelectionListener(new SelectionListener() {
 
@@ -479,10 +479,10 @@ public class CloudOptionsComposite extends Composite {
 		});
 
 		l = new Label(buttons, SWT.NONE);
-		l.setText("Boost Factor");
+		l.setText(Messages.CloudOptionsComposite_BoostFactor);
 		final Combo boostFactor = new Combo(buttons, SWT.DROP_DOWN | SWT.READ_ONLY);
 		boostFactor.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		boostFactor.setItems("1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5");
+		boostFactor.setItems("1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 		boostFactor.select(0);
 		boostFactor.addSelectionListener(new SelectionListener() {
 
@@ -502,11 +502,11 @@ public class CloudOptionsComposite extends Composite {
 		}
 
 		l = new Label(buttons, SWT.NONE);
-		l.setText("Angles");
+		l.setText(Messages.CloudOptionsComposite_Angles);
 		final Combo angles = new Combo(buttons, SWT.DROP_DOWN | SWT.READ_ONLY);
 		angles.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		angles.setItems("Horizontal only", "Vertical only", "Horizontal & Vertical", "45 Degrees, mostly horizontal",
-				"45 Degrees", "Random");
+		angles.setItems(Messages.CloudOptionsComposite_HorizontalOnly, Messages.CloudOptionsComposite_VerticalOnly, Messages.CloudOptionsComposite_HorizontalAndVertical, Messages.CloudOptionsComposite_Deg45Horizontal,
+				Messages.CloudOptionsComposite_Deg45, Messages.CloudOptionsComposite_Random);
 		final List<List<Float>> anglesLists = new ArrayList<>();
 		anglesLists.add(Arrays.asList(0F));
 		anglesLists.add(Arrays.asList(-90F, 90F));
