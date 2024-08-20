@@ -15,6 +15,8 @@ package org.eclipse.zest.core.widgets.internal;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
@@ -53,7 +55,7 @@ public class ZestRootLayer extends FreeformLayer {
 	 * figure is always put one position (or more if there's more than one
 	 * decoration for the same figure) after the decorated figure in children list.
 	 */
-	private final HashSet decoratingFigures = new HashSet();
+	private final Set<IFigure> decoratingFigures = new HashSet<>();
 
 	/**
 	 * If true, it indicates that a figure is added using a proper method and its
@@ -96,26 +98,26 @@ public class ZestRootLayer extends FreeformLayer {
 	}
 
 	private void changeFigureLayer(IFigure figure, int newLayer) {
-		ArrayList decorations = getDecorations(figure);
+		List<IFigure> decorations = getDecorations(figure);
 		remove(figure);
 
 		addFigure(figure, newLayer);
-		for (Object decoration : decorations) {
-			addDecoration(figure, (IFigure) decoration);
+		for (IFigure decoration : decorations) {
+			addDecoration(figure, decoration);
 		}
 
 		this.invalidate();
 		this.repaint();
 	}
 
-	private ArrayList getDecorations(IFigure figure) {
-		ArrayList result = new ArrayList();
+	private List<IFigure> getDecorations(IFigure figure) {
+		List<IFigure> result = new ArrayList<>();
 		int index = getChildren().indexOf(figure);
 		if (index == -1) {
 			return result;
 		}
 		for (index++; index < getChildren().size(); index++) {
-			Object nextFigure = getChildren().get(index);
+			IFigure nextFigure = getChildren().get(index);
 			if (!decoratingFigures.contains(nextFigure)) {
 				break;
 			}
@@ -187,10 +189,10 @@ public class ZestRootLayer extends FreeformLayer {
 			decoratingFigures.remove(child);
 			super.remove(child);
 		} else {
-			ArrayList decorations = getDecorations(child);
+			List<IFigure> decorations = getDecorations(child);
 			super.remove(child);
-			for (Object decoration : decorations) {
-				remove((IFigure) decoration);
+			for (IFigure decoration : decorations) {
+				remove(decoration);
 			}
 		}
 	}
