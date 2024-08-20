@@ -53,6 +53,7 @@ import org.eclipse.draw2d.geometry.Point;
  * @since 1.14
  * @noextend This class is not intended to be subclassed by clients.
  */
+@SuppressWarnings("removal")
 public abstract class AbstractStructuredGraphViewer extends AbstractZoomableViewer {
 	/**
 	 * Contains top-level styles for the entire graph. Set in the constructor. *
@@ -671,7 +672,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @param point1 must not be null
 	 * @param point2 may be null - in that case, point1 is returned
 	 */
-	private Point getTopLeftBoundary(Point point1, Point point2) {
+	private static Point getTopLeftBoundary(Point point1, Point point2) {
 		if (point2 != null) {
 			return new Point(Math.min(point1.x, point2.x), Math.min(point1.y, point2.y));
 		}

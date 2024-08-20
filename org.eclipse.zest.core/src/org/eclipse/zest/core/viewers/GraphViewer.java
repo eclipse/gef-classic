@@ -227,6 +227,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	@Override
 	protected void setSelectionToWidget(@SuppressWarnings("rawtypes") List l, boolean reveal) {
+		@SuppressWarnings("unchecked")
 		GraphItem[] listOfItems = findItems(l);
 		graph.setSelection(listOfItems);
 	}

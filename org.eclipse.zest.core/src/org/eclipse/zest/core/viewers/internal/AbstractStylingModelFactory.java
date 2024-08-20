@@ -44,6 +44,7 @@ import org.eclipse.draw2d.IFigure;
  */
 // @tag zest.bug.160367-Refreshing.fix : update the factory to use the
 // IStylingGraphModelFactory
+@SuppressWarnings("removal")
 public abstract class AbstractStylingModelFactory implements IStylingGraphModelFactory {
 	private AbstractStructuredGraphViewer viewer;
 	private int connectionStyle;
