@@ -28,11 +28,10 @@ public interface ILayouter {
 	 * Places the given word within the defined rectangle, starting at the initial
 	 * position.
 	 *
-	 * @param offset
+	 * @param initial
 	 * @param word
 	 * @param cloudArea
 	 * @param cloudMatrix
-	 * @return
 	 */
 	public boolean layout(Point initial, final Word word, final Rectangle cloudArea, CloudMatrix cloudMatrix);
 
@@ -43,7 +42,6 @@ public interface ILayouter {
 	 *
 	 * @param word
 	 * @param cloudArea
-	 * @return
 	 */
 	public Point getInitialOffset(Word word, Rectangle cloudArea);
 
