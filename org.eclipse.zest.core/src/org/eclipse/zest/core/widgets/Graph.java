@@ -109,7 +109,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	private final List<GraphNode> nodes;
 	protected List<GraphConnection> connections;
 	private List<GraphItem> selectedItems = null;
-	Set subgraphFigures;
+	Set<IFigure> subgraphFigures;
 	private HideNodeHelper hoverNode = null;
 	IFigure fisheyedFigure = null;
 	private final ArrayList fisheyeListeners = new ArrayList();

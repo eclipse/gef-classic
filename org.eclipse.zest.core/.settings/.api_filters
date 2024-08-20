@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="org.eclipse.zest.core" version="2">
     <resource path="src/org/eclipse/zest/core/widgets/GraphContainer.java" type="org.eclipse.zest.core.widgets.GraphContainer">
+        <filter id="572522506">
+            <message_arguments>
+                <message_argument value="Zest1"/>
+                <message_argument value="GraphContainer"/>
+            </message_arguments>
+        </filter>
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="IContainer2"/>
+                <message_argument value="GraphContainer"/>
+            </message_arguments>
+        </filter>
         <filter id="627060751">
             <message_arguments>
                 <message_argument value="ZestRootLayer"/>
