@@ -22,6 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
+
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.zest.layouts.interfaces.LayoutContext;
@@ -51,10 +53,6 @@ import org.eclipse.draw2d.geometry.Dimension;
  */
 @SuppressWarnings("javadoc")
 public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
-
-	// Tree direction constants
-	public final static int HORIZONTAL = 1;
-	public final static int VERTICAL = 2;
 
 	// Internal constants
 	private static final int MAX_LAYERS = 10;
@@ -160,10 +158,10 @@ public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
 	 *            {@link LayoutContext#getBounds()} if not set
 	 */
 	public SugiyamaLayoutAlgorithm(int dir, Dimension dim) {
-		if (dir == HORIZONTAL) {
-			direction = HORIZONTAL;
+		if (dir == SWT.HORIZONTAL) {
+			direction = SWT.HORIZONTAL;
 		} else {
-			direction = VERTICAL;
+			direction = SWT.VERTICAL;
 		}
 		dimension = dim;
 	}
@@ -173,7 +171,7 @@ public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
 	}
 
 	public SugiyamaLayoutAlgorithm() {
-		this(VERTICAL, null);
+		this(SWT.VERTICAL, null);
 	}
 
 	/*
@@ -392,7 +390,7 @@ public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
 		}
 		double dx = boundary.width / layers.size();
 		double dy = boundary.height / (last + 1);
-		if (direction == HORIZONTAL) {
+		if (direction == SWT.HORIZONTAL) {
 			for (NodeLayout node : context.getNodes()) {
 				NodeWrapper nw = map.get(node);
 				node.setLocation((nw.layer + 0.5d) * dx, (nw.index + 0.5d) * dy);
