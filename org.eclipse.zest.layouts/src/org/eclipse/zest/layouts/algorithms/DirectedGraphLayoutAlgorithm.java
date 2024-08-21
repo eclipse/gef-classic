@@ -150,17 +150,7 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 		}
 	}
 
-	/**
-	 * @since 2.0
-	 */
-	public static final int HORIZONTAL = 1;
-
-	/**
-	 * @since 2.0
-	 */
-	public static final int VERTICAL = 2;
-
-	private int orientation = VERTICAL;
+	private int orientation = SWT.VERTICAL;
 
 	private LayoutContext context;
 
@@ -171,7 +161,7 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 	}
 
 	public DirectedGraphLayoutAlgorithm(int orientation) {
-		if (orientation == VERTICAL) {
+		if (orientation == SWT.VERTICAL) {
 			this.orientation = orientation;
 		}
 	}
@@ -187,7 +177,7 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 	 * @since 2.0
 	 */
 	public void setOrientation(int orientation) {
-		if (orientation == HORIZONTAL || orientation == VERTICAL) {
+		if (orientation == SWT.HORIZONTAL || orientation == SWT.VERTICAL) {
 			this.orientation = orientation;
 		}
 	}
@@ -221,7 +211,7 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 		for (Object node2 : graph.nodes) {
 			Node node = (Node) node2;
 			EntityLayout entity = (EntityLayout) node.data;
-			if (orientation == VERTICAL) {
+			if (orientation == SWT.VERTICAL) {
 				entity.setLocation(node.x, node.y);
 			} else {
 				entity.setLocation(node.y, node.x);

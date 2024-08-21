@@ -12,6 +12,8 @@
  ******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
+import org.eclipse.swt.SWT;
+
 /**
  * Layout algorithm that places all elements in one column or one row, depending
  * on set orientation.
@@ -20,11 +22,7 @@ package org.eclipse.zest.layouts.algorithms;
  */
 public class BoxLayoutAlgorithm extends GridLayoutAlgorithm {
 
-	public static final int HORIZONTAL = 1;
-
-	public static final int VERTICAL = 2;
-
-	private int orientation = HORIZONTAL;
+	private int orientation = SWT.HORIZONTAL;
 
 	public BoxLayoutAlgorithm() {
 	}
@@ -38,7 +36,7 @@ public class BoxLayoutAlgorithm extends GridLayoutAlgorithm {
 	}
 
 	public void setOrientation(int orientation) {
-		if ((orientation != HORIZONTAL) && (orientation != VERTICAL)) {
+		if ((orientation != SWT.HORIZONTAL) && (orientation != SWT.VERTICAL)) {
 			throw new RuntimeException("Invalid orientation: " + orientation); //$NON-NLS-1$
 		}
 		this.orientation = orientation;
@@ -47,7 +45,7 @@ public class BoxLayoutAlgorithm extends GridLayoutAlgorithm {
 	@Override
 	protected int[] calculateNumberOfRowsAndCols(int numChildren, double boundX, double boundY, double boundWidth,
 			double boundHeight) {
-		if (orientation == HORIZONTAL) {
+		if (orientation == SWT.HORIZONTAL) {
 			return new int[] { numChildren, 1 };
 		}
 		return new int[] { 1, numChildren };
