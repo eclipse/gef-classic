@@ -64,37 +64,61 @@ public class ZestRootLayer extends FreeformLayer {
 	 */
 	private boolean isLayerKnown = false;
 
+	protected int getConnectionsLayer() {
+		return CONNECTIONS_LAYER;
+	}
+
+	protected int getSubgraphsLayer() {
+		return SUBGRAPHS_LAYER;
+	}
+
+	protected int getNodesLayer() {
+		return NODES_LAYER;
+	}
+
+	protected int getConnectionsHighlightedLayer() {
+		return CONNECTIONS_HIGHLIGHTED_LAYER;
+	}
+
+	protected int getNodesHighlightedLayer() {
+		return NODES_HIGHLIGHTED_LAYER;
+	}
+
+	protected int getTopLayer() {
+		return TOP_LAYER;
+	}
+
 	/**
 	 * Adds a node to the ZestRootLayer
 	 *
 	 * @param nodeFigure The figure representing the node
 	 */
 	public void addNode(IFigure nodeFigure) {
-		addFigure(nodeFigure, NODES_LAYER);
+		addFigure(nodeFigure, getNodesLayer());
 	}
 
 	public void addConnection(IFigure connectionFigure) {
-		addFigure(connectionFigure, CONNECTIONS_LAYER);
+		addFigure(connectionFigure, getConnectionsLayer());
 	}
 
 	public void addSubgraph(IFigure subgraphFigrue) {
-		addFigure(subgraphFigrue, SUBGRAPHS_LAYER);
+		addFigure(subgraphFigrue, getSubgraphsLayer());
 	}
 
 	public void highlightNode(IFigure nodeFigure) {
-		changeFigureLayer(nodeFigure, NODES_HIGHLIGHTED_LAYER);
+		changeFigureLayer(nodeFigure, getNodesHighlightedLayer());
 	}
 
 	public void highlightConnection(IFigure connectionFigure) {
-		changeFigureLayer(connectionFigure, CONNECTIONS_HIGHLIGHTED_LAYER);
+		changeFigureLayer(connectionFigure, getConnectionsHighlightedLayer());
 	}
 
 	public void unHighlightNode(IFigure nodeFigure) {
-		changeFigureLayer(nodeFigure, NODES_LAYER);
+		changeFigureLayer(nodeFigure, getNodesLayer());
 	}
 
 	public void unHighlightConnection(IFigure connectionFigure) {
-		changeFigureLayer(connectionFigure, CONNECTIONS_LAYER);
+		changeFigureLayer(connectionFigure, getConnectionsLayer());
 	}
 
 	private void changeFigureLayer(IFigure figure, int newLayer) {
