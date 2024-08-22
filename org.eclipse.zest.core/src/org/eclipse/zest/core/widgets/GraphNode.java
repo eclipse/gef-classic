@@ -107,12 +107,12 @@ public class GraphNode extends GraphItem {
 	private boolean hasCustomTooltip;
 
 	public GraphNode(IContainer graphModel, int style) {
-		this(graphModel, style, null);
+		this(graphModel, style, (Object) null);
 	}
 
 	/**
-	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)} and
-	 *             {@link #setData(Object)}
+	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int, IFigure)}
+	 *             instead.
 	 */
 	@Deprecated(since = "1.12", forRemoval = true)
 	public GraphNode(IContainer graphModel, int style, Object data) {
@@ -120,8 +120,15 @@ public class GraphNode extends GraphItem {
 	}
 
 	/**
+	 * @since 1.14
+	 */
+	public GraphNode(IContainer graphModel, int style, IFigure data) {
+		this(graphModel, style, "" /* text */, null /* image */, data); //$NON-NLS-1$
+	}
+
+	/**
 	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)} and
-	 *             {@link #setData(Object)}
+	 *             {@link #setText(String)}
 	 */
 	@Deprecated(since = "1.12", forRemoval = true)
 	public GraphNode(IContainer graphModel, int style, String text) {
@@ -129,8 +136,8 @@ public class GraphNode extends GraphItem {
 	}
 
 	/**
-	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)},
-	 *             {@link #setText(String)} and {@link #setData(Object)}
+	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int, IFigure)}
+	 *             and {@link #setText(String)}
 	 */
 	@Deprecated(since = "1.12", forRemoval = true)
 	public GraphNode(IContainer graphModel, int style, String text, Object data) {
@@ -147,9 +154,8 @@ public class GraphNode extends GraphItem {
 	}
 
 	/**
-	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)},
-	 *             {@link #setText(String)}, {@link #setImage(Image)} and
-	 *             {@link #setData(Object)}
+	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int, IFigure)},
+	 *             {@link #setText(String)} and {@link #setImage(Image)}.
 	 */
 	@Deprecated(since = "1.12", forRemoval = true)
 	public GraphNode(IContainer graphModel, int style, String text, Image image, Object data) {
