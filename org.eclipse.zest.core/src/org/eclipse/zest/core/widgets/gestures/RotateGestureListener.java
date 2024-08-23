@@ -12,7 +12,7 @@
 package org.eclipse.zest.core.widgets.gestures;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -20,6 +20,7 @@ import org.eclipse.swt.events.GestureEvent;
 import org.eclipse.swt.events.GestureListener;
 
 import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 import org.eclipse.draw2d.geometry.Point;
@@ -35,28 +36,26 @@ public class RotateGestureListener implements GestureListener {
 
 	Graph graph;
 	double rotate;
-	List /* <GraphNode> */ nodes;
-	List /* <Point> */ originalLocations;
+	List<? extends GraphNode> nodes;
+	List<Point> originalLocations;
 	double xCenter, yCenter;
 
-	void storePosition(List nodes) {
-		originalLocations = new ArrayList();
-		Iterator it = nodes.iterator();
+	private void storePosition() {
+		originalLocations = new ArrayList<>();
 		Transform t = new Transform();
 		t.setTranslation(-xCenter, -yCenter);
-		while (it.hasNext()) {
-			GraphNode node = (GraphNode) it.next();
+		for (GraphNode node : nodes) {
 			originalLocations.add(t.getTransformed(node.getLocation()));
 		}
 	}
 
-	void updatePositions(double rotation) {
+	private void updatePositions(double rotation) {
 		Transform t = new Transform();
 		t.setRotation(rotation);
 		t.setTranslation(xCenter, yCenter);
 		for (int i = 0; i < nodes.size(); i++) {
-			GraphNode node = (GraphNode) nodes.get(i);
-			Point p = (Point) originalLocations.get(i);
+			GraphNode node = nodes.get(i);
+			Point p = originalLocations.get(i);
 			Point rot = t.getTransformed(p);
 			node.setLocation(rot.preciseX(), rot.preciseY());
 		}
@@ -77,24 +76,22 @@ public class RotateGestureListener implements GestureListener {
 		case SWT.GESTURE_BEGIN:
 			graph = (Graph) e.widget;
 			rotate = 0.0;
-			nodes = graph.getSelection();
-			if (nodes.isEmpty()) {
+			List<? extends GraphItem> selection = graph.getSelection();
+			if (selection.isEmpty()) {
 				nodes = graph.getNodes();
+			} else {
+				nodes = tryGetNodes(selection);
 			}
 			xCenter = 0;// e.x;
 			yCenter = 0;// e.y;
-			Iterator it = nodes.iterator();
-			while (it.hasNext()) {
-				GraphNode node = (GraphNode) it.next();
+			for (GraphNode node : nodes) {
 				Point location = node.getLocation();
 				xCenter += location.preciseX();
 				yCenter += location.preciseY();
 			}
 			xCenter = xCenter / nodes.size();
 			yCenter = yCenter / nodes.size();
-			storePosition(nodes);
-			break;
-		case SWT.GESTURE_END:
+			storePosition();
 			break;
 		case SWT.GESTURE_ROTATE:
 			updatePositions(e.rotation / 2 / Math.PI);
@@ -102,6 +99,28 @@ public class RotateGestureListener implements GestureListener {
 		default:
 			// Do nothing
 		}
+	}
+
+	/**
+	 * Converts the given list of graph items to a list of graph nodes, if possible.
+	 * If the list only contains elements of type {@link GraphNode}, then calling
+	 * this method behaves like {@code (List<GraphNode>) selection} (just with
+	 * complexity O(n), rather than O(1)). If the list contains at least one
+	 * non-node (e.g. a connection), then an empty list is returned.<br>
+	 * In the context of this listener, it should not be possible to rotate a graph,
+	 * if at least one connection is selected, as its location is determined by its
+	 * source and destination node and can therefore not be rotated on its own.
+	 */
+	private static List<GraphNode> tryGetNodes(List<? extends GraphItem> selection) {
+		List<GraphNode> nodes = new ArrayList<>();
+		for (GraphItem item : selection) {
+			if (!(item instanceof GraphNode node)) {
+				// Both nodes and connections selected
+				return Collections.emptyList();
+			}
+			nodes.add(node);
+		}
+		return nodes;
 	}
 
 }

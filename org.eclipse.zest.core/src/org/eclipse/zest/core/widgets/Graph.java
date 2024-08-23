@@ -389,9 +389,9 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	}
 
 	/**
-	 * Gets the list of currently selected GraphNodes
+	 * Gets the list of currently selected graph items
 	 *
-	 * @return Currently selected graph node
+	 * @return Currently selected graph items
 	 */
 	public List<? extends GraphItem> getSelection() {
 		return selectedItems;
