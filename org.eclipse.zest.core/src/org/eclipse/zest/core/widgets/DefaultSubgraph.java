@@ -15,6 +15,7 @@ package org.eclipse.zest.core.widgets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.swt.graphics.Color;
@@ -50,11 +51,11 @@ public class DefaultSubgraph implements SubgraphLayout {
 	 * whole graph and throws every node intimageo it.
 	 */
 	public static class DefaultSubgraphFactory implements SubgraphFactory {
-		private final HashMap contextToSubgraph = new HashMap();
+		private final Map<LayoutContext, DefaultSubgraph> contextToSubgraph = new HashMap<>();
 
 		@Override
 		public SubgraphLayout createSubgraph(NodeLayout[] nodes, LayoutContext context) {
-			DefaultSubgraph subgraph = (DefaultSubgraph) contextToSubgraph.get(context);
+			DefaultSubgraph subgraph = contextToSubgraph.get(context);
 			if (subgraph == null) {
 				subgraph = new DefaultSubgraph(context);
 				contextToSubgraph.put(context, subgraph);
@@ -178,11 +179,11 @@ public class DefaultSubgraph implements SubgraphLayout {
 	 * whole graph and throws every node into it.
 	 */
 	public static class PrunedSuccessorsSubgraphFactory implements SubgraphFactory {
-		private final HashMap contextToSubgraph = new HashMap();
+		private final Map<LayoutContext, PrunedSuccessorsSubgraph> contextToSubgraph = new HashMap<>();
 
 		@Override
 		public SubgraphLayout createSubgraph(NodeLayout[] nodes, LayoutContext context) {
-			PrunedSuccessorsSubgraph subgraph = (PrunedSuccessorsSubgraph) contextToSubgraph.get(context);
+			PrunedSuccessorsSubgraph subgraph = contextToSubgraph.get(context);
 			if (subgraph == null) {
 				subgraph = new PrunedSuccessorsSubgraph(context);
 				contextToSubgraph.put(context, subgraph);
@@ -198,7 +199,7 @@ public class DefaultSubgraph implements SubgraphLayout {
 		 */
 		public void updateLabelForNode(InternalNodeLayout node) {
 			InternalLayoutContext context = node.getOwnerLayoutContext();
-			PrunedSuccessorsSubgraph subgraph = (PrunedSuccessorsSubgraph) contextToSubgraph.get(context);
+			PrunedSuccessorsSubgraph subgraph = contextToSubgraph.get(context);
 			if (subgraph == null) {
 				subgraph = new PrunedSuccessorsSubgraph(context);
 				contextToSubgraph.put(context, subgraph);
@@ -210,7 +211,7 @@ public class DefaultSubgraph implements SubgraphLayout {
 
 	protected final InternalLayoutContext context;
 
-	protected final Set nodes = new HashSet();
+	protected final Set<NodeLayout> nodes = new HashSet<>();
 
 	protected boolean disposed = false;
 
@@ -303,7 +304,7 @@ public class DefaultSubgraph implements SubgraphLayout {
 	}
 
 	public void removeDisposedNodes() {
-		for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
+		for (Iterator<NodeLayout> iterator = nodes.iterator(); iterator.hasNext();) {
 			InternalNodeLayout node = (InternalNodeLayout) iterator.next();
 			if (node.isDisposed()) {
 				iterator.remove();
@@ -315,7 +316,7 @@ public class DefaultSubgraph implements SubgraphLayout {
 	public NodeLayout[] getNodes() {
 		InternalNodeLayout[] result = new InternalNodeLayout[nodes.size()];
 		int i = 0;
-		for (Object node : nodes) {
+		for (NodeLayout node : nodes) {
 			result[i] = (InternalNodeLayout) node;
 			if (!context.isLayoutItemFiltered(result[i].getNode())) {
 				i++;
@@ -334,7 +335,7 @@ public class DefaultSubgraph implements SubgraphLayout {
 	public Item[] getItems() {
 		GraphNode[] result = new GraphNode[nodes.size()];
 		int i = 0;
-		for (Object node2 : nodes) {
+		for (NodeLayout node2 : nodes) {
 			InternalNodeLayout node = (InternalNodeLayout) node2;
 			// getItems always returns an array of size 1 in case of
 			// InternalNodeLayout
@@ -370,6 +371,7 @@ public class DefaultSubgraph implements SubgraphLayout {
 		}
 	}
 
+	@SuppressWarnings("static-method")
 	protected void refreshConnectionsVisibility(ConnectionLayout[] connections) {
 		for (ConnectionLayout connection : connections) {
 			connection.setVisible(!connection.getSource().isPruned() && !connection.getTarget().isPruned());
