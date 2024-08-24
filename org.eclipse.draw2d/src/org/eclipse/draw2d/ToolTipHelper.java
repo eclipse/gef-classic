@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2011 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -120,6 +120,11 @@ public class ToolTipHelper extends PopUpHelper {
 					.getExpanded(getShellTrimSize());
 			setShellBounds(displayPoint.x, displayPoint.y, shellSize.width, shellSize.height);
 			show();
+			// Moving an invisible shell might not be supported by the operating system. Try
+			// again once it has become visible...
+			if (!getShell().getLocation().equals(displayPoint)) {
+				setShellBounds(displayPoint.x, displayPoint.y, shellSize.width, shellSize.height);
+			}
 			currentTipSource = hoverSource;
 			timer = new Timer(true);
 			timer.schedule(new TimerTask() {
