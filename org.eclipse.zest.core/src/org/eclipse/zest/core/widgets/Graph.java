@@ -312,8 +312,6 @@ public class Graph extends FigureCanvas implements IContainer2 {
 
 	/**
 	 * Gets the root layer for this graph
-	 *
-	 * @return
 	 */
 	public ScalableFigure getRootLayer() {
 		return rootlayer;
@@ -322,8 +320,8 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	/**
 	 * Sets the default connection style.
 	 *
-	 * @param connection style the connection style to set
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @param connectionStyle style the connection style to set
+	 * @see ZestStyles
 	 */
 	public void setConnectionStyle(int connectionStyle) {
 		this.connectionStyle = connectionStyle;
@@ -333,7 +331,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 * Gets the default connection style.
 	 *
 	 * @return the connection style
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see ZestStyles
 	 */
 	public int getConnectionStyle() {
 		return connectionStyle;
@@ -343,7 +341,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 * Sets the default node style.
 	 *
 	 * @param nodeStyle the node style to set
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see ZestStyles
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		this.nodeStyle = nodeStyle;
@@ -353,7 +351,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 * Gets the default node style.
 	 *
 	 * @return the node style
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see ZestStyles
 	 */
 	public int getNodeStyle() {
 		return nodeStyle;
@@ -371,7 +369,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	/**
 	 * Changes the selection to the list of items
 	 *
-	 * @param l
+	 * @param items
 	 */
 	public void setSelection(GraphItem[] items) {
 		clearSelection();

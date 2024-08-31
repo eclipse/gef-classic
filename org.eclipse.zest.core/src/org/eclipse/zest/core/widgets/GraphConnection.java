@@ -218,7 +218,6 @@ public class GraphConnection extends GraphItem {
 	/**
 	 * Gets a proxy to this connection that can be used with the Zest layout engine
 	 *
-	 * @return
 	 * @deprecated Not used in Zest 2.x. This class will be removed in a future
 	 *             release in accordance with the two year deprecation policy.
 	 * @nooverride This method is not intended to be re-implemented or extended by
@@ -266,7 +265,7 @@ public class GraphConnection extends GraphItem {
 	 * CONNECTION in ZestStyles.
 	 *
 	 * @return the style of this connection.
-	 * @see #ZestStyles
+	 * @see ZestStyles
 	 */
 	public int getConnectionStyle() {
 		return connectionStyle;
@@ -276,8 +275,8 @@ public class GraphConnection extends GraphItem {
 	 * Returns the style of this connection. Valid styles are those that begin with
 	 * CONNECTION in ZestStyles.
 	 *
-	 * @return the style of this connection.
-	 * @see #ZestStyles
+	 * @param style the style of this connection.
+	 * @see ZestStyles
 	 */
 	public void setConnectionStyle(int style) {
 		this.connectionStyle = style;
@@ -291,7 +290,7 @@ public class GraphConnection extends GraphItem {
 	 * weight of 1 results in the minimum spring length being used (closest
 	 * together).
 	 *
-	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#getWeightInLayout()
+	 * @see ConnectionLayout#getWeight()
 	 * @return the weight: {-1, [0 - 1]}.
 	 */
 	public double getWeightInLayout() {
@@ -300,8 +299,6 @@ public class GraphConnection extends GraphItem {
 
 	/**
 	 * Gets the font for the label on this connection
-	 *
-	 * @return
 	 */
 	public Font getFont() {
 		return this.font;
@@ -364,7 +361,7 @@ public class GraphConnection extends GraphItem {
 	 * temporarily change the color of the line, use changeLineColor.
 	 *
 	 * @param color the color to be set.
-	 * @see changeLineColor(Color color)
+	 * @see #changeLineColor(Color color)
 	 */
 	public void setLineColor(Color color) {
 		this.foreground = color;
