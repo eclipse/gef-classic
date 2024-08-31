@@ -279,8 +279,6 @@ public class GraphNode extends GraphItem {
 	/**
 	 * Determines if this node has a fixed size or if it is packed to the size of
 	 * its contents. To set a node to pack, set its size (-1, -1)
-	 *
-	 * @return
 	 */
 	public boolean isSizeFixed() {
 		return !(this.size.width < 0 && this.size.height < 0);
@@ -585,21 +583,6 @@ public class GraphNode extends GraphItem {
 	/*
 	 * public boolean isHighlightAdjacentNodes() { return
 	 * ZestStyles.checkStyle(nodeStyle, ZestStyles.NODES_HIGHLIGHT_ADJACENT); }
-	 */
-
-	/**
-	 * Sets if the adjacent nodes to this one should be highlighted when this node
-	 * is selected.
-	 *
-	 * @param highlightAdjacentNodes The highlightAdjacentNodes to set.
-	 */
-	// @tag ADJACENT : Removed highlight adjacent
-	/*
-	 * public void setHighlightAdjacentNodes(boolean highlightAdjacentNodes) { if
-	 * (!highlightAdjacentNodes) { this.nodeStyle |=
-	 * ZestStyles.NODES_HIGHLIGHT_ADJACENT; this.nodeStyle ^=
-	 * ZestStyles.NODES_HIGHLIGHT_ADJACENT; return; } this.nodeStyle |=
-	 * ZestStyles.NODES_HIGHLIGHT_ADJACENT; }
 	 */
 
 	public Color getBorderColor() {

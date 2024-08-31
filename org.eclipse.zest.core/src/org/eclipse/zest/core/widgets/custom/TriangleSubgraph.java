@@ -41,13 +41,13 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * <li><b>Height of the triangle</b> is proportional to the height of the
  * subtree. If the subtree contains the whole tree, the triangle's height will
  * be equal to value provided with
- * {@link TriangleSubgraph#setReferenceHeight(double)} (default is 50).</li>
+ * {@link TriangleParameters#referenceHeight} (default is 50).</li>
  * <li><b>Length of the triangle's base</b> depends on the number of leaves in
  * the subtree. More precisely, it is proportional to the logarithm of the
  * percent that the subtree's leaves make of the whole context's leaves. The
  * proportion factor is adjusted so that for a subtree containing all the leaves
  * the base has length provided with {@link TriangleSubgraph}
- * {@link #setReferenceBase(double)} (default is 50) and for a subtree
+ * {@link TriangleParameters#referenceBase} (default is 50) and for a subtree
  * containing only one leaf the base has length 1.</li>
  * <li><b>Background color of the triangle</b> depends on average number of
  * children for nodes in the subtree. The less is this value, the more bright is
