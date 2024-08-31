@@ -382,7 +382,7 @@ class InternalLayoutContext implements LayoutContext {
 
 	void checkChangesAllowed() {
 		if (!backgorundLayoutEnabled && !externalLayoutInvocation) {
-			throw new RuntimeException("Layout not allowed to perform changes in layout context!");
+			throw new RuntimeException("Layout not allowed to perform changes in layout context!"); //$NON-NLS-1$
 		}
 	}
 

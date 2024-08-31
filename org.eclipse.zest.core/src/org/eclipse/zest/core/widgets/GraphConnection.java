@@ -253,11 +253,11 @@ public class GraphConnection extends GraphItem {
 	 */
 	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer("GraphModelConnection: ");
-		buffer.append(sourceNode != null ? sourceNode.getText() : "null");
-		buffer.append(isDirected() ? " --> " : " --- ");
-		buffer.append(destinationNode != null ? destinationNode.getText() : "null");
-		buffer.append("  (weight=").append(getWeightInLayout()).append(")");
+		StringBuffer buffer = new StringBuffer("GraphModelConnection: "); //$NON-NLS-1$
+		buffer.append(sourceNode != null ? sourceNode.getText() : "null"); //$NON-NLS-1$
+		buffer.append(isDirected() ? " --> " : " --- "); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append(destinationNode != null ? destinationNode.getText() : "null"); //$NON-NLS-1$
+		buffer.append("  (weight=").append(getWeightInLayout()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
 		return buffer.toString();
 	}
 

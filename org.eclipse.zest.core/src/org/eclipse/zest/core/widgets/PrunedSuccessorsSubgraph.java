@@ -227,7 +227,7 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 					numberOfHiddenSuccessors++;
 				}
 			}
-			String labelText = numberOfHiddenSuccessors > 0 ? "" + numberOfHiddenSuccessors : "";
+			String labelText = numberOfHiddenSuccessors > 0 ? Integer.toString(numberOfHiddenSuccessors) : ""; //$NON-NLS-1$
 			if (!labelText.equals(label.getText())) {
 				label.setText(labelText);
 			}

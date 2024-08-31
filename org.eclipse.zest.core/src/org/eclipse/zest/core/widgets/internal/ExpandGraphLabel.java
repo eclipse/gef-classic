@@ -107,11 +107,11 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	private ToolbarLayout layout;
 
 	public ExpandGraphLabel(GraphContainer container, boolean cacheLabel) {
-		this(container, "", null, cacheLabel);
+		this(container, "", null, cacheLabel); //$NON-NLS-1$
 	}
 
 	public ExpandGraphLabel(GraphContainer container, Image i, boolean cacheLabel) {
-		this(container, "", i, cacheLabel);
+		this(container, "", i, cacheLabel); //$NON-NLS-1$
 	}
 
 	public ExpandGraphLabel(GraphContainer container, String text, boolean cacheLabel) {

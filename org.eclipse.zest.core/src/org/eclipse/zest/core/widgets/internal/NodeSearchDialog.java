@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.zest.core.viewers.internal.SharedMessages;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 public class NodeSearchDialog {
@@ -41,13 +42,13 @@ public class NodeSearchDialog {
 
 	private void createDialog(Shell parentShell) {
 		dialog = new Shell(parentShell, SWT.DIALOG_TRIM | SWT.MAX | SWT.RESIZE);
-		dialog.setText("Find");
+		dialog.setText(SharedMessages.NodeSearchDialog_Title);
 		GridLayout layout = new GridLayout(2, false);
 		dialog.setLayout(layout);
 
 		// 1st row
 		final Label label = new Label(dialog, SWT.NONE);
-		label.setText("Find:");
+		label.setText(SharedMessages.NodeSearchDialog_Find);
 
 		text = new Text(dialog, SWT.BORDER);
 		text.addFocusListener(new FocusAdapter() {
@@ -71,20 +72,20 @@ public class NodeSearchDialog {
 
 		// 2nd row
 		final Label optionsLabel = new Label(dialog, SWT.NONE);
-		optionsLabel.setText("Options:");
+		optionsLabel.setText(SharedMessages.NodeSearchDialog_Options);
 		new Label(dialog, SWT.NULL);
 
 		// 3rd row
 		wholeWordButton = new Button(dialog, SWT.CHECK);
 		wholeWordButton.addListener(SWT.Selection, e -> searchForNodes());
 		final Label wholeWordLabel = new Label(dialog, SWT.NONE);
-		wholeWordLabel.setText("Whole Word");
+		wholeWordLabel.setText(SharedMessages.NodeSearchDialog_WholeWord);
 
 		// 4th row
 		caseSensButton = new Button(dialog, SWT.CHECK);
 		caseSensButton.addListener(SWT.Selection, e -> searchForNodes());
 		final Label caseSensitiveLabel = new Label(dialog, SWT.NONE);
-		caseSensitiveLabel.setText("Case sensitive");
+		caseSensitiveLabel.setText(SharedMessages.NodeSearchDialog_CaseSensitive);
 
 		// 5th row
 		new Label(dialog, SWT.NULL);
@@ -93,12 +94,12 @@ public class NodeSearchDialog {
 		comp.setLayout(new GridLayout(2, false));
 
 		nextButton = new Button(comp, SWT.PUSH);
-		nextButton.setText("Next");
+		nextButton.setText(SharedMessages.NodeSearchDialog_Next);
 		nextButton.setEnabled(false);
 		nextButton.addListener(SWT.Selection, e -> changeNode(true));
 
 		prevButton = new Button(comp, SWT.PUSH);
-		prevButton.setText("Previous");
+		prevButton.setText(SharedMessages.NodeSearchDialog_Previous);
 		prevButton.setEnabled(false);
 		prevButton.addListener(SWT.Selection, e -> changeNode(false));
 
@@ -109,7 +110,7 @@ public class NodeSearchDialog {
 		comp.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, true, true));
 
 		Button closeButton = new Button(comp, SWT.PUSH);
-		closeButton.setText("Close");
+		closeButton.setText(SharedMessages.NodeSearchDialog_Close);
 		closeButton.addListener(SWT.Selection, e -> dialog.close());
 
 		dialog.addDisposeListener(e -> isDisposed = true);

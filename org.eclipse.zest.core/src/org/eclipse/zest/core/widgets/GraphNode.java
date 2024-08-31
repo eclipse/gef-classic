@@ -116,7 +116,7 @@ public class GraphNode extends GraphItem {
 	 */
 	@Deprecated(since = "1.12", forRemoval = true)
 	public GraphNode(IContainer graphModel, int style, Object data) {
-		this(graphModel, style, "" /* text */, null /* image */, data);
+		this(graphModel, style, "" /* text */, null /* image */, data); //$NON-NLS-1$
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class GraphNode extends GraphItem {
 	 */
 	@Override
 	public String toString() {
-		return "GraphModelNode: " + getText();
+		return "GraphModelNode: " + getText(); //$NON-NLS-1$
 	}
 
 	/**
@@ -632,7 +632,7 @@ public class GraphNode extends GraphItem {
 	@Override
 	public void setText(String string) {
 		if (string == null) {
-			string = "";
+			string = ""; //$NON-NLS-1$
 		}
 		super.setText(string);
 
@@ -909,7 +909,7 @@ public class GraphNode extends GraphItem {
 		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
 		label.setFont(this.font);
 		if (checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
-			label.setText("");
+			label.setText(""); //$NON-NLS-1$
 		}
 		updateFigureForModel(label);
 		label.addFigureListener(new FigureListener() {

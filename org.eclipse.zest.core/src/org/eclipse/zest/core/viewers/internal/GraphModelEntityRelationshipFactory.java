@@ -35,7 +35,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	public GraphModelEntityRelationshipFactory(AbstractStructuredGraphViewer viewer) {
 		super(viewer);
 		if (!(viewer.getContentProvider() instanceof IGraphEntityRelationshipContentProvider)) {
-			throw new IllegalArgumentException("Expected IGraphEntityRelationshipContentProvider");
+			throw new IllegalArgumentException("Expected IGraphEntityRelationshipContentProvider"); //$NON-NLS-1$
 		}
 	}
 

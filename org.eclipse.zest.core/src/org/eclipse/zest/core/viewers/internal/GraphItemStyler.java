@@ -64,7 +64,7 @@ public class GraphItemStyler {
 			}
 			if (labelProvider instanceof ILabelProvider) {
 				String text = ((ILabelProvider) labelProvider).getText(node.getData());
-				node.setText((text != null) ? text : "");
+				node.setText((text != null) ? text : ""); //$NON-NLS-1$
 				node.setImage(((ILabelProvider) labelProvider).getImage(node.getData()));
 			}
 			if (labelProvider instanceof ISelfStyleProvider) {
@@ -80,7 +80,7 @@ public class GraphItemStyler {
 			}
 			if (labelProvider instanceof ILabelProvider) {
 				String text = ((ILabelProvider) labelProvider).getText(conn.getExternalConnection());
-				conn.setText((text != null) ? text : "");
+				conn.setText((text != null) ? text : ""); //$NON-NLS-1$
 				conn.setImage(((ILabelProvider) labelProvider).getImage(conn.getExternalConnection()));
 			}
 			if (labelProvider instanceof IEntityConnectionStyleProvider) {

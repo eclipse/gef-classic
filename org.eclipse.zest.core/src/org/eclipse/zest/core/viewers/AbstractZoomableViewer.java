@@ -39,7 +39,7 @@ public abstract class AbstractZoomableViewer extends StructuredViewer {
 	public void zoomTo(int x, int y, int width, int height) {
 		Rectangle r = new Rectangle(x, y, width, height);
 		if (r.isEmpty()) {
-			getZoomManager().setZoomAsText("100%");
+			getZoomManager().setZoomAsText("100%"); //$NON-NLS-1$
 		} else {
 			getZoomManager().zoomTo(r);
 		}

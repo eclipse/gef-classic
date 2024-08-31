@@ -64,7 +64,7 @@ public class DAGExpandCollapseManager implements ExpandCollapseManager {
 	public void initExpansion(final LayoutContext context2) {
 		if (!(context2 instanceof InternalLayoutContext)) {
 			throw new RuntimeException(
-					"This manager works only with org.eclipse.zest.core.widgets.InternalLayoutContext");
+					"This manager works only with org.eclipse.zest.core.widgets.InternalLayoutContext"); //$NON-NLS-1$
 		}
 		context = (InternalLayoutContext) context2;
 

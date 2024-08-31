@@ -91,7 +91,7 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	 * @param style
 	 */
 	public GraphContainer(IContainer graph, int style) {
-		this(graph, style, "");
+		this(graph, style, ""); //$NON-NLS-1$
 
 	}
 
@@ -754,7 +754,7 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 		scrollPane.setScrollBarVisibility(ScrollPane.AUTOMATIC);
 
 		// scalledLayer = new ScalableFreeformLayeredPane();
-		scalledLayer = new AspectRatioFreeformLayer("debug label");
+		scalledLayer = new AspectRatioFreeformLayer("debug label"); //$NON-NLS-1$
 		scalledLayer.addLayoutListener(LayoutAnimator.getDefault());
 		// scalledLayer.setScale(computeChildScale());
 		scalledLayer.setScale(computeWidthScale(), computeHeightScale());

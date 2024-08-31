@@ -200,7 +200,7 @@ public class ZestRootLayer extends FreeformLayer {
 	public void addDecoration(IFigure decorated, IFigure decorating) {
 		int position = this.getChildren().indexOf(decorated);
 		if (position == -1) {
-			throw new RuntimeException("Can't add decoration for a figuer that is not on this ZestRootLayer");
+			throw new RuntimeException("Can't add decoration for a figuer that is not on this ZestRootLayer"); //$NON-NLS-1$
 		}
 		itemsInLayer[getLayer(position)]++;
 		isLayerKnown = true;

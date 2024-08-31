@@ -195,7 +195,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 			super.setContentProvider(contentProvider);
 		} else {
 			throw new IllegalArgumentException(
-					"Invalid content provider, only IGraphContentProvider, IGraphEntityContentProvider, or IGraphEntityRelationshipContentProvider are supported.");
+					"Invalid content provider, only IGraphContentProvider, IGraphEntityContentProvider, or IGraphEntityRelationshipContentProvider are supported."); //$NON-NLS-1$
 		}
 	}
 

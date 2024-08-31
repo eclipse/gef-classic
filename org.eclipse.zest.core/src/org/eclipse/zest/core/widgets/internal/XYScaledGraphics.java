@@ -614,7 +614,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	@Override
 	public void scale(double amount) {
 		// setScale(zoom * amount);
-		throw new RuntimeException("Operation not supported, use scale(x, y)");
+		throw new UnsupportedOperationException("Operation not supported, use scale(x, y)"); //$NON-NLS-1$
 	}
 
 	/**
@@ -730,7 +730,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	void setScale(double value) {
-		throw new RuntimeException("Operation not supported, use setScale(x,y)");
+		throw new UnsupportedOperationException("Operation not supported, use setScale(x,y)"); //$NON-NLS-1$
 
 		/*
 		 * if (zoom == value) return; this.zoom = value;
