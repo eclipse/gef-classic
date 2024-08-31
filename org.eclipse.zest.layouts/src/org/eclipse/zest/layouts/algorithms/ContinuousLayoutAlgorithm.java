@@ -27,7 +27,7 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * @noreference This class is not intended to be referenced by clients.
  */
 @Deprecated(since = "2.0", forRemoval = true)
-public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm {
+public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm.Zest1 {
 
 	double x, y, widht, height;
 

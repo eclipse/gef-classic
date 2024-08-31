@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutObserver.TreeNode;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
@@ -44,7 +43,7 @@ import org.eclipse.draw2d.geometry.Dimension;
  * @author Casey Best and Rob Lintern (version 2.0)
  * @author Jingwei Wu (version 1.0)
  */
-public class TreeLayoutAlgorithm implements LayoutAlgorithm {
+public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Collection of Zest 1.x methods. Used for backwards compatibility.
@@ -58,7 +57,7 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Deprecated(since = "2.0", forRemoval = true)
-	public static class Zest1 extends AbstractLayoutAlgorithm {
+	public static class Zest1 extends AbstractLayoutAlgorithm.Zest1 {
 
 		private static final double DEFAULT_WEIGHT = 0;
 		private static final boolean DEFAULT_MARKED = false;
@@ -636,8 +635,6 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 
 	private boolean resize = false;
 
-	private LayoutContext context;
-
 	private DisplayIndependentRectangle bounds;
 
 	private double leafSize, layerSize;
@@ -732,7 +729,7 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 		if (treeObserver != null) {
 			treeObserver.stop();
 		}
-		this.context = context;
+		super.setLayoutContext(context);
 		if (context != null) {
 			treeObserver = new TreeLayoutObserver(context, null);
 		}

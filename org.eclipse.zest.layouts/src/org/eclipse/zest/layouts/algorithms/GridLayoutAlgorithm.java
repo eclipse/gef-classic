@@ -16,21 +16,19 @@ package org.eclipse.zest.layouts.algorithms;
 
 import java.util.Arrays;
 
-import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentDimension;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 import org.eclipse.zest.layouts.interfaces.EntityLayout;
-import org.eclipse.zest.layouts.interfaces.LayoutContext;
 
 /**
  * @version 2.0
  * @author Ian Bull
  * @author Casey Best and Rob Lintern
  */
-public class GridLayoutAlgorithm implements LayoutAlgorithm {
+public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Collection of Zest 1.x methods. Used for backwards compatibility.
@@ -44,7 +42,7 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 	 */
 	@SuppressWarnings("unchecked")
 	@Deprecated(since = "2.0", forRemoval = true)
-	public static class Zest1 extends AbstractLayoutAlgorithm {
+	public static class Zest1 extends AbstractLayoutAlgorithm.Zest1 {
 
 		private static final double PADDING_PERCENTAGE = 0.95;
 
@@ -315,8 +313,6 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 	 */
 	protected double childrenHeight, childrenWidth;
 
-	private LayoutContext context;
-
 	/**
 	 * @deprecated Since Zest 2.0, use {@link #GridLayoutAlgorithm()}.
 	 */
@@ -327,11 +323,6 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 	}
 
 	public GridLayoutAlgorithm() {
-	}
-
-	@Override
-	public void setLayoutContext(LayoutContext context) {
-		this.context = context;
 	}
 
 	@Override
