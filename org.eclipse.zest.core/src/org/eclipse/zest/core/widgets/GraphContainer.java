@@ -611,8 +611,6 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	/**
 	 * Get the scale for this container. This is the scale applied to the children
 	 * contained within
-	 *
-	 * @return
 	 */
 	public double getScale() {
 		return this.scalledLayer.getScale();

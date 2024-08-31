@@ -68,8 +68,6 @@ public abstract class GraphItem extends Item {
 
 	/**
 	 * Gets the graph item type. The item type is one of: GRAPH, NODE or CONNECTION
-	 *
-	 * @return
 	 */
 	public abstract int getItemType();
 
@@ -125,7 +123,6 @@ public abstract class GraphItem extends Item {
 	 * Checks a style to see if it is set on the given graph item
 	 *
 	 * @param styleToCheck The style to check
-	 * @return
 	 */
 	protected boolean checkStyle(int styleToCheck) {
 		return ((getStyle() & styleToCheck) > 0);

@@ -152,8 +152,6 @@ public abstract class CachedLabel extends Label implements ILabeledFigure {
 	 * Override this method to return the background colour for the text Note: Text
 	 * must have a background color since it is being stored in an image (You can
 	 * set it to white if you want)
-	 *
-	 * @return
 	 */
 	protected abstract Color getBackgroundTextColor();
 

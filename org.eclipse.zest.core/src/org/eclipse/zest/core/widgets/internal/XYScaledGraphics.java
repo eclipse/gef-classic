@@ -108,7 +108,8 @@ public class XYScaledGraphics extends ScaledGraphics {
 		 * Constructs a new State object and initializes the properties based on the
 		 * given values.
 		 *
-		 * @param zoom      the zoom factor
+		 * @param xZoom     the horizontal zoom factor
+		 * @param yZoom     the vertical zoom factor
 		 * @param x         the x offset
 		 * @param y         the y offset
 		 * @param font      the font
@@ -126,7 +127,8 @@ public class XYScaledGraphics extends ScaledGraphics {
 		/**
 		 * Sets all the properties of the state object.
 		 *
-		 * @param zoom      the zoom factor
+		 * @param xZoom     the horizontal zoom factor
+		 * @param yZoom     the vertical zoom factor
 		 * @param x         the x offset
 		 * @param y         the y offset
 		 * @param font      the font
