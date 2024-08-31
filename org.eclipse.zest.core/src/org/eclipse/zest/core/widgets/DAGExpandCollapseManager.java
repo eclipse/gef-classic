@@ -13,6 +13,7 @@
 package org.eclipse.zest.core.widgets;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.zest.layouts.interfaces.ConnectionLayout;
 import org.eclipse.zest.layouts.interfaces.ContextListener;
@@ -50,13 +51,13 @@ public class DAGExpandCollapseManager implements ExpandCollapseManager {
 
 	private InternalLayoutContext context;
 
-	private final HashSet expandedNodes = new HashSet();
+	private final Set<NodeLayout> expandedNodes = new HashSet<>();
 
-	private final HashSet nodesToPrune = new HashSet();
+	private final Set<NodeLayout> nodesToPrune = new HashSet<>();
 
-	private final HashSet nodesToUnprune = new HashSet();
+	private final Set<NodeLayout> nodesToUnprune = new HashSet<>();
 
-	private final HashSet nodesToUpdate = new HashSet();
+	private final Set<NodeLayout> nodesToUpdate = new HashSet<>();
 
 	private boolean cleanLayoutScheduled = false;
 
@@ -224,7 +225,7 @@ public class DAGExpandCollapseManager implements ExpandCollapseManager {
 		nodesToUpdate.add(node);
 	}
 
-	private void updateNodeLabel2(InternalNodeLayout node) {
+	private static void updateNodeLabel2(InternalNodeLayout node) {
 		SubgraphFactory subgraphFactory = node.getOwnerLayoutContext().getSubgraphFactory();
 		if (subgraphFactory instanceof DefaultSubgraph.PrunedSuccessorsSubgraphFactory) {
 			((DefaultSubgraph.PrunedSuccessorsSubgraphFactory) subgraphFactory).updateLabelForNode(node);
@@ -270,7 +271,7 @@ public class DAGExpandCollapseManager implements ExpandCollapseManager {
 		nodesToUnprune.clear();
 
 		if (!nodesToPrune.isEmpty()) {
-			context.createSubgraph((NodeLayout[]) nodesToPrune.toArray(new NodeLayout[nodesToPrune.size()]));
+			context.createSubgraph(nodesToPrune.toArray(new NodeLayout[nodesToPrune.size()]));
 			nodesToPrune.clear();
 		}
 
