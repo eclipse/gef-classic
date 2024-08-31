@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.eclipse.swt.SWT;
 
-import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.zest.layouts.interfaces.LayoutContext;
 import org.eclipse.zest.layouts.interfaces.NodeLayout;
@@ -52,7 +51,7 @@ import org.eclipse.draw2d.geometry.Dimension;
  * @since 2.0
  */
 @SuppressWarnings("javadoc")
-public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
+public class SugiyamaLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	// Internal constants
 	private static final int MAX_LAYERS = 10;
@@ -144,7 +143,6 @@ public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
 	private final int direction;
 	private final Dimension dimension;
 
-	private LayoutContext context;
 	private int last; // index of the last element in a layer after padding
 						// process
 
@@ -172,17 +170,6 @@ public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
 
 	public SugiyamaLayoutAlgorithm() {
 		this(SWT.VERTICAL, null);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.zest.layouts.LayoutAlgorithm#setLayoutContext(org.eclipse
-	 * .zest.layouts.interfaces.LayoutContext)
-	 */
-	@Override
-	public void setLayoutContext(LayoutContext context) {
-		this.context = context;
 	}
 
 	/*

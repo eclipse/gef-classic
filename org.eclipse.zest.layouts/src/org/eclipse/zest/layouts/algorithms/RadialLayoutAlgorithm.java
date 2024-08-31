@@ -16,7 +16,6 @@ package org.eclipse.zest.layouts.algorithms;
 
 import java.util.List;
 
-import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
@@ -32,7 +31,7 @@ import org.eclipse.zest.layouts.interfaces.LayoutContext;
  * @author Casey Best
  * @auhtor Rob Lintern
  */
-public class RadialLayoutAlgorithm implements LayoutAlgorithm {
+public class RadialLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Collection of Zest 1.x methods. Used for backwards compatibility.
@@ -169,7 +168,6 @@ public class RadialLayoutAlgorithm implements LayoutAlgorithm {
 	private double startDegree = 0;
 	private double endDegree = MAX_DEGREES;
 
-	private LayoutContext context;
 	private boolean resize = false;
 
 	private final TreeLayoutAlgorithm treeLayout = new TreeLayoutAlgorithm();
@@ -223,7 +221,7 @@ public class RadialLayoutAlgorithm implements LayoutAlgorithm {
 
 	@Override
 	public void setLayoutContext(LayoutContext context) {
-		this.context = context;
+		super.setLayoutContext(context);
 		treeLayout.setLayoutContext(context);
 	}
 

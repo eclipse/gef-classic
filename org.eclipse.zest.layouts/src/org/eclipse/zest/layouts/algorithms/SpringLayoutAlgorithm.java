@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentDimension;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentPoint;
@@ -42,7 +41,7 @@ import org.eclipse.zest.layouts.interfaces.SubgraphLayout;
  * @author Ian Bull
  * @author Casey Best (version 1.0 by Jingwei Wu/Rob Lintern)
  */
-public class SpringLayoutAlgorithm implements LayoutAlgorithm {
+public class SpringLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Collection of Zest 1.x methods. Used for backwards compatibility.
@@ -940,8 +939,6 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 	 */
 	public boolean fitWithinBounds = true;
 
-	private LayoutContext context;
-
 	class SpringLayoutListener implements LayoutListener {
 
 		@Override
@@ -1018,7 +1015,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 
 	@Override
 	public void setLayoutContext(LayoutContext context) {
-		this.context = context;
+		super.setLayoutContext(context);
 		this.context.addLayoutListener(new SpringLayoutListener());
 		initLayout();
 	}

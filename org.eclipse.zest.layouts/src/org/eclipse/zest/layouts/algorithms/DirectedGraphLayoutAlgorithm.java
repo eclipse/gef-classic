@@ -21,12 +21,10 @@ import java.util.Map;
 
 import org.eclipse.swt.SWT;
 
-import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 import org.eclipse.zest.layouts.interfaces.ConnectionLayout;
 import org.eclipse.zest.layouts.interfaces.EntityLayout;
-import org.eclipse.zest.layouts.interfaces.LayoutContext;
 import org.eclipse.zest.layouts.interfaces.NodeLayout;
 import org.eclipse.zest.layouts.interfaces.SubgraphLayout;
 
@@ -36,7 +34,7 @@ import org.eclipse.draw2d.graph.DirectedGraphLayout;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 
-public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
+public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Collection of Zest 1.x methods. Used for backwards compatibility.
@@ -49,7 +47,7 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 	 * @noinstantiate This class is not intended to be instantiated by clients.
 	 */
 	@Deprecated(since = "2.0", forRemoval = true)
-	public static class Zest1 extends AbstractLayoutAlgorithm {
+	public static class Zest1 extends AbstractLayoutAlgorithm.Zest1 {
 
 		public Zest1(int styles) {
 			super(styles);
@@ -152,8 +150,6 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 
 	private int orientation = SWT.VERTICAL;
 
-	private LayoutContext context;
-
 	/**
 	 * @since 2.0
 	 */
@@ -228,11 +224,6 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 			return subgraph;
 		}
 		return null;
-	}
-
-	@Override
-	public void setLayoutContext(LayoutContext context) {
-		this.context = context;
 	}
 
 }

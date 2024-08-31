@@ -31,7 +31,7 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
 @Deprecated(since = "2.0", forRemoval = true)
-public class HorizontalShift extends AbstractLayoutAlgorithm {
+public class HorizontalShift extends AbstractLayoutAlgorithm.Zest1 {
 
 	private static final double DELTA = 10;
 	private static final double VSPACING = 2;
