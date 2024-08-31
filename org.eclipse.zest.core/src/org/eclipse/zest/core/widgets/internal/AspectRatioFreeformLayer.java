@@ -70,7 +70,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 	@Override
 	public double getScale() {
 		// TODO Auto-generated method stub
-		throw new RuntimeException("Operation not supported");
+		throw new UnsupportedOperationException("Operation not supported"); //$NON-NLS-1$
 		// return this.widthScale;
 
 		// throw new RuntimeException("Operation Not supported");
@@ -135,9 +135,9 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		} else if (t instanceof Point p) {
 			p.scale(1 / widthScale, 1 / heigthScale);
 		} else if (t instanceof PointList) {
-			throw new RuntimeException("PointList not supported in AspectRatioScale");
+			throw new UnsupportedOperationException("PointList not supported in AspectRatioScale"); //$NON-NLS-1$
 		} else {
-			throw new RuntimeException(t.toString() + " not supported in AspectRatioScale");
+			throw new UnsupportedOperationException(t.toString() + " not supported in AspectRatioScale"); //$NON-NLS-1$
 		}
 
 		// t.performScale(1/widthScale);
@@ -168,9 +168,9 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		} else if (t instanceof Point p) {
 			p.scale(widthScale, heigthScale);
 		} else if (t instanceof PointList) {
-			throw new RuntimeException("PointList not supported in AspectRatioScale");
+			throw new UnsupportedOperationException("PointList not supported in AspectRatioScale"); //$NON-NLS-1$
 		} else {
-			throw new RuntimeException(t.toString() + " not supported in AspectRatioScale");
+			throw new UnsupportedOperationException(t.toString() + " not supported in AspectRatioScale"); //$NON-NLS-1$
 		}
 
 		super.translateToParent(t);

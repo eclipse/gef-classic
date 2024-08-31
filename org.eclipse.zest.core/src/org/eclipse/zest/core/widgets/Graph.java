@@ -404,7 +404,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 */
 	@Override
 	public String toString() {
-		return "GraphModel {" + nodes.size() + " nodes, " + connections.size() + " connections}";
+		return "GraphModel {%d nodes, %d connections}".formatted(nodes.size(), connections.size()); //$NON-NLS-1$
 	}
 
 	/*
@@ -835,7 +835,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 				IContainer currentContainer = container;
 				while (currentContainer instanceof GraphContainer current) {
 					labelBuilder.insert(0, current.getText());
-					labelBuilder.insert(0, "/");
+					labelBuilder.insert(0, '/');
 					currentContainer = current.getParent();
 				}
 				labelBuilder.insert(0, oldShellLabel);
@@ -1291,7 +1291,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 			figure = ((GraphNode) item).getModelFigure();
 			figure2ItemMap.put(figure, item);
 		} else {
-			throw new RuntimeException("Unknown item type: " + item.getItemType());
+			throw new RuntimeException("Unknown item type: " + item.getItemType()); //$NON-NLS-1$
 		}
 	}
 
