@@ -100,7 +100,7 @@ public class SimpleSWTExample {
 	private static final double INITIAL_NODE_WIDTH = 20;
 	private static final double INITIAL_NODE_HEIGHT = 15;
 
-	protected static ArrayList<AbstractLayoutAlgorithm> algorithms = new ArrayList<>(Arrays.asList(
+	protected static ArrayList<AbstractLayoutAlgorithm.Zest1> algorithms = new ArrayList<>(Arrays.asList(
 			new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING),
 			new TreeLayoutAlgorithm.Zest1(LayoutStyles.NONE), new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE),
 			new RadialLayoutAlgorithm.Zest1(LayoutStyles.NONE), new GridLayoutAlgorithm.Zest1(LayoutStyles.NONE),

@@ -18,11 +18,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentDimension;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.zest.layouts.interfaces.EntityLayout;
-import org.eclipse.zest.layouts.interfaces.LayoutContext;
 
 /**
  * This layout shifts overlapping nodes to the right.
@@ -30,13 +28,11 @@ import org.eclipse.zest.layouts.interfaces.LayoutContext;
  * @author Ian Bull
  * @since 2.0
  */
-public class HorizontalShiftAlgorithm implements LayoutAlgorithm {
+public class HorizontalShiftAlgorithm extends AbstractLayoutAlgorithm {
 
 	private static final double DELTA = 10;
 
 	private static final double VSPACING = 16;
-
-	private LayoutContext context;
 
 	@Override
 	public void applyLayout(boolean clean) {
@@ -74,11 +70,6 @@ public class HorizontalShiftAlgorithm implements LayoutAlgorithm {
 				width += size.width;
 			}
 		}
-	}
-
-	@Override
-	public void setLayoutContext(LayoutContext context) {
-		this.context = context;
 	}
 
 	private static void addToRowList(EntityLayout entity, List<List<EntityLayout>> rowsList) {

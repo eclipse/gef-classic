@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentDimension;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
@@ -48,7 +47,7 @@ import org.eclipse.zest.layouts.interfaces.SubgraphLayout;
  *
  * @since 2.0
  */
-public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
+public class SpaceTreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Tree direction constant for which root is placed at the top and branches
@@ -1029,8 +1028,6 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 
 	private boolean directionChanged = false;
 
-	private LayoutContext context;
-
 	private DisplayIndependentRectangle bounds;
 
 	private TreeLayoutObserver treeObserver;
@@ -1119,7 +1116,7 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 			this.context.removeLayoutListener(layoutListener);
 			treeObserver.stop();
 		}
-		this.context = context;
+		super.setLayoutContext(context);
 		context.addContextListener(contextListener);
 		context.addLayoutListener(layoutListener);
 		treeObserver = new TreeLayoutObserver(context, spaceTreeNodeFactory);

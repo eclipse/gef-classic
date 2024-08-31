@@ -199,7 +199,7 @@ public abstract class AbstractGraphTest {
 	 */
 	protected InternalRelationship[] getInternalRelationships() throws ReflectiveOperationException {
 		LayoutAlgorithm layoutAlgorithm = graph.getLayoutAlgorithm();
-		Field field = AbstractLayoutAlgorithm.class.getDeclaredField("internalRelationships"); //$NON-NLS-1$
+		Field field = AbstractLayoutAlgorithm.Zest1.class.getDeclaredField("internalRelationships"); //$NON-NLS-1$
 		boolean isAccessible = field.canAccess(layoutAlgorithm);
 		try {
 			field.setAccessible(true);

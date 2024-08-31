@@ -39,7 +39,7 @@ public class CustomLayout {
 		new GraphConnection(g, SWT.NONE, n, n2);
 		new GraphConnection(g, SWT.NONE, n2, n3);
 		new GraphConnection(g, SWT.NONE, n3, n);
-		g.setLayoutAlgorithm(new AbstractLayoutAlgorithm(SWT.NONE) {
+		g.setLayoutAlgorithm(new AbstractLayoutAlgorithm.Zest1(SWT.NONE) {
 
 			private int totalSteps;
 			private int currentStep;

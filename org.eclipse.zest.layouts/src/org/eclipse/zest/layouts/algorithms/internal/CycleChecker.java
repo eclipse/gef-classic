@@ -50,7 +50,7 @@ public class CycleChecker {
 	 */
 	public static boolean hasDirectedCircles(LayoutEntity[] entities, LayoutRelationship[] relationships,
 			List<LayoutEntity> cycle) {
-		if (!AbstractLayoutAlgorithm.verifyInput(entities, relationships)) {
+		if (!AbstractLayoutAlgorithm.Zest1.verifyInput(entities, relationships)) {
 			throw new RuntimeException("The endpoints of the relationships aren't contained in the entities list."); //$NON-NLS-1$
 		}
 
