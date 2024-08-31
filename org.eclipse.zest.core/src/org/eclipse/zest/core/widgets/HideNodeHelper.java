@@ -33,10 +33,10 @@ public class HideNodeHelper extends ContainerFigure {
 
 	private GraphNode node;
 
-	private Button hideButton = new Button("-");
-	private Button revealButton = new Button("+");
+	private Button hideButton = new Button("-"); //$NON-NLS-1$
+	private Button revealButton = new Button("+"); //$NON-NLS-1$
 	private int hiddenNodeCount = 0;
-	private GraphLabel hiddenNodesLabel = new GraphLabel("0", false);
+	private GraphLabel hiddenNodesLabel = new GraphLabel("0", false); //$NON-NLS-1$
 
 	private HideNodeListener thisHideNodeListener;
 	private List<HideNodeListener> hideNodeListeners = new ArrayList<>();

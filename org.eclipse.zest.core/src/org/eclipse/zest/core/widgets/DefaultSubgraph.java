@@ -217,7 +217,7 @@ public class DefaultSubgraph implements SubgraphLayout {
 
 	protected DefaultSubgraph(LayoutContext context2) {
 		if (!(context2 instanceof InternalLayoutContext)) {
-			throw new RuntimeException("This subgraph can be only created with LayoutContext provided by Zest Graph");
+			throw new RuntimeException("This subgraph can be only created with LayoutContext provided by Zest Graph"); //$NON-NLS-1$
 		}
 		this.context = (InternalLayoutContext) context2;
 	}

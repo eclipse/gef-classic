@@ -61,7 +61,7 @@ public class LabelSubgraph extends FigureSubgraph {
 
 	@Override
 	protected void updateFigure() {
-		((Label) figure).setText("" + nodes.size());
+		((Label) figure).setText("" + nodes.size()); //$NON-NLS-1$
 	}
 
 	public LabelSubgraph(NodeLayout[] nodes, LayoutContext context, Color foregroundColor, Color backgroundColor) {

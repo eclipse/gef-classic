@@ -114,7 +114,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		}
 
 		private String getObjectString(Object o) {
-			String s = o.getClass().getName() + "@" + Integer.toHexString(o.hashCode());
+			String s = o.getClass().getName() + '@' + Integer.toHexString(o.hashCode());
 			while (storedStrings.contains(s)) {
 				s = s + 'X';
 			}

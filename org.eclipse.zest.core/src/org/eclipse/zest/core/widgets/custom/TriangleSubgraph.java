@@ -229,7 +229,7 @@ public class TriangleSubgraph extends FigureSubgraph {
 		}
 		if ((direction != TOP_DOWN) && (direction != BOTTOM_UP) && (direction != LEFT_RIGHT)
 				&& (direction != RIGHT_LEFT)) {
-			throw new IllegalArgumentException("invalid direction");
+			throw new IllegalArgumentException("invalid direction"); //$NON-NLS-1$
 		}
 		parameters.direction = direction;
 		updateFigure();

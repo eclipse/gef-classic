@@ -50,7 +50,7 @@ public class GraphLabel extends CachedLabel implements IStyleableFigure {
 	 *                   faster, but the text is not as clear
 	 */
 	public GraphLabel(boolean cacheLabel) {
-		this("", cacheLabel);
+		this("", cacheLabel); //$NON-NLS-1$
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class GraphLabel extends CachedLabel implements IStyleableFigure {
 	 *                   faster, but the
 	 */
 	public GraphLabel(Image i, boolean cacheLabel) {
-		this("", i, cacheLabel);
+		this("", i, cacheLabel); //$NON-NLS-1$
 	}
 
 	/**

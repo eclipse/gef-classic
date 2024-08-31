@@ -109,7 +109,7 @@ class InternalNodeLayout implements NodeLayout {
 	@Override
 	public void prune(SubgraphLayout subgraph) {
 		if (subgraph != null && !(subgraph instanceof DefaultSubgraph)) {
-			throw new RuntimeException("InternalNodeLayout can be pruned only to instance of DefaultSubgraph.");
+			throw new RuntimeException("InternalNodeLayout can be pruned only to instance of DefaultSubgraph."); //$NON-NLS-1$
 		}
 		ownerLayoutContext.checkChangesAllowed();
 		if (subgraph == this.subgraph) {
@@ -322,7 +322,7 @@ class InternalNodeLayout implements NodeLayout {
 
 	@Override
 	public String toString() {
-		return node.toString() + "(layout)";
+		return node.toString() + "(layout)"; //$NON-NLS-1$
 	}
 
 	void dispose() {
