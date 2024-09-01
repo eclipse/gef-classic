@@ -15,6 +15,8 @@ package org.eclipse.zest.core.widgets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -55,7 +57,7 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 		@Override
 		public void ancestorRemoved(IFigure ancestor) {
 			if (fisheyeFigure != null) {
-				final GraphLabel label = (GraphLabel) nodeFigureToLabel.get(fisheyeFigure);
+				final GraphLabel label = nodeFigureToLabel.get(fisheyeFigure);
 				if (label == null) {
 					return;
 				}
@@ -72,7 +74,7 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 	}
 
 	private final FigureListener nodeFigureListener = source -> {
-		GraphLabel label = (GraphLabel) this.nodeFigureToLabel.get(source);
+		GraphLabel label = this.nodeFigureToLabel.get(source);
 		if (label != null) {
 			refreshLabelBounds(source, label);
 		}
@@ -84,7 +86,7 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 		public void fisheyeReplaced(Graph graph, IFigure oldFisheyeFigure, IFigure newFisheyeFigure) {
 			oldFisheyeFigure.removeFigureListener(nodeFigureListener);
 			newFisheyeFigure.addFigureListener(nodeFigureListener);
-			GraphLabel label = (GraphLabel) nodeFigureToLabel.remove(oldFisheyeFigure);
+			GraphLabel label = nodeFigureToLabel.remove(oldFisheyeFigure);
 			nodeFigureToLabel.put(newFisheyeFigure, label);
 
 			LabelAncestorListener ancestorListener = (LabelAncestorListener) labelToAncestorListener.get(label);
@@ -104,7 +106,7 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 		public void fisheyeAdded(Graph graph, IFigure originalFigure, IFigure fisheyeFigure) {
 			originalFigure.removeFigureListener(nodeFigureListener);
 			fisheyeFigure.addFigureListener(nodeFigureListener);
-			GraphLabel label = (GraphLabel) nodeFigureToLabel.get(originalFigure);
+			GraphLabel label = nodeFigureToLabel.get(originalFigure);
 			if (label == null) {
 				return;
 			}
@@ -121,9 +123,9 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 	 * Maps from figures of nodes to labels showing number of nodes hidden
 	 * successors
 	 */
-	private final HashMap nodeFigureToLabel = new HashMap();
+	private final Map<IFigure, GraphLabel> nodeFigureToLabel = new HashMap<>();
 
-	private final HashMap labelToAncestorListener = new HashMap();
+	private final Map<GraphLabel, AncestorListener> labelToAncestorListener = new HashMap<>();
 
 	protected PrunedSuccessorsSubgraph(LayoutContext context2) {
 		super(context2);
@@ -133,11 +135,11 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 	@Override
 	public void addNodes(NodeLayout[] nodes) {
 		super.addNodes(nodes);
-		HashSet nodesToUpdate = new HashSet();
+		Set<NodeLayout> nodesToUpdate = new HashSet<>();
 		for (NodeLayout node : nodes) {
 			nodesToUpdate.addAll(Arrays.asList(node.getPredecessingNodes()));
 		}
-		for (Object element : nodesToUpdate) {
+		for (NodeLayout element : nodesToUpdate) {
 			InternalNodeLayout nodeToUpdate = (InternalNodeLayout) element;
 			updateNodeLabel(nodeToUpdate);
 		}
@@ -147,7 +149,7 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 	@Override
 	public void removeNodes(NodeLayout[] nodes) {
 		super.removeNodes(nodes);
-		HashSet nodesToUpdate = new HashSet();
+		Set<NodeLayout> nodesToUpdate = new HashSet<>();
 		for (NodeLayout node : nodes) {
 			nodesToUpdate.addAll(Arrays.asList(node.getPredecessingNodes()));
 			if (((InternalNodeLayout) node).isDisposed()) {
@@ -156,13 +158,13 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 				nodesToUpdate.add(node);
 			}
 		}
-		for (Object element : nodesToUpdate) {
+		for (NodeLayout element : nodesToUpdate) {
 			InternalNodeLayout predecessor = (InternalNodeLayout) element;
 			updateNodeLabel(predecessor);
 		}
 	}
 
-	private void addLabelForFigure(IFigure figure, GraphLabel label) {
+	private static void addLabelForFigure(IFigure figure, GraphLabel label) {
 		IFigure parent = figure.getParent();
 		if (parent instanceof ZestRootLayer) {
 			((ZestRootLayer) parent).addDecoration(figure, label);
@@ -175,7 +177,7 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 		}
 	}
 
-	private void refreshLabelBounds(IFigure figure, GraphLabel label) {
+	private static void refreshLabelBounds(IFigure figure, GraphLabel label) {
 		Rectangle figureBounds = figure.getBounds();
 		if (figureBounds.width * figureBounds.height > 0) {
 			label.setText(label.getText()); // hack: resets label's size
@@ -198,7 +200,7 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 			return;
 		}
 		IFigure figure = internalNode.getNode().getFigure();
-		GraphLabel label = (GraphLabel) nodeFigureToLabel.get(figure);
+		GraphLabel label = nodeFigureToLabel.get(figure);
 		IFigure fisheye = getFisheyeFigure(figure);
 		if (fisheye != null) {
 			figure = fisheye;
@@ -239,7 +241,7 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 
 	private IFigure getFisheyeFigure(IFigure originalFigure) {
 		// a node has a fisheye if and only if its label has an AncestorListener
-		GraphLabel label = (GraphLabel) nodeFigureToLabel.get(originalFigure);
+		GraphLabel label = nodeFigureToLabel.get(originalFigure);
 		LabelAncestorListener ancestorListener = (LabelAncestorListener) labelToAncestorListener.get(label);
 		if (ancestorListener != null) {
 			return ancestorListener.fisheyeFigure;
@@ -249,7 +251,7 @@ class PrunedSuccessorsSubgraph extends DefaultSubgraph {
 
 	private void removeFigureForNode(InternalNodeLayout internalNode) {
 		IFigure figure = internalNode.getNode().getFigure();
-		GraphLabel label = (GraphLabel) nodeFigureToLabel.get(figure);
+		GraphLabel label = nodeFigureToLabel.get(figure);
 		if (label != null && label.getParent() != null) {
 			label.getParent().remove(label);
 		}
