@@ -43,7 +43,7 @@ public interface IContainer2 extends IContainer {
 	 * which both source and target nodes lay directly in this container are
 	 * returned.
 	 */
-	public List getConnections();
+	public List<? extends GraphConnection> getConnections();
 
 	/**
 	 * @noreference This method is not intended to be referenced by clients.
