@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
@@ -35,16 +36,16 @@ import org.eclipse.draw2d.Animation;
 class InternalLayoutContext implements LayoutContext {
 
 	final IContainer2 container;
-	private final List filters = new ArrayList();
-	private final List contextListeners = new ArrayList();
-	private final List graphStructureListeners = new ArrayList();
-	private final List layoutListeners = new ArrayList();
-	private final List pruningListeners = new ArrayList();
+	private final List<LayoutFilter> filters = new ArrayList<>();
+	private final List<ContextListener> contextListeners = new ArrayList<>();
+	private final List<GraphStructureListener> graphStructureListeners = new ArrayList<>();
+	private final List<LayoutListener> layoutListeners = new ArrayList<>();
+	private final List<PruningListener> pruningListeners = new ArrayList<>();
 	private LayoutAlgorithm mainAlgorithm;
 	private LayoutAlgorithm layoutAlgorithm;
 	private ExpandCollapseManager expandCollapseManager;
 	private SubgraphFactory subgraphFactory = new DefaultSubgraph.DefaultSubgraphFactory();
-	private final HashSet subgraphs = new HashSet();
+	private final Set<SubgraphLayout> subgraphs = new HashSet<>();
 	private boolean eventsOn = true;
 	private boolean backgorundLayoutEnabled = true;
 	private boolean externalLayoutInvocation = false;
@@ -106,15 +107,13 @@ class InternalLayoutContext implements LayoutContext {
 		if (animationHint) {
 			Animation.markBegin();
 		}
-		for (Object element : container.getNodes()) {
-			GraphNode node = (GraphNode) element;
+		for (GraphNode node : container.getNodes()) {
 			node.applyLayoutChanges();
 		}
-		for (Object element : container.getConnections()) {
-			GraphConnection connection = (GraphConnection) element;
+		for (GraphConnection connection : container.getConnections()) {
 			connection.applyLayoutChanges();
 		}
-		for (Object subgraph2 : subgraphs) {
+		for (SubgraphLayout subgraph2 : subgraphs) {
 			DefaultSubgraph subgraph = (DefaultSubgraph) subgraph2;
 			subgraph.applyLayoutChanges();
 		}
@@ -144,22 +143,20 @@ class InternalLayoutContext implements LayoutContext {
 
 	@Override
 	public NodeLayout[] getNodes() {
-		ArrayList result = new ArrayList();
-		for (Object element : this.container.getNodes()) {
-			GraphNode node = (GraphNode) element;
+		List<NodeLayout> result = new ArrayList<>();
+		for (GraphNode node : this.container.getNodes()) {
 			if (!isLayoutItemFiltered(node)) {
 				result.add(node.getLayout());
 			}
 		}
-		return (NodeLayout[]) result.toArray(new NodeLayout[result.size()]);
+		return result.toArray(new NodeLayout[result.size()]);
 	}
 
 	@Override
 	public EntityLayout[] getEntities() {
-		HashSet addedSubgraphs = new HashSet();
-		ArrayList result = new ArrayList();
-		for (Object element : this.container.getNodes()) {
-			GraphNode node = (GraphNode) element;
+		Set<SubgraphLayout> addedSubgraphs = new HashSet<>();
+		List<EntityLayout> result = new ArrayList<>();
+		for (GraphNode node : this.container.getNodes()) {
 			if (!isLayoutItemFiltered(node)) {
 				InternalNodeLayout nodeLayout = node.getLayout();
 				if (!nodeLayout.isPruned()) {
@@ -173,15 +170,14 @@ class InternalLayoutContext implements LayoutContext {
 				}
 			}
 		}
-		return (EntityLayout[]) result.toArray(new EntityLayout[result.size()]);
+		return result.toArray(new EntityLayout[result.size()]);
 	}
 
 	@Override
 	public SubgraphLayout[] getSubgraphs() {
 		SubgraphLayout[] result = new SubgraphLayout[subgraphs.size()];
 		int subgraphCount = 0;
-		for (Object subgraph2 : subgraphs) {
-			SubgraphLayout subgraph = (SubgraphLayout) subgraph2;
+		for (SubgraphLayout subgraph : subgraphs) {
 			NodeLayout[] nodes = subgraph.getNodes();
 			for (NodeLayout node : nodes) {
 				if (!isLayoutItemFiltered(((InternalNodeLayout) node).getNode())) {
@@ -254,11 +250,10 @@ class InternalLayoutContext implements LayoutContext {
 
 	@Override
 	public ConnectionLayout[] getConnections() {
-		List connections = container.getConnections();
+		List<? extends GraphConnection> connections = container.getConnections();
 		ConnectionLayout[] result = new ConnectionLayout[connections.size()];
 		int i = 0;
-		for (Object connection2 : connections) {
-			GraphConnection connection = (GraphConnection) connection2;
+		for (GraphConnection connection : connections) {
 			if (!isLayoutItemFiltered(connection)) {
 				result[i] = connection.getLayout();
 				i++;
@@ -274,26 +269,25 @@ class InternalLayoutContext implements LayoutContext {
 
 	@Override
 	public ConnectionLayout[] getConnections(EntityLayout source, EntityLayout target) {
-		ArrayList result = new ArrayList();
+		List<ConnectionLayout> result = new ArrayList<>();
 
-		ArrayList sourcesList = new ArrayList();
-		if (source instanceof NodeLayout) {
-			sourcesList.add(source);
+		List<NodeLayout> sourcesList = new ArrayList<>();
+		if (source instanceof NodeLayout layout) {
+			sourcesList.add(layout);
 		}
-		if (source instanceof SubgraphLayout) {
-			sourcesList.addAll(Arrays.asList(((SubgraphLayout) source).getNodes()));
-		}
-
-		HashSet targets = new HashSet();
-		if (target instanceof NodeLayout) {
-			targets.add(target);
-		}
-		if (target instanceof SubgraphLayout) {
-			targets.addAll(Arrays.asList(((SubgraphLayout) target).getNodes()));
+		if (source instanceof SubgraphLayout layout) {
+			sourcesList.addAll(Arrays.asList(layout.getNodes()));
 		}
 
-		for (Object element : sourcesList) {
-			NodeLayout source2 = (NodeLayout) element;
+		Set<NodeLayout> targets = new HashSet<>();
+		if (target instanceof NodeLayout layout) {
+			targets.add(layout);
+		}
+		if (target instanceof SubgraphLayout layout) {
+			targets.addAll(Arrays.asList(layout.getNodes()));
+		}
+
+		for (NodeLayout source2 : sourcesList) {
 			ConnectionLayout[] outgoingConnections = source2.getOutgoingConnections();
 			for (ConnectionLayout connection : outgoingConnections) {
 				if ((connection.getSource() == source2 && targets.contains(connection.getTarget()))
@@ -303,7 +297,7 @@ class InternalLayoutContext implements LayoutContext {
 			}
 
 		}
-		return (ConnectionLayout[]) result.toArray(new ConnectionLayout[result.size()]);
+		return result.toArray(new ConnectionLayout[result.size()]);
 	}
 
 	void addFilter(LayoutFilter filter) {
@@ -315,8 +309,7 @@ class InternalLayoutContext implements LayoutContext {
 	}
 
 	boolean isLayoutItemFiltered(GraphItem item) {
-		for (Object filter2 : filters) {
-			LayoutFilter filter = (LayoutFilter) filter2;
+		for (LayoutFilter filter : filters) {
 			if (filter.isObjectFiltered(item)) {
 				return true;
 			}
@@ -361,6 +354,7 @@ class InternalLayoutContext implements LayoutContext {
 	 * always used when {@link #applyLayoutAlgorithm(boolean)} and not after firing
 	 * of events.
 	 */
+	@SuppressWarnings("removal")
 	void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
 		this.layoutAlgorithm = algorithm;
 		if (!(layoutAlgorithm instanceof LayoutAlgorithm.Zest1)) {
@@ -388,7 +382,7 @@ class InternalLayoutContext implements LayoutContext {
 
 	void fireNodeAddedEvent(NodeLayout node) {
 		boolean intercepted = !eventsOn;
-		GraphStructureListener[] listeners = (GraphStructureListener[]) graphStructureListeners
+		GraphStructureListener[] listeners = graphStructureListeners
 				.toArray(new GraphStructureListener[graphStructureListeners.size()]);
 		for (int i = 0; i < listeners.length && !intercepted; i++) {
 			intercepted = listeners[i].nodeAdded(this, node);
@@ -400,7 +394,7 @@ class InternalLayoutContext implements LayoutContext {
 
 	void fireNodeRemovedEvent(NodeLayout node) {
 		boolean intercepted = !eventsOn;
-		GraphStructureListener[] listeners = (GraphStructureListener[]) graphStructureListeners
+		GraphStructureListener[] listeners = graphStructureListeners
 				.toArray(new GraphStructureListener[graphStructureListeners.size()]);
 		for (int i = 0; i < listeners.length && !intercepted; i++) {
 			intercepted = listeners[i].nodeRemoved(this, node);
@@ -418,7 +412,7 @@ class InternalLayoutContext implements LayoutContext {
 		}
 		if (sourceContext == this) {
 			boolean intercepted = !eventsOn;
-			GraphStructureListener[] listeners = (GraphStructureListener[]) graphStructureListeners
+			GraphStructureListener[] listeners = graphStructureListeners
 					.toArray(new GraphStructureListener[graphStructureListeners.size()]);
 			for (int i = 0; i < listeners.length && !intercepted; i++) {
 				intercepted = listeners[i].connectionAdded(this, connection);
@@ -439,7 +433,7 @@ class InternalLayoutContext implements LayoutContext {
 		}
 		if (sourceContext == this) {
 			boolean intercepted = !eventsOn;
-			GraphStructureListener[] listeners = (GraphStructureListener[]) graphStructureListeners
+			GraphStructureListener[] listeners = graphStructureListeners
 					.toArray(new GraphStructureListener[graphStructureListeners.size()]);
 			for (int i = 0; i < listeners.length && !intercepted; i++) {
 				intercepted = listeners[i].connectionRemoved(this, connection);
@@ -454,8 +448,7 @@ class InternalLayoutContext implements LayoutContext {
 
 	void fireBoundsChangedEvent() {
 		boolean intercepted = !eventsOn;
-		ContextListener[] listeners = (ContextListener[]) contextListeners
-				.toArray(new ContextListener[contextListeners.size()]);
+		ContextListener[] listeners = contextListeners.toArray(new ContextListener[contextListeners.size()]);
 		for (int i = 0; i < listeners.length && !intercepted; i++) {
 			intercepted = listeners[i].boundsChanged(this);
 		}
@@ -465,8 +458,7 @@ class InternalLayoutContext implements LayoutContext {
 	}
 
 	void fireBackgroundEnableChangedEvent() {
-		ContextListener[] listeners = (ContextListener[]) contextListeners
-				.toArray(new ContextListener[contextListeners.size()]);
+		ContextListener[] listeners = contextListeners.toArray(new ContextListener[contextListeners.size()]);
 		for (ContextListener listener : listeners) {
 			listener.backgroundEnableChanged(this);
 		}
@@ -477,8 +469,7 @@ class InternalLayoutContext implements LayoutContext {
 			node.refreshLocation();
 		}
 		boolean intercepted = !eventsOn;
-		LayoutListener[] listeners = (LayoutListener[]) layoutListeners
-				.toArray(new LayoutListener[layoutListeners.size()]);
+		LayoutListener[] listeners = layoutListeners.toArray(new LayoutListener[layoutListeners.size()]);
 		node.setLocation(node.getNode().getLocation().x, node.getNode().getLocation().y);
 		for (int i = 0; i < listeners.length && !intercepted; i++) {
 			intercepted = listeners[i].nodeMoved(this, node);
@@ -494,8 +485,7 @@ class InternalLayoutContext implements LayoutContext {
 			node.refreshLocation();
 		}
 		boolean intercepted = !eventsOn;
-		LayoutListener[] listeners = (LayoutListener[]) layoutListeners
-				.toArray(new LayoutListener[layoutListeners.size()]);
+		LayoutListener[] listeners = layoutListeners.toArray(new LayoutListener[layoutListeners.size()]);
 		for (int i = 0; i < listeners.length && !intercepted; i++) {
 			intercepted = listeners[i].nodeResized(this, node);
 		}
@@ -509,8 +499,7 @@ class InternalLayoutContext implements LayoutContext {
 			subgraph.refreshLocation();
 		}
 		boolean intercepted = !eventsOn;
-		LayoutListener[] listeners = (LayoutListener[]) layoutListeners
-				.toArray(new LayoutListener[layoutListeners.size()]);
+		LayoutListener[] listeners = layoutListeners.toArray(new LayoutListener[layoutListeners.size()]);
 		for (int i = 0; i < listeners.length && !intercepted; i++) {
 			intercepted = listeners[i].subgraphMoved(this, subgraph);
 		}
@@ -525,8 +514,7 @@ class InternalLayoutContext implements LayoutContext {
 			subgraph.refreshLocation();
 		}
 		boolean intercepted = !eventsOn;
-		LayoutListener[] listeners = (LayoutListener[]) layoutListeners
-				.toArray(new LayoutListener[layoutListeners.size()]);
+		LayoutListener[] listeners = layoutListeners.toArray(new LayoutListener[layoutListeners.size()]);
 		for (int i = 0; i < listeners.length && !intercepted; i++) {
 			intercepted = listeners[i].subgraphResized(this, subgraph);
 		}
