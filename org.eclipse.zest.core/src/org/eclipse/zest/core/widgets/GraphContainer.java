@@ -34,6 +34,7 @@ import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
 
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ColorConstants;
@@ -536,7 +537,7 @@ public class GraphContainer extends GraphNode implements IContainer2 {
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	@Override
-	public InternalLayoutContext getLayoutContext() {
+	public final LayoutContext getLayoutContext() {
 		if (layoutContext == null) {
 			layoutContext = new InternalLayoutContext(this);
 		}

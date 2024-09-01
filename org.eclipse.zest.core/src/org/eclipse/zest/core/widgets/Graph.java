@@ -51,6 +51,7 @@ import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.zest.layouts.interfaces.ExpandCollapseManager;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
 
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Button;
@@ -112,7 +113,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	Set<IFigure> subgraphFigures;
 	private HideNodeHelper hoverNode = null;
 	IFigure fisheyedFigure = null;
-	private final ArrayList fisheyeListeners = new ArrayList();
+	private final List<FisheyeListener> fisheyeListeners = new ArrayList<>();
 	private List<SelectionListener> selectionListeners = null;
 
 	/** This maps all visible nodes to their model element. */
@@ -121,6 +122,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	/** Maps user nodes to internal nodes */
 	private int connectionStyle;
 	private int nodeStyle;
+	@SuppressWarnings("removal")
 	private List<ConstraintAdapter> constraintAdapters;
 	private ScalableFreeformLayeredPane fishEyeLayer = null;
 	private InternalLayoutContext layoutContext = null;
@@ -241,7 +243,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 			@Override
 			public void controlResized(ControlEvent e) {
 				if (preferredSize.width == -1 || preferredSize.height == -1) {
-					getLayoutContext().fireBoundsChangedEvent();
+					internalGetLayoutContext().fireBoundsChangedEvent();
 				}
 			}
 		});
@@ -362,6 +364,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 *
 	 * @return list of GraphModelConnection objects
 	 */
+	@Override
 	public List<? extends GraphConnection> getConnections() {
 		return this.connections;
 	}
@@ -446,7 +449,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 		if (getLayoutAlgorithm() instanceof LayoutAlgorithm.Zest1) {
 			applyLayoutInternal(true);
 		} else {
-			getLayoutContext().applyLayout(true);
+			internalGetLayoutContext().applyLayout(true);
 			layoutContext.flushChanges(false);
 		}
 	}
@@ -492,7 +495,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 */
 	public void setPreferredSize(int width, int height) {
 		this.preferredSize = new Dimension(width, height);
-		getLayoutContext().fireBoundsChangedEvent();
+		internalGetLayoutContext().fireBoundsChangedEvent();
 	}
 
 	/**
@@ -512,11 +515,15 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	@Override
-	public InternalLayoutContext getLayoutContext() {
+	public final LayoutContext getLayoutContext() {
 		if (layoutContext == null) {
 			layoutContext = new InternalLayoutContext(this);
 		}
 		return layoutContext;
+	}
+
+	InternalLayoutContext internalGetLayoutContext() {
+		return (InternalLayoutContext) getLayoutContext();
 	}
 
 	/**
@@ -524,7 +531,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 */
 	@Override
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
-		getLayoutContext().setLayoutAlgorithm(algorithm);
+		internalGetLayoutContext().setLayoutAlgorithm(algorithm);
 		if (applyLayout) {
 			applyLayout();
 		}
@@ -534,14 +541,14 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 * @since 1.14
 	 */
 	public void setSubgraphFactory(SubgraphFactory factory) {
-		getLayoutContext().setSubgraphFactory(factory);
+		internalGetLayoutContext().setSubgraphFactory(factory);
 	}
 
 	/**
 	 * @since 1.14
 	 */
 	public SubgraphFactory getSubgraphFactory() {
-		return getLayoutContext().getSubgraphFactory();
+		return internalGetLayoutContext().getSubgraphFactory();
 	}
 
 	/**
@@ -569,11 +576,11 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 * @since 1.14
 	 */
 	public void addLayoutFilter(LayoutFilter filter) {
-		getLayoutContext().addFilter(filter);
+		internalGetLayoutContext().addFilter(filter);
 	}
 
 	public LayoutAlgorithm getLayoutAlgorithm() {
-		return getLayoutContext().getLayoutAlgorithm();
+		return internalGetLayoutContext().getLayoutAlgorithm();
 	}
 
 	/**
@@ -584,7 +591,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 * @since 1.14
 	 */
 	public void removeLayoutFilter(LayoutFilter filter) {
-		getLayoutContext().removeFilter(filter);
+		internalGetLayoutContext().removeFilter(filter);
 	}
 
 	/**
@@ -644,27 +651,19 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 * @since 1.9
 	 */
 	protected GraphDragSupport createGraphDragSupport() {
-		return new DragSupport(this);
+		return new DragSupport();
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE METHODS. These are NON API
 	// /////////////////////////////////////////////////////////////////////////////////
 	private class DragSupport implements GraphDragSupport {
-		/**
-		 *
-		 */
-		Graph graph = null;
 		Point lastLocation = null;
 		IFigure draggedSubgraphFigure = null;
 		/** locations of dragged items relative to cursor position */
-		ArrayList relativeLocations = new ArrayList();
+		List<Point> relativeLocations = new ArrayList<>();
 		GraphItem fisheyedItem = null;
 		boolean isDragging = false;
-
-		DragSupport(Graph graph) {
-			this.graph = graph;
-		}
 
 		@Override
 		public void mouseDragged(org.eclipse.draw2d.MouseEvent me) {
@@ -682,8 +681,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 			if (!selectedItems.isEmpty() || draggedSubgraphFigure != null) {
 
 				if (relativeLocations.isEmpty()) {
-					for (Object selectedItem : selectedItems) {
-						GraphItem item = (GraphItem) selectedItem;
+					for (GraphItem item : selectedItems) {
 						if ((item.getItemType() == GraphItem.NODE) || (item.getItemType() == GraphItem.CONTAINER)) {
 							relativeLocations.add(getRelativeLocation(item.getFigure()));
 						}
@@ -693,12 +691,11 @@ public class Graph extends FigureCanvas implements IContainer2 {
 					}
 				}
 
-				Iterator locationsIterator = relativeLocations.iterator();
-				for (Object selectedItem : selectedItems) {
-					GraphItem item = (GraphItem) selectedItem;
+				Iterator<Point> locationsIterator = relativeLocations.iterator();
+				for (GraphItem item : selectedItems) {
 					if ((item.getItemType() == GraphItem.NODE) || (item.getItemType() == GraphItem.CONTAINER)) {
 						Point pointCopy = mousePoint.getCopy();
-						Point relativeLocation = (Point) locationsIterator.next();
+						Point relativeLocation = locationsIterator.next();
 
 						item.getFigure().getParent().translateToRelative(pointCopy);
 						item.getFigure().getParent().translateFromParent(pointCopy);
@@ -713,7 +710,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 					Point pointCopy = mousePoint.getCopy();
 					draggedSubgraphFigure.getParent().translateToRelative(pointCopy);
 					draggedSubgraphFigure.getParent().translateFromParent(pointCopy);
-					Point relativeLocation = (Point) locationsIterator.next();
+					Point relativeLocation = locationsIterator.next();
 					pointCopy.x += relativeLocation.x;
 					pointCopy.y += relativeLocation.y;
 
@@ -861,12 +858,12 @@ public class Graph extends FigureCanvas implements IContainer2 {
 					}
 				}
 				for (GraphNode node : g.getNodes()) {
-					for (GraphConnection connection : (List<GraphConnection>) node.getTargetConnections()) {
+					for (GraphConnection connection : node.getTargetConnections()) {
 						container.graph.removeConnection(connection);
 						g.addConnection(connection, true);
 						g.registerItem(connection);
 					}
-					for (GraphConnection connection : (List<GraphConnection>) node.getSourceConnections()) {
+					for (GraphConnection connection : node.getSourceConnections()) {
 						container.graph.removeConnection(connection);
 						g.addConnection(connection, true);
 						g.registerItem(connection);
@@ -1099,9 +1096,9 @@ public class Graph extends FigureCanvas implements IContainer2 {
 		setNodeSelected(item, true);
 	}
 
-	private void setNodeSelected(GraphItem item, boolean selected) {
-		if (item instanceof GraphNode) {
-			((GraphNode) item).setSelected(selected);
+	private static void setNodeSelected(GraphItem item, boolean selected) {
+		if (item instanceof GraphNode node) {
+			node.setSelected(selected);
 		}
 	}
 
@@ -1179,14 +1176,14 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	 * @since 1.14
 	 */
 	public void clear() {
-		for (Object element : new ArrayList(connections)) {
-			removeConnection((GraphConnection) element);
+		for (GraphConnection element : new ArrayList<>(connections)) {
+			removeConnection(element);
 		}
-		for (Object element : new HashSet(subgraphFigures)) {
-			removeSubgraphFigure((IFigure) element);
+		for (IFigure element : new HashSet<>(subgraphFigures)) {
+			removeSubgraphFigure(element);
 		}
-		for (Object element : new ArrayList(nodes)) {
-			removeNode((GraphNode) element);
+		for (GraphNode element : new ArrayList<>(nodes)) {
+			removeNode(element);
 		}
 	}
 
@@ -1204,7 +1201,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 		if (targetContainerConnectionFigure != null) {
 			figure2ItemMap.remove(targetContainerConnectionFigure);
 		}
-		getLayoutContext().fireConnectionRemovedEvent(connection.getLayout());
+		internalGetLayoutContext().fireConnectionRemovedEvent(connection.getLayout());
 	}
 
 	void removeNode(GraphNode node) {
@@ -1225,7 +1222,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 		if (addToEdgeLayer) {
 			zestRootLayer.addConnection(connection.getFigure());
 		}
-		getLayoutContext().fireConnectionAddedEvent(connection.getLayout());
+		internalGetLayoutContext().fireConnectionAddedEvent(connection.getLayout());
 	}
 
 	/*
@@ -1253,7 +1250,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 	public void addNode(GraphNode node) {
 		nodes.add(node);
 		zestRootLayer.addNode(node.getNodeFigure());
-		getLayoutContext().fireNodeAddedEvent(node.getLayout());
+		internalGetLayoutContext().fireNodeAddedEvent(node.getLayout());
 	}
 
 	/**
@@ -1341,8 +1338,9 @@ public class Graph extends FigureCanvas implements IContainer2 {
 		}
 	}
 
+	@SuppressWarnings("removal")
 	private void applyLayoutInternal(boolean clean) {
-		if (getLayoutContext().getLayoutAlgorithm() == null) {
+		if (internalGetLayoutContext().getLayoutAlgorithm() == null) {
 			return;
 		}
 
@@ -1394,7 +1392,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 							e.printStackTrace();
 						}
 					} else {
-						getLayoutContext().applyLayout(scheduledLayoutClean);
+						internalGetLayoutContext().applyLayout(scheduledLayoutClean);
 						layoutContext.flushChanges(false);
 					}
 					Animation.run(ANIMATION_TIME);
@@ -1450,7 +1448,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 
 		rootlayer.addCoordinateListener(source -> {
 			if (preferredSize.width == -1 && preferredSize.height == -1) {
-				getLayoutContext().fireBoundsChangedEvent();
+				internalGetLayoutContext().fireBoundsChangedEvent();
 			}
 		});
 
@@ -1495,8 +1493,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 
 		fishEyeLayer.setConstraint(fishEyeFigure, bounds);
 
-		for (Object fisheyeListener : fisheyeListeners) {
-			FisheyeListener listener = (FisheyeListener) fisheyeListener;
+		for (FisheyeListener listener : fisheyeListeners) {
 			listener.fisheyeRemoved(this, regularFigure, fishEyeFigure);
 		}
 
@@ -1522,8 +1519,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 			// this.fishEyeLayer.getChildren().remove(oldFigure);
 			this.fishEyeLayer.remove(oldFigure);
 			this.fishEyeLayer.add(newFigure);
-			for (Object fisheyeListener : fisheyeListeners) {
-				FisheyeListener listener = (FisheyeListener) fisheyeListener;
+			for (FisheyeListener listener : fisheyeListeners) {
 				listener.fisheyeReplaced(this, oldFigure, newFigure);
 			}
 			// this.fishEyeLayer.getChildren().add(newFigure);
@@ -1569,8 +1565,7 @@ public class Graph extends FigureCanvas implements IContainer2 {
 		fishEyeLayer.add(endFigure);
 		fishEyeLayer.setConstraint(endFigure, newBounds);
 
-		for (Object fisheyeListener : fisheyeListeners) {
-			FisheyeListener listener = (FisheyeListener) fisheyeListener;
+		for (FisheyeListener listener : fisheyeListeners) {
 			listener.fisheyeAdded(this, startFigure, endFigure);
 		}
 
