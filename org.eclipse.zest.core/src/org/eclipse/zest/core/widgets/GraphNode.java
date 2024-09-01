@@ -340,7 +340,7 @@ public class GraphNode extends GraphItem {
 			currentLocation.setPreciseY(y);
 			refreshLocation();
 			if (getGraphModel().isDynamicLayoutEnabled() && parent instanceof IContainer2 parent2) {
-				parent2.getLayoutContext().fireNodeMovedEvent(this.getLayout());
+				((InternalLayoutContext) parent2.getLayoutContext()).fireNodeMovedEvent(this.getLayout());
 			}
 		}
 	}
@@ -911,12 +911,12 @@ public class GraphNode extends GraphItem {
 					}
 					currentLocation = new PrecisionPoint(nodeFigure.getBounds().getTopLeft());
 					if (parent instanceof IContainer2 parent2) {
-						parent2.getLayoutContext().fireNodeResizedEvent(getLayout());
+						((InternalLayoutContext) parent2.getLayoutContext()).fireNodeResizedEvent(getLayout());
 					}
 				} else if (currentLocation.x != newBounds.x || currentLocation.y != newBounds.y) {
 					currentLocation = new PrecisionPoint(nodeFigure.getBounds().getTopLeft());
 					if (parent instanceof IContainer2 parent2) {
-						parent2.getLayoutContext().fireNodeMovedEvent(getLayout());
+						((InternalLayoutContext) parent2.getLayoutContext()).fireNodeMovedEvent(getLayout());
 					}
 				}
 			}

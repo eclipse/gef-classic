@@ -60,7 +60,7 @@ class InternalNodeLayout implements NodeLayout {
 
 	public InternalNodeLayout(GraphNode graphNode) {
 		this.node = graphNode;
-		this.ownerLayoutContext = ((IContainer2) node.parent).getLayoutContext();
+		this.ownerLayoutContext = (InternalLayoutContext) ((IContainer2) node.parent).getLayoutContext();
 		graphNode.nodeFigure.addFigureListener(figureListener);
 		figureToNode.put(graphNode.nodeFigure, graphNode);
 	}

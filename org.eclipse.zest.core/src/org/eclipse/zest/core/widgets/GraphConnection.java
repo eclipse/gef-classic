@@ -875,7 +875,7 @@ public class GraphConnection extends GraphItem {
 
 		@Override
 		public void setVisible(boolean visible) {
-			graphModel.getLayoutContext().checkChangesAllowed();
+			graphModel.internalGetLayoutContext().checkChangesAllowed();
 			this.visible = visible;
 		}
 

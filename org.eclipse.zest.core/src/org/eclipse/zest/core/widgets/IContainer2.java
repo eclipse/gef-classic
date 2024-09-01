@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
 
 import org.eclipse.draw2d.IFigure;
 
@@ -62,5 +63,5 @@ public interface IContainer2 extends IContainer {
 	/**
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
-	public InternalLayoutContext getLayoutContext();
+	public LayoutContext getLayoutContext();
 }
