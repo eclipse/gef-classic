@@ -25,7 +25,8 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * @version 1.0
  * @author Rob Lintern
  * @deprecated No longer used in Zest 2.x. This class will be removed in a
- *             future release.
+ *             future release. Use {@link TreeLayoutAlgorithm} with
+ *             {@link TreeLayoutAlgorithm#LEFT_RIGHT} instead.
  * @noextend This class is not intended to be subclassed by clients.
  * @noreference This class is not intended to be referenced by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.

@@ -12,13 +12,16 @@
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
+import org.eclipse.swt.SWT;
+
 import org.eclipse.zest.layouts.LayoutStyles;
 
 /**
  * @version 2.0
  * @author Casey Best and Rob Lintern (version 1.0 by Rob Lintern)
  * @deprecated No longer used in Zest 2.x. This class will be removed in a
- *             future release.
+ *             future release. Use {@link BoxLayoutAlgorithm} with
+ *             {@link SWT#VERTICAL} instead.
  * @noextend This class is not intended to be subclassed by clients.
  * @noreference This class is not intended to be referenced by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
