@@ -14,7 +14,6 @@ package org.eclipse.zest.core.widgets.internal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -155,8 +154,8 @@ public class XYScaledGraphics extends ScaledGraphics {
 
 	private boolean allowText = true;
 	// private static final Point PT = new Point();
-	private final Map fontCache = new HashMap();
-	private final Map fontDataCache = new HashMap();
+	private final Map<FontKey, Font> fontCache = new HashMap<>();
+	private final Map<Font, FontData> fontDataCache = new HashMap<>();
 	private final FontKey fontKey = new FontKey();
 	private double fractionalX;
 	private double fractionalY;
@@ -164,7 +163,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	private final FontHeightCache localCache = new FontHeightCache();
 	private Font localFont;
 	private int localLineWidth;
-	private final List stack = new ArrayList();
+	private final List<State> stack = new ArrayList<>();
 	private int stackPointer = 0;
 	private final FontHeightCache targetCache = new FontHeightCache();
 
@@ -201,10 +200,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 			popState();
 		}
 
-		// Dispose fonts
-		Iterator iter = fontCache.values().iterator();
-		while (iter.hasNext()) {
-			Font font = ((Font) iter.next());
+		for (Font font : fontCache.values()) {
 			font.dispose();
 		}
 
@@ -444,7 +440,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	Font getCachedFont(FontKey key) {
-		Font font = (Font) fontCache.get(key);
+		Font font = fontCache.get(key);
 		if (font != null) {
 			return font;
 		}
@@ -457,7 +453,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	FontData getCachedFontData(Font f) {
-		FontData data = (FontData) fontDataCache.get(f);
+		FontData data = fontDataCache.get(f);
 		if (data != null) {
 			return data;
 		}
@@ -574,7 +570,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	public void popState() {
 		graphics.popState();
 		stackPointer--;
-		restoreLocalState((State) stack.get(stackPointer));
+		restoreLocalState(stack.get(stackPointer));
 	}
 
 	/** @see Graphics#pushState() */
@@ -582,7 +578,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	public void pushState() {
 		State s;
 		if (stack.size() > stackPointer) {
-			s = (State) stack.get(stackPointer);
+			s = stack.get(stackPointer);
 			s.setValues(xZoom, yZoom, fractionalX, fractionalY, getLocalFont(), localLineWidth);
 		} else {
 			stack.add(new State(xZoom, yZoom, fractionalX, fractionalY, getLocalFont(), localLineWidth));
@@ -604,7 +600,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	@Override
 	public void restoreState() {
 		graphics.restoreState();
-		restoreLocalState((State) stack.get(stackPointer - 1));
+		restoreLocalState(stack.get(stackPointer - 1));
 	}
 
 	public void scale(double xAmount, double yAmount) {
