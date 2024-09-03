@@ -12,6 +12,7 @@
 package org.eclipse.zest.core.widgets.custom;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.Color;
 
@@ -138,7 +139,7 @@ public class TriangleSubgraph extends FigureSubgraph {
 		}
 	}
 
-	private static HashMap contextToTree = new HashMap();
+	private static Map<LayoutContext, TreeLayoutObserver> contextToTree = new HashMap<>();
 
 	private final TriangleParameters parameters;
 
@@ -167,14 +168,14 @@ public class TriangleSubgraph extends FigureSubgraph {
 		figure.setForegroundColor(parameters.color);
 	}
 
-	private double log(double value, double base) {
+	private static double log(double value, double base) {
 		return Math.log(value) / Math.log(base);
 	}
 
 	@Override
 	protected void updateFigure() {
-		TreeLayoutObserver tree = (TreeLayoutObserver) contextToTree.get(context);
-		TreeNode subgraphRoot = tree.getTreeNode((NodeLayout) nodes.iterator().next());
+		TreeLayoutObserver tree = contextToTree.get(context);
+		TreeNode subgraphRoot = tree.getTreeNode(nodes.iterator().next());
 		if (subgraphRoot == null) {
 			return;
 		}

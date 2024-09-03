@@ -825,6 +825,7 @@ public class GraphNode extends GraphItem {
 		return highlighted > 0;
 	}
 
+	@SuppressWarnings("removal")
 	void invokeLayoutListeners(LayoutConstraint constraint) {
 		graph.invokeConstraintAdapters(this, constraint);
 	}
@@ -1029,6 +1030,7 @@ public class GraphNode extends GraphItem {
 		return NODE;
 	}
 
+	@SuppressWarnings("removal")
 	class LayoutGraphNode implements LayoutEntity {
 		Object layoutInformation = null;
 
