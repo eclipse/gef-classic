@@ -241,6 +241,7 @@ public class PolylineArcConnection extends PolylineConnection {
 	}
 
 	// find the quadrant, assume points are centered at 0,0
+	@SuppressWarnings("static-method")
 	protected int findQuadrant(float x, float y) {
 		if (y > 0) {
 			if (x > 0) {

@@ -258,6 +258,7 @@ public class GraphLabel extends CachedLabel implements IStyleableFigure {
 		return borderColor;
 	}
 
+	@Override
 	public void setBorderColor(Color c) {
 		this.borderColor = c;
 	}
@@ -266,6 +267,7 @@ public class GraphLabel extends CachedLabel implements IStyleableFigure {
 		return borderWidth;
 	}
 
+	@Override
 	public void setBorderWidth(int width) {
 		this.borderWidth = width;
 	}
