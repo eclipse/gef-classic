@@ -37,4 +37,10 @@ public @interface Snippet {
 	 * @return The name of the static field containing the {@link Graph}.
 	 */
 	String field() default "g";
+
+	/**
+	 * @return Return {@code true} when nodes should be placed randomly (if
+	 *         supported by the layout).
+	 */
+	boolean random() default false;
 }

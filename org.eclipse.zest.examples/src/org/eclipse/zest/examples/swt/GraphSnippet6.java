@@ -23,7 +23,6 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
-import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 
 /**
@@ -60,7 +59,7 @@ public class GraphSnippet6 {
 			new GraphConnection(g, SWT.NONE, n2, n3);
 			new GraphConnection(g, SWT.NONE, n3, n3);
 		}
-		g.setLayoutAlgorithm(new GridLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		g.setLayoutAlgorithm(new GridLayoutAlgorithm(), true);
 
 		shell.open();
 		while (!shell.isDisposed()) {

@@ -27,7 +27,6 @@ import org.eclipse.zest.core.widgets.GraphContainer;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.IContainer;
 import org.eclipse.zest.core.widgets.ZestStyles;
-import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 import org.eclipse.draw2d.IFigure;
@@ -128,8 +127,8 @@ public class UMLExample {
 		new GraphConnection(g, SWT.NONE, n1, n2);
 		new GraphConnection(g, SWT.NONE, n, n1);
 
-		c.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
-		g.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		c.setLayoutAlgorithm(new SpringLayoutAlgorithm(), true);
+		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(), true);
 
 		shell.open();
 		while (!shell.isDisposed()) {

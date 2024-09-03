@@ -129,7 +129,7 @@ public class GraphJFaceSnippet8 {
 		viewer = new GraphViewer(shell, SWT.NONE);
 		viewer.setContentProvider(new MyContentProvider());
 		viewer.setLabelProvider(new MyLabelProvider());
-		viewer.setLayoutAlgorithm(new RadialLayoutAlgorithm.Zest1());
+		viewer.setLayoutAlgorithm(new RadialLayoutAlgorithm());
 		viewer.setInput(new Object());
 
 		shell.open();

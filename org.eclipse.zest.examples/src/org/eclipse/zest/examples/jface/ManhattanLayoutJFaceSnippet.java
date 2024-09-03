@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.zest.core.viewers.GraphViewer;
-import org.eclipse.zest.core.viewers.IConnectionStyleProvider;
+import org.eclipse.zest.core.viewers.IConnectionStyleProvider2;
 import org.eclipse.zest.core.viewers.IEntityConnectionStyleProvider2;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
@@ -99,7 +99,7 @@ public class ManhattanLayoutJFaceSnippet {
 
 	}
 
-	static class MyConnectionRelationLabelProvider extends LabelProvider implements IConnectionStyleProvider {
+	static class MyConnectionRelationLabelProvider extends LabelProvider implements IConnectionStyleProvider2 {
 		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 
 		@Override

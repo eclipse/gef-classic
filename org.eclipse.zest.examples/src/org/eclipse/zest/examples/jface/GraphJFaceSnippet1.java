@@ -26,7 +26,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
-import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 /**
@@ -125,7 +124,7 @@ public class GraphJFaceSnippet1 {
 
 		viewer.setContentProvider(new MyContentProvider());
 		viewer.setLabelProvider(new MyLabelProvider());
-		viewer.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
+		viewer.setLayoutAlgorithm(new SpringLayoutAlgorithm());
 		viewer.addSelectionChangedListener(event -> System.out.println("Selection changed: " + (event.getSelection())));
 		viewer.setInput(new Object());
 
