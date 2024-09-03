@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
-import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -60,7 +59,7 @@ public class GraphSnippet11 {
 		createConnection(g, n, n2, ColorConstants.darkGray, 60);
 		createConnection(g, n, n2, ColorConstants.darkGray, -60);
 		createConnection(g, n, n2, ColorConstants.black, 0);
-		g.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(), true);
 
 		shell.open();
 		while (!shell.isDisposed()) {

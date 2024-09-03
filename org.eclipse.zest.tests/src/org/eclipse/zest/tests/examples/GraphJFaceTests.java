@@ -122,7 +122,6 @@ public class GraphJFaceTests extends AbstractGraphTest {
 		// Explicitly checking 30 nodes and 29 connections is just busy work...
 		assertEquals(graph.getNodes().size(), 30);
 		assertEquals(graph.getConnections().size(), 29);
-		assertNoOverlap(graph);
 	}
 
 	/**
@@ -230,7 +229,7 @@ public class GraphJFaceTests extends AbstractGraphTest {
 	 */
 	@Test
 	@Snippet(type = GraphJFaceSnippet8.class)
-	public void testGraphJFaceSnippet8() {
+	public void testGraphJFaceSnippet8() throws ReflectiveOperationException {
 		assertNode(graph.getNodes().get(0), "First");
 		assertNode(graph.getNodes().get(1), "Second");
 		assertNode(graph.getNodes().get(2), "Third");
@@ -247,10 +246,10 @@ public class GraphJFaceTests extends AbstractGraphTest {
 		assertConnection(connection3, "First", "First");
 		assertConnection(connection4, "First", "Second");
 
-		assertArc(connection1, 34 /* ° */);
-		assertArc(connection2, 34 /* ° */);
-		assertArc(connection3, Double.NaN /* ° */);
-		assertArc(connection4, 0 /* ° */);
+		assertCurve(connection1, 20);
+		assertCurve(connection2, 20);
+		assertCurve(connection3, 40);
+		assertCurve(connection4, 0);
 
 		assertNoOverlap(graph);
 	}

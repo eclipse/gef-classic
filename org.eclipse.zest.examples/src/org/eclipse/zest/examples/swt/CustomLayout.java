@@ -8,10 +8,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
-import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.algorithms.AbstractLayoutAlgorithm;
-import org.eclipse.zest.layouts.dataStructures.InternalNode;
-import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.interfaces.EntityLayout;
 
 /**
  * This snippet shows how to create a custom layout. This layout simply lays the
@@ -39,63 +37,18 @@ public class CustomLayout {
 		new GraphConnection(g, SWT.NONE, n, n2);
 		new GraphConnection(g, SWT.NONE, n2, n3);
 		new GraphConnection(g, SWT.NONE, n3, n);
-		g.setLayoutAlgorithm(new AbstractLayoutAlgorithm.Zest1(SWT.NONE) {
-
-			private int totalSteps;
-			private int currentStep;
-
+		g.setLayoutAlgorithm(new AbstractLayoutAlgorithm() {
 			@Override
-			protected void applyLayoutInternal(InternalNode[] entitiesToLayout,
-					InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth,
-					double boundsHeight) {
-
-				totalSteps = entitiesToLayout.length;
-				double distance = boundsWidth / totalSteps;
+			public void applyLayout(boolean clean) {
+				EntityLayout[] entitiesToLayout = context.getEntities();
+				int totalSteps = entitiesToLayout.length;
+				double distance = context.getBounds().width / totalSteps;
 				int xLocation = 0;
-
-				fireProgressStarted(totalSteps);
-
-				for (currentStep = 0; currentStep < entitiesToLayout.length; currentStep++) {
-					LayoutEntity layoutEntity = entitiesToLayout[currentStep].getLayoutEntity();
-					layoutEntity.setLocationInLayout(xLocation, layoutEntity.getYInLayout());
+				for (EntityLayout layoutEntity : entitiesToLayout) {
+					layoutEntity.setLocation(xLocation, layoutEntity.getLocation().y);
 					xLocation += distance;
-					fireProgressEvent(currentStep, totalSteps);
 				}
-				fireProgressEnded(totalSteps);
 			}
-
-			@Override
-			protected int getCurrentLayoutStep() {
-				return 0;
-			}
-
-			@Override
-			protected int getTotalNumberOfLayoutSteps() {
-				return totalSteps;
-			}
-
-			@Override
-			protected boolean isValidConfiguration(boolean asynchronous, boolean continuous) {
-				return true;
-			}
-
-			@Override
-			protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
-					InternalRelationship[] relationshipsToConsider) {
-				// Do nothing
-			}
-
-			@Override
-			protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout,
-					InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
-				// do nothing
-			}
-
-			@Override
-			public void setLayoutArea(double x, double y, double width, double height) {
-				// do nothing
-			}
-
 		}, true);
 
 		shell.open();

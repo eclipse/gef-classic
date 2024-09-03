@@ -22,7 +22,6 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphContainer;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
-import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
@@ -76,11 +75,11 @@ public class NestedGraphSnippet2 {
 		new GraphConnection(g, ZestStyles.CONNECTIONS_DIRECTED, object3, object4);
 		new GraphConnection(g, ZestStyles.CONNECTIONS_DIRECTED, object4, object5);
 
-		container1.setLayoutAlgorithm(new GridLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
-		container2.setLayoutAlgorithm(new GridLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
-		container3.setLayoutAlgorithm(new GridLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
-		container3.setLayoutAlgorithm(new GridLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
-		g.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		container1.setLayoutAlgorithm(new GridLayoutAlgorithm(), true);
+		container2.setLayoutAlgorithm(new GridLayoutAlgorithm(), true);
+		container3.setLayoutAlgorithm(new GridLayoutAlgorithm(), true);
+		container3.setLayoutAlgorithm(new GridLayoutAlgorithm(), true);
+		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(), true);
 
 		shell.open();
 		while (!shell.isDisposed()) {

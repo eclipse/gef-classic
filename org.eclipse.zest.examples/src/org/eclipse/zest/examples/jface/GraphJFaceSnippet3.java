@@ -29,7 +29,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
-import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 
 /**
@@ -103,7 +102,7 @@ public class GraphJFaceSnippet3 {
 		viewer = new GraphViewer(shell, SWT.NONE);
 		viewer.setContentProvider(new SimpleGraphContentProvider());
 		viewer.setLabelProvider(new LabelProvider());
-		viewer.setLayoutAlgorithm(new RadialLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
+		viewer.setLayoutAlgorithm(new RadialLayoutAlgorithm());
 
 		shell.open();
 

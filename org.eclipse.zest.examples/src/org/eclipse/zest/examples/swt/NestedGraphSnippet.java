@@ -24,10 +24,9 @@ import org.eclipse.zest.core.widgets.GraphContainer;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
-import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.CompositeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.HorizontalShift;
+import org.eclipse.zest.layouts.algorithms.HorizontalShiftAlgorithm;
 import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
@@ -92,9 +91,9 @@ public class NestedGraphSnippet {
 			c.setScale(0.25);
 		}
 		if (radial) {
-			c.setLayoutAlgorithm(new RadialLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+			c.setLayoutAlgorithm(new RadialLayoutAlgorithm(), true);
 		} else {
-			c.setLayoutAlgorithm(new TreeLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+			c.setLayoutAlgorithm(new TreeLayoutAlgorithm(), true);
 		}
 	}
 
@@ -115,10 +114,8 @@ public class NestedGraphSnippet {
 		g = new Graph(shell, SWT.NONE);
 		createContainer(g);
 
-		CompositeLayoutAlgorithm.Zest1 compositeLayoutAlgorithm = new CompositeLayoutAlgorithm.Zest1(
-				LayoutStyles.NO_LAYOUT_NODE_RESIZING,
-				new LayoutAlgorithm.Zest1[] { new GridLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING),
-						new HorizontalShift(LayoutStyles.NO_LAYOUT_NODE_RESIZING) });
+		CompositeLayoutAlgorithm compositeLayoutAlgorithm = new CompositeLayoutAlgorithm(
+				new LayoutAlgorithm[] { new GridLayoutAlgorithm(), new HorizontalShiftAlgorithm() });
 		// g.setLayoutAlgorithm(new
 		// GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		g.setLayoutAlgorithm(compositeLayoutAlgorithm, true);

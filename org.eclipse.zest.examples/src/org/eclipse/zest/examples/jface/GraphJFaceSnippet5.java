@@ -149,7 +149,7 @@ public class GraphJFaceSnippet5 {
 		contentProvider = new MyContentProvider();
 		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(new MyLabelProvider());
-		viewer.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1());
+		viewer.setLayoutAlgorithm(new SpringLayoutAlgorithm());
 		viewer.setInput(new Object());
 	}
 }

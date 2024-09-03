@@ -17,13 +17,10 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.zest.core.widgets.ConstraintAdapter;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
-import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.zest.layouts.constraints.BasicEdgeConstraints;
 
 /**
  * This snippet shows how to use constraints. Nodes are attracted to the
@@ -58,21 +55,16 @@ public class LayoutExample {
 			new GraphConnection(g, SWT.NONE, root, n);
 		}
 
-		SpringLayoutAlgorithm.Zest1 springLayoutAlgorithm = new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+		SpringLayoutAlgorithm springLayoutAlgorithm = new SpringLayoutAlgorithm();
 
-		ConstraintAdapter constraintAdapters = (object, constraint) -> {
-			if (constraint instanceof BasicEdgeConstraints basicEdgeConstraints) {
-				GraphConnection connection = (GraphConnection) object;
-				if (connection.getSource().getText().equals("Root")) {
-					basicEdgeConstraints.weight = 1;
-				} else {
-					basicEdgeConstraints.weight = -1;
-				}
+		for (GraphConnection connection : g.getConnections()) {
+			if (connection.getSource().getText().equals("Root")) {
+				connection.setWeight(1.0);
+			} else {
+				connection.setWeight(-1.0);
 			}
+		}
 
-		};
-
-		g.addConstraintAdapter(constraintAdapters);
 		g.setLayoutAlgorithm(springLayoutAlgorithm, true);
 
 		shell.open();

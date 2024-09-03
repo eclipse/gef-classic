@@ -20,9 +20,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.LayoutFilter;
 import org.eclipse.zest.core.widgets.ZestStyles;
-import org.eclipse.zest.layouts.Filter;
-import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -91,12 +90,8 @@ public class GraphSnippet8 {
 		connection.setLineColor(ColorConstants.red);
 		connection.setLineWidth(3);
 
-		TreeLayoutAlgorithm.Zest1 treeLayoutAlgorithm = new TreeLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
-		Filter filter = item -> {
-
-			// Get the "Connection" from the Layout Item
-			// and use this connection to get the "Graph Data"
-			Object object = item.getGraphData();
+		TreeLayoutAlgorithm treeLayoutAlgorithm = new TreeLayoutAlgorithm();
+		LayoutFilter filter = object -> {
 			if (object instanceof GraphConnection connection1) {
 				if (connection1.getData() instanceof Boolean boolVal) {
 					// If the data is false, don't filter, otherwise, filter.
@@ -106,7 +101,7 @@ public class GraphSnippet8 {
 			}
 			return false;
 		};
-		treeLayoutAlgorithm.setFilter(filter);
+		graph.addLayoutFilter(filter);
 		graph.setLayoutAlgorithm(treeLayoutAlgorithm, true);
 
 		shell.open();

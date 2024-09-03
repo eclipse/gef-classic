@@ -21,7 +21,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.Field;
+import java.lang.invoke.VarHandle;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Semaphore;
@@ -41,14 +41,7 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.IContainer;
 import org.eclipse.zest.core.widgets.internal.GraphLabel;
-import org.eclipse.zest.layouts.Filter;
-import org.eclipse.zest.layouts.LayoutAlgorithm;
-import org.eclipse.zest.layouts.LayoutStyles;
-import org.eclipse.zest.layouts.algorithms.AbstractLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.zest.layouts.dataStructures.InternalNode;
-import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 import org.eclipse.zest.tests.utils.GraphicalRobot;
 import org.eclipse.zest.tests.utils.Snippet;
 import org.eclipse.zest.tests.utils.WidgetVisitor;
@@ -62,7 +55,6 @@ import org.eclipse.draw2d.SWTEventDispatcher;
 import org.eclipse.draw2d.ToolTipHelper;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.junit.Rule;
@@ -122,8 +114,8 @@ public abstract class AbstractGraphTest {
 				graph = getGraph(lookup, annotation);
 
 				// Make sure the layout is reproducible
-				if (graph.getLayoutAlgorithm() instanceof SpringLayoutAlgorithm.Zest1) {
-					graph.setLayoutAlgorithm(new GridLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+				if (graph.getLayoutAlgorithm() instanceof SpringLayoutAlgorithm springLayout) {
+					springLayout.setRandom(annotation.random());
 				}
 
 				robot = new GraphicalRobot(graph);
@@ -174,42 +166,6 @@ public abstract class AbstractGraphTest {
 	protected abstract Graph getGraph(Lookup lookup, Snippet snippet) throws ReflectiveOperationException;
 
 	/**
-	 * The nodes used by the layout algorithm might be less than the nodes in the
-	 * graph when a {@link Filter} is used.
-	 *
-	 * @return All nodes considers by the current layout algorithm.
-	 */
-	protected InternalNode[] getInternalNodes() throws ReflectiveOperationException {
-		LayoutAlgorithm layoutAlgorithm = graph.getLayoutAlgorithm();
-		Field field = AbstractLayoutAlgorithm.class.getDeclaredField("internalNodes"); //$NON-NLS-1$
-		boolean isAccessible = field.canAccess(layoutAlgorithm);
-		try {
-			field.setAccessible(true);
-			return (InternalNode[]) field.get(layoutAlgorithm);
-		} finally {
-			field.setAccessible(isAccessible);
-		}
-	}
-
-	/**
-	 * The connections used by the layout algorithm might be less than the nodes in
-	 * the graph when a {@link Filter} is used.
-	 *
-	 * @return All connections considers by the current layout algorithm.
-	 */
-	protected InternalRelationship[] getInternalRelationships() throws ReflectiveOperationException {
-		LayoutAlgorithm layoutAlgorithm = graph.getLayoutAlgorithm();
-		Field field = AbstractLayoutAlgorithm.Zest1.class.getDeclaredField("internalRelationships"); //$NON-NLS-1$
-		boolean isAccessible = field.canAccess(layoutAlgorithm);
-		try {
-			field.setAccessible(true);
-			return (InternalRelationship[]) field.get(layoutAlgorithm);
-		} finally {
-			field.setAccessible(isAccessible);
-		}
-	}
-
-	/**
 	 * The distance is defined as {@code sqrt(x^2 + y^2) } where {@code x} and
 	 * {@code y} are the coordinates of the vector pointing from the {@code source}
 	 * to the {@code destination} node.
@@ -232,40 +188,6 @@ public abstract class AbstractGraphTest {
 	 */
 	protected static double getLength(Point vec) {
 		return Math.sqrt(vec.x * vec.x + vec.y * vec.y);
-	}
-
-	/**
-	 * The dot product of two vectors is defined as {@code x1 * x2 + y1 * y2 }.
-	 *
-	 * @return The dot product of the given {@code vectors}.
-	 */
-	protected static double getDotProduct(Point vec1, Point vec2) {
-		return vec1.x * vec2.x + vec1.y * vec2.y;
-	}
-
-	/**
-	 * Calculates the arc (in degrees) that is spanned by the given graph
-	 * connection. The arc is calculated using the cosine of the vector from the
-	 * start to the end point and the vector from the start to the mid point.
-	 *
-	 * @param connection The arc that is spanned by the given connection.
-	 */
-	private static double getArc(PolylineConnection connection) {
-		PointList points = connection.getPoints();
-		Point start = points.getFirstPoint();
-		Point center = points.getMidpoint();
-		Point end = points.getLastPoint();
-
-		int x1 = start.x - center.x;
-		int y1 = start.y - center.y;
-		Point vec1 = new Point(x1, y1);
-
-		int x2 = start.x - end.x;
-		int y2 = start.y - end.y;
-		Point vec2 = new Point(x2, y2);
-
-		double cos = getDotProduct(vec1, vec2) / (getLength(vec1) * getLength(vec2));
-		return Math.acos(cos) * 360 / (2 * Math.PI);
 	}
 
 	/**
@@ -338,16 +260,15 @@ public abstract class AbstractGraphTest {
 
 	/**
 	 * Asserts that the given {@code connection} uses a {@link PolylineConnection}
-	 * with given {@code arc}. The arc of the connection is calculated using the
-	 * points of the polyline. The test passes if this value is within 5° of the
-	 * expected value.
+	 * with given {@code curveDepth}.
 	 *
 	 * @param connection The graph connection to validate.
-	 * @param arc        The expected arc of the
+	 * @param curveDepth The expected curveDepth of the connection
 	 */
-	protected static void assertArc(GraphConnection connection, double arc) {
-		PolylineConnection connectionFigure = (PolylineConnection) connection.getConnectionFigure();
-		assertEquals(getArc(connectionFigure), arc, 5); // tolerance to account for OS differences
+	protected static void assertCurve(GraphConnection connection, int curveDepth) throws ReflectiveOperationException {
+		MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(connection.getClass(), MethodHandles.lookup());
+		VarHandle field = lookup.findVarHandle(connection.getClass(), "curveDepth", int.class); //$NON-NLS-1$
+		assertEquals("Unexpected connection curve", curveDepth, field.get(connection)); //$NON-NLS-1$
 	}
 
 	/**
@@ -357,7 +278,6 @@ public abstract class AbstractGraphTest {
 	 * @param container The {@link IContainer} to validate.
 	 */
 	protected static void assertNoOverlap(IContainer container) {
-		@SuppressWarnings("unchecked")
 		List<? extends GraphNode> nodes = container.getNodes();
 		for (int i = 0; i < nodes.size(); ++i) {
 			for (int j = i + 1; j < nodes.size(); ++j) {

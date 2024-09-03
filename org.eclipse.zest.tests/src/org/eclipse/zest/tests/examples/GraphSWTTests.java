@@ -67,9 +67,7 @@ import org.eclipse.zest.examples.swt.NestedGraphSnippet2;
 import org.eclipse.zest.examples.swt.PaintSnippet;
 import org.eclipse.zest.examples.swt.ZoomSnippet;
 import org.eclipse.zest.layouts.Filter;
-import org.eclipse.zest.layouts.LayoutStyles;
-import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.interfaces.ConnectionLayout;
 import org.eclipse.zest.tests.utils.Snippet;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -344,7 +342,7 @@ public class GraphSWTTests extends AbstractGraphTest {
 	 * connections.
 	 */
 	@Test
-	@Snippet(type = GraphSnippet7.class)
+	@Snippet(type = GraphSnippet7.class, random = true)
 	public void testGraphSnippet7() {
 		for (GraphNode node : graph.getNodes()) {
 			IFigure nodeFigure = node.getNodeFigure();
@@ -367,7 +365,7 @@ public class GraphSWTTests extends AbstractGraphTest {
 		assertEquals(graph.getConnections().size(), 13);
 		assertNoOverlap(graph);
 
-		InternalRelationship[] connections = getInternalRelationships();
+		ConnectionLayout[] connections = graph.getLayoutContext().getConnections();
 		assertEquals(connections.length, 8);
 
 		for (GraphConnection connection : graph.getConnections()) {
@@ -377,7 +375,7 @@ public class GraphSWTTests extends AbstractGraphTest {
 		graph.applyLayout();
 		waitEventLoop(0);
 
-		connections = getInternalRelationships();
+		connections = graph.getLayoutContext().getConnections();
 		assertEquals(connections.length, 0);
 	}
 
@@ -403,8 +401,8 @@ public class GraphSWTTests extends AbstractGraphTest {
 	 * press.
 	 */
 	@Test
-	@Snippet(type = GraphSnippet10.class)
-	public void testGraphSnippet10() {
+	@Snippet(type = GraphSnippet10.class, random = true)
+	public void testGraphSnippet10() throws ReflectiveOperationException {
 		assertNode(graph.getNodes().get(0), "Paper");
 		assertNode(graph.getNodes().get(1), "Rock");
 		assertNode(graph.getNodes().get(2), "Scissors");
@@ -425,7 +423,7 @@ public class GraphSWTTests extends AbstractGraphTest {
 				robot.select(button);
 			}
 			// Old connection is removed and a new one is added
-			assertArc(graph.getConnections().get(2), i * 10 /* ° */);
+			assertCurve(graph.getConnections().get(2), i * 10);
 		}
 	}
 
@@ -433,8 +431,8 @@ public class GraphSWTTests extends AbstractGraphTest {
 	 * Tests a graph with curved connections.
 	 */
 	@Test
-	@Snippet(type = GraphSnippet11.class)
-	public void testGraphSnippet11() {
+	@Snippet(type = GraphSnippet11.class, random = true)
+	public void testGraphSnippet11() throws ReflectiveOperationException {
 		assertNode(graph.getNodes().get(0), "Node 1");
 		assertNode(graph.getNodes().get(1), "Node 2");
 		assertEquals(graph.getNodes().size(), 2);
@@ -444,13 +442,13 @@ public class GraphSWTTests extends AbstractGraphTest {
 			assertConnection(connection, "Node 1", "Node 2");
 		}
 
-		assertArc(graph.getConnections().get(0), 15 /* ° */);
-		assertArc(graph.getConnections().get(1), 15 /* ° */);
-		assertArc(graph.getConnections().get(2), 29 /* ° */);
-		assertArc(graph.getConnections().get(3), 29 /* ° */);
-		assertArc(graph.getConnections().get(4), 40 /* ° */);
-		assertArc(graph.getConnections().get(5), 40 /* ° */);
-		assertArc(graph.getConnections().get(6), 0 /* ° */);
+		assertCurve(graph.getConnections().get(0), 20);
+		assertCurve(graph.getConnections().get(1), -20);
+		assertCurve(graph.getConnections().get(2), 40);
+		assertCurve(graph.getConnections().get(3), -40);
+		assertCurve(graph.getConnections().get(4), 60);
+		assertCurve(graph.getConnections().get(5), -60);
+		assertCurve(graph.getConnections().get(6), 0);
 
 		assertNoOverlap(graph);
 	}
@@ -576,9 +574,6 @@ public class GraphSWTTests extends AbstractGraphTest {
 	@Test
 	@Snippet(type = LayoutExample.class)
 	public void testLayoutExample() {
-		graph.setLayoutAlgorithm(new SpringLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
-		waitEventLoop(0);
-
 		double sumLengthInner = 0;
 		int countInner = 0;
 		double sumLengthOuter = 0;
@@ -615,8 +610,6 @@ public class GraphSWTTests extends AbstractGraphTest {
 
 		GraphContainer container = (GraphContainer) graph.getNodes().get(0);
 		container.open(false);
-
-		graph.applyLayout();
 		waitEventLoop(0);
 
 		assertNode(container.getNodes().get(0), "SomeClass.java");
@@ -643,23 +636,17 @@ public class GraphSWTTests extends AbstractGraphTest {
 		assertNode(graph.getNodes().get(2), "Machine 3");
 		assertEquals(graph.getNodes().size(), 3);
 
-		GraphContainer container1 = (GraphContainer) graph.getNodes().get(0);
-		container1.open(false);
-
-		graph.applyLayout();
+		GraphContainer container3 = (GraphContainer) graph.getNodes().get(2);
+		container3.open(false);
 		waitEventLoop(0);
 
-		assertNode(container1.getNodes().get(0), "Host 1");
-		assertNode(container1.getNodes().get(1), "Host 2");
-		assertEquals(container1.getNodes().size(), 2);
+		assertNode(container3.getNodes().get(0), "Host 4");
+		assertEquals(container3.getNodes().size(), 1);
 
-		GraphContainer container2 = (GraphContainer) container1.getNodes().get(1);
+		GraphContainer container2 = (GraphContainer) container3.getNodes().get(0);
 		container2.open(false);
 
-		graph.applyLayout();
-		waitEventLoop(0);
-
-		assertNode(container2.getNodes().get(0), "JSP Object 3");
+		assertNode(container2.getNodes().get(0), "JSP Object 5");
 		assertEquals(container2.getNodes().size(), 1);
 
 		GraphNode node = container2.getNodes().get(0);
@@ -672,17 +659,17 @@ public class GraphSWTTests extends AbstractGraphTest {
 		assertEquals(graph.getSelection(), List.of(node));
 
 		GraphLabel nodeLabel = (GraphLabel) graph.getFigureAt(nodeLocation.x, nodeLocation.y);
-		assertEquals(nodeLabel.getText(), "JSP Object 3");
+		assertEquals(nodeLabel.getText(), "JSP Object 5");
 
-		assertNoOverlap(container1);
 		assertNoOverlap(container2);
+		assertNoOverlap(container3);
 	}
 
 	/**
 	 * Tests whether nodes are painted correctly.
 	 */
 	@Test
-	@Snippet(type = PaintSnippet.class)
+	@Snippet(type = PaintSnippet.class, random = true)
 	public void testPaintSnippet() {
 		assertEquals(graph.getNodes().size(), 3);
 
