@@ -132,7 +132,6 @@ public class BugWithLocalCoordinateSystem {
 				display.sleep();
 			}
 		}
-		display.dispose();
 	}
 
 	/**
