@@ -1,3 +1,15 @@
+# GEF Classic 3.21.0
+
+As part of this release, several of the icons have been converted from gif to png and updated to also contain a 200% zoom variant, in order to improve compatibility with high-DPI screens. See [here](https://github.com/eclipse/gef-classic/milestone/6) for a full list of changes.
+
+## Draw2d
+ - Previously deprecated methods/fields in the Geometry component have been marked as "for removal".
+
+## GEF
+ - Removal of deprecated Stack View and Debug Console.
+ - The PaletteAnimator may no longer be accessed using the edit-part registry. Use the dedicated getter and setter methods of the PaletteViewer instead.
+ - The convenience method `getEditPartForModel(Object)` has been added to the EditPartViewer, substituting `getEditPartRegistry().get(Object)`.
+
 # GEF Classic 3.20.0 
 
 ## Draw2d
