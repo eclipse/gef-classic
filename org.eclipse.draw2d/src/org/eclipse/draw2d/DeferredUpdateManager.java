@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -58,6 +58,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	private boolean updating;
 	private boolean validating;
 	private RunnableChain afterUpdate;
+	private int refreshRate = -1;
 
 	private static class RunnableChain {
 		RunnableChain next;
@@ -263,7 +264,11 @@ public class DeferredUpdateManager extends UpdateManager {
 		if (display == null) {
 			throw new SWTException(SWT.ERROR_THREAD_INVALID_ACCESS);
 		}
-		display.asyncExec(new UpdateRequest());
+		if (refreshRate <= 0) {
+			display.asyncExec(new UpdateRequest());
+		} else {
+			display.timerExec(refreshRate, new UpdateRequest());
+		}
 	}
 
 	/**
@@ -346,6 +351,24 @@ public class DeferredUpdateManager extends UpdateManager {
 	@Override
 	public void setRoot(IFigure figure) {
 		root = figure;
+	}
+
+	/**
+	 * Sets the rate with paint requests are executed. If set to either {@code 0} or
+	 * a negative value, requests are executed as fast as possible (default
+	 * behavior), otherwise every {@code refreshRate}ms.
+	 *
+	 * Example:
+	 *
+	 * <pre>
+	 * setRefreshRate(500); // Paints every 500ms
+	 * </pre>
+	 *
+	 * @param refreshRate The rate with which paint requests are executed.
+	 * @since 3.18
+	 */
+	public void setRefreshRate(int refreshRate) {
+		this.refreshRate = refreshRate;
 	}
 
 	/**
