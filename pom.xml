@@ -17,7 +17,7 @@
 		<cbi-plugins.version>1.4.3</cbi-plugins.version>
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-classic.git</tycho.scmUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<comparator.repo>https://download.eclipse.org/tools/gef/classic/release/3.20.0</comparator.repo>
+		<comparator.repo>https://download.eclipse.org/tools/gef/classic/release/3.21.0</comparator.repo>
 		<surefire.timeout>300</surefire.timeout>
 		<asciidoctor-maven-plugin.version>2.2.4</asciidoctor-maven-plugin.version>
 		<jruby.version>9.4.5.0</jruby.version>
@@ -210,6 +210,10 @@
 							<goal>compare-version-with-baselines</goal>
 						</goals>
 						<configuration>
+							<ignoredPatterns>
+								<pattern>META-INF/ECLIPSE_.RSA</pattern>
+								<pattern>META-INF/ECLIPSE_.SF</pattern>
+							</ignoredPatterns>
 							<baselines>
 								<baseline>${comparator.repo}</baseline> <!-- Previous release) -->
 							</baselines>
