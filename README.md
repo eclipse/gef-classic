@@ -45,7 +45,7 @@ Having accomplished that, you might want to browse our [developer documentation]
 	<unit id="org.eclipse.draw2d.sdk.feature.group" version="0.0.0"/>
 	<unit id="org.eclipse.gef.sdk.feature.group" version="0.0.0"/>
 	<unit id="org.eclipse.gef.examples.feature.group" version="0.0.0"/>
-	<repository location="http://download.eclipse.org/tools/gef/classic/latest"/>
+	<repository location="https://download.eclipse.org/tools/gef/classic/nightly/latest"/>
 	</location>
 	</locations>
 	</target>
