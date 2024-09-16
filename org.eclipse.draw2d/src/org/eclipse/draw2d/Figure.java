@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -2100,7 +2101,7 @@ public class Figure implements IFigure {
 	final class LayoutNotifier implements LayoutManager {
 
 		LayoutManager realLayout;
-		List<LayoutListener> listeners = new ArrayList<>(1);
+		List<LayoutListener> listeners = new CopyOnWriteArrayList<>();
 
 		LayoutNotifier(LayoutManager layout, LayoutListener listener) {
 			realLayout = layout;
