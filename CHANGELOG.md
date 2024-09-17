@@ -1,3 +1,13 @@
+# GEF Classic 3.22.0
+
+## Zest
+ - Integration of Zest 2.0 development branch. See the [wiki](https://github.com/eclipse/gef-classic/wiki/Zest#zest-2x) for more details. In case only default layout algorithms are used, the initial migration should be seamless. Otherwise the algorithms can be adapted to run in legacy mode by extending `AbstractLayoutAlgorithm.Zest1` or have to be re-implemented using the new API by extending `AbstractLayoutAlgorithm`. Note that this legacy mode will be removed in a future release. The following list contains the most significant, deprecated features:
+   - `ContinuousLayoutAlgorithm` and `Stoppable`, with no replacement.
+   - `ProgressListener` and `ProgressEvent`, with no replacement.
+   - `LayoutConstraints`, `ConstrainAdapter`, with no replacement.
+   - `BendPoint`, replaced by Draw2D `BendPoint` and `ConnectionRouter` API.
+   - `Filter`, replaced by `LayoutFilter`
+
 # GEF Classic 3.21.0
 
 As part of this release, several of the icons have been converted from gif to png and updated to also contain a 200% zoom variant, in order to improve compatibility with high-DPI screens. See [here](https://github.com/eclipse/gef-classic/milestone/6) for a full list of changes.
