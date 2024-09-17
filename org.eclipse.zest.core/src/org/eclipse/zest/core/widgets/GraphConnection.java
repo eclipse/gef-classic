@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005, 2024, CHISEL Group, University of Victoria, Victoria, BC,
- *                       Canada and others.
+ * Copyright 2005-2010, 2024, CHISEL Group, University of Victoria, Victoria,
+ *                            BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -8,7 +8,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria, Sebastian Hollersbacher
+ * Contributors: The Chisel Group, University of Victoria
+ *               Sebastian Hollersbacher
+ *               Mateusz Matela
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
@@ -24,10 +26,13 @@ import org.eclipse.zest.layouts.LayoutBendPoint;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.layouts.interfaces.ConnectionLayout;
+import org.eclipse.zest.layouts.interfaces.NodeLayout;
 
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.ConnectionRouter;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
@@ -80,8 +85,15 @@ public class GraphConnection extends GraphItem {
 	private IFigure tooltip;
 
 	private boolean highlighted;
+	/**
+	 * @deprecated Not used in Zest 2.x. This class will be removed in a future
+	 *             release in accordance with the two year deprecation policy.
+	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	private GraphLayoutConnection layoutConnection = null;
 	private boolean hasCustomTooltip;
+
+	private ConnectionRouter router = null;
 
 	public GraphConnection(Graph graphModel, int style, GraphNode source, GraphNode destination) {
 		super(graphModel, style);
@@ -123,7 +135,7 @@ public class GraphConnection extends GraphItem {
 			// 196189: Edges should not draw on the edge layer if both the src
 			// and dest are in the same container
 			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=196189
-			graphModel.addConnection(this, ZestRootLayer.EDGES_ON_TOP);
+			graphModel.addConnection(this, false);
 		} else {
 			graphModel.addConnection(this, true);
 		}
@@ -151,16 +163,12 @@ public class GraphConnection extends GraphItem {
 					.addConnectionFigure((PolylineConnection) targetContainerConnectionFigure);
 			this.setVisible(false);
 		}
-		graphModel.getGraph().registerItem(this);
+		graphModel.registerItem(this);
 	}
 
 	void removeFigure() {
 		if (connectionFigure.getParent() != null) {
-			if (connectionFigure.getParent() instanceof ZestRootLayer) {
-				((ZestRootLayer) connectionFigure.getParent()).removeConnection(connectionFigure);
-			} else {
-				connectionFigure.getParent().remove(connectionFigure);
-			}
+			connectionFigure.getParent().remove(connectionFigure);
 		}
 		connectionFigure = null;
 		if (sourceContainerConnectionFigure != null) {
@@ -211,7 +219,13 @@ public class GraphConnection extends GraphItem {
 	 * Gets a proxy to this connection that can be used with the Zest layout engine
 	 *
 	 * @return
+	 * @deprecated Not used in Zest 2.x. This class will be removed in a future
+	 *             release in accordance with the two year deprecation policy.
+	 * @nooverride This method is not intended to be re-implemented or extended by
+	 *             clients.
+	 * @noreference This method is not intended to be referenced by clients.
 	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	public LayoutRelationship getLayoutRelationship() {
 		return this.layoutConnection;
 	}
@@ -220,7 +234,14 @@ public class GraphConnection extends GraphItem {
 	 * Gets the external connection object.
 	 *
 	 * @return Object
+	 * @deprecated Use {@link #getData()} instead. This class will be removed in a
+	 *             future release in accordance with the two year deprecation
+	 *             policy.
+	 * @nooverride This method is not intended to be re-implemented or extended by
+	 *             clients.
+	 * @noreference This method is not intended to be referenced by clients.
 	 */
+	@Deprecated(since = "1.12", forRemoval = true)
 	public Object getExternalConnection() {
 		return this.getData();
 	}
@@ -232,11 +253,12 @@ public class GraphConnection extends GraphItem {
 	 */
 	@Override
 	public String toString() {
-		String arrow = (isBidirectionalInLayout() ? " <--> " : " --> ");
-		String src = (sourceNode != null ? sourceNode.getText() : "null");
-		String dest = (destinationNode != null ? destinationNode.getText() : "null");
-		String weight = "  (weight=" + getWeightInLayout() + ")";
-		return ("GraphModelConnection: " + src + arrow + dest + weight);
+		StringBuffer buffer = new StringBuffer("GraphModelConnection: ");
+		buffer.append(sourceNode != null ? sourceNode.getText() : "null");
+		buffer.append(isDirected() ? " --> " : " --- ");
+		buffer.append(destinationNode != null ? destinationNode.getText() : "null");
+		buffer.append("  (weight=").append(getWeightInLayout()).append(")");
+		return buffer.toString();
 	}
 
 	/**
@@ -444,7 +466,9 @@ public class GraphConnection extends GraphItem {
 		}
 		highlighted = true;
 		updateFigure(connectionFigure);
-		graphModel.highlightEdge(this);
+		if (connectionFigure.getParent() instanceof ZestRootLayer rootLayer) {
+			rootLayer.highlightConnection(connectionFigure);
+		}
 	}
 
 	/**
@@ -457,7 +481,9 @@ public class GraphConnection extends GraphItem {
 		}
 		highlighted = false;
 		updateFigure(connectionFigure);
-		graphModel.unhighlightEdge(this);
+		if (connectionFigure.getParent() instanceof ZestRootLayer rootLayer) {
+			rootLayer.unHighlightConnection(connectionFigure);
+		}
 	}
 
 	/**
@@ -572,6 +598,24 @@ public class GraphConnection extends GraphItem {
 		}
 	}
 
+	/**
+	 * @since 1.14
+	 */
+	public boolean isDirected() {
+		return ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED);
+	}
+
+	/**
+	 * @since 1.14
+	 */
+	public void setDirected(boolean directed) {
+		if (directed) {
+			setConnectionStyle(connectionStyle | ZestStyles.CONNECTIONS_DIRECTED);
+		} else {
+			setConnectionStyle(connectionStyle & (-1 - ZestStyles.CONNECTIONS_DIRECTED));
+		}
+	}
+
 	PolylineConnection getSourceContainerConnectionFigure() {
 		return (PolylineConnection) sourceContainerConnectionFigure;
 	}
@@ -620,6 +664,9 @@ public class GraphConnection extends GraphItem {
 		if (connection instanceof PolylineArcConnection arcConnection) {
 			arcConnection.setDepth(curveDepth);
 		}
+		if (connectionFigure != null) {
+			applyConnectionRouter(connectionFigure);
+		}
 		if ((connectionStyle & ZestStyles.CONNECTIONS_DIRECTED) > 0) {
 			PolygonDecoration decoration = new PolygonDecoration();
 			if (getLineWidth() < 3) {
@@ -628,7 +675,9 @@ public class GraphConnection extends GraphItem {
 				double logLineWith = getLineWidth() / 2.0;
 				decoration.setScale(7 * logLineWith, 3 * logLineWith);
 			}
-			((PolylineConnection) connection).setTargetDecoration(decoration);
+			if (connection instanceof PolylineConnection) {
+				((PolylineArcConnection) connection).setTargetDecoration(decoration);
+			}
 		}
 
 		IFigure toolTip;
@@ -691,6 +740,7 @@ public class GraphConnection extends GraphItem {
 			if (connectionFigure instanceof PolylineArcConnection && curveDepth != 0) {
 				((PolylineArcConnection) connectionFigure).setDepth(this.curveDepth);
 			}
+			applyConnectionRouter(connectionFigure);
 			sourceAnchor = new RoundedChopboxAnchor(getSource().getFigure(), 8);
 			targetAnchor = new RoundedChopboxAnchor(getDestination().getFigure(), 8);
 			labelLocator = new MidpointLocator(connectionFigure, 0);
@@ -713,16 +763,11 @@ public class GraphConnection extends GraphItem {
 		return cachedConnectionFigure == null ? new PolylineArcConnection() : cachedConnectionFigure;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.eclipse.mylar.zest.layouts.LayoutRelationship#isBidirectionalInLayout ()
+	/**
+	 * @deprecated Not used in Zest 2.x. This class will be removed in a future
+	 *             release in accordance with the two year deprecation policy.
 	 */
-	private boolean isBidirectionalInLayout() {
-		return !ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED);
-	}
-
+	@Deprecated(since = "1.12", forRemoval = true)
 	class GraphLayoutConnection implements LayoutRelationship {
 
 		Object layoutInformation = null;
@@ -792,5 +837,86 @@ public class GraphConnection extends GraphItem {
 	@Override
 	IFigure getFigure() {
 		return this.getConnectionFigure();
+	}
+
+	private InternalConnectionLayout layout;
+
+	InternalConnectionLayout getLayout() {
+		if (layout == null) {
+			layout = new InternalConnectionLayout();
+		}
+		return layout;
+	}
+
+	class InternalConnectionLayout implements ConnectionLayout {
+		private boolean visible = GraphConnection.this.isVisible();
+
+		@Override
+		public NodeLayout getSource() {
+			return sourceNode.getLayout();
+		}
+
+		@Override
+		public NodeLayout getTarget() {
+			return destinationNode.getLayout();
+		}
+
+		@Override
+		public double getWeight() {
+			return GraphConnection.this.getWeightInLayout();
+		}
+
+		@Override
+		public boolean isDirected() {
+			return !ZestStyles.checkStyle(getConnectionStyle(), ZestStyles.CONNECTIONS_DIRECTED);
+		}
+
+		@Override
+		public boolean isVisible() {
+			return visible;
+		}
+
+		@Override
+		public void setVisible(boolean visible) {
+			graphModel.getLayoutContext().checkChangesAllowed();
+			this.visible = visible;
+		}
+
+		void applyLayout() {
+			if (GraphConnection.this.isVisible() != this.visible) {
+				GraphConnection.this.setVisible(this.visible);
+			}
+		}
+	}
+
+	void applyLayoutChanges() {
+		if (layout != null) {
+			layout.applyLayout();
+		}
+	}
+
+	/**
+	 * Applies the connection router with a possible fallback to the default
+	 * connection router to the graph
+	 *
+	 * @param conn
+	 * @since 1.12
+	 */
+	void applyConnectionRouter(Connection conn) {
+		if (router != null) {
+			conn.setConnectionRouter(router);
+		} else if (graphModel.getDefaultConnectionRouter() != null) {
+			conn.setConnectionRouter(graphModel.getDefaultConnectionRouter());
+		}
+	}
+
+	/**
+	 * Sets the connection router of the connection
+	 *
+	 * @param router
+	 * @since 1.14
+	 */
+	public void setRouter(ConnectionRouter router) {
+		this.router = router;
 	}
 }

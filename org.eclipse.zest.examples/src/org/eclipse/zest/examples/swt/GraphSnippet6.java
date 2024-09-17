@@ -60,7 +60,7 @@ public class GraphSnippet6 {
 			new GraphConnection(g, SWT.NONE, n2, n3);
 			new GraphConnection(g, SWT.NONE, n3, n3);
 		}
-		g.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		g.setLayoutAlgorithm(new GridLayoutAlgorithm.Zest1(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		shell.open();
 		while (!shell.isDisposed()) {

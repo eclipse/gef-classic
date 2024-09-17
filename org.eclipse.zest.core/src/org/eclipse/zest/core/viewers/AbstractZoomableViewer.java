@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005-2010, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                           BC, Canada.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -23,6 +23,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  *
  * @author Del Myers
  *
+ * @noextend This class is not intended to be subclassed by clients.
  */
 //@tag bug.156286-Zooming.fix
 public abstract class AbstractZoomableViewer extends StructuredViewer {
@@ -32,6 +33,7 @@ public abstract class AbstractZoomableViewer extends StructuredViewer {
 	 *
 	 * @return a ZoomManager that zooming can be done on.
 	 */
+	// TODO zest 2.x: Mark with @noreference
 	protected abstract ZoomManager getZoomManager();
 
 	public void zoomTo(int x, int y, int width, int height) {

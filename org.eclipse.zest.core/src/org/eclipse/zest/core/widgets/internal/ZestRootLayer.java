@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000-2010, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -8,30 +8,59 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- * University of Victoria - Adapted for XY Scaled Graphics
+ * IBM Corporation - initial API and implementation
+ * Chisel Group, University of Victoria - Adapted for XY Scaled Graphics
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 
 /**
- * The root figure for Zest. The figure is broken up into four segments, 1. The
- * Connections 2. The Nodes 3. The Highlighted Connections 4. The Highlighted
- * Nodes
- *
- * @author Ian Bull
+ * The root figure for Zest. The figure is broken up into following segments:
+ * <ol>
+ * <li>The Connections</li>
+ * <li>The Subgraphs</li>
+ * <li>The Nodes</li>
+ * <li>The Highlighted Connections</li>
+ * <li>The Highlighted Nodes</li>
+ * </ol>
  *
  */
 public class ZestRootLayer extends FreeformLayer {
 
-	public static final boolean EDGES_ON_TOP = false;
-	private int numberOfNodes = 0;
-	private int numberOfConnections = 0;
-	private int numberOfHighlightedNodes = 0;
-	private int numberOfHighlightedConnections = 0;
+	public static final int CONNECTIONS_LAYER = 0;
+
+	public static final int SUBGRAPHS_LAYER = 1;
+
+	public static final int NODES_LAYER = 2;
+
+	public static final int CONNECTIONS_HIGHLIGHTED_LAYER = 3;
+
+	public static final int NODES_HIGHLIGHTED_LAYER = 4;
+
+	public static final int TOP_LAYER = 5;
+
+	public static final int NUMBER_OF_LAYERS = 6;
+
+	private final int[] itemsInLayer = new int[NUMBER_OF_LAYERS];
+
+	/**
+	 * Set of all figures that are decorations for other figures. A decoration
+	 * figure is always put one position (or more if there's more than one
+	 * decoration for the same figure) after the decorated figure in children list.
+	 */
+	private final HashSet decoratingFigures = new HashSet();
+
+	/**
+	 * If true, it indicates that a figure is added using a proper method and its
+	 * layer is known. Otherwise, Figure#add() method was used and layer must be
+	 * guessed
+	 */
+	private boolean isLayerKnown = false;
 
 	/**
 	 * Adds a node to the ZestRootLayer
@@ -39,160 +68,144 @@ public class ZestRootLayer extends FreeformLayer {
 	 * @param nodeFigure The figure representing the node
 	 */
 	public void addNode(IFigure nodeFigure) {
-		int nodePosition = getNodePosition();
-		numberOfNodes++;
-		add(nodeFigure, nodePosition);
-	}
-
-	/**
-	 * Removes a node from the layer
-	 *
-	 * @param nodeFigure
-	 */
-	public void removeNode(IFigure nodeFigure) {
-		if (!this.getChildren().contains(nodeFigure)) {
-			throw new RuntimeException("Node not contained on the ZestRootLayer");
-		}
-		int nodePosition = this.getChildren().indexOf(nodeFigure);
-		if (nodePosition > getHighlightNodeStartPosition()) {
-			// The node is in the highlight node area
-			numberOfHighlightedNodes--;
-		} else {
-			// The node is in the node area
-			numberOfNodes--;
-		}
-		this.remove(nodeFigure);
-	}
-
-	public void removeConnection(IFigure connectionFigure) {
-		int connectionPosition = this.getChildren().indexOf(connectionFigure);
-		if (connectionPosition > getHighlightConnectionStartPosition()) {
-			// The connection is in the highlight connection area
-			numberOfHighlightedConnections--;
-		} else {
-			// The connection is in the connection area
-			numberOfConnections--;
-		}
-		this.remove(connectionFigure);
+		addFigure(nodeFigure, NODES_LAYER);
 	}
 
 	public void addConnection(IFigure connectionFigure) {
-		int connectionPosition = getConnectionPosition();
-		numberOfConnections++;
-		add(connectionFigure, connectionPosition);
+		addFigure(connectionFigure, CONNECTIONS_LAYER);
+	}
+
+	public void addSubgraph(IFigure subgraphFigrue) {
+		addFigure(subgraphFigrue, SUBGRAPHS_LAYER);
 	}
 
 	public void highlightNode(IFigure nodeFigure) {
-		this.numberOfNodes--;
-		int highlightNodePosition = getHighlightNodePosition();
-		this.numberOfHighlightedNodes++;
-		this.getChildren().remove(nodeFigure);
-		((List<IFigure>) this.getChildren()).add(highlightNodePosition, nodeFigure);
-		this.invalidate();
-		this.repaint();
+		changeFigureLayer(nodeFigure, NODES_HIGHLIGHTED_LAYER);
 	}
 
 	public void highlightConnection(IFigure connectionFigure) {
-		this.numberOfConnections--;
-		int highlightConnectionPosition = getHighlightConnectionPosition();
-		this.numberOfHighlightedConnections++;
-		this.getChildren().remove(connectionFigure);
-		((List<IFigure>) this.getChildren()).add(highlightConnectionPosition, connectionFigure);
-		this.invalidate();
-		this.repaint();
+		changeFigureLayer(connectionFigure, CONNECTIONS_HIGHLIGHTED_LAYER);
 	}
 
 	public void unHighlightNode(IFigure nodeFigure) {
-		int nodePosition = this.getChildren().indexOf(nodeFigure);
-		if (nodePosition < 0 || nodePosition > getHighlightNodePosition()) {
-			// throw new RuntimeException("Node: " + nodeFigure + " not currently
-			// Highlighted");
-			return;
-		}
-		this.numberOfHighlightedNodes--;
-		nodePosition = getNodePosition();
-		this.numberOfNodes++;
-		this.getChildren().remove(nodeFigure);
-		((List<IFigure>) this.getChildren()).add(nodePosition, nodeFigure);
-		this.invalidate();
-		this.repaint();
+		changeFigureLayer(nodeFigure, NODES_LAYER);
 	}
 
 	public void unHighlightConnection(IFigure connectionFigure) {
-		int connectionPosition = this.getChildren().indexOf(connectionFigure);
-		if (connectionPosition < 0 || connectionPosition > getHighlightConnectionPosition()) {
-			// throw new RuntimeException("Connection: " + connectionFigure + " not
-			// currently Highlighted");
-			return;
+		changeFigureLayer(connectionFigure, CONNECTIONS_LAYER);
+	}
+
+	private void changeFigureLayer(IFigure figure, int newLayer) {
+		ArrayList decorations = getDecorations(figure);
+		remove(figure);
+
+		addFigure(figure, newLayer);
+		for (Object decoration : decorations) {
+			addDecoration(figure, (IFigure) decoration);
 		}
-		this.numberOfHighlightedConnections--;
-		this.numberOfConnections++;
-		connectionPosition = getConnectionPosition();
-		List<IFigure> children = (List<IFigure>) this.getChildren();
-		children.remove(connectionFigure);
-		if (connectionPosition > this.getChildren().size()) {
-			children.add(connectionFigure);
-		} else {
-			children.add(connectionPosition, connectionFigure);
-		}
+
 		this.invalidate();
 		this.repaint();
 	}
 
-	/*
-	 * Node position is at the end of the list of nodes
+	private ArrayList getDecorations(IFigure figure) {
+		ArrayList result = new ArrayList();
+		int index = getChildren().indexOf(figure);
+		if (index == -1) {
+			return result;
+		}
+		for (index++; index < getChildren().size(); index++) {
+			Object nextFigure = getChildren().get(index);
+			if (!decoratingFigures.contains(nextFigure)) {
+				break;
+			}
+			result.add(nextFigure);
+		}
+		return result;
+	}
+
+	/**
+	 *
+	 * @param layer
+	 * @return position after the last element in given layer
 	 */
-	private int getNodePosition() {
-		if (EDGES_ON_TOP) {
-			return numberOfNodes;
+	private int getPosition(int layer) {
+		int result = 0;
+		for (int i = 0; i <= layer; i++) {
+			result += itemsInLayer[i];
 		}
-		return numberOfConnections + numberOfNodes;
+		return result;
 	}
 
-	/*
-	 * Connection position is at the end of the list of connections
+	/**
+	 *
+	 * @param position
+	 * @return number of layer containing element at given position
 	 */
-	private int getConnectionPosition() {
-		if (EDGES_ON_TOP) {
-			return 0 + numberOfConnections + numberOfNodes;
+	private int getLayer(int position) {
+		int layer = 0;
+		int positionInLayer = itemsInLayer[0];
+		while (layer < NUMBER_OF_LAYERS - 1 && positionInLayer <= position) {
+			layer++;
+			positionInLayer += itemsInLayer[layer];
 		}
-		return 0 + numberOfConnections;
+		return layer;
 	}
 
-	/*
-	 * Highlight node position is at the end of the list of highlighted nodes
-	 */
-	private int getHighlightNodePosition() {
-		if (EDGES_ON_TOP) {
-			return numberOfConnections + numberOfNodes + numberOfHighlightedNodes;
-		}
-		return numberOfConnections + numberOfHighlightedConnections + numberOfNodes + numberOfHighlightedNodes;
+	public void addFigure(IFigure figure, int layer) {
+		int position = getPosition(layer);
+		itemsInLayer[layer]++;
+		isLayerKnown = true;
+		add(figure, position);
 	}
 
-	/*
-	 * Highlighted connection position is at the end of the list of highlighted
-	 * connections
-	 */
-	private int getHighlightConnectionPosition() {
-		if (EDGES_ON_TOP) {
-			return numberOfNodes + +numberOfConnections + numberOfHighlightedNodes + numberOfHighlightedConnections;
+	@Override
+	public void add(IFigure child, Object constraint, int index) {
+		super.add(child, constraint, index);
+		if (!isLayerKnown) {
+			int layer = 0, positionInLayer = itemsInLayer[0];
+			while (positionInLayer < index) {
+				layer++;
+				positionInLayer += itemsInLayer[layer];
+			}
+			if (index == -1) {
+				layer = NUMBER_OF_LAYERS - 1;
+			}
+			itemsInLayer[layer]++;
 		}
-		return numberOfConnections + numberOfNodes + numberOfHighlightedConnections;
+		isLayerKnown = false;
 	}
 
-	private int getHighlightConnectionStartPosition() {
-		if (EDGES_ON_TOP) {
-			return numberOfConnections + numberOfNodes + numberOfHighlightedNodes;
-
+	@Override
+	public void remove(IFigure child) {
+		int position = this.getChildren().indexOf(child);
+		if (position == -1) {
+			return;
 		}
-		return numberOfConnections + numberOfNodes;
+		itemsInLayer[getLayer(position)]--;
+		if (decoratingFigures.contains(child)) {
+			decoratingFigures.remove(child);
+			super.remove(child);
+		} else {
+			ArrayList decorations = getDecorations(child);
+			super.remove(child);
+			for (Object decoration : decorations) {
+				remove((IFigure) decoration);
+			}
+		}
 	}
 
-	private int getHighlightNodeStartPosition() {
-		if (EDGES_ON_TOP) {
-			return numberOfNodes + numberOfConnections;
+	public void addDecoration(IFigure decorated, IFigure decorating) {
+		int position = this.getChildren().indexOf(decorated);
+		if (position == -1) {
+			throw new RuntimeException("Can't add decoration for a figuer that is not on this ZestRootLayer");
 		}
-		return numberOfConnections + numberOfHighlightedConnections + numberOfNodes;
+		itemsInLayer[getLayer(position)]++;
+		isLayerKnown = true;
+		do {
+			position++;
+		} while (position < getChildren().size() && decoratingFigures.contains(getChildren().get(position)));
+		decoratingFigures.add(decorating);
+		add(decorating, position);
 	}
-
 }

@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria,
+ *                      BC, Canada and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -21,7 +21,14 @@ package org.eclipse.zest.layouts;
  * the object is filtered.
  *
  * @author Casey Best
+ * @deprecated Use {@link org.eclipse.zest.core.widgets.LayoutFilter} instead.
+ *             This interface will be removed in a future release.
+ * @noextend This interface is not intended to be extended by clients.
+ * @noimplement This interface is not intended to be implemented by clients.
+ * @noreference This interface is not intended to be referenced by clients.
  */
+@SuppressWarnings("javadoc")
+@Deprecated(since = "2.0", forRemoval = true)
 public interface Filter {
 
 	/**

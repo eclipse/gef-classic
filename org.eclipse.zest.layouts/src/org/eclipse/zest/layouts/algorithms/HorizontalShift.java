@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2006, 2023 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada, Johannes Kepler University Linz
+ * Copyright 2006, 2024 CHISEL Group, University of Victoria, Victoria, BC,
+ *                      Canada, Johannes Kepler University Linz and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -24,7 +24,13 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * This layout shifts overlapping nodes to the right.
  *
  * @author Ian Bull
+ * @deprecated Use {@link HorizontalShiftAlgorithm} instead. This class will be
+ *             removed in a future release.
+ * @noextend This class is not intended to be subclassed by clients.
+ * @noreference This class is not intended to be referenced by clients.
+ * @noinstantiate This class is not intended to be instantiated by clients.
  */
+@Deprecated(since = "2.0", forRemoval = true)
 public class HorizontalShift extends AbstractLayoutAlgorithm {
 
 	private static final double DELTA = 10;

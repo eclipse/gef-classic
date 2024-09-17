@@ -20,6 +20,7 @@ import org.eclipse.draw2d.IFigure;
 /**
  * A Custom Graph Node
  */
+// TODO zest 2.x: Move to org.eclipse.zest.core.widgets.custom
 public class CGraphNode extends GraphNode {
 
 	IFigure figure = null;
