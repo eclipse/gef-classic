@@ -121,9 +121,10 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	@Override
 	protected void inputChanged(Object input, Object oldInput) {
+		boolean dynamicLayoutEnabled = graph.isDynamicLayoutEnabled();
 		graph.setDynamicLayout(false);
 		super.inputChanged(input, oldInput);
-		graph.setDynamicLayout(true);
+		graph.setDynamicLayout(dynamicLayoutEnabled);
 		graph.applyLayout();
 	}
 
