@@ -45,7 +45,7 @@ public class DisplayIndependentRectangle {
 
 	@Override
 	public String toString() {
-		return "(%d, %d, %d, %d)".formatted(x, y, width, height); //$NON-NLS-1$
+		return "(%f, %f, %f, %f)".formatted(x, y, width, height); //$NON-NLS-1$
 	}
 
 	public boolean intersects(DisplayIndependentRectangle rect) {
