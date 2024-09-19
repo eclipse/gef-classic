@@ -295,7 +295,7 @@ class InternalNodeLayout implements NodeLayout {
 		} else {
 			node.setSize(-1, -1);
 			if (location != null) {
-				node.setLocation(location.x - getSize().width / 2, location.y - size.height / 2);
+				node.setLocation(location.x, location.y);
 			}
 			if (size != null) {
 				Dimension currentSize = node.getSize();

@@ -147,6 +147,14 @@ public class GraphSWTTests extends AbstractGraphTest {
 		assertEquals(node1.getLocation().y, node3.getLocation().y);
 
 		waitEventLoop(5);
+
+		for (GraphNode node : graph.getNodes()) {
+			Point p = node.getLocation();
+			Rectangle bounds = graph.getBounds();
+			assertTrue("Node outside of bounds", p.x >= 0 && p.x <= bounds.width);
+			assertTrue("Node outside of bounds", p.y >= 0 && p.y <= bounds.height);
+		}
+
 		assertNoOverlap(graph);
 	}
 
