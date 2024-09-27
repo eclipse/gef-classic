@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -12,21 +12,21 @@
  *******************************************************************************/
 package org.eclipse.zest.layouts.exampleStructures;
 
-import org.eclipse.zest.layouts.Filter;
-import org.eclipse.zest.layouts.LayoutItem;
+import org.eclipse.zest.core.widgets.GraphItem;
+import org.eclipse.zest.core.widgets.LayoutFilter;
 
 /**
  * A very simple example of a filter. This filter never filters any object.
  *
  * @author Casey Best
  */
-public class SimpleFilter implements Filter {
+public class SimpleFilter implements LayoutFilter {
 
 	/**
 	 * Doesn't filter anything
 	 */
 	@Override
-	public boolean isObjectFiltered(LayoutItem object) {
+	public boolean isObjectFiltered(GraphItem item) {
 		return false;
 	}
 }

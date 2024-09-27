@@ -15,7 +15,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.zest.cloudio,
  org.eclipse.zest.core,
  org.eclipse.zest.examples,
- org.eclipse.zest.examples.layouts,
  org.eclipse.zest.layouts,
  org.junit,
  org.eclipse.swtbot.swt.finder;bundle-version="4.2.1"
