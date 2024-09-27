@@ -385,9 +385,8 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 						node.setSize(Math.max(childrenWidth, MIN_ENTITY_SIZE),
 								Math.max(childrenHeight, MIN_ENTITY_SIZE));
 					}
-					DisplayIndependentDimension size = node.getSize();
-					double xmove = bounds.x + j * colWidth + offsetX + size.width / 2;
-					double ymove = bounds.y + i * rowHeight + offsetY + size.height / 2;
+					double xmove = bounds.x + j * colWidth + offsetX;
+					double ymove = bounds.y + i * rowHeight + offsetY;
 					if (node.isMovable()) {
 						node.setLocation(xmove, ymove);
 					}

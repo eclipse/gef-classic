@@ -56,9 +56,8 @@ public class AlgorithmHelper {
 					entity.setSize(size.width, size.height);
 				}
 
-				location.x = destinationBounds.x + size.width / 2 + percentX * (destinationBounds.width - size.width);
-				location.y = destinationBounds.y + size.height / 2
-						+ percentY * (destinationBounds.height - size.height);
+				location.x = destinationBounds.x + percentX * (destinationBounds.width - size.width);
+				location.y = destinationBounds.y + percentY * (destinationBounds.height - size.height);
 				entity.setLocation(location.x, location.y);
 
 			} else if (resize && entity.isResizable()) {
