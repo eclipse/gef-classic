@@ -23,7 +23,6 @@ import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
-import org.eclipse.zest.layouts.exampleStructures.SimpleNode;
 import org.eclipse.zest.layouts.progress.ProgressEvent;
 import org.eclipse.zest.layouts.progress.ProgressListener;
 
@@ -84,7 +83,7 @@ public class LayoutAlgorithmTest {
 	}
 
 	private void testWith(ProgressListener progressListener) throws InvalidLayoutConfiguration {
-		LayoutEntity[] nodes = { new SimpleNode(new Object()) };
+		LayoutEntity[] nodes = {};
 		layoutAlgorithm.addProgressListener(progressListener);
 		layoutAlgorithm.addProgressListener(new ProgressListener.Stub());
 

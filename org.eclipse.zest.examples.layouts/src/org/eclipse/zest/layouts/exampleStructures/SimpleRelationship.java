@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -12,16 +12,7 @@
  *******************************************************************************/
 package org.eclipse.zest.layouts.exampleStructures;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.zest.layouts.LayoutBendPoint;
-import org.eclipse.zest.layouts.LayoutEntity;
-import org.eclipse.zest.layouts.LayoutRelationship;
-import org.eclipse.zest.layouts.constraints.BasicEdgeConstraints;
-import org.eclipse.zest.layouts.constraints.LabelLayoutConstraint;
-import org.eclipse.zest.layouts.constraints.LayoutConstraint;
-import org.eclipse.zest.layouts.dataStructures.BendPoint;
+import org.eclipse.zest.layouts.interfaces.ConnectionLayout;
 
 /**
  * The SimpleRelation class describes the relationship between two objects:
@@ -33,7 +24,7 @@ import org.eclipse.zest.layouts.dataStructures.BendPoint;
  * @author Casey Best (version 1.0 by Jingwei Wu)
  * @author Chris Bennett
  */
-public class SimpleRelationship implements LayoutRelationship {
+public class SimpleRelationship implements ConnectionLayout {
 
 	private static int DEFAULT_REL_LINE_WIDTH = 1;
 	private static int DEFAULT_REL_LINE_WIDTH_SELECTED = DEFAULT_REL_LINE_WIDTH + 2;
@@ -47,19 +38,14 @@ public class SimpleRelationship implements LayoutRelationship {
 	private Object color = DEFAULT_RELATIONSHIP_COLOR;
 
 	/**
-	 * A list of layout dependent attributes
-	 */
-	private Map attributes;
-
-	/**
 	 * The sourceEntity of this SimpleRelation.
 	 */
-	protected LayoutEntity sourceEntity;
+	protected SimpleNode sourceEntity;
 
 	/**
 	 * The object of this SimpleRelation.
 	 */
-	protected LayoutEntity destinationEntity;
+	protected SimpleNode destinationEntity;
 
 	/**
 	 * If directional, algorithms must note the direction of the relationship. If
@@ -73,11 +59,10 @@ public class SimpleRelationship implements LayoutRelationship {
 	 */
 	private double weight;
 
-	private Object internalRelationship;
-
-	private LayoutBendPoint[] bendPoints;
-
-	private String label;
+	/**
+	 * Whether this relation is visible.
+	 */
+	private boolean visible;
 
 	/**
 	 * Constructor.
@@ -91,7 +76,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	 * </code>                             or <code>destinationEntity</code> is
 	 *                                        <code>null</code>.
 	 */
-	public SimpleRelationship(LayoutEntity sourceEntity, LayoutEntity destinationEntity, boolean bidirectional) {
+	public SimpleRelationship(SimpleNode sourceEntity, SimpleNode destinationEntity, boolean bidirectional) {
 		this(sourceEntity, destinationEntity, bidirectional, 1);
 	}
 
@@ -100,20 +85,13 @@ public class SimpleRelationship implements LayoutRelationship {
 	 *
 	 * @param sourceEntity      The sourceEntity of this SimpleRelation.
 	 * @param destinationEntity The destinationEntity of this SimpleRelation.
-	 * @param exchangeable      Determines if the <code>sourceEntity</code> and
-	 *                          <code>destinationEntity</code> are
-	 *                          equal(exchangeable).
-	 * @throws java.lang.NullPointerException If either <code>sourceEntity
-	 * </code>                             or <code>destinationEntity</code> is
-	 *                                        <code>null</code>.
 	 */
-	public SimpleRelationship(LayoutEntity sourceEntity, LayoutEntity destinationEntity, boolean bidirectional,
+	public SimpleRelationship(SimpleNode sourceEntity, SimpleNode destinationEntity, boolean bidirectional,
 			double weight) {
 		this.destinationEntity = destinationEntity;
 		this.sourceEntity = sourceEntity;
 		this.bidirectional = bidirectional;
 		this.weight = weight;
-		this.attributes = new HashMap();
 		this.lineWidth = DEFAULT_REL_LINE_WIDTH;
 		this.color = DEFAULT_RELATIONSHIP_COLOR;
 	}
@@ -125,7 +103,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	 * @return The sourceEntity.
 	 */
 	@Override
-	public LayoutEntity getSourceInLayout() {
+	public SimpleNode getSource() {
 		return sourceEntity;
 	}
 
@@ -136,7 +114,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	 * @return The destinationEntity of this SimpleRelation.
 	 */
 	@Override
-	public LayoutEntity getDestinationInLayout() {
+	public SimpleNode getTarget() {
 		return destinationEntity;
 	}
 
@@ -146,38 +124,24 @@ public class SimpleRelationship implements LayoutRelationship {
 	 * layout algorithms need to take into account the direction of the
 	 * relationship. The direction is based on the source and destination entities.
 	 */
-	public boolean isBidirectionalInLayout() {
+	@Override
+	public boolean isDirected() {
 		return bidirectional;
 	}
 
-	public void setWeightInLayout(double weight) {
+	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 
-	public double getWeightInLayout() {
+	@Override
+	public double getWeight() {
 		return weight;
-	}
-
-	/**
-	 * An algorithm may require a place to store information. Use this structure for
-	 * that purpose.
-	 */
-	public void setAttributeInLayout(String attribute, Object value) {
-		attributes.put(attribute, value);
-	}
-
-	/**
-	 * An algorithm may require a place to store information. Use this structure for
-	 * that purpose.
-	 */
-	public Object getAttributeInLayout(String attribute) {
-		return attributes.get(attribute);
 	}
 
 	@Override
 	public String toString() {
-		String arrow = (isBidirectionalInLayout() ? " <-> " : " -> ");
-		return "(" + sourceEntity + arrow + destinationEntity + ")";
+		String arrow = (isDirected() ? " <-> " : " -> "); //$NON-NLS-1$ //$NON-NLS-2$
+		return "(" + sourceEntity + arrow + destinationEntity + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public int getLineWidth() {
@@ -223,75 +187,13 @@ public class SimpleRelationship implements LayoutRelationship {
 		DEFAULT_RELATIONSHIP_HIGHLIGHT_COLOR = c;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ca.uvic.cs.chisel.layouts.LayoutRelationship#getInternalRelationship()
-	 */
 	@Override
-	public Object getLayoutInformation() {
-		return internalRelationship;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * ca.uvic.cs.chisel.layouts.LayoutRelationship#setInternalRelationship(java.
-	 * lang.Object)
-	 */
-	@Override
-	public void setLayoutInformation(Object layoutInformation) {
-		this.internalRelationship = layoutInformation;
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 	@Override
-	public void setBendPoints(LayoutBendPoint[] bendPoints) {
-		this.bendPoints = bendPoints;
+	public boolean isVisible() {
+		return visible;
 	}
-
-	public LayoutBendPoint[] getBendPoints() {
-		return this.bendPoints;
-	}
-
-	@Override
-	public void clearBendPoints() {
-		this.bendPoints = new BendPoint[0];
-	}
-
-	public void setDestinationInLayout(LayoutEntity destination) {
-		this.destinationEntity = destination;
-	}
-
-	/**
-	 * Set the label for this edge (available in the label layout constraint).
-	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	/**
-	 * Populate the specified layout constraint
-	 */
-	@Override
-	public void populateLayoutConstraint(LayoutConstraint constraint) {
-		if (constraint instanceof LabelLayoutConstraint labelConstraint) {
-			labelConstraint.label = this.label;
-			labelConstraint.pointSize = 18;
-		} else if (constraint instanceof BasicEdgeConstraints) {
-			// noop
-
-		}
-	}
-
-	@Override
-	public Object getGraphData() {
-		return null;
-	}
-
-	@Override
-	public void setGraphData(Object o) {
-
-	}
-
 }

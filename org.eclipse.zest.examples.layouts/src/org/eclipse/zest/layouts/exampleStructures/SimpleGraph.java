@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -13,14 +13,23 @@
 package org.eclipse.zest.layouts.exampleStructures;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.zest.layouts.LayoutEntity;
-import org.eclipse.zest.layouts.LayoutGraph;
-import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
+import org.eclipse.zest.layouts.interfaces.ContextListener;
+import org.eclipse.zest.layouts.interfaces.EntityLayout;
+import org.eclipse.zest.layouts.interfaces.ExpandCollapseManager;
+import org.eclipse.zest.layouts.interfaces.GraphStructureListener;
+import org.eclipse.zest.layouts.interfaces.LayoutContext;
+import org.eclipse.zest.layouts.interfaces.LayoutListener;
+import org.eclipse.zest.layouts.interfaces.NodeLayout;
+import org.eclipse.zest.layouts.interfaces.PruningListener;
+import org.eclipse.zest.layouts.interfaces.SubgraphLayout;
+
+import org.eclipse.draw2d.EventListenerList;
 
 /**
  * Create a very simple graph that can be used in the layout algorithms
@@ -28,14 +37,20 @@ import org.eclipse.zest.layouts.LayoutRelationship;
  * @author Casey Best
  * @author Chris Callendar
  */
-public class SimpleGraph implements LayoutGraph {
+public class SimpleGraph implements LayoutContext {
 
-	Map objectsToNodes;
-	List relationships;
+	Map<Object, SimpleNode> objectsToNodes;
+	List<SimpleRelationship> relationships;
+	LayoutAlgorithm algorithm;
+	ExpandCollapseManager expandCollapseManager;
+	EventListenerList listeners;
+	DisplayIndependentRectangle bounds;
 
 	public SimpleGraph() {
-		objectsToNodes = new HashMap();
-		relationships = new ArrayList();
+		objectsToNodes = new LinkedHashMap<>();
+		relationships = new ArrayList<>();
+		listeners = new EventListenerList();
+		bounds = new DisplayIndependentRectangle();
 	}
 
 	/**
@@ -43,24 +58,15 @@ public class SimpleGraph implements LayoutGraph {
 	 *
 	 * @param node The node to add.
 	 */
-	@Override
-	public void addEntity(LayoutEntity node) {
-		if (node instanceof SimpleNode) {
-			objectsToNodes.put(((SimpleNode) node).getRealObject(), node);
-		}
+	public void addEntity(SimpleNode node) {
+		objectsToNodes.put(node.getRealObject(), node);
 	}
 
 	/**
 	 * Creates a LayoutEntity containing an object.
 	 */
-	public LayoutEntity addObjectNode(Object object) {
-		SimpleNode simpleNode = (SimpleNode) objectsToNodes.get(object);
-		if (simpleNode == null) {
-			simpleNode = new SimpleNode(object);
-			objectsToNodes.put(object, simpleNode);
-		}
-		return simpleNode;
-
+	public SimpleNode addObjectNode(Object object) {
+		return objectsToNodes.computeIfAbsent(object, ignore -> new SimpleNode(object, this));
 	}
 
 	/**
@@ -68,7 +74,7 @@ public class SimpleGraph implements LayoutGraph {
 	 * whether a relationship is one way or bi-directional. This method assumes that
 	 * all relationships are bi-direcional and have the same weight.
 	 */
-	public void addObjectRelationship(Object sourceNode, Object destinationNode) {
+	public void addObjectRelationship(SimpleNode sourceNode, SimpleNode destinationNode) {
 		addObjectRelationship(sourceNode, destinationNode, true, 1);
 	}
 
@@ -80,44 +86,25 @@ public class SimpleGraph implements LayoutGraph {
 			int weight) {
 		addObjectNode(sourceObject);
 		addObjectNode(destinationObject);
-		SimpleNode sourceNode = (SimpleNode) objectsToNodes.get(sourceObject);
-		SimpleNode destinationNode = (SimpleNode) objectsToNodes.get(destinationObject);
+		SimpleNode sourceNode = objectsToNodes.get(sourceObject);
+		SimpleNode destinationNode = objectsToNodes.get(destinationObject);
 		SimpleRelationship simpleRelationship = new SimpleRelationship(sourceNode, destinationNode, bidirectional,
 				weight);
 		relationships.add(simpleRelationship);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.
-	 * layouts.LayoutEntity, ca.uvic.cs.chisel.layouts.LayoutEntity)
-	 */
-	public void addRelationship(LayoutEntity srcNode, LayoutEntity destNode) {
+	public void addRelationship(SimpleNode srcNode, SimpleNode destNode) {
 		addRelationship(srcNode, destNode, true, 1);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.
-	 * layouts.LayoutEntity, ca.uvic.cs.chisel.layouts.LayoutEntity, boolean, int)
-	 */
-	public void addRelationship(LayoutEntity srcNode, LayoutEntity destNode, boolean bidirectional, int weight) {
+	public void addRelationship(SimpleNode srcNode, SimpleNode destNode, boolean bidirectional, int weight) {
 		addEntity(srcNode);
 		addEntity(destNode);
 		SimpleRelationship rel = new SimpleRelationship(srcNode, destNode, bidirectional, weight);
 		relationships.add(rel);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.
-	 * layouts.LayoutRelationship)
-	 */
-	@Override
-	public void addRelationship(LayoutRelationship relationship) {
+	public void addRelationship(SimpleRelationship relationship) {
 		relationships.add(relationship);
 	}
 
@@ -127,8 +114,8 @@ public class SimpleGraph implements LayoutGraph {
 	 * SimpleNodes, not the real objects. You must still manipulate them yourself.
 	 */
 	@Override
-	public List getEntities() {
-		return new ArrayList(objectsToNodes.values());
+	public SimpleNode[] getNodes() {
+		return objectsToNodes.values().toArray(SimpleNode[]::new);
 	}
 
 	/**
@@ -136,25 +123,124 @@ public class SimpleGraph implements LayoutGraph {
 	 * this graph using addRelationship.
 	 */
 	@Override
-	public List getRelationships() {
-		return relationships;
+	public SimpleRelationship[] getConnections() {
+		return relationships.toArray(SimpleRelationship[]::new);
 	}
 
-	/**
-	 * Checks the relationships to see if they are all bidirectional.
-	 *
-	 * @return boolean if all edges are bidirectional.
-	 */
 	@Override
-	public boolean isBidirectional() {
-		boolean isBidirectional = true;
-		for (Iterator iter = relationships.iterator(); iter.hasNext();) {
-			SimpleRelationship rel = (SimpleRelationship) iter.next();
-			if (!rel.isBidirectionalInLayout()) {
-				isBidirectional = false;
-				break;
+	public SimpleRelationship[] getConnections(EntityLayout layoutEntity1, EntityLayout layoutEntity2) {
+		List<SimpleRelationship> relationships = new ArrayList<>();
+		for (SimpleRelationship relationship : this.relationships) {
+			if (relationship.getSource() == layoutEntity1 && relationship.getTarget() == layoutEntity2) {
+				relationships.add(relationship);
 			}
 		}
-		return isBidirectional;
+		return relationships.toArray(SimpleRelationship[]::new);
+	}
+
+	public void setBounds(double x, double y, double width, double height) {
+		bounds.x = x;
+		bounds.y = y;
+		bounds.width = width;
+		bounds.height = height;
+	}
+
+	@Override
+	public DisplayIndependentRectangle getBounds() {
+		return bounds;
+	}
+
+	@Override
+	public boolean isBoundsExpandable() {
+		return false;
+	}
+
+	@Override
+	public SubgraphLayout[] getSubgraphs() {
+		return new SubgraphLayout[0];
+	}
+
+	@Override
+	public SubgraphLayout createSubgraph(NodeLayout[] nodes) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean isPruningEnabled() {
+		return false;
+	}
+
+	@Override
+	public boolean isBackgroundLayoutEnabled() {
+		return false;
+	}
+
+	@Override
+	public void flushChanges(boolean animationHint) {
+	}
+
+	@Override
+	public void setMainLayoutAlgorithm(LayoutAlgorithm algorithm) {
+		this.algorithm = algorithm;
+	}
+
+	@Override
+	public LayoutAlgorithm getMainLayoutAlgorithm() {
+		return algorithm;
+	}
+
+	@Override
+	public void setExpandCollapseManager(ExpandCollapseManager expandCollapseManager) {
+		this.expandCollapseManager = expandCollapseManager;
+	}
+
+	@Override
+	public ExpandCollapseManager getExpandCollapseManager() {
+		return expandCollapseManager;
+	}
+
+	@Override
+	public void addLayoutListener(LayoutListener listener) {
+		listeners.addListener(LayoutListener.class, listener);
+	}
+
+	@Override
+	public void removeLayoutListener(LayoutListener listener) {
+		listeners.removeListener(LayoutListener.class, listener);
+	}
+
+	@Override
+	public void addGraphStructureListener(GraphStructureListener listener) {
+		listeners.addListener(GraphStructureListener.class, listener);
+	}
+
+	@Override
+	public void removeGraphStructureListener(GraphStructureListener listener) {
+		listeners.removeListener(GraphStructureListener.class, listener);
+	}
+
+	@Override
+	public void addContextListener(ContextListener listener) {
+		listeners.addListener(ContextListener.class, listener);
+	}
+
+	@Override
+	public void removeContextListener(ContextListener listener) {
+		listeners.removeListener(ContextListener.class, listener);
+	}
+
+	@Override
+	public void addPruningListener(PruningListener listener) {
+		listeners.addListener(PruningListener.class, listener);
+	}
+
+	@Override
+	public void removePruningListener(PruningListener listener) {
+		listeners.removeListener(PruningListener.class, listener);
+	}
+
+	@Override
+	public SimpleNode[] getEntities() {
+		return getNodes();
 	}
 }

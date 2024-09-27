@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2024 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
  * This program and the accompanying materials are made available under the
@@ -12,18 +12,16 @@
  *******************************************************************************/
 package org.eclipse.zest.layouts.exampleStructures;
 
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
 
-import org.eclipse.zest.layouts.LayoutEntity;
-import org.eclipse.zest.layouts.constraints.BasicEntityConstraint;
-import org.eclipse.zest.layouts.constraints.EntityPriorityConstraint;
-import org.eclipse.zest.layouts.constraints.LabelLayoutConstraint;
-import org.eclipse.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.swt.widgets.Item;
+
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentDimension;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentPoint;
+import org.eclipse.zest.layouts.interfaces.NodeLayout;
+import org.eclipse.zest.layouts.interfaces.SubgraphLayout;
 
 /**
  * Rerpresents a simple node that can be used in the layout algorithms.
@@ -32,7 +30,7 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
  * @author Casey Best (Version 1 by Rob Lintern)
  * @version 2
  */
-public class SimpleNode implements LayoutEntity {
+public class SimpleNode implements NodeLayout {
 	private static Object NODE_NORMAL_COLOR;
 	private static Object NODE_SELECTED_COLOR;
 	private static Object NODE_ADJACENT_COLOR;
@@ -43,12 +41,8 @@ public class SimpleNode implements LayoutEntity {
 	private static final int BORDER_NORMAL_STROKE = 1;
 	private static final int BORDER_STROKE_SELECTED = 2;
 
-	/**
-	 * A list of layout dependent attributes
-	 */
-	private Map attributes;
-
-	protected double x, y, width, height;
+	protected DisplayIndependentPoint location;
+	protected DisplayIndependentDimension size;
 	protected Object realObject;
 	private boolean ignoreInLayout = false;
 
@@ -56,37 +50,18 @@ public class SimpleNode implements LayoutEntity {
 	private Object borderColor = null;
 	private int borderWidth;
 
-	private TreeSet listOfRels = null;
-
-	private Object internalNode;
-
-	/**
-	 * Constructs a new SimpleNode.
-	 */
-	public SimpleNode(Object realObject) {
-		this(realObject, -1, -1, 110, 110);
-	}
-
-	class UniqueCompare implements Comparator {
-		@Override
-		public int compare(Object o1, Object o2) {
-			// TODO this may not always be a unique comparison
-			return o1.toString().compareTo(o2.toString());
-		}
-	}
+	private final SimpleGraph graph;
+	private boolean minimized;
 
 	/**
 	 * Constructs a new SimpleNode.
 	 */
-	public SimpleNode(Object realObject, double x, double y, double width, double height) {
+	public SimpleNode(Object realObject, SimpleGraph graph) {
 		this.realObject = realObject;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.attributes = new HashMap();
+		this.graph = graph;
+		location = new DisplayIndependentPoint(-1, -1);
+		size = new DisplayIndependentDimension(110, 110);
 		this.borderWidth = BORDER_NORMAL_STROKE;
-		listOfRels = new TreeSet(new UniqueCompare());
 		this.colour = NODE_NORMAL_COLOR;
 		this.borderColor = BORDER_NORMAL_COLOR;
 	}
@@ -101,31 +76,15 @@ public class SimpleNode implements LayoutEntity {
 		BORDER_ADJACENT_COLOR = borderAdjacentColor;
 	}
 
-	public void addRelationship(SimpleRelationship rel) {
-		listOfRels.add(rel);
-	}
-
-	public SimpleRelationship[] getRelationships() {
-		int size = listOfRels.size();
-		return (SimpleRelationship[]) this.listOfRels.toArray(new SimpleRelationship[size]);
-	}
-
-	public List getRelatedEntities() {
-		int size = listOfRels.size();
-		SimpleRelationship[] a_listOfRels = (SimpleRelationship[]) this.listOfRels
-				.toArray(new SimpleRelationship[size]);
-		LinkedList listOfRelatedEntities = new LinkedList();
-		for (SimpleRelationship rel : a_listOfRels) {
-			if (rel.sourceEntity != this && rel.destinationEntity != this) {
-				throw new RuntimeException("Problem, we have a relationship and we are not the source or the dest");
+	public List<SimpleNode> getRelatedEntities() {
+		List<SimpleNode> listOfRelatedEntities = new LinkedList<>();
+		for (SimpleRelationship rel : graph.getConnections()) {
+			if (rel.getSource() != this) {
+				listOfRelatedEntities.add(rel.getSource());
 			}
-			if (rel.sourceEntity != this) {
-				listOfRelatedEntities.add(rel.sourceEntity);
+			if (rel.getTarget() != this) {
+				listOfRelatedEntities.add(rel.getTarget());
 			}
-			if (rel.destinationEntity != this) {
-				listOfRelatedEntities.add(rel.destinationEntity);
-			}
-
 		}
 		return listOfRelatedEntities;
 	}
@@ -143,73 +102,58 @@ public class SimpleNode implements LayoutEntity {
 		return realObject;
 	}
 
-	public boolean hasPreferredLocation() {
-		return this.ignoreInLayout;
-	}
-
 	/**
 	 * Gets the x position of this SimpleNode.
 	 */
 	public double getX() {
-		return x;
+		return getLocation().x;
 	}
 
 	/**
 	 * Gets the y position of this SimpleNode.
 	 */
 	public double getY() {
-		return y;
+		return getLocation().y;
 	}
 
 	/**
 	 * Get the size of this node
 	 */
 	public double getWidth() {
-		return width;
+		return getSize().width;
 	}
 
 	/**
 	 * Get the size of this node
 	 */
 	public double getHeight() {
-		return height;
+		return getSize().height;
 	}
 
 	@Override
-	public void setSizeInLayout(double width, double height) {
+	public DisplayIndependentDimension getSize() {
+		return size;
+	}
+
+	@Override
+	public void setSize(double width, double height) {
 		if (!ignoreInLayout) {
-			this.width = width;
-			this.height = height;
+			this.size.width = width;
+			this.size.height = height;
 		}
 	}
 
+	@Override
+	public DisplayIndependentPoint getLocation() {
+		return location;
+	}
+
+	@Override
 	public void setLocation(double x, double y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	@Override
-	public void setLocationInLayout(double x, double y) {
 		if (!ignoreInLayout) {
-			this.x = x;
-			this.y = y;
+			this.location.x = x;
+			this.location.y = y;
 		}
-	}
-
-	/**
-	 * An algorithm may require a place to store information. Use this structure for
-	 * that purpose.
-	 */
-	public void setAttributeInLayout(Object attribute, Object value) {
-		attributes.put(attribute, value);
-	}
-
-	/**
-	 * An algorithm may require a place to store information. Use this structure for
-	 * that purpose.
-	 */
-	public Object getAttributeInLayout(Object attribute) {
-		return attributes.get(attribute);
 	}
 
 	@Override
@@ -224,12 +168,6 @@ public class SimpleNode implements LayoutEntity {
 	@Override
 	public int hashCode() {
 		return realObject.hashCode();
-	}
-
-	// all objects are equal
-	@Override
-	public int compareTo(Object arg0) {
-		return 0;
 	}
 
 	@Override
@@ -267,70 +205,106 @@ public class SimpleNode implements LayoutEntity {
 		return borderColor;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ca.uvic.cs.chisel.layouts.LayoutEntity#getInternalEntity()
-	 */
 	@Override
-	public Object getLayoutInformation() {
-		return internalNode;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * ca.uvic.cs.chisel.layouts.LayoutEntity#setInternalEntity(java.lang.Object)
-	 */
-	@Override
-	public void setLayoutInformation(Object internalEntity) {
-		this.internalNode = internalEntity;
-	}
-
-	/**
-	 * Populate the specified layout constraint
-	 */
-	@Override
-	public void populateLayoutConstraint(LayoutConstraint constraint) {
-		if (constraint instanceof LabelLayoutConstraint labelConstraint) {
-			labelConstraint.label = realObject.toString();
-			labelConstraint.pointSize = 18;
-		} else if (constraint instanceof BasicEntityConstraint) {
-			// noop
-		} else if (constraint instanceof EntityPriorityConstraint priorityConstraint) {
-			priorityConstraint.priority = Math.random() * 10 + 1;
-		}
+	public double getPreferredAspectRatio() {
+		return 0;
 	}
 
 	@Override
-	public double getHeightInLayout() {
-		return this.height;
+	public boolean isResizable() {
+		return true;
 	}
 
 	@Override
-	public double getWidthInLayout() {
-		return this.width;
+	public boolean isMovable() {
+		return true;
 	}
 
 	@Override
-	public double getXInLayout() {
-		return this.x;
+	public SimpleNode[] getSuccessingEntities() {
+		return getSuccessingNodes();
 	}
 
 	@Override
-	public double getYInLayout() {
-		return this.y;
+	public SimpleNode[] getPredecessingEntities() {
+		return getPredecessingNodes();
 	}
 
 	@Override
-	public Object getGraphData() {
+	public Item[] getItems() {
 		return null;
 	}
 
 	@Override
-	public void setGraphData(Object o) {
-
+	public boolean isPrunable() {
+		return false;
 	}
 
+	@Override
+	public boolean isPruned() {
+		return false;
+	}
+
+	@Override
+	public SubgraphLayout getSubgraph() {
+		return null;
+	}
+
+	@Override
+	public void prune(SubgraphLayout subgraph) {
+	}
+
+	@Override
+	public SimpleNode[] getSuccessingNodes() {
+		List<SimpleNode> successors = new ArrayList<>();
+		for (SimpleRelationship relationship : graph.getConnections()) {
+			if (relationship.getSource() == this) {
+				successors.add(relationship.getTarget());
+			}
+		}
+		return successors.toArray(SimpleNode[]::new);
+	}
+
+	@Override
+	public SimpleNode[] getPredecessingNodes() {
+		List<SimpleNode> predecessors = new ArrayList<>();
+		for (SimpleRelationship relationship : graph.getConnections()) {
+			if (relationship.getTarget() == this) {
+				predecessors.add(relationship.getSource());
+			}
+		}
+		return predecessors.toArray(SimpleNode[]::new);
+	}
+
+	@Override
+	public void setMinimized(boolean minimized) {
+		this.minimized = minimized;
+	}
+
+	@Override
+	public boolean isMinimized() {
+		return minimized;
+	}
+
+	@Override
+	public SimpleRelationship[] getIncomingConnections() {
+		List<SimpleRelationship> relationships = new ArrayList<>();
+		for (SimpleRelationship relationship : graph.getConnections()) {
+			if (relationship.getTarget() == this) {
+				relationships.add(relationship);
+			}
+		}
+		return relationships.toArray(SimpleRelationship[]::new);
+	}
+
+	@Override
+	public SimpleRelationship[] getOutgoingConnections() {
+		List<SimpleRelationship> relationships = new ArrayList<>();
+		for (SimpleRelationship relationship : graph.getConnections()) {
+			if (relationship.getSource() == this) {
+				relationships.add(relationship);
+			}
+		}
+		return relationships.toArray(SimpleRelationship[]::new);
+	}
 }
