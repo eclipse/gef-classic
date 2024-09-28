@@ -13,8 +13,6 @@
 
 package org.eclipse.gef.examples.text.edit;
 
-import java.util.Iterator;
-
 import org.eclipse.gef.EditPart;
 
 import org.eclipse.gef.examples.text.SelectionRange;
@@ -65,18 +63,19 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 
 	@Override
 	public Object getStyleValue(String styleID, SelectionRange range) {
-		if (styleID.equals(Style.PROPERTY_BOLD)) {
-			for (Iterator<EditPart> iter = range.getLeafParts().iterator(); iter.hasNext();) {
-				TextRun run = (TextRun) ((TextEditPart) iter.next()).getModel();
+		switch (styleID) {
+		case Style.PROPERTY_BOLD:
+			for (EditPart ep : range.getLeafParts()) {
+				TextRun run = (TextRun) ep.getModel();
 				if (!run.getContainer().getStyle().isBold()) {
 					return Boolean.FALSE;
 				}
 			}
 			return Boolean.TRUE;
-		} else if (styleID.equals(Style.PROPERTY_FONT_SIZE)) {
+		case Style.PROPERTY_FONT_SIZE: {
 			int fontHeight = -1;
-			for (Iterator<EditPart> iter = range.getLeafParts().iterator(); iter.hasNext();) {
-				TextRun run = (TextRun) ((TextEditPart) iter.next()).getModel();
+			for (EditPart editPart : range.getLeafParts()) {
+				TextRun run = (TextRun) editPart.getModel();
 				if (fontHeight == -1) {
 					fontHeight = run.getContainer().getStyle().getFontHeight();
 				} else if (fontHeight != run.getContainer().getStyle().getFontHeight()) {
@@ -84,10 +83,11 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 				}
 			}
 			return Integer.valueOf(fontHeight);
-		} else if (styleID.equals(Style.PROPERTY_FONT)) {
+		}
+		case Style.PROPERTY_FONT: {
 			String fontName = null;
-			for (Iterator<EditPart> iter = range.getLeafParts().iterator(); iter.hasNext();) {
-				TextRun run = (TextRun) ((TextEditPart) iter.next()).getModel();
+			for (EditPart editPart : range.getLeafParts()) {
+				TextRun run = (TextRun) editPart.getModel();
 				if (fontName == null) {
 					fontName = run.getContainer().getStyle().getFontFamily();
 				} else if (!fontName.equals(run.getContainer().getStyle().getFontFamily())) {
@@ -95,26 +95,27 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 				}
 			}
 			return fontName;
-		} else if (styleID.equals(Style.PROPERTY_ITALIC)) {
-			for (Iterator<EditPart> iter = range.getLeafParts().iterator(); iter.hasNext();) {
-				TextRun run = (TextRun) ((TextEditPart) iter.next()).getModel();
+		}
+		case Style.PROPERTY_ITALIC:
+			for (EditPart editPart : range.getLeafParts()) {
+				TextRun run = (TextRun) editPart.getModel();
 				if (!run.getContainer().getStyle().isItalic()) {
 					return Boolean.FALSE;
 				}
 			}
 			return Boolean.TRUE;
-		} else if (styleID.equals(Style.PROPERTY_UNDERLINE)) {
-			for (Iterator<?> iter = range.getLeafParts().iterator(); iter.hasNext();) {
-				TextRun run = (TextRun) ((TextEditPart) iter.next()).getModel();
+		case Style.PROPERTY_UNDERLINE:
+			for (EditPart name : range.getLeafParts()) {
+				TextRun run = (TextRun) name.getModel();
 				if (!run.getContainer().getStyle().isUnderline()) {
 					return Boolean.FALSE;
 				}
 			}
 			return Boolean.TRUE;
-		} else if (Style.PROPERTY_ALIGNMENT.equals(styleID)) {
+		case Style.PROPERTY_ALIGNMENT: {
 			int alignment = 0;
-			for (Iterator<EditPart> iter = range.getLeafParts().iterator(); iter.hasNext();) {
-				TextRun run = (TextRun) ((TextEditPart) iter.next()).getModel();
+			for (EditPart editPart : range.getLeafParts()) {
+				TextRun run = (TextRun) editPart.getModel();
 				Style style = run.getBlockContainer().getStyle();
 				if (alignment == 0) {
 					alignment = style.getAlignment();
@@ -124,10 +125,11 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 				}
 			}
 			return Integer.valueOf(alignment);
-		} else if (Style.PROPERTY_ORIENTATION.equals(styleID)) {
+		}
+		case Style.PROPERTY_ORIENTATION: {
 			int orientation = 0;
-			for (Iterator<EditPart> iter = range.getLeafParts().iterator(); iter.hasNext();) {
-				TextRun run = (TextRun) ((TextEditPart) iter.next()).getModel();
+			for (EditPart editPart : range.getLeafParts()) {
+				TextRun run = (TextRun) editPart.getModel();
 				Style style = run.getBlockContainer().getStyle();
 				if (orientation == 0) {
 					orientation = style.getOrientation();
@@ -137,6 +139,9 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 				}
 			}
 			return Integer.valueOf(orientation);
+		}
+		default:
+			break;
 		}
 		return StyleService.UNDEFINED;
 	}

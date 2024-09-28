@@ -132,7 +132,7 @@ public class TreeLayout extends AbstractLayout {
 				currentXY.x += shiftRight;
 				Point correction = transposer.t(new Point(shiftRight, 0));
 				for (int j = 0; j <= i; j++) {
-					((IFigure) subtrees.get(j)).translate(correction.x, correction.y);
+					subtrees.get(j).translate(correction.x, correction.y);
 				}
 			}
 

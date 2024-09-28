@@ -36,7 +36,6 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
 import org.eclipse.gef.examples.shapes.model.EllipticalShape;
-import org.eclipse.gef.examples.shapes.model.ModelElement;
 import org.eclipse.gef.examples.shapes.model.RectangularShape;
 import org.eclipse.gef.examples.shapes.model.Shape;
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
@@ -67,7 +66,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((ModelElement) getModel()).addPropertyChangeListener(this);
+			getModel().addPropertyChangeListener(this);
 		}
 	}
 
@@ -112,7 +111,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			((ModelElement) getModel()).removePropertyChangeListener(this);
+			getModel().removePropertyChangeListener(this);
 		}
 	}
 
