@@ -30,7 +30,6 @@ import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Handle;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
-import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.AbstractHandle;
 import org.eclipse.gef.handles.HandleBounds;
@@ -82,7 +81,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
 	@Override
-	protected List createSelectionHandles() {
+	protected List<? extends Handle> createSelectionHandles() {
 		List<Handle> list = new ArrayList<>();
 		createMoveHandle(list);
 		createDragHandle(list, PositionConstants.NORTH_EAST);
@@ -102,14 +101,14 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 *                  handle for
 	 * @since 3.7
 	 */
-	protected void createDragHandle(List handles, int direction) {
+	protected void createDragHandle(List<Handle> handles, int direction) {
 		if (isDragAllowed()) {
 			// display 'resize' handles to allow dragging (drag tracker)
-			NonResizableHandleKit.addHandle(getHost(), handles, direction, getDragTracker(), SharedCursors.SIZEALL);
+			NonResizableHandleKit.addHandle(getHost(), handles, direction, getDragTracker(), Cursors.SIZEALL);
 		} else {
 			// display 'resize' handles to indicate selection only (selection
 			// tracker)
-			NonResizableHandleKit.addHandle(getHost(), handles, direction, getSelectTracker(), SharedCursors.ARROW);
+			NonResizableHandleKit.addHandle(getHost(), handles, direction, getSelectTracker(), Cursors.ARROW);
 		}
 	}
 
@@ -141,13 +140,13 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * @param handles The list of handles to add the move handle to.
 	 * @since 3.7
 	 */
-	protected void createMoveHandle(List handles) {
+	protected void createMoveHandle(List<Handle> handles) {
 		if (isDragAllowed()) {
 			// display 'move' handle to allow dragging
 			ResizableHandleKit.addMoveHandle(getHost(), handles, getDragTracker(), Cursors.SIZEALL);
 		} else {
 			// display 'move' handle only to indicate selection
-			ResizableHandleKit.addMoveHandle(getHost(), handles, getSelectTracker(), SharedCursors.ARROW);
+			ResizableHandleKit.addMoveHandle(getHost(), handles, getSelectTracker(), Cursors.ARROW);
 		}
 	}
 
@@ -278,6 +277,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * @param req the orphan request
 	 * @return <code>null</code> by default
 	 */
+	@SuppressWarnings("static-method")
 	protected Command getOrphanCommand(Request req) {
 		return null;
 	}
@@ -324,16 +324,16 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * @param request the request
 	 */
 	protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
-		IFigure feedback = getDragSourceFeedbackFigure();
+		IFigure dsFeedbackFigure = getDragSourceFeedbackFigure();
 
 		PrecisionRectangle rect = new PrecisionRectangle(getInitialFeedbackBounds().getCopy());
 		getHostFigure().translateToAbsolute(rect);
 		rect.translate(request.getMoveDelta());
 		rect.resize(request.getSizeDelta());
 
-		feedback.translateToRelative(rect);
-		feedback.setBounds(rect);
-		feedback.validate();
+		dsFeedbackFigure.translateToRelative(rect);
+		dsFeedbackFigure.setBounds(rect);
+		dsFeedbackFigure.validate();
 	}
 
 	/**

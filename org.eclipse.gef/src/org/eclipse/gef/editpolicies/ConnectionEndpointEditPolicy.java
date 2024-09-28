@@ -108,7 +108,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
 	@Override
-	protected List createSelectionHandles() {
+	protected List<? extends ConnectionEndpointHandle> createSelectionHandles() {
 		List<ConnectionEndpointHandle> list = new ArrayList<>();
 		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(), ConnectionLocator.SOURCE));
 		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(), ConnectionLocator.TARGET));

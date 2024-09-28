@@ -120,7 +120,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * @see SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
 	@Override
-	protected List createSelectionHandles() {
+	protected List<? extends BendpointHandle> createSelectionHandles() {
 		if (isAutomaticallyBending()) {
 			return createHandlesForAutomaticBendpoints();
 		}

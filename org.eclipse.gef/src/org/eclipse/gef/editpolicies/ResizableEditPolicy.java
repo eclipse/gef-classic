@@ -45,18 +45,10 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	private int resizeDirections = PositionConstants.NSEW;
 
 	/**
-	 * Constructs a new {@link ResizableEditPolicy}.
-	 *
-	 * @since 3.7
-	 */
-	public ResizableEditPolicy() {
-	}
-
-	/**
 	 * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
 	@Override
-	protected List createSelectionHandles() {
+	protected List<? extends Handle> createSelectionHandles() {
 		if (resizeDirections == PositionConstants.NONE) {
 			// non resizable, so delegate to super implementation
 			return super.createSelectionHandles();
@@ -87,7 +79,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 *                  handle for
 	 * @since 3.7
 	 */
-	protected void createResizeHandle(List handles, int direction) {
+	protected void createResizeHandle(List<Handle> handles, int direction) {
 		if ((resizeDirections & direction) == direction) {
 			ResizableHandleKit.addHandle(getHost(), handles, direction, getResizeTracker(direction),
 					Cursors.getDirectionalCursor(direction, getHostFigure().isMirrored()));
@@ -195,8 +187,8 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	public boolean understandsRequest(Request request) {
 		if (REQ_RESIZE.equals(request.getType())) {
 			// check all resize directions of the request are supported
-			int resizeDirections = ((ChangeBoundsRequest) request).getResizeDirection();
-			return (resizeDirections & getResizeDirections()) == resizeDirections;
+			int reqResizeDirection = ((ChangeBoundsRequest) request).getResizeDirection();
+			return (reqResizeDirection & getResizeDirections()) == reqResizeDirection;
 		}
 		return super.understandsRequest(request);
 	}
