@@ -38,7 +38,7 @@ public class ResizableHandleKit {
 	 * @param direction the integer constant from PositionConstants that refers to
 	 *                  the handle direction
 	 */
-	public static void addHandle(GraphicalEditPart part, List handles, int direction) {
+	public static void addHandle(GraphicalEditPart part, List<Handle> handles, int direction) {
 		handles.add(createHandle(part, direction));
 	}
 
@@ -53,7 +53,7 @@ public class ResizableHandleKit {
 	 *                  the handle direction
 	 * @param cursor    the Cursor to use when hovering over this handle
 	 */
-	public static void addHandle(GraphicalEditPart part, List handles, int direction, DragTracker tracker,
+	public static void addHandle(GraphicalEditPart part, List<Handle> handles, int direction, DragTracker tracker,
 			Cursor cursor) {
 		handles.add(createHandle(part, direction, tracker, cursor));
 	}
@@ -66,7 +66,8 @@ public class ResizableHandleKit {
 	 * @param handles the List to add the handles to
 	 * @deprecated
 	 */
-	public static void addHandles(GraphicalEditPart part, List handles) {
+	@Deprecated
+	public static void addHandles(GraphicalEditPart part, List<Handle> handles) {
 		addMoveHandle(part, handles);
 		addCornerAndSideHandles(part, handles);
 	}
@@ -78,7 +79,7 @@ public class ResizableHandleKit {
 	 * @param handles the List to add the four corner handles to
 	 * @since 3.7
 	 */
-	public static void addCornerAndSideHandles(GraphicalEditPart part, List handles) {
+	public static void addCornerAndSideHandles(GraphicalEditPart part, List<Handle> handles) {
 		handles.add(createHandle(part, PositionConstants.EAST));
 		handles.add(createHandle(part, PositionConstants.SOUTH_EAST));
 		handles.add(createHandle(part, PositionConstants.SOUTH));
@@ -98,7 +99,7 @@ public class ResizableHandleKit {
 	 * @param cursor  the handles' Cursor
 	 * @since 3.7
 	 */
-	public static void addCornerAndSideHandles(GraphicalEditPart part, List handles, DragTracker tracker,
+	public static void addCornerAndSideHandles(GraphicalEditPart part, List<Handle> handles, DragTracker tracker,
 			Cursor cursor) {
 		handles.add(createHandle(part, PositionConstants.EAST, tracker, cursor));
 		handles.add(createHandle(part, PositionConstants.SOUTH_EAST, tracker, cursor));
@@ -116,7 +117,7 @@ public class ResizableHandleKit {
 	 * @param f       the GraphicalEditPart that is the owner of the handles
 	 * @param handles the List to add the handles to
 	 */
-	public static void addMoveHandle(GraphicalEditPart f, List handles) {
+	public static void addMoveHandle(GraphicalEditPart f, List<Handle> handles) {
 		handles.add(moveHandle(f));
 	}
 
@@ -129,7 +130,7 @@ public class ResizableHandleKit {
 	 * @param handles the List to add the handles to
 	 * @param cursor  the Cursor to use when hovering over this handle
 	 */
-	public static void addMoveHandle(GraphicalEditPart f, List handles, DragTracker tracker, Cursor cursor) {
+	public static void addMoveHandle(GraphicalEditPart f, List<Handle> handles, DragTracker tracker, Cursor cursor) {
 		handles.add(moveHandle(f, tracker, cursor));
 	}
 
@@ -167,6 +168,10 @@ public class ResizableHandleKit {
 		moveHandle.setDragTracker(tracker);
 		moveHandle.setCursor(cursor);
 		return moveHandle;
+	}
+
+	private ResizableHandleKit() {
+		throw new UnsupportedOperationException("Helper class should not be instantiated!"); //$NON-NLS-1$
 	}
 
 }

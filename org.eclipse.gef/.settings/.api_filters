@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="org.eclipse.gef" version="2">
+    <resource path="src/org/eclipse/gef/handles/NonResizableHandleKit.java" type="org.eclipse.gef.handles.NonResizableHandleKit">
+        <filter id="354463860">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.handles.NonResizableHandleKit"/>
+                <message_argument value="NonResizableHandleKit()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/gef/handles/ResizableHandleKit.java" type="org.eclipse.gef.handles.ResizableHandleKit">
+        <filter id="354463860">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.handles.ResizableHandleKit"/>
+                <message_argument value="ResizableHandleKit()"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/org/eclipse/gef/ui/actions/AlignmentRetargetAction.java" type="org.eclipse.gef.ui.actions.AlignmentRetargetAction">
         <filter id="571473929">
             <message_arguments>

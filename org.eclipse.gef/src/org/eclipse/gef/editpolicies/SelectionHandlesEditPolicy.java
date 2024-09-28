@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,6 +14,7 @@ package org.eclipse.gef.editpolicies;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -42,7 +43,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 	/**
 	 * the List of handles
 	 */
-	protected List handles;
+	protected List<? extends Handle> handles;
 
 	/**
 	 * Adds the handles to the handle layer.
@@ -51,9 +52,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 		removeSelectionHandles();
 		IFigure layer = getLayer(LayerConstants.HANDLE_LAYER);
 		handles = createSelectionHandles();
-		for (Object handle : handles) {
-			layer.add((IFigure) handle);
-		}
+		getHandleFigures().forEach(layer::add);
 	}
 
 	/**
@@ -61,7 +60,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 	 *
 	 * @return List of handles; cannot be <code>null</code>
 	 */
-	protected abstract List createSelectionHandles();
+	protected abstract List<? extends Handle> createSelectionHandles();
 
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
@@ -69,23 +68,25 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleHandleProvider.class) {
-			return key.cast(new AccessibleHandleProvider() {
-				@Override
-				public List<Point> getAccessibleHandleLocations() {
-					List<Point> result = new ArrayList<>();
-					if (handles != null) {
-						for (Object handle : handles) {
-							Point p = ((Handle) handle).getAccessibleLocation();
-							if (p != null) {
-								result.add(p);
-							}
+			return key.cast((AccessibleHandleProvider) () -> {
+				List<Point> result = new ArrayList<>();
+				if (handles != null) {
+					for (Handle handle : handles) {
+						Point p = handle.getAccessibleLocation();
+						if (p != null) {
+							result.add(p);
 						}
 					}
-					return result;
 				}
+				return result;
 			});
 		}
 		return null;
+	}
+
+	private Stream<IFigure> getHandleFigures() {
+		return (handles != null) ? handles.stream().filter(IFigure.class::isInstance).map(IFigure.class::cast)
+				: Stream.empty();
 	}
 
 	/**
@@ -106,9 +107,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 			return;
 		}
 		IFigure layer = getLayer(LayerConstants.HANDLE_LAYER);
-		for (Object handle : handles) {
-			layer.remove((IFigure) handle);
-		}
+		getHandleFigures().forEach(layer::remove);
 		handles = null;
 	}
 
