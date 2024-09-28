@@ -186,9 +186,9 @@ public class PointTests extends BaseTestCase {
 
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetDistance2Point() {
-		assertEquals(25, new Point(4, 7).getDistance2(new Point(1, 3)));
-		assertEquals(25, new Point(-1, -2).getDistance2(new Point(-5, 1)));
+	public void testGetDistanceSquaredPoint() {
+		assertEquals(25, new Point(4, 7).getDistanceSquared(new Point(1, 3)));
+		assertEquals(25, new Point(-1, -2).getDistanceSquared(new Point(-5, 1)));
 	}
 
 	@SuppressWarnings("static-method")

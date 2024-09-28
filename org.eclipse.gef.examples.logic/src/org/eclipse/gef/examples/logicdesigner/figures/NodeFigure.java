@@ -34,7 +34,7 @@ public class NodeFigure extends Figure {
 
 		for (ConnectionAnchor c : getSourceConnectionAnchors()) {
 			Point p2 = c.getLocation(null);
-			long d = p.getDistance2(p2);
+			long d = p.getDistanceSquared(p2);
 			if (d < min) {
 				min = d;
 				closest = c;
@@ -42,7 +42,7 @@ public class NodeFigure extends Figure {
 		}
 		for (ConnectionAnchor c : getTargetConnectionAnchors()) {
 			Point p2 = c.getLocation(null);
-			long d = p.getDistance2(p2);
+			long d = p.getDistanceSquared(p2);
 			if (d < min) {
 				min = d;
 				closest = c;
@@ -70,7 +70,7 @@ public class NodeFigure extends Figure {
 
 		for (ConnectionAnchor c : getSourceConnectionAnchors()) {
 			Point p2 = c.getLocation(null);
-			long d = p.getDistance2(p2);
+			long d = p.getDistanceSquared(p2);
 			if (d < min) {
 				min = d;
 				closest = c;
@@ -89,7 +89,7 @@ public class NodeFigure extends Figure {
 
 		for (ConnectionAnchor c : getTargetConnectionAnchors()) {
 			Point p2 = c.getLocation(null);
-			long d = p.getDistance2(p2);
+			long d = p.getDistanceSquared(p2);
 			if (d < min) {
 				min = d;
 				closest = c;
