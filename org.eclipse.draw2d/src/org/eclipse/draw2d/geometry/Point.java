@@ -198,10 +198,23 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 * @return distance<sup>2</sup>
 	 * @since 2.0
 	 * @noreference This method is not intended to be referenced by clients.
-	 * @deprecated Use {@link #getDistance(Point)} and square the result instead.
+	 * @deprecated Use {@link #getDistanceSquared(Point)}.
 	 */
 	@Deprecated(since = "3.7", forRemoval = true)
 	public int getDistance2(Point p) {
+		return getDistanceSquared(p);
+	}
+
+	/**
+	 * Calculates the distance squared between this Point and the one specified. If
+	 * the distance squared is larger than the maximum integer value, then
+	 * <code>Integer.MAX_VALUE</code> will be returned.
+	 *
+	 * @param p The reference Point
+	 * @return distance<sup>2</sup>
+	 * @since 3.18
+	 */
+	public int getDistanceSquared(Point p) {
 		long i = p.x() - x;
 		long j = p.y() - y;
 		long result = i * i + j * j;

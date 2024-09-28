@@ -315,9 +315,9 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 		// points include the bend points as well as start and end, which we may
 		// leave out when searching for the bend point index
 		for (int i = 1; i < points.size() - 1; i++) {
-			if (smallestDistance == -1 || points.getPoint(i).getDistance2(bp) < smallestDistance) {
+			if (smallestDistance == -1 || points.getPoint(i).getDistanceSquared(bp) < smallestDistance) {
 				bpIndex = i;
-				smallestDistance = points.getPoint(i).getDistance2(bp);
+				smallestDistance = points.getPoint(i).getDistanceSquared(bp);
 				if (smallestDistance == 0) {
 					break;
 				}
