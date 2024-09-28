@@ -38,7 +38,6 @@ import org.eclipse.gef.requests.ReconnectRequest;
 
 import org.eclipse.gef.examples.shapes.model.Connection;
 import org.eclipse.gef.examples.shapes.model.EllipticalShape;
-import org.eclipse.gef.examples.shapes.model.ModelElement;
 import org.eclipse.gef.examples.shapes.model.RectangularShape;
 import org.eclipse.gef.examples.shapes.model.Shape;
 import org.eclipse.gef.examples.shapes.model.commands.ConnectionCreateCommand;
@@ -65,7 +64,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((ModelElement) getModel()).addPropertyChangeListener(this);
+			getModel().addPropertyChangeListener(this);
 		}
 	}
 
@@ -178,7 +177,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			((ModelElement) getModel()).removePropertyChangeListener(this);
+			getModel().removePropertyChangeListener(this);
 		}
 	}
 
@@ -278,12 +277,19 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
-		if (Shape.SIZE_PROP.equals(prop) || Shape.LOCATION_PROP.equals(prop)) {
+		switch (prop) {
+		case Shape.SIZE_PROP:
+		case Shape.LOCATION_PROP:
 			refreshVisuals();
-		} else if (Shape.SOURCE_CONNECTIONS_PROP.equals(prop)) {
+			break;
+		case Shape.SOURCE_CONNECTIONS_PROP:
 			refreshSourceConnections();
-		} else if (Shape.TARGET_CONNECTIONS_PROP.equals(prop)) {
+			break;
+		case Shape.TARGET_CONNECTIONS_PROP:
 			refreshTargetConnections();
+			break;
+		default:
+			break;
 		}
 	}
 

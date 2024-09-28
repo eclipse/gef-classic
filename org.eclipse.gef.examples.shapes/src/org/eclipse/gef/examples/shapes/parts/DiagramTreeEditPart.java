@@ -22,7 +22,6 @@ import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
-import org.eclipse.gef.examples.shapes.model.ModelElement;
 import org.eclipse.gef.examples.shapes.model.Shape;
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
 
@@ -54,7 +53,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((ModelElement) getModel()).addPropertyChangeListener(this);
+			getModel().addPropertyChangeListener(this);
 		}
 	}
 
@@ -81,7 +80,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			((ModelElement) getModel()).removePropertyChangeListener(this);
+			getModel().removePropertyChangeListener(this);
 		}
 	}
 

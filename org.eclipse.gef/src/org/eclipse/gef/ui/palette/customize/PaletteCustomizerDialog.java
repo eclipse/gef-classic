@@ -533,7 +533,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		ToolItem[] items = tbMgr.getControl().getItems();
 		for (int i = 0; i < items.length; i++) {
 			ToolItem item = items[i];
-			item.setText(((IAction) actions.get(i)).getText());
+			item.setText(actions.get(i).getText());
 		}
 
 		return tbMgr.getControl();

@@ -27,7 +27,6 @@ import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 
 import org.eclipse.gef.examples.shapes.model.Connection;
-import org.eclipse.gef.examples.shapes.model.ModelElement;
 import org.eclipse.gef.examples.shapes.model.commands.ConnectionDeleteCommand;
 
 /**
@@ -48,7 +47,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((ModelElement) getModel()).addPropertyChangeListener(this);
+			getModel().addPropertyChangeListener(this);
 		}
 	}
 
@@ -96,7 +95,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			((ModelElement) getModel()).removePropertyChangeListener(this);
+			getModel().removePropertyChangeListener(this);
 		}
 	}
 

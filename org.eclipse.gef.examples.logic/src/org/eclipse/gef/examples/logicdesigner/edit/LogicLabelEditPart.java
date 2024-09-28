@@ -55,8 +55,7 @@ public class LogicLabelEditPart extends LogicEditPart {
 
 	@Override
 	protected IFigure createFigure() {
-		LabelFigure label = new LabelFigure();
-		return label;
+		return new LabelFigure();
 	}
 
 	private LogicLabel getLogicLabel() {
@@ -78,7 +77,7 @@ public class LogicLabelEditPart extends LogicEditPart {
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equalsIgnoreCase("labelContents")) { //$NON-NLS-1$
 			refreshVisuals();
-		} else { //$NON-NLS-1$
+		} else {
 			super.propertyChange(evt);
 		}
 	}

@@ -701,7 +701,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		for (i = 0; i < modelObjects.size(); i++) {
 			Object model = modelObjects.get(i);
 
-			if (i < targetConns.size() && ((EditPart) targetConns.get(i)).getModel() == model) {
+			if (i < targetConns.size() && targetConns.get(i).getModel() == model) {
 				continue;
 			}
 
