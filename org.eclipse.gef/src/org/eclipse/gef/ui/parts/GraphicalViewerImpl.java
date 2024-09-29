@@ -97,6 +97,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 *
 	 * @return the lightweight system
 	 */
+	@SuppressWarnings("static-method")
 	protected LightweightSystem createLightweightSystem() {
 		return new LightweightSystem();
 	}
@@ -170,7 +171,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 			public boolean accept(IFigure figure) {
 				EditPart editpart = null;
 				while (editpart == null && figure != null) {
-					editpart = (EditPart) getVisualPartMap().get(figure);
+					editpart = getVisualPartMap().get(figure);
 					figure = figure.getParent();
 				}
 				return editpart != null && (condition == null || condition.evaluate(editpart));
@@ -180,7 +181,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 				new ConditionalTreeSearch(exclude));
 		EditPart part = null;
 		while (part == null && figure != null) {
-			part = (EditPart) getVisualPartMap().get(figure);
+			part = getVisualPartMap().get(figure);
 			figure = figure.getParent();
 		}
 		if (part == null) {
