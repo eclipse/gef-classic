@@ -56,7 +56,7 @@ public class MatchSizeAction extends SelectionAction {
 	 */
 	@Override
 	protected boolean calculateEnabled() {
-		Command cmd = createMatchSizeCommand(getSelectedObjects());
+		Command cmd = createMatchSizeCommand(getSelectedEditParts());
 		if (cmd == null) {
 			return false;
 		}
@@ -66,54 +66,50 @@ public class MatchSizeAction extends SelectionAction {
 	/**
 	 * Create a command to resize the selected objects.
 	 *
-	 * @param objects The objects to be resized.
+	 * @param editParts The objects to be resized.
 	 * @return The command to resize the selected objects.
 	 */
-	private Command createMatchSizeCommand(List objects) {
-		if (objects.isEmpty()) {
+	private Command createMatchSizeCommand(List<EditPart> editParts) {
+		if (editParts.isEmpty()) {
 			return null;
 		}
-		if (!(objects.get(0) instanceof GraphicalEditPart)) {
+		if (!(editParts.get(0) instanceof GraphicalEditPart)) {
 			return null;
 		}
 
-		GraphicalEditPart primarySelection = getPrimarySelectionEditPart(getSelectedObjects());
+		GraphicalEditPart primarySelection = getPrimarySelectionEditPart(editParts);
 
 		if (primarySelection == null) {
 			return null;
 		}
 
-		GraphicalEditPart part = null;
-		ChangeBoundsRequest request = null;
-		PrecisionDimension preciseDimension = null;
-		PrecisionRectangle precisePartBounds = null;
-		Command cmd = null;
-		CompoundCommand command = new CompoundCommand();
-
-		PrecisionRectangle precisePrimaryBounds = new PrecisionRectangle(
+		final CompoundCommand command = new CompoundCommand();
+		final PrecisionRectangle precisePrimaryBounds = new PrecisionRectangle(
 				primarySelection.getFigure().getBounds().getCopy());
 		primarySelection.getFigure().translateToAbsolute(precisePrimaryBounds);
 
-		for (Object object : objects) {
-			part = (GraphicalEditPart) object;
-			if (!part.equals(primarySelection)) {
-				request = new ChangeBoundsRequest(RequestConstants.REQ_RESIZE);
+		editParts.stream().filter(GraphicalEditPart.class::isInstance).map(GraphicalEditPart.class::cast)
+				.forEach(part -> {
+					if (!part.equals(primarySelection)) {
+						ChangeBoundsRequest request = new ChangeBoundsRequest(RequestConstants.REQ_RESIZE);
 
-				precisePartBounds = new PrecisionRectangle(part.getFigure().getBounds().getCopy());
-				part.getFigure().translateToAbsolute(precisePartBounds);
+						PrecisionRectangle precisePartBounds = new PrecisionRectangle(
+								part.getFigure().getBounds().getCopy());
+						part.getFigure().translateToAbsolute(precisePartBounds);
 
-				preciseDimension = new PrecisionDimension();
-				preciseDimension.setPreciseWidth(getPreciseWidthDelta(precisePartBounds, precisePrimaryBounds));
-				preciseDimension.setPreciseHeight(getPreciseHeightDelta(precisePartBounds, precisePrimaryBounds));
+						PrecisionDimension preciseDimension = new PrecisionDimension();
+						preciseDimension.setPreciseWidth(getPreciseWidthDelta(precisePartBounds, precisePrimaryBounds));
+						preciseDimension
+								.setPreciseHeight(getPreciseHeightDelta(precisePartBounds, precisePrimaryBounds));
 
-				request.setSizeDelta(preciseDimension);
+						request.setSizeDelta(preciseDimension);
 
-				cmd = part.getCommand(request);
-				if (cmd != null) {
-					command.add(cmd);
-				}
-			}
-		}
+						Command cmd = part.getCommand(request);
+						if (cmd != null) {
+							command.add(cmd);
+						}
+					}
+				});
 
 		return command;
 	}
@@ -134,12 +130,10 @@ public class MatchSizeAction extends SelectionAction {
 		return precisePrimaryBounds.preciseHeight() - precisePartBounds.preciseHeight();
 	}
 
-	private static GraphicalEditPart getPrimarySelectionEditPart(List editParts) {
-		GraphicalEditPart part = null;
-		for (Object editPart : editParts) {
-			part = (GraphicalEditPart) editPart;
-			if (part.getSelected() == EditPart.SELECTED_PRIMARY) {
-				return part;
+	private static GraphicalEditPart getPrimarySelectionEditPart(List<EditPart> editParts) {
+		for (EditPart editPart : editParts) {
+			if (editPart.getSelected() == EditPart.SELECTED_PRIMARY && editPart instanceof GraphicalEditPart gEP) {
+				return gEP;
 			}
 		}
 		return null;
@@ -168,7 +162,7 @@ public class MatchSizeAction extends SelectionAction {
 	 */
 	@Override
 	public void run() {
-		execute(createMatchSizeCommand(getSelectedObjects()));
+		execute(createMatchSizeCommand(getSelectedEditParts()));
 	}
 
 }
