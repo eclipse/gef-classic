@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,7 +14,6 @@ package org.eclipse.gef.ui.parts;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.dnd.DND;
@@ -40,23 +39,17 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 	@Override
 	protected Request createTargetRequest() {
 		ChangeBoundsRequest request = new ChangeBoundsRequest(RequestConstants.REQ_MOVE);
-		request.setEditParts((List) TreeViewerTransfer.getInstance().getObject());
+		request.setEditParts(getTransferedEditParts());
 		return request;
 	}
 
 	@Override
 	protected Command getCommand() {
-		CompoundCommand command = new CompoundCommand();
-
-		Iterator iter = ((List) TreeViewerTransfer.getInstance().getObject()).iterator();
-
-		Request request = getTargetRequest();
+		final CompoundCommand command = new CompoundCommand();
+		final Request request = getTargetRequest();
 		request.setType(isMove() ? RequestConstants.REQ_MOVE : RequestConstants.REQ_ORPHAN);
 
-		while (iter.hasNext()) {
-			EditPart editPart = (EditPart) iter.next();
-			command.add(editPart.getCommand(request));
-		}
+		getTransferedEditParts().stream().forEach(ep -> command.add(ep.getCommand(request)));
 
 		// If reparenting, add all editparts to target editpart.
 		if (!isMove()) {
@@ -85,6 +78,12 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 		return exclude;
 	}
 
+	@SuppressWarnings("unchecked") // we are putting a List<? extends EditPart> into the object of the transfer so
+									// casting is save
+	private static List<? extends EditPart> getTransferedEditParts() {
+		return (List<? extends EditPart>) TreeViewerTransfer.getInstance().getObject();
+	}
+
 	@Override
 	protected void handleDragOver() {
 		if (TreeViewerTransfer.getInstance().getViewer() != getViewer()) {
@@ -95,18 +94,19 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 		super.handleDragOver();
 	}
 
+	@SuppressWarnings("static-method")
 	protected EditPart getSourceEditPart() {
-		List selection = (List) TreeViewerTransfer.getInstance().getObject();
-		if (selection == null || selection.isEmpty() || !(selection.get(0) instanceof EditPart)) {
+		List<? extends EditPart> selection = getTransferedEditParts();
+		if (selection == null || selection.isEmpty()) {
 			return null;
 		}
-		return (EditPart) selection.get(0);
+		return selection.get(0);
 	}
 
-	protected List includeChildren(List list) {
+	protected List<EditPart> includeChildren(List<? extends EditPart> list) {
 		List<EditPart> result = new ArrayList<>();
-		for (Object element : list) {
-			List<? extends EditPart> children = ((EditPart) element).getChildren();
+		for (EditPart element : list) {
+			List<? extends EditPart> children = element.getChildren();
 			result.addAll(children);
 			result.addAll(includeChildren(children));
 		}
@@ -123,9 +123,7 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 
 	protected boolean isMove() {
 		EditPart source = getSourceEditPart();
-		List selection = (List) TreeViewerTransfer.getInstance().getObject();
-		for (Object element : selection) {
-			EditPart ep = (EditPart) element;
+		for (EditPart ep : getTransferedEditParts()) {
 			if (ep.getParent() != source.getParent()) {
 				return false;
 			}
