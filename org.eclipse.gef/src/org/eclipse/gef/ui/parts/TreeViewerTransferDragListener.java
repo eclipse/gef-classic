@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.parts;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -26,7 +25,7 @@ import org.eclipse.gef.dnd.AbstractTransferDragSourceListener;
 
 class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener {
 
-	private List modelSelection;
+	private List<Object> modelSelection;
 
 	public TreeViewerTransferDragListener(EditPartViewer viewer) {
 		super(viewer, TreeViewerTransfer.getInstance());
@@ -48,7 +47,7 @@ class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener 
 	@Override
 	public void dragStart(DragSourceEvent event) {
 		TreeViewerTransfer.getInstance().setViewer(getViewer());
-		List selection = getViewer().getSelectedEditParts();
+		List<? extends EditPart> selection = getViewer().getSelectedEditParts();
 		TreeViewerTransfer.getInstance().setObject(selection);
 		saveModelSelection(selection);
 	}
@@ -65,24 +64,13 @@ class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener 
 	}
 
 	protected void revertModelSelection() {
-		List list = new ArrayList();
-		Object editpart;
-		for (int i = 0; i < modelSelection.size(); i++) {
-			editpart = getViewer().getEditPartForModel(modelSelection.get(i));
-			if (editpart != null) {
-				list.add(editpart);
-			}
-		}
+		List<EditPart> list = modelSelection.stream().map(m -> getViewer().getEditPartForModel(m)).toList();
 		getViewer().setSelection(new StructuredSelection(list));
 		modelSelection = null;
 	}
 
-	protected void saveModelSelection(List editPartSelection) {
-		modelSelection = new ArrayList();
-		for (int i = 0; i < editPartSelection.size(); i++) {
-			EditPart editpart = (EditPart) editPartSelection.get(i);
-			modelSelection.add(editpart.getModel());
-		}
+	protected void saveModelSelection(List<? extends EditPart> editPartSelection) {
+		modelSelection = editPartSelection.stream().map(EditPart::getModel).toList();
 	}
 
 }
