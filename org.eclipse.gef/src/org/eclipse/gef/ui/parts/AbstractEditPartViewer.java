@@ -70,12 +70,12 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * The raw list of selected editparts.
 	 */
-	protected final List selection = new ArrayList();
+	protected final List<EditPart> selection = new ArrayList<>();
 
 	/**
 	 * The unmodifiable list of selected editparts.
 	 */
-	protected final List constantSelection = Collections.unmodifiableList(selection);
+	protected final List<EditPart> constantSelection = Collections.unmodifiableList(selection);
 
 	/**
 	 * The list of selection listeners.
