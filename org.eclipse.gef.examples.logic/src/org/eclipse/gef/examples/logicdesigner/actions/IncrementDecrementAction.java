@@ -60,29 +60,17 @@ public class IncrementDecrementAction extends org.eclipse.gef.ui.actions.Selecti
 	}
 
 	private boolean canPerformAction() {
-		if (getSelectedObjects().isEmpty()) {
+		List<EditPart> selectedEditParts = getSelectedEditParts();
+		if (selectedEditParts.isEmpty()) {
 			return false;
 		}
-		List parts = getSelectedObjects();
-		for (Object o : parts) {
-			if (!(o instanceof EditPart part)) {
-				return false;
-			}
-			if (!(part.getModel() instanceof LED)) {
-				return false;
-			}
-		}
-		return true;
+		return selectedEditParts.stream().allMatch(ep -> ep.getModel() instanceof LED);
 	}
 
 	private Command getCommand() {
-		List editparts = getSelectedObjects();
-		CompoundCommand cc = new CompoundCommand();
+		final CompoundCommand cc = new CompoundCommand();
 		cc.setDebugLabel("Increment/Decrement LEDs");//$NON-NLS-1$
-		for (Object editpart : editparts) {
-			EditPart part = (EditPart) editpart;
-			cc.add(part.getCommand(request));
-		}
+		getSelectedEditParts().stream().map(ep -> ep.getCommand(request)).forEach(cc::add);
 		return cc;
 	}
 

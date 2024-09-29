@@ -21,6 +21,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 
+import org.eclipse.gef.EditPart;
+
 /**
  * Superclass for an action needing the current selection.
  */
@@ -39,7 +41,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	 * @param part  The workbench part associated with this action
 	 * @param style the style for this action
 	 */
-	public SelectionAction(IWorkbenchPart part, int style) {
+	protected SelectionAction(IWorkbenchPart part, int style) {
 		super(part, style);
 	}
 
@@ -49,7 +51,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	 *
 	 * @param part the workbench part
 	 */
-	public SelectionAction(IWorkbenchPart part) {
+	protected SelectionAction(IWorkbenchPart part) {
 		super(part);
 	}
 
@@ -67,11 +69,22 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	 *
 	 * @return A List containing the currently selected objects.
 	 */
-	protected List getSelectedObjects() {
+	protected List<Object> getSelectedObjects() {
 		if (!(getSelection() instanceof IStructuredSelection)) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 		return ((IStructuredSelection) getSelection()).toList();
+	}
+
+	/**
+	 * Returns a <code>List<EditPart></code> containing the currently selected
+	 * EditParts.
+	 *
+	 * @return A List containing the currently selected EditParts.
+	 * @since 3.20
+	 */
+	protected final List<EditPart> getSelectedEditParts() {
+		return getSelectedObjects().stream().filter(EditPart.class::isInstance).map(EditPart.class::cast).toList();
 	}
 
 	/**

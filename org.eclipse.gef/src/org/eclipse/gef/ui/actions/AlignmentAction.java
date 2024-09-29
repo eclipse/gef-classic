@@ -170,19 +170,19 @@ public final class AlignmentAction extends SelectionAction {
 		if (operationSet != null) {
 			return operationSet;
 		}
-		List editparts = new ArrayList(getSelectedObjects());
+		List<? extends EditPart> editparts = new ArrayList<>(getSelectedEditParts());
 		if (editparts.isEmpty() || !(editparts.get(0) instanceof GraphicalEditPart)) {
 			return Collections.emptyList();
 		}
-		Object primary = editparts.get(editparts.size() - 1);
+		EditPart primary = editparts.get(editparts.size() - 1);
 		editparts = ToolUtilities.getSelectionWithoutDependants(editparts);
 		ToolUtilities.filterEditPartsUnderstanding(editparts, request);
 		if (editparts.size() < 2 || !editparts.contains(primary)) {
 			return Collections.emptyList();
 		}
-		EditPart parent = ((EditPart) editparts.get(0)).getParent();
+		EditPart parent = editparts.get(0).getParent();
 		for (int i = 1; i < editparts.size(); i++) {
-			EditPart part = (EditPart) editparts.get(i);
+			EditPart part = editparts.get(i);
 			if (part.getParent() != parent) {
 				return Collections.emptyList();
 			}
@@ -241,6 +241,8 @@ public final class AlignmentAction extends SelectionAction {
 			setToolTipText(GEFMessages.AlignMiddleAction_Tooltip);
 			setImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE);
 			setDisabledImageDescriptor(InternalImages.DESC_VERT_ALIGN_MIDDLE_DIS);
+			break;
+		default:
 			break;
 		}
 	}

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
+import java.util.List;
+
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.ui.IEditorPart;
@@ -75,8 +77,9 @@ public class DirectEditAction extends SelectionAction {
 	 */
 	@Override
 	protected boolean calculateEnabled() {
-		if (getSelectedObjects().size() == 1 && (getSelectedObjects().get(0) instanceof EditPart part)) {
-			return part.understandsRequest(getDirectEditRequest());
+		List<EditPart> selectedEditParts = getSelectedEditParts();
+		if (selectedEditParts.size() == 1) {
+			return selectedEditParts.get(0).understandsRequest(getDirectEditRequest());
 		}
 		return false;
 	}
@@ -96,11 +99,8 @@ public class DirectEditAction extends SelectionAction {
 	@Override
 	public void run() {
 		try {
-			EditPart part = (EditPart) getSelectedObjects().get(0);
-			part.performRequest(getDirectEditRequest());
-		} catch (ClassCastException e) {
-			Display.getCurrent().beep();
-		} catch (IndexOutOfBoundsException e) {
+			getSelectedEditParts().get(0).performRequest(getDirectEditRequest());
+		} catch (ClassCastException | IndexOutOfBoundsException e) {
 			Display.getCurrent().beep();
 		}
 	}

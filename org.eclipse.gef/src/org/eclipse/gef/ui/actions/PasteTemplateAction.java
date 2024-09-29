@@ -66,19 +66,16 @@ public class PasteTemplateAction extends SelectionAction {
 	 */
 	protected Command createPasteCommand() {
 		Command result = null;
-		List selection = getSelectedObjects();
-		if (selection != null && selection.size() == 1) {
-			Object obj = selection.get(0);
-			if (obj instanceof GraphicalEditPart gep) {
-				Object template = getClipboardContents();
-				if (template != null) {
-					CreationFactory factory = getFactory(template);
-					if (factory != null) {
-						CreateRequest request = new CreateRequest();
-						request.setFactory(factory);
-						request.setLocation(getPasteLocation(gep));
-						result = gep.getCommand(request);
-					}
+		List<Object> selection = getSelectedObjects();
+		if (selection != null && selection.size() == 1 && selection.get(0) instanceof GraphicalEditPart gep) {
+			Object template = getClipboardContents();
+			if (template != null) {
+				CreationFactory factory = getFactory(template);
+				if (factory != null) {
+					CreateRequest request = new CreateRequest();
+					request.setFactory(factory);
+					request.setLocation(getPasteLocation(gep));
+					result = gep.getCommand(request);
 				}
 			}
 		}

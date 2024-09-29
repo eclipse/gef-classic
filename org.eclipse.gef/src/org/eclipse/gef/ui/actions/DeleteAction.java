@@ -77,7 +77,7 @@ public class DeleteAction extends SelectionAction {
 	 */
 	@Override
 	protected boolean calculateEnabled() {
-		Command cmd = createDeleteCommand(getSelectedObjects());
+		Command cmd = createDeleteCommand(getSelectedEditParts());
 		if (cmd == null) {
 			return false;
 		}
@@ -85,32 +85,22 @@ public class DeleteAction extends SelectionAction {
 	}
 
 	/**
-	 * Create a command to remove the selected objects.
+	 * Create a command to remove the selected EditParts.
 	 *
-	 * @param objects The objects to be deleted.
+	 * @param objects The EditParts to be deleted.
 	 * @return The command to remove the selected objects.
 	 */
 	@SuppressWarnings("static-method")
-	public Command createDeleteCommand(List objects) {
+	public Command createDeleteCommand(List<EditPart> objects) {
 		if (objects.isEmpty()) {
 			return null;
 		}
-		if (!(objects.get(0) instanceof EditPart)) {
-			return null;
-		}
 
-		GroupRequest deleteReq = new GroupRequest(RequestConstants.REQ_DELETE);
+		final GroupRequest deleteReq = new GroupRequest(RequestConstants.REQ_DELETE);
 		deleteReq.setEditParts(objects);
 
-		CompoundCommand compoundCmd = new CompoundCommand(GEFMessages.DeleteAction_ActionDeleteCommandName);
-		for (Object object2 : objects) {
-			EditPart object = (EditPart) object2;
-			Command cmd = object.getCommand(deleteReq);
-			if (cmd != null) {
-				compoundCmd.add(cmd);
-			}
-		}
-
+		final CompoundCommand compoundCmd = new CompoundCommand(GEFMessages.DeleteAction_ActionDeleteCommandName);
+		objects.stream().map(ep -> ep.getCommand(deleteReq)).forEach(compoundCmd::add);
 		return compoundCmd;
 	}
 
@@ -134,7 +124,7 @@ public class DeleteAction extends SelectionAction {
 	 */
 	@Override
 	public void run() {
-		execute(createDeleteCommand(getSelectedObjects()));
+		execute(createDeleteCommand(getSelectedEditParts()));
 	}
 
 }
