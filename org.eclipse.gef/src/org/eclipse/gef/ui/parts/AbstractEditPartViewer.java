@@ -51,7 +51,6 @@ import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.SelectionManager;
@@ -98,7 +97,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	private EditPartFactory factory;
 	private final Map<Object, EditPart> mapIDToEditPart = new HashMap<>();
-	private final Map<IFigure, GraphicalEditPart> mapVisualToEditPart = new HashMap<>();
+	private final Map<IFigure, EditPart> mapVisualToEditPart = new HashMap<>();
 	private Map<String, Object> properties;
 	private Control control;
 	private ResourceManager resources;
@@ -456,7 +455,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#getVisualPartMap()
 	 */
 	@Override
-	public Map getVisualPartMap() {
+	public Map<IFigure, EditPart> getVisualPartMap() {
 		return mapVisualToEditPart;
 	}
 
