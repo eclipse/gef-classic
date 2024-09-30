@@ -18,8 +18,6 @@ import java.util.Map;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 public class InternalImages {
 
@@ -125,7 +123,7 @@ public class InternalImages {
 		DESC_VERT_ALIGN_TOP_DIS = createDescriptor("icons/aligntop_d.png"); //$NON-NLS-1$
 
 		DESC_SEPARATOR = createDescriptor("icons/separator.png"); //$NON-NLS-1$
-		DESC_FOLDER_OPEN = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
+		DESC_FOLDER_OPEN = createDescriptor("icons/folder_open.png"); //$NON-NLS-1$
 		DESC_FOLDER_CLOSED = createDescriptor("icons/folder_closed.png"); //$NON-NLS-1$
 
 		DESC_PINNED = createAndCache(IMG_PINNED);
