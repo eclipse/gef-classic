@@ -42,18 +42,19 @@ public class NewFileWizardPage extends WizardPage {
 
 	private Text fileText;
 
-	private ISelection selection;
+	private final ISelection selection;
 
 	/**
 	 * Constructor for SampleNewWizardPage.
 	 *
-	 * @param pageName
 	 */
 	public NewFileWizardPage(ISelection selection) {
 		super("wizardPage"); //$NON-NLS-1$
 		setTitle("GEF WYSIWYG Text Document"); //$NON-NLS-1$
-		setDescription("This wizard creates a GEF-based WYSIWYG text document with " //$NON-NLS-1$
-				+ "a *.text. extension.  Choose a container and file name for the new" + " resource."); //$NON-NLS-1$ //$NON-NLS-2$
+		setDescription("""
+				This wizard creates a GEF-based WYSIWYG text document with \
+				a *.text. extension.  Choose a container and file name for the new\
+				 resource."""); //$NON-NLS-1$
 		this.selection = selection;
 	}
 

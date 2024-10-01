@@ -119,7 +119,7 @@
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
 		</key>
 		<key
-			contextId="org.ecipse.gef.textContext"
+			contextId="org.eclipse.gef.textContext"
 			sequence="M1+U"
 			commandId="org.eclipse.gef.text.underline"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">

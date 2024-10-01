@@ -55,15 +55,14 @@ public class TextRequest extends Request {
 
 	public static final Object REQ_UNINDENT = new Object();
 
-	private AppendableCommand previous;
+	private final AppendableCommand previous;
 
-	private SelectionRange range;
-	private String text;
+	private final SelectionRange range;
+	private final String text;
 	private String[] styleKeys;
 	private Object[] styleValues;
 
 	/**
-	 * @param type
 	 * @since 3.1
 	 */
 	public TextRequest(SelectionRange range, String text, AppendableCommand previous) {
@@ -118,7 +117,7 @@ public class TextRequest extends Request {
 		return text;
 	}
 
-	public void setStyles(String keys[], Object values[]) {
+	public void setStyles(String[] keys, Object[] values) {
 		this.styleKeys = keys;
 		this.styleValues = values;
 	}

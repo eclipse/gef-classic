@@ -22,7 +22,7 @@ import org.eclipse.ui.actions.RetargetAction;
 public class StyleRetargetAction extends RetargetAction {
 
 	public StyleRetargetAction(String styleID) {
-		super(styleID, "", IAction.AS_CHECK_BOX);
+		super(styleID, "", IAction.AS_CHECK_BOX); //$NON-NLS-1$
 		BooleanStyleAction.configureStyleAction(this);
 	}
 

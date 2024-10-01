@@ -24,8 +24,8 @@ import org.eclipse.gef.examples.text.model.Style;
  */
 public class ResizeFontContributionItem extends StyleComboContributionItem {
 
-	private static final String[] INIT_SIZES = new String[] { "8", "9", "10", "11", "12", "14", "16", "18", "20", "22",
-			"24", "26", "28", "36", "48", "72" };
+	private static final String[] INIT_SIZES = { "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+			"24", "26", "28", "36", "48", "72" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
 	public ResizeFontContributionItem(IPartService service) {
 		super(service);

@@ -58,7 +58,7 @@ public class Style extends Notifier {
 		if (parentStyle != null) {
 			return parentStyle.getFontFamily();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public int getFontHeight() {
@@ -94,26 +94,23 @@ public class Style extends Notifier {
 	}
 
 	public boolean isSet(String property) {
-		if (PROPERTY_BOLD.equals(property)) {
+		switch (property) {
+		case PROPERTY_BOLD:
 			return bold;
-		}
-		if (PROPERTY_FONT_SIZE.equals(property)) {
+		case PROPERTY_FONT_SIZE:
 			return fontHeight != -1;
-		}
-		if (PROPERTY_ITALIC.equals(property)) {
+		case PROPERTY_ITALIC:
 			return italic;
-		}
-		if (PROPERTY_UNDERLINE.equals(property)) {
+		case PROPERTY_UNDERLINE:
 			return underline;
-		}
-		if (PROPERTY_FONT.equals(property)) {
+		case PROPERTY_FONT:
 			return fontFamily != null;
-		}
-		if (PROPERTY_ALIGNMENT.equals(property)) {
+		case PROPERTY_ALIGNMENT:
 			return alignment != PositionConstants.NONE;
-		}
-		if (PROPERTY_ORIENTATION.equals(property)) {
+		case PROPERTY_ORIENTATION:
 			return orientation != SWT.NONE;
+		default:
+			break;
 		}
 		return false;
 	}
@@ -128,8 +125,7 @@ public class Style extends Notifier {
 		}
 		if (value != PositionConstants.ALWAYS_RIGHT && value != PositionConstants.CENTER
 				&& value != PositionConstants.RIGHT && value != PositionConstants.NONE
-				&& value != PositionConstants.LEFT && value != PositionConstants.ALWAYS_LEFT)
-		 {
+				&& value != PositionConstants.LEFT && value != PositionConstants.ALWAYS_LEFT) {
 			throw new IllegalArgumentException(
 					"Alignment must be LEFT, CENTER, RIGHT, ALWAYS_LEFT, ALWAYS_RIGHT or NONE."); //$NON-NLS-1$
 		}
@@ -178,7 +174,7 @@ public class Style extends Notifier {
 			return;
 		}
 		if (value != SWT.RIGHT_TO_LEFT && value != SWT.LEFT_TO_RIGHT && value != SWT.NONE) {
-			throw new IllegalArgumentException("Orientation must LTR, RTL or NONE.");
+			throw new IllegalArgumentException("Orientation must LTR, RTL or NONE."); //$NON-NLS-1$
 		}
 		int oldValue = orientation;
 		orientation = value;

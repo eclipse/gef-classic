@@ -37,7 +37,7 @@ public class ContainerTreePart extends ExampleTreePart {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("children")) { //$NON-NLS-1$
+		if (evt.getPropertyName().equals(Container.CHILDREN_PROPERTY)) {
 			refreshChildren();
 		}
 	}
@@ -71,24 +71,19 @@ public class ContainerTreePart extends ExampleTreePart {
 
 		case Container.TYPE_INLINE:
 			Style style = getModel().getStyle();
-			if (style.isSet(Style.PROPERTY_FONT_SIZE))
-			 {
+			if (style.isSet(Style.PROPERTY_FONT_SIZE)) {
 				label.append("<FONT SIZE>"); //$NON-NLS-1$
 			}
-			if (style.isSet(Style.PROPERTY_BOLD))
-			 {
+			if (style.isSet(Style.PROPERTY_BOLD)) {
 				label.append("<B>"); //$NON-NLS-1$
 			}
-			if (style.isSet(Style.PROPERTY_ITALIC))
-			 {
+			if (style.isSet(Style.PROPERTY_ITALIC)) {
 				label.append("<I>"); //$NON-NLS-1$
 			}
-			if (style.isSet(Style.PROPERTY_UNDERLINE))
-			 {
+			if (style.isSet(Style.PROPERTY_UNDERLINE)) {
 				label.append("<U>"); //$NON-NLS-1$
 			}
-			if (style.isSet(Style.PROPERTY_FONT))
-			 {
+			if (style.isSet(Style.PROPERTY_FONT)) {
 				label.append("<FONT>"); //$NON-NLS-1$
 			}
 			break;

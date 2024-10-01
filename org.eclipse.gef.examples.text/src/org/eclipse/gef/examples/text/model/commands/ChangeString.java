@@ -42,7 +42,7 @@ public class ChangeString extends MiniEdit {
 
 	/**
 	 * @since 3.1
-	 * @param char1
+	 * @param append
 	 */
 	public void appendText(String append) {
 		Assert.isTrue(pending == null);
