@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -19,8 +19,8 @@ import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Ray;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.Vector;
 
 /**
  * Provides a {@link Connection} with an orthogonal route between the
@@ -33,14 +33,14 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	private final Map<Connection, ReservedInfo> reservedInfo = new HashMap<>();
 
 	private class ReservedInfo {
-		public List<Integer> reservedRows = new ArrayList<>(2);
-		public List<Integer> reservedCols = new ArrayList<>(2);
+		public final List<Integer> reservedRows = new ArrayList<>(2);
+		public final List<Integer> reservedCols = new ArrayList<>(2);
 	}
 
-	private static final Ray UP = new Ray(0, -1);
-	private static final Ray DOWN = new Ray(0, 1);
-	private static final Ray LEFT = new Ray(-1, 0);
-	private static final Ray RIGHT = new Ray(1, 0);
+	private static final Vector UP = new Vector(0, -1);
+	private static final Vector DOWN = new Vector(0, 1);
+	private static final Vector LEFT = new Vector(-1, 0);
+	private static final Vector RIGHT = new Vector(1, 0);
 
 	/**
 	 * @see ConnectionRouter#invalidate(Connection)
@@ -51,7 +51,8 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	}
 
 	private int getColumnNear(Connection connection, int r, int n, int x) {
-		int min = Math.min(n, x), max = Math.max(n, x);
+		int min = Math.min(n, x);
+		int max = Math.max(n, x);
 		if (min > r) {
 			max = min;
 			min = r - (min - r);
@@ -100,9 +101,9 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	 * @return the direction from <i>r</i> to <i>p</i>
 	 */
 	@SuppressWarnings("static-method")
-	protected Ray getDirection(Rectangle r, Point p) {
+	protected Vector getDirection(Rectangle r, Point p) {
 		int distance = Math.abs(r.x - p.x);
-		Ray direction;
+		Vector direction;
 
 		direction = LEFT;
 
@@ -126,7 +127,7 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 		return direction;
 	}
 
-	protected Ray getEndDirection(Connection conn) {
+	protected Vector getEndDirection(Connection conn) {
 		ConnectionAnchor anchor = conn.getTargetAnchor();
 		Point p = getEndPoint(conn);
 		Rectangle rect;
@@ -180,7 +181,7 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 		return r;
 	}
 
-	protected Ray getStartDirection(Connection conn) {
+	protected Vector getStartDirection(Connection conn) {
 		ConnectionAnchor anchor = conn.getSourceAnchor();
 		Point p = getStartPoint(conn);
 		Rectangle rect;
@@ -193,14 +194,15 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 		return getDirection(rect, p);
 	}
 
-	protected void processPositions(Ray start, Ray end, List<Integer> positions, boolean horizontal, Connection conn) {
+	protected void processPositions(Vector start, Vector end, List<Double> positions, boolean horizontal,
+			Connection conn) {
 		removeReservedLines(conn);
 
 		int[] pos = new int[positions.size() + 2];
 		if (horizontal) {
-			pos[0] = start.x;
+			pos[0] = (int) start.x;
 		} else {
-			pos[0] = start.y;
+			pos[0] = (int) start.y;
 		}
 		int i;
 		for (i = 0; i < positions.size(); i++) {
@@ -208,14 +210,14 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 		}
 		if (horizontal == (positions.size() % 2 == 1)) {
 			i++;
-			pos[i] = end.x;
+			pos[i] = (int) end.x;
 		} else {
 			i++;
-			pos[i] = end.y;
+			pos[i] = (int) end.y;
 		}
 
 		PointList points = new PointList();
-		points.addPoint(new Point(start.x, start.y));
+		points.addPoint(new Point((int) start.x, (int) start.y));
 		Point p;
 		boolean adjust;
 		for (i = 2; i < pos.length - 1; i++) {
@@ -241,7 +243,7 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 			}
 			points.addPoint(p);
 		}
-		points.addPoint(new Point(end.x, end.y));
+		points.addPoint(new Point((int) end.x, (int) end.y));
 		conn.setPoints(points);
 	}
 
@@ -286,36 +288,36 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 		if ((conn.getSourceAnchor() == null) || (conn.getTargetAnchor() == null)) {
 			return;
 		}
-		int i;
+		double i;
 		Point startPoint = getStartPoint(conn);
 		conn.translateToRelative(startPoint);
 		Point endPoint = getEndPoint(conn);
 		conn.translateToRelative(endPoint);
 
-		Ray start = new Ray(startPoint);
-		Ray end = new Ray(endPoint);
-		Ray average = start.getAveraged(end);
+		Vector start = new Vector(startPoint);
+		Vector end = new Vector(endPoint);
+		Vector average = start.getAveraged(end);
 
-		Ray direction = new Ray(start, end);
-		Ray startNormal = getStartDirection(conn);
-		Ray endNormal = getEndDirection(conn);
+		Vector direction = new Vector(start, end);
+		Vector startNormal = getStartDirection(conn);
+		Vector endNormal = getEndDirection(conn);
 
-		List<Integer> positions = new ArrayList<>(5);
+		List<Double> positions = new ArrayList<>(5);
 		boolean horizontal = startNormal.isHorizontal();
 		if (horizontal) {
-			positions.add(Integer.valueOf(start.y));
+			positions.add(start.y);
 		} else {
-			positions.add(Integer.valueOf(start.x));
+			positions.add(start.x);
 		}
 		horizontal = !horizontal;
 
-		if (startNormal.dotProduct(endNormal) == 0) {
-			if ((startNormal.dotProduct(direction) >= 0) && (endNormal.dotProduct(direction) <= 0)) {
+		if (startNormal.getDotProduct(endNormal) == 0) {
+			if ((startNormal.getDotProduct(direction) >= 0) && (endNormal.getDotProduct(direction) <= 0)) {
 				// 0
 			} else {
 				// 2
-				if (startNormal.dotProduct(direction) < 0) {
-					i = startNormal.similarity(start.getAdded(startNormal.getScaled(10)));
+				if (startNormal.getDotProduct(direction) < 0) {
+					i = startNormal.getSimilarity(start.getAdded(startNormal.getMultiplied(10)));
 				} else {
 					if (horizontal) {
 						i = average.y;
@@ -323,11 +325,11 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 						i = average.x;
 					}
 				}
-				positions.add(Integer.valueOf(i));
+				positions.add(i);
 				horizontal = !horizontal;
 
-				if (endNormal.dotProduct(direction) > 0) {
-					i = endNormal.similarity(end.getAdded(endNormal.getScaled(10)));
+				if (endNormal.getDotProduct(direction) > 0) {
+					i = endNormal.getSimilarity(end.getAdded(endNormal.getMultiplied(10)));
 				} else {
 					if (horizontal) {
 						i = average.y;
@@ -335,24 +337,24 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 						i = average.x;
 					}
 				}
-				positions.add(Integer.valueOf(i));
+				positions.add(i);
 				horizontal = !horizontal;
 			}
 		} else {
-			if (startNormal.dotProduct(endNormal) > 0) {
+			if (startNormal.getDotProduct(endNormal) > 0) {
 				// 1
-				if (startNormal.dotProduct(direction) >= 0) {
-					i = startNormal.similarity(start.getAdded(startNormal.getScaled(10)));
+				if (startNormal.getDotProduct(direction) >= 0) {
+					i = startNormal.getSimilarity(start.getAdded(startNormal.getMultiplied(10)));
 				} else {
-					i = endNormal.similarity(end.getAdded(endNormal.getScaled(10)));
+					i = endNormal.getSimilarity(end.getAdded(endNormal.getMultiplied(10)));
 				}
-				positions.add(Integer.valueOf(i));
+				positions.add(i);
 				horizontal = !horizontal;
 			} else {
 				// 3 or 1
-				if (startNormal.dotProduct(direction) < 0) {
-					i = startNormal.similarity(start.getAdded(startNormal.getScaled(10)));
-					positions.add(Integer.valueOf(i));
+				if (startNormal.getDotProduct(direction) < 0) {
+					i = startNormal.getSimilarity(start.getAdded(startNormal.getMultiplied(10)));
+					positions.add(i);
 					horizontal = !horizontal;
 				}
 
@@ -361,20 +363,20 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 				} else {
 					i = average.x;
 				}
-				positions.add(Integer.valueOf(i));
+				positions.add(i);
 				horizontal = !horizontal;
 
-				if (startNormal.dotProduct(direction) < 0) {
-					i = endNormal.similarity(end.getAdded(endNormal.getScaled(10)));
-					positions.add(Integer.valueOf(i));
+				if (startNormal.getDotProduct(direction) < 0) {
+					i = endNormal.getSimilarity(end.getAdded(endNormal.getMultiplied(10)));
+					positions.add(i);
 					horizontal = !horizontal;
 				}
 			}
 		}
 		if (horizontal) {
-			positions.add(Integer.valueOf(end.y));
+			positions.add(end.y);
 		} else {
-			positions.add(Integer.valueOf(end.x));
+			positions.add(end.x);
 		}
 
 		processPositions(start, end, positions, startNormal.isHorizontal(), conn);
