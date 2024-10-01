@@ -24,7 +24,6 @@ import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 
-import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.figures.CommentPage;
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.ModelElement;
@@ -115,7 +114,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 	}
 
 	/**
-	 * @see TextEditPart#getTextLocation(int, TextLocation)
+	 * @see TextEditPart#getTextLocation(CaretRequest, SearchResult)
 	 */
 	@Override
 	public void getTextLocation(CaretRequest search, SearchResult result) {
@@ -144,7 +143,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("children")) { //$NON-NLS-1$
+		if (evt.getPropertyName().equals(Container.CHILDREN_PROPERTY)) {
 			refreshChildren();
 		}
 	}
@@ -154,7 +153,8 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
 		while (childIndex >= 0) {
-			TextEditPart part = getChildren().get(childIndex--);
+			TextEditPart part = getChildren().get(childIndex);
+			childIndex--;
 			part.getTextLocation(search, result);
 			if (result.location != null) {
 				return;
@@ -176,7 +176,8 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
 		while (childIndex < childCount) {
-			TextEditPart part = getChildren().get(childIndex++);
+			TextEditPart part = getChildren().get(childIndex);
+			childIndex++;
 			part.getTextLocation(search, result);
 			if (result.location != null) {
 				return;
@@ -207,7 +208,8 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
 		while (childIndex >= 0) {
-			part = getChildren().get(childIndex--);
+			part = getChildren().get(childIndex);
+			childIndex--;
 			part.getTextLocation(search, result);
 			if (result.bestMatchFound) {
 				return;
@@ -225,7 +227,8 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		int childCount = getChildren().size();
 		search.setRecursive(true);
 		while (childIndex < childCount) {
-			TextEditPart newPart = getChildren().get(childIndex++);
+			TextEditPart newPart = getChildren().get(childIndex);
+			childIndex++;
 			newPart.getTextLocation(search, result);
 			if (result.location != null) {
 				return;
@@ -252,7 +255,8 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
 		while (childIndex < childCount) {
-			TextEditPart part = getChildren().get(childIndex++);
+			TextEditPart part = getChildren().get(childIndex);
+			childIndex++;
 			part.getTextLocation(search, result);
 			if (result.bestMatchFound) {
 				return;
@@ -270,7 +274,8 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		TextEditPart child;
 		search.setRecursive(true);
 		while (childIndex >= 0) {
-			child = getChildren().get(childIndex--);
+			child = getChildren().get(childIndex);
+			childIndex--;
 			child.getTextLocation(search, result);
 			if (result.location != null) {
 				return;

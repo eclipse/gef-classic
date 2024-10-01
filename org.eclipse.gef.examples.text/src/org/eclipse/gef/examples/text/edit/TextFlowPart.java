@@ -47,6 +47,7 @@ public class TextFlowPart extends AbstractTextPart {
 
 	@Override
 	protected void createEditPolicies() {
+		// we don't have special edit policies
 	}
 
 	@Override
@@ -75,7 +76,7 @@ public class TextFlowPart extends AbstractTextPart {
 			} else {
 				// @TODO:Pratik this should never happen
 				trailing = false;
-				new RuntimeException("unexpected condition").printStackTrace();
+				new RuntimeException("unexpected condition").printStackTrace(); //$NON-NLS-1$
 			}
 		}
 		return getTextFlow().getCaretPlacement(offset, trailing);
@@ -114,7 +115,7 @@ public class TextFlowPart extends AbstractTextPart {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("text")) {
+		if (evt.getPropertyName().equals("text")) { //$NON-NLS-1$
 			refreshVisuals();
 		}
 	}

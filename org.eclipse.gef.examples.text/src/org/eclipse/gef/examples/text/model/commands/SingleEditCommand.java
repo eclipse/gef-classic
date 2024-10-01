@@ -28,7 +28,6 @@ public class SingleEditCommand extends ExampleTextCommand {
 	private final ModelLocation start;
 
 	/**
-	 * @param label
 	 * @since 3.1
 	 */
 	public SingleEditCommand(MiniEdit edit, ModelLocation start, ModelLocation end) {

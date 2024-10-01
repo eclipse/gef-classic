@@ -22,6 +22,7 @@ import java.util.List;
  */
 public abstract class Container extends ModelElement {
 
+	public static final String CHILDREN_PROPERTY = "children"; //$NON-NLS-1$
 	public static final int TYPE_BULLETED_LIST = 1;
 	public static final int TYPE_COMMENT = 2;
 	public static final int TYPE_IMPORT_DECLARATIONS = 3;
@@ -32,8 +33,8 @@ public abstract class Container extends ModelElement {
 
 	private static final long serialVersionUID = 1;
 
-	private List<ModelElement> children = new ArrayList<>();
-	private Style style = new Style();
+	private final List<ModelElement> children = new ArrayList<>();
+	private final Style style = new Style();
 
 	protected Container(int type) {
 		this.type = type;
@@ -49,7 +50,7 @@ public abstract class Container extends ModelElement {
 			index = children.size();
 		}
 		children.add(index, child);
-		firePropertyChange("children", null, child); //$NON-NLS-1$
+		firePropertyChange(CHILDREN_PROPERTY, null, child);
 	}
 
 	/**
@@ -57,7 +58,7 @@ public abstract class Container extends ModelElement {
 	 *
 	 * @since 3.1
 	 * @param child
-	 * @return
+	 * @return true if this is a child or a transitive child of this container
 	 */
 	public boolean contains(ModelElement child) {
 		do {
@@ -74,14 +75,11 @@ public abstract class Container extends ModelElement {
 	}
 
 	public int getChildType() {
-		switch (getType()) {
-		case TYPE_IMPORT_DECLARATIONS:
-			return TextRun.TYPE_IMPORT;
-		case TYPE_BULLETED_LIST:
-			return TextRun.TYPE_BULLET;
-		default:
-			return 0;
-		}
+		return switch (getType()) {
+		case TYPE_IMPORT_DECLARATIONS -> TextRun.TYPE_IMPORT;
+		case TYPE_BULLETED_LIST -> TextRun.TYPE_BULLET;
+		default -> 0;
+		};
 	}
 
 	public Style getStyle() {
@@ -92,14 +90,13 @@ public abstract class Container extends ModelElement {
 		int index = children.indexOf(child);
 		children.remove(child);
 		child.setParent(null);
-		firePropertyChange("children", child, null); //$NON-NLS-1$
+		firePropertyChange(CHILDREN_PROPERTY, child, null);
 		return index;
 	}
 
 	public void removeAll(Collection<ModelElement> children) {
-		if (children.removeAll(children))
-		 {
-			firePropertyChange("children", children, null); //$NON-NLS-1$
+		if (children.removeAll(children)) {
+			firePropertyChange(CHILDREN_PROPERTY, children, null);
 		}
 	}
 

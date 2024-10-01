@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * @since 3.1
  */
-public class Images {
+public final class Images {
 
 	public static final Image IMPORTS = createImage("imports.gif"); //$NON-NLS-1$
 	public static final Image IMPORT = createImage("importstatement.gif"); //$NON-NLS-1$
@@ -30,13 +30,15 @@ public class Images {
 	public static final Image PROTECTED = createImage("protected.gif"); //$NON-NLS-1$
 
 	private static Image createImage(String name) {
-		InputStream stream = Images.class.getResourceAsStream(name);
-		Image image = new Image(null, stream);
-		try {
-			stream.close();
+		try (InputStream stream = Images.class.getResourceAsStream(name)) {
+			return new Image(null, stream);
 		} catch (IOException exc) {
 		}
-		return image;
+		return null;
+	}
+
+	private Images() {
+		throw new UnsupportedOperationException("Utility class shall not be instantiated!"); //$NON-NLS-1$
 	}
 
 }

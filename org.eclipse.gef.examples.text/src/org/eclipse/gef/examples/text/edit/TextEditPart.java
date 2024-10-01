@@ -27,7 +27,6 @@ public interface TextEditPart extends GraphicalEditPart {
 
 	/**
 	 * @since 3.1
-	 * @return
 	 */
 	boolean acceptsCaret();
 

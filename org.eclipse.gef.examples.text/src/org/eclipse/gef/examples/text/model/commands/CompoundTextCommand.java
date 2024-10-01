@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -24,11 +24,10 @@ import org.eclipse.gef.examples.text.TextCommand;
 
 public class CompoundTextCommand extends Command implements TextCommand, AppendableCommand {
 
-	private List pending = new ArrayList();
-	private List applied = new ArrayList();
+	private final List<Command> pending = new ArrayList<>();
+	private final List<Command> applied = new ArrayList<>();
 
 	public CompoundTextCommand() {
-		super();
 	}
 
 	public CompoundTextCommand(String label) {
@@ -36,8 +35,8 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 	}
 
 	public void add(TextCommand command) {
-		if (command != null) {
-			pending.add(command);
+		if (command instanceof Command cmd) {
+			pending.add(cmd);
 		}
 	}
 
@@ -51,8 +50,7 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 		if (pending.isEmpty()) {
 			return false;
 		}
-		for (Object element : pending) {
-			Command cmd = (Command) element;
+		for (Command cmd : pending) {
 			if (cmd == null) {
 				return false;
 			}
@@ -65,8 +63,8 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 
 	@Override
 	public void dispose() {
-		for (Object element : applied) {
-			((Command) element).dispose();
+		for (Command element : applied) {
+			element.dispose();
 		}
 		flushPending();
 	}
@@ -78,8 +76,7 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 
 	@Override
 	public void executePending() {
-		for (int i = 0; i < pending.size(); i++) {
-			Command cmd = (Command) pending.get(i);
+		for (Command cmd : pending) {
 			cmd.execute();
 			applied.add(cmd);
 		}
@@ -96,7 +93,11 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 		if (applied.isEmpty()) {
 			return null;
 		}
-		return ((TextCommand) applied.get(applied.size() - 1)).getExecuteSelectionRange(viewer);
+		return getAppliedTextCommand(applied.size() - 1).getExecuteSelectionRange(viewer);
+	}
+
+	private TextCommand getAppliedTextCommand(int i) {
+		return (TextCommand) applied.get(i);
 	}
 
 	@Override
@@ -104,7 +105,7 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 		if (applied.isEmpty()) {
 			return null;
 		}
-		return ((TextCommand) applied.get(applied.size() - 1)).getExecuteSelectionRange(viewer);
+		return getAppliedTextCommand(applied.size() - 1).getExecuteSelectionRange(viewer);
 	}
 
 	@Override
@@ -112,20 +113,20 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 		if (applied.isEmpty()) {
 			return null;
 		}
-		return ((TextCommand) applied.get(0)).getUndoSelectionRange(viewer);
+		return getAppliedTextCommand(0).getUndoSelectionRange(viewer);
 	}
 
 	@Override
 	public void redo() {
-		for (Object element : applied) {
-			((Command) element).redo();
+		for (Command element : applied) {
+			element.redo();
 		}
 	}
 
 	@Override
 	public void undo() {
 		for (int i = applied.size() - 1; i >= 0; i--) {
-			((Command) applied.get(i)).undo();
+			applied.get(i).undo();
 		}
 	}
 

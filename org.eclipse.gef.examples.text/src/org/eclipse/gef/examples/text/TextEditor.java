@@ -47,8 +47,6 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.commands.CommandStackEvent;
-import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.tools.SelectionTool;
 import org.eclipse.gef.ui.actions.ActionRegistry;
@@ -82,32 +80,25 @@ import org.eclipse.gef.examples.text.tools.TextTool;
 public class TextEditor extends GraphicalEditor {
 
 	private Container doc;
-	private StyleService styleService = new StyleService();
+	private final StyleService styleService = new StyleService();
 
 	private static final class TextEditorEditPartFactory implements EditPartFactory {
 		@Override
 		public EditPart createEditPart(EditPart context, Object model) {
 			if (model instanceof Container cont) {
-				switch (cont.getType()) {
-				case Container.TYPE_ROOT:
-					return new DocumentPart(cont);
-				case Container.TYPE_IMPORT_DECLARATIONS:
-					return new ImportsPart(cont);
-
-				case Container.TYPE_COMMENT, Container.TYPE_PARAGRAPH:
-					return new BlockTextPart(cont);
-				case Container.TYPE_INLINE:
-					return new InlineTextPart(cont);
-				default:
-					throw new RuntimeException("unknown model type"); //$NON-NLS-1$
-				}
-			} else if (model instanceof TextRun textRun) {
-				switch (textRun.getType()) {
-				case TextRun.TYPE_IMPORT:
+				return switch (cont.getType()) {
+				case Container.TYPE_ROOT -> new DocumentPart(cont);
+				case Container.TYPE_IMPORT_DECLARATIONS -> new ImportsPart(cont);
+				case Container.TYPE_COMMENT, Container.TYPE_PARAGRAPH -> new BlockTextPart(cont);
+				case Container.TYPE_INLINE -> new InlineTextPart(cont);
+				default -> throw new RuntimeException("unknown model type"); //$NON-NLS-1$
+				};
+			}
+			if (model instanceof TextRun textRun) {
+				if (textRun.getType() == TextRun.TYPE_IMPORT) {
 					return new ImportPart(textRun);
-				default:
-					return new TextFlowPart(textRun);
 				}
+				return new TextFlowPart(textRun);
 			}
 			throw new RuntimeException("unexpected model object"); //$NON-NLS-1$
 		}
@@ -123,14 +114,11 @@ public class TextEditor extends GraphicalEditor {
 			EditPartViewer treeViewer = getViewer();
 			treeViewer.setEditDomain(domain);
 			getSelectionSynchronizer().addViewer(treeViewer);
-			treeViewer.setEditPartFactory(new EditPartFactory() {
-				@Override
-				public EditPart createEditPart(EditPart context, Object model) {
-					if (model instanceof Container cont) {
-						return new ContainerTreePart(cont);
-					}
-					return new TextRunTreePart(model);
+			treeViewer.setEditPartFactory((context, model) -> {
+				if (model instanceof Container cont) {
+					return new ContainerTreePart(cont);
 				}
+				return new TextRunTreePart(model);
 			});
 		}
 
@@ -252,14 +240,11 @@ public class TextEditor extends GraphicalEditor {
 	 */
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		try {
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			ObjectOutputStream objStream = new ObjectOutputStream(outputStream);
+		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				ObjectOutputStream objStream = new ObjectOutputStream(outputStream);) {
 			objStream.writeObject(doc);
-			objStream.close();
 			IFile file = ((IFileEditorInput) getEditorInput()).getFile();
 			file.setContents(new ByteArrayInputStream(outputStream.toByteArray()), true, false, monitor);
-			outputStream.close();
 			getCommandStack().markSaveLocation();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -271,6 +256,7 @@ public class TextEditor extends GraphicalEditor {
 	 */
 	@Override
 	public void doSaveAs() {
+		// currently not implemented
 	}
 
 	/**
@@ -279,19 +265,16 @@ public class TextEditor extends GraphicalEditor {
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setEditDomain(new DefaultEditDomain(this));
-		getCommandStack().addCommandStackEventListener(new CommandStackEventListener() {
-			@Override
-			public void stackChanged(CommandStackEvent event) {
-				TextCommand command = (TextCommand) event.getCommand();
-				if (command != null) {
-					GraphicalTextViewer textViewer = (GraphicalTextViewer) getGraphicalViewer();
-					if (event.getDetail() == CommandStack.POST_EXECUTE) {
-						textViewer.setSelectionRange(command.getExecuteSelectionRange(textViewer));
-					} else if (event.getDetail() == CommandStack.POST_REDO) {
-						textViewer.setSelectionRange(command.getRedoSelectionRange(textViewer));
-					} else if (event.getDetail() == CommandStack.POST_UNDO) {
-						textViewer.setSelectionRange(command.getUndoSelectionRange(textViewer));
-					}
+		getCommandStack().addCommandStackEventListener(event -> {
+			TextCommand command = (TextCommand) event.getCommand();
+			if (command != null) {
+				GraphicalTextViewer textViewer = (GraphicalTextViewer) getGraphicalViewer();
+				if (event.getDetail() == CommandStack.POST_EXECUTE) {
+					textViewer.setSelectionRange(command.getExecuteSelectionRange(textViewer));
+				} else if (event.getDetail() == CommandStack.POST_REDO) {
+					textViewer.setSelectionRange(command.getRedoSelectionRange(textViewer));
+				} else if (event.getDetail() == CommandStack.POST_UNDO) {
+					textViewer.setSelectionRange(command.getUndoSelectionRange(textViewer));
 				}
 			}
 		});
@@ -318,11 +301,8 @@ public class TextEditor extends GraphicalEditor {
 		super.setInput(input);
 
 		IFile file = ((IFileEditorInput) input).getFile();
-		try {
-			InputStream is = file.getContents(false);
-			ObjectInputStream ois = new ObjectInputStream(is);
+		try (InputStream is = file.getContents(false); ObjectInputStream ois = new ObjectInputStream(is);) {
 			doc = (Container) ois.readObject();
-			ois.close();
 		} catch (EOFException eofe) {
 			// file was empty (as in the case of a new file); do nothing
 		} catch (Exception e) {
@@ -338,25 +318,29 @@ public class TextEditor extends GraphicalEditor {
 			doc.add(imports);
 			imports.add(new TextRun("org.eclipse.draw2d", TextRun.TYPE_IMPORT)); //$NON-NLS-1$
 			imports.add(new TextRun("org.eclipse.gef", TextRun.TYPE_IMPORT)); //$NON-NLS-1$
-			// for (int i = 0; i < 400; i++) {
 			Container block = new Block(Container.TYPE_COMMENT);
-			block.add(
-					new TextRun("Copyright (c) 2005 IBM Corporation and others. All rights reserved. This program and " //$NON-NLS-1$
-							+ "the accompanying materials are made available under the terms of the Eclipse Public " //$NON-NLS-1$
-							+ "License v1.0 which accompanies this distribution, and is available at " //$NON-NLS-1$
-							+ "http://www.eclipse.org/legal/epl-v10.html (\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329)\r\n" //$NON-NLS-1$
-							+ "Contributors:\n    IBM Corporation - initial API and implementation\n" //$NON-NLS-1$
-							+ "\u0630\u0628\u063a \u0634\u0635\u062c\u062d (Saeed Anwar) - \u0634\u0635\u062c\u062d " //$NON-NLS-1$
-							+ "\u0638\u0635\u0634\u0637\u0635\u0639\u0633 \u0635\u0639\u0633\u0640 \u0630\u0628\u063a (Bug 113700)")); //$NON-NLS-1$
+			block.add(new TextRun(
+					"""
+							Copyright (c) 2005 IBM Corporation and others. All rights reserved. This program and \
+							the accompanying materials are made available under the terms of the Eclipse Public \
+							License v1.0 which accompanies this distribution, and is available at \
+							http://www.eclipse.org/legal/epl-v10.html (\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329)\r
+							Contributors:
+							    IBM Corporation - initial API and implementation
+							\u0630\u0628\u063a \u0634\u0635\u062c\u062d (Saeed Anwar) - \u0634\u0635\u062c\u062d \
+							\u0638\u0635\u0634\u0637\u0635\u0639\u0633 \u0635\u0639\u0633\u0640 \u0630\u0628\u063a (Bug 113700)""")); //$NON-NLS-1$
 			doc.add(block);
 
 			Container code = new Block(Container.TYPE_PARAGRAPH);
 			code.getStyle().setFontFamily("Courier New"); //$NON-NLS-1$
 			doc.add(code);
-			code.add(new TextRun("public void countToANumber(int limit) {\n" + "    for (int i = 0; i < limit; i++)\n" //$NON-NLS-1$ //$NON-NLS-2$
-					+ "        System.out.println(\"Counting: \" + i); //$NON-NLS-1$\n\n" + "}", //$NON-NLS-1$ //$NON-NLS-2$
+			code.add(new TextRun("""
+					public void countToANumber(int limit) {
+					    for (int i = 0; i < limit; i++)
+					        System.out.println("Counting: " + i); //$NON-NLS-1$
+
+					}""", //$NON-NLS-1$
 					TextRun.TYPE_CODE));
-			// }
 		}
 
 		setPartName(file.getName());
