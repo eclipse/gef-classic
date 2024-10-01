@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -41,7 +41,7 @@ public class Vector {
 	}
 
 	/**
-	 * Constructs a Vector pointed in the direction specified by a Point.
+	 * Constructs a Vector pointed in the direction specified by a PrecisionPoint.
 	 *
 	 * @param p the point
 	 */
@@ -51,13 +51,37 @@ public class Vector {
 	}
 
 	/**
+	 * Constructs a Vector pointed in the direction specified by a Point.
+	 *
+	 * @param p the point
+	 * @since 3.18
+	 */
+	public Vector(Point p) {
+		x = p.preciseX();
+		y = p.preciseY();
+	}
+
+	/**
 	 * Constructs a Vector representing the direction and magnitude between to
-	 * provided Points.
+	 * provided PrecisionPoint.
 	 *
 	 * @param start starting point
 	 * @param end   End Point
 	 */
 	public Vector(PrecisionPoint start, PrecisionPoint end) {
+		x = end.preciseX() - start.preciseX();
+		y = end.preciseY() - start.preciseY();
+	}
+
+	/**
+	 * Constructs a Vector representing the direction and magnitude between to
+	 * provided Points.
+	 *
+	 * @param start starting point
+	 * @param end   End Point
+	 * @since 3.18
+	 */
+	public Vector(Point start, Point end) {
 		x = end.preciseX() - start.preciseX();
 		y = end.preciseY() - start.preciseY();
 	}

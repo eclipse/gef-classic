@@ -50,7 +50,6 @@ import org.junit.runners.Suite;
 	FigureUtilitiesTest.class,
 	RectangleTest.class,
 	ColorConstantTest.class,
-	RayTest.class,
 	VectorTest.class,
 	StraightTest.class,
 	RelativeBendpointTest.class,

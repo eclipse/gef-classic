@@ -15,7 +15,7 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
-import org.eclipse.draw2d.geometry.Ray;
+import org.eclipse.draw2d.geometry.Vector;
 
 /**
  * Automatic router that spreads its {@link Connection Connections} in a
@@ -54,13 +54,13 @@ public class FanRouter extends AutomaticRouter {
 
 		Point midPoint = new Point((end.x + start.x) / 2, (end.y + start.y) / 2);
 		int position = end.getPosition(start);
-		Ray ray;
+		Vector ray;
 		if (position == PositionConstants.SOUTH || position == PositionConstants.EAST) {
-			ray = new Ray(start, end);
+			ray = new Vector(start, end);
 		} else {
-			ray = new Ray(end, start);
+			ray = new Vector(end, start);
 		}
-		double length = ray.length();
+		double length = ray.getLength();
 
 		double xSeparation = separation * ray.x / length * (index / 2);
 		double ySeparation = separation * ray.y / length * (index / 2);
