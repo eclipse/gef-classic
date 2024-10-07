@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -417,28 +417,6 @@ public class XYScaledGraphics extends ScaledGraphics {
 		return xZoom * graphics.getAbsoluteScale();
 	}
 
-	/**
-	 * @see Graphics#getAlpha()
-	 */
-	@Override
-	public int getAlpha() {
-		return graphics.getAlpha();
-	}
-
-	/**
-	 * @see Graphics#getAntialias()
-	 */
-	@Override
-	public int getAntialias() {
-		return graphics.getAntialias();
-	}
-
-	/** @see Graphics#getBackgroundColor() */
-	@Override
-	public Color getBackgroundColor() {
-		return graphics.getBackgroundColor();
-	}
-
 	Font getCachedFont(FontKey key) {
 		Font font = fontCache.get(key);
 		if (font != null) {
@@ -481,14 +459,6 @@ public class XYScaledGraphics extends ScaledGraphics {
 		return rect;
 	}
 
-	/**
-	 * @see Graphics#getFillRule()
-	 */
-	@Override
-	public int getFillRule() {
-		return graphics.getFillRule();
-	}
-
 	/** @see Graphics#getFont() */
 	@Override
 	public Font getFont() {
@@ -499,42 +469,6 @@ public class XYScaledGraphics extends ScaledGraphics {
 	@Override
 	public FontMetrics getFontMetrics() {
 		return FigureUtilities.getFontMetrics(localFont);
-	}
-
-	/** @see Graphics#getForegroundColor() */
-	@Override
-	public Color getForegroundColor() {
-		return graphics.getForegroundColor();
-	}
-
-	/**
-	 * @see Graphics#getInterpolation()
-	 */
-	@Override
-	public int getInterpolation() {
-		return graphics.getInterpolation();
-	}
-
-	/**
-	 * @see Graphics#getLineCap()
-	 */
-	@Override
-	public int getLineCap() {
-		return graphics.getLineCap();
-	}
-
-	/**
-	 * @see Graphics#getLineJoin()
-	 */
-	@Override
-	public int getLineJoin() {
-		return graphics.getLineJoin();
-	}
-
-	/** @see Graphics#getLineStyle() */
-	@Override
-	public int getLineStyle() {
-		return graphics.getLineStyle();
 	}
 
 	/** @see Graphics#getLineWidth() */
@@ -549,20 +483,6 @@ public class XYScaledGraphics extends ScaledGraphics {
 
 	private int getLocalLineWidth() {
 		return localLineWidth;
-	}
-
-	/**
-	 * @see Graphics#getTextAntialias()
-	 */
-	@Override
-	public int getTextAntialias() {
-		return graphics.getTextAntialias();
-	}
-
-	/** @see Graphics#getXORMode() */
-	@Override
-	public boolean getXORMode() {
-		return graphics.getXORMode();
 	}
 
 	/** @see Graphics#popState() */
@@ -615,90 +535,16 @@ public class XYScaledGraphics extends ScaledGraphics {
 		throw new UnsupportedOperationException("Operation not supported, use scale(x, y)"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @see Graphics#setAlpha(int)
-	 */
-	@Override
-	public void setAlpha(int alpha) {
-		graphics.setAlpha(alpha);
-	}
-
-	/**
-	 * @see Graphics#setAntialias(int)
-	 */
-	@Override
-	public void setAntialias(int value) {
-		graphics.setAntialias(value);
-	}
-
-	/** @see Graphics#setBackgroundColor(Color) */
-	@Override
-	public void setBackgroundColor(Color rgb) {
-		graphics.setBackgroundColor(rgb);
-	}
-
 	/** @see Graphics#setClip(Rectangle) */
 	@Override
 	public void setClip(Rectangle r) {
 		graphics.setClip(zoomClipRect(r));
 	}
 
-	/**
-	 * @see Graphics#setFillRule(int)
-	 */
-	@Override
-	public void setFillRule(int rule) {
-		graphics.setFillRule(rule);
-	}
-
 	/** @see Graphics#setFont(Font) */
 	@Override
 	public void setFont(Font f) {
 		setLocalFont(f);
-	}
-
-	/** @see Graphics#setForegroundColor(Color) */
-	@Override
-	public void setForegroundColor(Color rgb) {
-		graphics.setForegroundColor(rgb);
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.Graphics#setInterpolation(int)
-	 */
-	@Override
-	public void setInterpolation(int interpolation) {
-		graphics.setInterpolation(interpolation);
-	}
-
-	/**
-	 * @see Graphics#setLineCap(int)
-	 */
-	@Override
-	public void setLineCap(int cap) {
-		graphics.setLineCap(cap);
-	}
-
-	/**
-	 * @see Graphics#setLineDash(int[])
-	 */
-	@Override
-	public void setLineDash(int[] dash) {
-		graphics.setLineDash(dash);
-	}
-
-	/**
-	 * @see Graphics#setLineJoin(int)
-	 */
-	@Override
-	public void setLineJoin(int join) {
-		graphics.setLineJoin(join);
-	}
-
-	/** @see Graphics#setLineStyle(int) */
-	@Override
-	public void setLineStyle(int style) {
-		graphics.setLineStyle(style);
 	}
 
 	/** @see Graphics#setLineWidth(int) */
@@ -735,20 +581,6 @@ public class XYScaledGraphics extends ScaledGraphics {
 		 * graphics.setFont(zoomFont(getLocalFont()));
 		 * graphics.setLineWidth(zoomLineWidth(localLineWidth));
 		 */
-	}
-
-	/**
-	 * @see Graphics#setTextAntialias(int)
-	 */
-	@Override
-	public void setTextAntialias(int value) {
-		graphics.setTextAntialias(value);
-	}
-
-	/** @see Graphics#setXORMode(boolean) */
-	@Override
-	public void setXORMode(boolean b) {
-		graphics.setXORMode(b);
 	}
 
 	/** @see Graphics#translate(int, int) */
