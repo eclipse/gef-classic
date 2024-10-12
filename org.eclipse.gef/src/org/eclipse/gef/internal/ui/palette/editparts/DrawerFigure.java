@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2022 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,6 +13,7 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -45,13 +46,15 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
+import org.eclipse.gef.ui.palette.IDrawerFigure;
+import org.eclipse.gef.ui.palette.IGradientPainter;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 import org.eclipse.gef.ui.palette.editparts.PaletteToolbarLayout;
 
 /**
  * @author Pratik Shah
  */
-public class DrawerFigure extends Figure {
+public class DrawerFigure extends Figure implements IDrawerFigure {
 
 	/** Foreground color constant **/
 	protected static final Color FG_COLOR = FigureUtilities.mixColors(PaletteColorUtil.WIDGET_NORMAL_SHADOW,
@@ -79,6 +82,7 @@ public class DrawerFigure extends Figure {
 	private boolean showPin = true;
 	private boolean skipNextEvent;
 	private EditPartTipHelper tipHelper;
+	private IGradientPainter painter = new DefaultGradientPainter();
 
 	/**
 	 * This is the figure for the entire drawer label button.
@@ -130,7 +134,7 @@ public class DrawerFigure extends Figure {
 				r.shrink(new Insets(0, 0, 1, 0));
 			}
 
-			paintToggleGradient(g, r);
+			painter.paint(g, r);
 
 		}
 	}
@@ -200,40 +204,6 @@ public class DrawerFigure extends Figure {
 		createHoverHelp(control);
 	}
 
-	/**
-	 * Paints the background gradient on the drawer toggle figure.
-	 *
-	 * @param g    the graphics object
-	 * @param rect the rectangle which the background gradient should cover
-	 */
-	private void paintToggleGradient(Graphics g, Rectangle rect) {
-		if (isExpanded()) {
-			g.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
-			g.fillRectangle(rect);
-		} else if (collapseToggle.getModel().isMouseOver()) {
-			Color color1 = PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_60;
-			Color color2 = PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_90;
-			Color color3 = PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_95;
-			Color color4 = PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_90;
-
-			g.setForegroundColor(color1);
-			g.setBackgroundColor(color2);
-			g.fillGradient(rect.x, rect.y, rect.width, rect.height - 4, true);
-
-			g.setForegroundColor(color2);
-			g.setBackgroundColor(color3);
-			g.fillGradient(rect.x, rect.bottom() - 4, rect.width, 2, true);
-
-			g.setForegroundColor(color3);
-			g.setBackgroundColor(color4);
-			g.fillGradient(rect.x, rect.bottom() - 2, rect.width, 2, true);
-		} else {
-			g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
-			g.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_45);
-			g.fillGradient(rect, true);
-		}
-	}
-
 	private void createHoverHelp(final Control control) {
 		if (control == null) {
 			return;
@@ -255,7 +225,7 @@ public class DrawerFigure extends Figure {
 				Rectangle r = Rectangle.SINGLETON;
 				r.setBounds(getBounds());
 				graphics.pushState();
-				paintToggleGradient(graphics, getBounds());
+				painter.paint(graphics, getBounds());
 				graphics.popState();
 				super.paintFigure(graphics);
 			}
@@ -325,17 +295,12 @@ public class DrawerFigure extends Figure {
 		return null;
 	}
 
-	/**
-	 * @return The Clickable that is used to expand/collapse the drawer.
-	 */
+	@Override
 	public Clickable getCollapseToggle() {
 		return collapseToggle;
 	}
 
-	/**
-	 * @return The content pane for this figure, i.e. the Figure to which children
-	 *         can be added.
-	 */
+	@Override
 	public IFigure getContentPane() {
 		return scrollpane.getContents();
 	}
@@ -501,4 +466,40 @@ public class DrawerFigure extends Figure {
 		handleExpandStateChanged();
 	}
 
+	@Override
+	public void setGradientPainter(IGradientPainter painter) {
+		Objects.requireNonNull(painter, "Gradient painter must not be null"); //$NON-NLS-1$
+		this.painter = painter;
+	}
+
+	private class DefaultGradientPainter implements IGradientPainter {
+		@Override
+		public void paint(Graphics g, Rectangle rect) {
+			if (isExpanded()) {
+				g.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
+				g.fillRectangle(rect);
+			} else if (collapseToggle.getModel().isMouseOver()) {
+				Color color1 = PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_60;
+				Color color2 = PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_90;
+				Color color3 = PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_95;
+				Color color4 = PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_90;
+
+				g.setForegroundColor(color1);
+				g.setBackgroundColor(color2);
+				g.fillGradient(rect.x, rect.y, rect.width, rect.height - 4, true);
+
+				g.setForegroundColor(color2);
+				g.setBackgroundColor(color3);
+				g.fillGradient(rect.x, rect.bottom() - 4, rect.width, 2, true);
+
+				g.setForegroundColor(color3);
+				g.setBackgroundColor(color4);
+				g.fillGradient(rect.x, rect.bottom() - 2, rect.width, 2, true);
+			} else {
+				g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
+				g.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_45);
+				g.fillGradient(rect, true);
+			}
+		}
+	}
 }

@@ -12,11 +12,14 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
+import java.util.Objects;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
@@ -42,6 +45,9 @@ import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.palette.ToolEntry;
+import org.eclipse.gef.ui.palette.IColorPalette;
+import org.eclipse.gef.ui.palette.IToolEntryFigure;
+import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 import org.eclipse.gef.ui.palette.editparts.IPinnableEditPart;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
@@ -216,9 +222,10 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	/**
 	 * The figure for for a <code>ToolEntryEditPart</code>.
 	 */
-	class ToolEntryToggle extends Toggle {
+	class ToolEntryToggle extends Toggle implements IToolEntryFigure {
 
 		private boolean showHoverFeedback = false;
+		private IColorPalette colorPalette = new DefaultColorPalette();
 
 		ToolEntryToggle(IFigure contents) {
 			super(contents);
@@ -278,10 +285,10 @@ public class ToolEntryEditPart extends PaletteEditPart {
 				ButtonModel model = getModel();
 
 				if (model.isSelected()) {
-					graphics.setBackgroundColor(PaletteColorUtil.getSelectedColor());
+					graphics.setBackgroundColor(colorPalette.getSelectedColor());
 					graphics.fillRoundRectangle(getSelectionRectangle(getLayoutSetting(), customLabel), 3, 3);
 				} else if (model.isMouseOver() || showHoverFeedback) {
-					graphics.setBackgroundColor(PaletteColorUtil.getHoverColor());
+					graphics.setBackgroundColor(colorPalette.getHoverColor());
 					graphics.fillRoundRectangle(getSelectionRectangle(getLayoutSetting(), customLabel), 3, 3);
 				}
 			}
@@ -321,6 +328,12 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		public void setShowHoverFeedback(boolean showHoverFeedback) {
 			this.showHoverFeedback = showHoverFeedback;
 			repaint();
+		}
+
+		@Override
+		public void setColorPalette(IColorPalette colorPalette) {
+			Objects.requireNonNull(colorPalette, "Color palette must not be null"); //$NON-NLS-1$
+			this.colorPalette = colorPalette;
 		}
 	}
 
@@ -392,8 +405,14 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	@Override
 	public IFigure createFigure() {
 		customLabel = new DetailedLabelFigure();
-		Clickable button = new ToolEntryToggle(customLabel);
+		ToolEntryToggle button = new ToolEntryToggle(customLabel);
 		button.addActionListener(event -> getViewer().setActiveTool(getModel()));
+
+		PaletteCustomizer customizer = getViewer().getCustomizer();
+		if (customizer != null) {
+			customizer.configure(button);
+		}
+
 		return button;
 	}
 
@@ -573,4 +592,15 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		return rect;
 	}
 
+	private static class DefaultColorPalette implements IColorPalette {
+		@Override
+		public Color getSelectedColor() {
+			return PaletteColorUtil.getSelectedColor();
+		}
+
+		@Override
+		public Color getHoverColor() {
+			return PaletteColorUtil.getHoverColor();
+		}
+	}
 }
