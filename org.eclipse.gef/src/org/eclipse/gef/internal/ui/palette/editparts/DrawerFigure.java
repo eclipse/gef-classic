@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2022 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.draw2d.AbstractBackground;
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.BorderLayout;
@@ -104,12 +105,13 @@ public class DrawerFigure extends Figure {
 		public IFigure getToolTip() {
 			return buildTooltip();
 		}
+	}
 
+	private class DrawerBackground extends AbstractBackground {
 		@Override
-		protected void paintFigure(Graphics g) {
-			super.paintFigure(g);
+		public void paintBackground(IFigure figure, Graphics g, Insets insets) {
 			Rectangle r = Rectangle.SINGLETON;
-			r.setBounds(getBounds());
+			r.setBounds(figure.getBounds()).shrink(insets);
 
 			// draw top border of drawer figure
 			g.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
@@ -131,7 +133,6 @@ public class DrawerFigure extends Figure {
 			}
 
 			paintToggleGradient(g, r);
-
 		}
 	}
 
@@ -156,6 +157,8 @@ public class DrawerFigure extends Figure {
 				return child.getPreferredSize(wHint, -1).height != child.getMinimumSize(wHint, -1).height;
 			}
 		});
+		
+		setBorder(new DrawerBackground());
 
 		Figure title = new Figure();
 		title.setBorder(TITLE_MARGIN_BORDER);
