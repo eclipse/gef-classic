@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -36,6 +36,7 @@ import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
+import org.eclipse.gef.ui.palette.PaletteCustomizer;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 import org.eclipse.gef.ui.palette.editparts.IPinnableEditPart;
 import org.eclipse.gef.ui.palette.editparts.PaletteAnimator;
@@ -82,6 +83,11 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 		});
 
 		fig.getScrollpane().getContents().addLayoutListener(getPaletteAnimator());
+
+		PaletteCustomizer customizer = getViewer().getCustomizer();
+		if (customizer != null) {
+			customizer.configure(fig);
+		}
 
 		return fig;
 	}

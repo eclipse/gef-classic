@@ -15,6 +15,8 @@ package org.eclipse.gef.ui.palette;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.DrawerFigure;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteEntry;
@@ -303,4 +305,19 @@ public abstract class PaletteCustomizer {
 	 */
 	public abstract void save();
 
+	/**
+	 * Called by the {@link DrawerEditPart#createFigure()} for every palette drawer
+	 * edit part, to allow clients to customize the created {@link DrawerFigure}
+	 * without accessing the internal class directly.
+	 *
+	 * @param drawerFigure The figure created for one of the palette drawers.
+	 * @since 3.20
+	 */
+	public void configure(IDrawerFigure drawerFigure) {
+		// may be overwritten by clients
+	}
+
+	public void configure(IToolEntryFigure drawerFigure) {
+		// may be overwritten by clients
+	}
 }
