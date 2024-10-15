@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -111,6 +111,14 @@ public class GEFMessages extends NLS {
 	public static String Guide_Desc;
 	public static String Create_Guide_Label;
 	public static String Create_Guide_Tooltip;
+	/**
+	 * The String "Enable Overlay Scrolling"
+	 */
+	public static String Settings_OverlayScrolling;
+	/**
+	 * The String "Overlay Scrolling:"
+	 */
+	public static String Settings_OverlayScrolling_Group;
 
 	static {
 		NLS.initializeMessages("org.eclipse.gef.internal.messages", GEFMessages.class); //$NON-NLS-1$

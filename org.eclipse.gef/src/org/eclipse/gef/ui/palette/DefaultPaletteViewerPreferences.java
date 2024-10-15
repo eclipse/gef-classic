@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -15,6 +15,7 @@ package org.eclipse.gef.ui.palette;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -76,6 +77,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 		store.setDefault(PREFERENCE_LAYOUT, LAYOUT_LIST);
 		store.setDefault(PREFERENCE_AUTO_COLLAPSE, COLLAPSE_AS_NEEDED);
 		store.setDefault(PREFERENCE_FONT, DEFAULT_FONT);
+		store.setDefault(PREFERENCE_SCROLLBARS_MODE, SWT.SCROLLBAR_OVERLAY);
 
 		listener = new PreferenceStoreListener();
 		store.addPropertyChangeListener(listener);
@@ -231,6 +233,8 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 			firePropertyChanged(property, Integer.valueOf(getAutoCollapseSetting()));
 		} else if (property.equals(PREFERENCE_FONT)) {
 			firePropertyChanged(property, getFontData());
+		} else if (property.equals(PREFERENCE_SCROLLBARS_MODE)) {
+			firePropertyChanged(property, getScrollbarsMode());
 		} else {
 			firePropertyChanged(property, Boolean.valueOf(useLargeIcons(convertPreferenceNameToLayout(property))));
 		}
@@ -356,4 +360,18 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 		}
 	}
 
+	@Override
+	public void setScrollbarsMode(int mode) {
+		if (mode != SWT.SCROLLBAR_OVERLAY && mode != SWT.NONE) {
+			throw new IllegalArgumentException(
+					"Scrollbar mode must be either SWT.SCROLLBAR_OVERLAY or SWT.NONE, but %d was given!" //$NON-NLS-1$
+							.formatted(mode));
+		}
+		getPreferenceStore().setValue(PREFERENCE_SCROLLBARS_MODE, mode);
+	}
+
+	@Override
+	public int getScrollbarsMode() {
+		return getPreferenceStore().getInt(PREFERENCE_SCROLLBARS_MODE);
+	}
 }

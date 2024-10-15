@@ -126,6 +126,14 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/org/eclipse/gef/ui/palette/DefaultPaletteViewerPreferences.java" type="org.eclipse.gef.ui.palette.DefaultPaletteViewerPreferences">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="PaletteViewerPreferences"/>
+                <message_argument value="DefaultPaletteViewerPreferences"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/org/eclipse/gef/ui/palette/PinDrawerAction.java" type="org.eclipse.gef.ui.palette.PinDrawerAction">
         <filter id="643850349">
             <message_arguments>

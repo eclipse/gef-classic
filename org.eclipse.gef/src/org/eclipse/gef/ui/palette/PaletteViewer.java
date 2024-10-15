@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -71,6 +71,11 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 					|| property.equals(DefaultPaletteViewerPreferences
 							.convertLayoutToPreferenceName(getPaletteViewerPreferences().getLayoutSetting()))) {
 				refreshAllEditParts(root);
+			} else if (property.equals(PaletteViewerPreferences.PREFERENCE_SCROLLBARS_MODE)) {
+				FigureCanvas canvas = getFigureCanvas();
+				if (canvas != null) {
+					canvas.setScrollbarsMode((int) evt.getNewValue());
+				}
 			}
 		}
 
@@ -271,6 +276,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 		canvas.setHorizontalScrollBarVisibility(FigureCanvas.NEVER);
 		canvas.setVerticalScrollBarVisibility(globalScrollbar ? FigureCanvas.ALWAYS : FigureCanvas.AUTOMATIC);
 		if (prefs != null) {
+			canvas.setScrollbarsMode(prefs.getScrollbarsMode());
 			prefs.addPropertyChangeListener(prefListener);
 		}
 		updateFont();
