@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -15,7 +15,7 @@ package org.eclipse.gef.ui.palette;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
 
-import org.eclipse.gef.ui.palette.customize.PaletteSettingsDialog;
+import org.eclipse.gef.internal.ui.palette.InternalPaletteSettingsDialog;
 
 /**
  * An action to launch the Settings dialog for the given palette.
@@ -44,7 +44,7 @@ public class SettingsAction extends Action {
 	 */
 	@Override
 	public void run() {
-		Dialog settings = new PaletteSettingsDialog(paletteViewer.getControl().getShell(),
+		Dialog settings = new InternalPaletteSettingsDialog(paletteViewer.getControl().getShell(),
 				paletteViewer.getPaletteViewerPreferences());
 		settings.open();
 	}

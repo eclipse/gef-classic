@@ -1,5 +1,8 @@
 # GEF Classic 3.22.0
 
+## GEF
+ - _Linux Only_ The overlay scrolling of the palette can be configured via the _PaletteViewerPreferences.PREFERENCE_SCROLLBARS_MODE_ preference. Supported values are _SWT.NONE_ and _SWT.SCROLLBAR_OVERLAY_.
+
 ## Zest
  - Integration of Zest 2.0 development branch. See the [wiki](https://github.com/eclipse/gef-classic/wiki/Zest#zest-2x) for more details. In case only default layout algorithms are used, the initial migration should be seamless. Otherwise the algorithms can be adapted to run in legacy mode by extending `AbstractLayoutAlgorithm.Zest1` or have to be re-implemented using the new API by extending `AbstractLayoutAlgorithm`. Note that this legacy mode will be removed in a future release. The following list contains the most significant, deprecated features:
    - `ContinuousLayoutAlgorithm` and `Stoppable`, with no replacement.
