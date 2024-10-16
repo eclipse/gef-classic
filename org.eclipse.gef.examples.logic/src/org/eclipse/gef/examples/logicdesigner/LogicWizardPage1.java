@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2022 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -41,7 +41,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicDiagramFactory;
 
 public class LogicWizardPage1 extends WizardNewFileCreationPage implements SelectionListener {
 
-	private IWorkbench workbench;
+	private final IWorkbench workbench;
 	private static int exampleCount = 1;
 	private Button model1 = null;
 	private Button model2 = null;
@@ -90,13 +90,10 @@ public class LogicWizardPage1 extends WizardNewFileCreationPage implements Selec
 			ld = (LogicDiagram) LogicDiagramFactory.createLargeModel();
 		}
 		ByteArrayInputStream bais = null;
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos);) {
 			oos.writeObject(ld);
 			oos.flush();
-			oos.close();
-			baos.close();
 			bais = new ByteArrayInputStream(baos.toByteArray());
 			bais.close();
 		} catch (Exception e) {
@@ -107,8 +104,7 @@ public class LogicWizardPage1 extends WizardNewFileCreationPage implements Selec
 
 	public boolean finish() {
 		IFile newFile = createNewFile();
-		if (newFile == null)
-		 {
+		if (newFile == null) {
 			return false; // ie.- creation was unsuccessful
 		}
 
