@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2022 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -51,13 +51,12 @@ public abstract class LogicSubpart extends LogicElement {
 	}
 
 	protected static Image createImage(Class rsrcClass, String name) {
-		InputStream stream = rsrcClass.getResourceAsStream(name);
-		Image image = new Image(null, stream);
-		try {
-			stream.close();
+		try (InputStream stream = rsrcClass.getResourceAsStream(name)) {
+			return new Image(null, stream);
 		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
-		return image;
+		return null;
 	}
 
 	protected LogicSubpart() {

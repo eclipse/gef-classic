@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2023 Elias Volanakis and others.
+ * Copyright (c) 2004, 2024 Elias Volanakis and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -90,8 +90,12 @@ public abstract class Shape extends ModelElement {
 	 * @see #setPropertyValue(Object, Object)
 	 */
 	static {
-		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(XPOS_PROP, ShapesExampleMessages.Shape_X), // id and description pair
-				new TextPropertyDescriptor(YPOS_PROP, ShapesExampleMessages.Shape_Y), new TextPropertyDescriptor(WIDTH_PROP, ShapesExampleMessages.Shape_Width),
+		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(XPOS_PROP, ShapesExampleMessages.Shape_X), // id
+																														// and
+																														// description
+																														// pair
+				new TextPropertyDescriptor(YPOS_PROP, ShapesExampleMessages.Shape_Y),
+				new TextPropertyDescriptor(WIDTH_PROP, ShapesExampleMessages.Shape_Width),
 				new TextPropertyDescriptor(HEIGHT_PROP, ShapesExampleMessages.Shape_Height), };
 		// use a custom cell editor validator for all four array entries
 		for (IPropertyDescriptor descriptor : descriptors) {
@@ -108,13 +112,12 @@ public abstract class Shape extends ModelElement {
 	} // static
 
 	protected static Image createImage(String name) {
-		InputStream stream = ShapesPlugin.class.getResourceAsStream(name);
-		Image image = new Image(null, stream);
-		try {
-			stream.close();
+		try (InputStream stream = ShapesPlugin.class.getResourceAsStream(name)) {
+			return new Image(null, stream);
 		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
-		return image;
+		return null;
 	}
 
 	/** Location of this shape. */

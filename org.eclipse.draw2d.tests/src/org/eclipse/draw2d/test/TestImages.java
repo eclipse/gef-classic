@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -19,23 +19,16 @@ import org.eclipse.swt.graphics.Image;
 
 public class TestImages {
 
-	static final Image depth_8;
-	static final Image depth_24;
+	static final Image depth_8 = loadImage("icons/bits8.jpg"); //$NON-NLS-1$
+	static final Image depth_24 = loadImage("icons/bits24.jpg"); //$NON-NLS-1$
 
-	static {
-		InputStream is = TestImages.class.getResourceAsStream("icons/bits8.gif"); //$NON-NLS-1$
-		depth_8 = new Image(null, is);
-		try {
-			is.close();
+	private static Image loadImage(final String imageName) {
+		try (InputStream is = TestImages.class.getResourceAsStream(imageName)) { // $NON-NLS-1$
+			return new Image(null, is);
+
 		} catch (Exception e) {
 		}
-
-		is = TestImages.class.getResourceAsStream("icons/bits24.jpg"); //$NON-NLS-1$
-		depth_24 = new Image(null, is);
-		try {
-			is.close();
-		} catch (Exception e) {
-		}
+		return null;
 	}
 
 }

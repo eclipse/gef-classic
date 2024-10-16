@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2023 Elias Volanakis and others.
+ * Copyright (c) 2004, 2024 Elias Volanakis and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -123,9 +123,9 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	}
 
 	private void createOutputStream(OutputStream os) throws IOException {
-		ObjectOutputStream oos = new ObjectOutputStream(os);
-		oos.writeObject(getModel());
-		oos.close();
+		try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
+			oos.writeObject(getModel());
+		}
 	}
 
 	/*
