@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2022 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +19,7 @@ import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
@@ -51,13 +50,7 @@ public abstract class LogicSubpart extends LogicElement {
 	}
 
 	protected static Image createImage(Class rsrcClass, String name) {
-		InputStream stream = rsrcClass.getResourceAsStream(name);
-		Image image = new Image(null, stream);
-		try {
-			stream.close();
-		} catch (IOException ioe) {
-		}
-		return image;
+		return ImageDescriptor.createFromFile(rsrcClass, name).createImage();
 	}
 
 	protected LogicSubpart() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -13,29 +13,21 @@
 
 package org.eclipse.draw2d.test;
 
-import java.io.InputStream;
-
 import org.eclipse.swt.graphics.Image;
 
-public class TestImages {
+import org.eclipse.jface.resource.ImageDescriptor;
 
-	static final Image depth_8;
-	static final Image depth_24;
+public final class TestImages {
 
-	static {
-		InputStream is = TestImages.class.getResourceAsStream("icons/bits8.gif"); //$NON-NLS-1$
-		depth_8 = new Image(null, is);
-		try {
-			is.close();
-		} catch (Exception e) {
-		}
+	static final Image depth_8 = loadImage("icons/bits8.jpg"); //$NON-NLS-1$
+	static final Image depth_24 = loadImage("icons/bits24.jpg"); //$NON-NLS-1$
 
-		is = TestImages.class.getResourceAsStream("icons/bits24.jpg"); //$NON-NLS-1$
-		depth_24 = new Image(null, is);
-		try {
-			is.close();
-		} catch (Exception e) {
-		}
+	private static Image loadImage(final String imageName) {
+		return ImageDescriptor.createFromFile(TestImages.class, imageName).createImage();
+	}
+
+	private TestImages() {
+		throw new UnsupportedOperationException("Utility class shall not be instantiated!"); //$NON-NLS-1$
 	}
 
 }

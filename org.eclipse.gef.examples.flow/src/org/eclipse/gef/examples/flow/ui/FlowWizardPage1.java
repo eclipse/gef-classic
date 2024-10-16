@@ -124,13 +124,10 @@ public class FlowWizardPage1 extends WizardNewFileCreationPage {
 	protected InputStream getInitialContents() {
 		ActivityDiagram diag = createWakeupModel();
 		ByteArrayInputStream bais = null;
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos);) {
 			oos.writeObject(diag);
 			oos.flush();
-			oos.close();
-			baos.close();
 			bais = new ByteArrayInputStream(baos.toByteArray());
 			bais.close();
 		} catch (Exception e) {
