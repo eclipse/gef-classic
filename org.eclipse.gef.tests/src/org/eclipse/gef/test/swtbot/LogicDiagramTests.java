@@ -41,7 +41,7 @@ import org.eclipse.gef.examples.logicdesigner.rulers.LogicRulerProvider;
 import org.junit.Test;
 
 @SuppressWarnings("nls")
-public class LogicDiagramTests extends AbstractSWTBotTests {
+public class LogicDiagramTests extends AbstractSWTBotEditorTests {
 
 	/**
 	 * Tests that when the ruler is enabled, moving the ruler also moves all

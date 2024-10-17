@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,6 +14,7 @@ package org.eclipse.gef.ui.palette;
 
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 
 /**
@@ -26,6 +27,7 @@ import org.eclipse.swt.graphics.FontData;
  * future.
  *
  * @author Pratik Shah
+ * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface PaletteViewerPreferences {
 
@@ -128,6 +130,14 @@ public interface PaletteViewerPreferences {
 	 * has this property name, it means that the palette font was changed.
 	 */
 	String PREFERENCE_FONT = "Palette Font"; //$NON-NLS-1$
+
+	/**
+	 * <b>Linux Only</b> Property name for enabling or disabling the scrollbars
+	 * overlay.
+	 *
+	 * @since 3.20
+	 */
+	String PREFERENCE_SCROLLBARS_MODE = "Scrollbars Mode"; //$NON-NLS-1$
 
 	/**
 	 * @param listener the PropertyChangeListener to be notified of changes
@@ -298,4 +308,25 @@ public interface PaletteViewerPreferences {
 	 */
 	boolean useLargeIcons();
 
+	/**
+	 * Enables or disables overlay scrolling for the palette viewer. Supported
+	 * values are:
+	 * <ul>
+	 * <li>{@link SWT#NONE}</li>
+	 * <li>{@link SWT#SCROLLBAR_OVERLAY}</li>
+	 * </ul>
+	 * Overlay scrollbars are only supported on {@code Linux}.
+	 *
+	 * @since 3.20
+	 */
+	void setScrollbarsMode(int mode);
+
+	/**
+	 * Returns whether overlay scrolling is enabled for the palette viewer . Overlay
+	 * scrollbars are only supported on {@code Linux}.
+	 *
+	 * @return One of {@link SWT#SCROLLBAR_OVERLAY} or {@link SWT#NONE}.
+	 * @since 3.20
+	 */
+	int getScrollbarsMode();
 }

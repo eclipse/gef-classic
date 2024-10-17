@@ -27,7 +27,7 @@ import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.junit.Test;
 
 @SuppressWarnings("nls")
-public class FlowDiagramTests extends AbstractSWTBotTests {
+public class FlowDiagramTests extends AbstractSWTBotEditorTests {
 
 	/**
 	 * Tests whether new palette items can be added to the viewer.

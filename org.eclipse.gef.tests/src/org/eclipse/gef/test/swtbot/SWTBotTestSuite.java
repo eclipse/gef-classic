@@ -24,7 +24,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	FlowDiagramTests.class,
 	LogicDiagramTests.class,
-	ShapesDiagramTests.class
+	ShapesDiagramTests.class,
+	PaletteSettingsDialogTests.class
 })
 public class SWTBotTestSuite {
 }

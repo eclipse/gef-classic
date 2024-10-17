@@ -31,7 +31,7 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.junit.Test;
 
 @SuppressWarnings("nls")
-public class ShapesDiagramTests extends AbstractSWTBotTests {
+public class ShapesDiagramTests extends AbstractSWTBotEditorTests {
 
 	/**
 	 * Tests whether edit parts can be properly resized.
