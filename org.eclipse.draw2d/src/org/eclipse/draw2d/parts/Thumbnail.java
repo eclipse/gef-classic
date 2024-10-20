@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2023 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -283,7 +283,11 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 			setScales(targetSize.width / (float) sourceSize.width, targetSize.height / (float) sourceSize.height);
 
-			Display.getCurrent().asyncExec(this);
+			if (refreshRate <= 0) {
+				Display.getCurrent().asyncExec(this);
+			} else {
+				Display.getCurrent().timerExec(refreshRate, this);
+			}
 		}
 
 		/** Create new GC, SWTGraphics, and ScaledGraphics instances */
@@ -379,6 +383,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 	private Dimension thumbnailImageSize;
 	private final ThumbnailUpdater updater = new ThumbnailUpdater();
+	private int refreshRate = -1;
 
 	/**
 	 * Creates a new Thumbnail. The source Figure must be set separately if you use
@@ -609,4 +614,21 @@ public class Thumbnail extends Figure implements UpdateListener {
 		return targetSize;
 	}
 
+	/**
+	 * Sets the rate with which the thumbnail is updated. If set to either {@code 0}
+	 * or a negative value, the update is done as fast as possible (default
+	 * behavior), otherwise every {@code refreshRate}ms.
+	 *
+	 * Example:
+	 *
+	 * <pre>
+	 * setRefreshRate(500); // Update every 500ms
+	 * </pre>
+	 *
+	 * @param refreshRate The rate with which the thumbnail is updated.
+	 * @since 3.18
+	 */
+	public void setRefreshRate(int refreshRate) {
+		this.refreshRate = refreshRate;
+	}
 }

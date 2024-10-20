@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2024 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -59,6 +59,7 @@ public abstract class TargetingTool extends AbstractTool {
 	private Request targetRequest;
 	private EditPart targetEditPart;
 	private AutoexposeHelper exposeHelper;
+	private int refreshRate = -1;
 
 	/**
 	 * Creates the target request that will be used with the target editpart. This
@@ -101,7 +102,11 @@ public abstract class TargetingTool extends AbstractTool {
 		}
 		if (exposeHelper.step(getLocation())) {
 			handleAutoexpose();
-			Display.getCurrent().asyncExec(new QueuedAutoexpose());
+			if (refreshRate <= 0) {
+				Display.getCurrent().asyncExec(new QueuedAutoexpose());
+			} else {
+				Display.getCurrent().timerExec(refreshRate, new QueuedAutoexpose());
+			}
 		} else {
 			setAutoexposeHelper(null);
 		}
@@ -476,4 +481,21 @@ public abstract class TargetingTool extends AbstractTool {
 		return exposeHelper;
 	}
 
+	/**
+	 * Sets the rate with which the auto-expose helper is evaluated. If set to
+	 * either {@code 0} or a negative value, the evaluation is done as fast as
+	 * possible (default behavior), otherwise every {@code refreshRate}ms.
+	 *
+	 * Example:
+	 *
+	 * <pre>
+	 * setRefreshRate(500); // Validate every 500ms
+	 * </pre>
+	 *
+	 * @param refreshRate The rate with which the auto-expose helper is validated.
+	 * @since 3.20
+	 */
+	public void setRefreshRate(int refreshRate) {
+		this.refreshRate = refreshRate;
+	}
 }
