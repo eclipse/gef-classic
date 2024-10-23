@@ -13,6 +13,7 @@ package org.eclipse.zest.examples.cloudio.application.actions;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.zest.cloudio.TagCloudViewer;
+import org.eclipse.zest.examples.cloudio.application.Messages;
 import org.eclipse.zest.examples.cloudio.application.data.Type;
 import org.eclipse.zest.examples.cloudio.application.data.TypeCollector;
 
@@ -35,17 +37,17 @@ public class LoadFileAction extends AbstractTagCloudAction {
 	public void run(IAction action) {
 		FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
 
-		dialog.setText("Select text file...");
+		dialog.setText(Messages.LoadFileAction_Text);
 		String sourceFile = dialog.open();
 		if (sourceFile == null) {
 			return;
 		}
 		ProgressMonitorDialog pd = new ProgressMonitorDialog(getShell());
 		try {
-			List<Type> types = TypeCollector.getData(new File(sourceFile), "UTF-8");
+			List<Type> types = TypeCollector.getData(new File(sourceFile), StandardCharsets.UTF_8);
 			pd.setBlockOnOpen(false);
 			pd.open();
-			pd.getProgressMonitor().beginTask("Generating cloud...", 200);
+			pd.getProgressMonitor().beginTask(Messages.LoadFileAction_BeginTask, 200);
 			TagCloudViewer viewer = getViewer();
 			viewer.setInput(types, pd.getProgressMonitor());
 			// viewer.getCloud().layoutCloud(pd.getProgressMonitor(), false);

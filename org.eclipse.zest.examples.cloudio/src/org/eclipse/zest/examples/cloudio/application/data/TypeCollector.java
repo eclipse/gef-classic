@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,13 +38,13 @@ public class TypeCollector {
 
 	private static String stopWords;
 
-	public static List<Type> getData(File file, String encoding) throws IOException {
+	public static List<Type> getData(File file, Charset encoding) throws IOException {
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
 		BufferedReader br = new BufferedReader(new InputStreamReader(bis, encoding));
 		StringBuffer text = new StringBuffer();
 		String s;
 		while ((s = br.readLine()) != null) {
-			text.append(s + "\n");
+			text.append(s + System.lineSeparator());
 		}
 		br.close();
 		Set<String> stops = new HashSet<>();

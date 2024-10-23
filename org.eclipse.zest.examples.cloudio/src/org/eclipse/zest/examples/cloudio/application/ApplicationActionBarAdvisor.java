@@ -11,6 +11,7 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.cloudio.application;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
@@ -50,22 +51,24 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	@Override
 	protected void fillMenuBar(IMenuManager menuBar) {
-		MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
+		MenuManager fileMenu = new MenuManager(Messages.ApplicationActionBarAdvisor_M_File,
+				IWorkbenchActionConstants.M_FILE);
 		menuBar.add(fileMenu);
 		ActionContributionItem aboutActionItem = new ActionContributionItem(aboutAction);
 		fileMenu.add(aboutActionItem);
 		fileMenu.add(new Separator());
 		fileMenu.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 		fileMenu.add(new Separator());
-		MenuManager editMenu = new MenuManager("&Edit", IWorkbenchActionConstants.M_EDIT);
-		editMenu.add(new GroupMarker("select"));
+		MenuManager editMenu = new MenuManager(Messages.ApplicationActionBarAdvisor_M_Edit,
+				IWorkbenchActionConstants.M_EDIT);
+		editMenu.add(new GroupMarker(Messages.ApplicationActionBarAdvisor_Select));
 		editMenu.add(new Separator());
-		editMenu.add(new GroupMarker("zoom"));
+		editMenu.add(new GroupMarker(Messages.ApplicationActionBarAdvisor_Zoom));
 		menuBar.add(editMenu);
 		super.fillMenuBar(menuBar);
 		ActionContributionItem exitActionItem = new ActionContributionItem(exitAction);
 		fileMenu.add(exitActionItem);
-		if (System.getProperty("os.name").contains("Mac")) {
+		if (Platform.OS_MACOSX.equals(Platform.getOS())) {
 			aboutActionItem.setVisible(false);
 			exitActionItem.setVisible(false);
 		}

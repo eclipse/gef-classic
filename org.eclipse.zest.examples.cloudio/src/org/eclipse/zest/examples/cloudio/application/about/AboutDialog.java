@@ -32,6 +32,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.zest.cloudio.TagCloud;
 import org.eclipse.zest.cloudio.Word;
 import org.eclipse.zest.cloudio.layout.DefaultLayouter;
+import org.eclipse.zest.examples.cloudio.application.Messages;
 
 /**
  *
@@ -74,12 +75,12 @@ public class AboutDialog extends Dialog {
 		colors[2] = Display.getDefault().getSystemColor(SWT.COLOR_DARK_MAGENTA);
 		colors[3] = Display.getDefault().getSystemColor(SWT.COLOR_DARK_YELLOW);
 		colors[4] = Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
-		Word w = getWord("Cloudio", fontNames, colors);
+		Word w = getWord(Messages.AboutDialog_Cloudio, fontNames, colors);
 		w.weight = 0.95;
 		w.angle = -35;
 		w.setColor(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		values.add(w);
-		w = getWord("Inspired by Wordle", fontNames, colors);
+		w = getWord(Messages.AboutDialog_InspiredBy, fontNames, colors);
 		w.setColor(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		w.angle = (float) (Math.random() * 90);
 		if (Math.random() < 0.5) {
@@ -90,26 +91,26 @@ public class AboutDialog extends Dialog {
 			w.angle = -w.angle;
 		}
 		values.add(w);
-		w = getWord("Used by " + System.getProperty("user.name"), fontNames, colors);
+		w = getWord(Messages.bind(Messages.AboutDialog_UsedBy, System.getProperty("user.name")), fontNames, colors); //$NON-NLS-1$
 		w.setColor(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		w.weight = 0.2;
 		values.add(w);
 		for (int i = 0; i < 20; i++) {
-			w = getWord("Cloudio", fontNames, colors);
+			w = getWord(Messages.AboutDialog_Cloudio, fontNames, colors);
 			values.add(w);
-			w = getWord("Tag Cloud", fontNames, colors);
+			w = getWord(Messages.AboutDialog_TagCloud, fontNames, colors);
 			values.add(w);
 		}
 		tc.setWords(values, null);
 		Label l = new Label(parent, SWT.NONE);
-		l.setText("Written by Stephan Schwiebert, 2011");
+		l.setText(Messages.AboutDialog_WrittenBy);
 		return tc;
 	}
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, RE_LAYOUT, "Do the inevitable...", false);
+		createButton(parent, RE_LAYOUT, Messages.AboutDialog_ReLayout, false);
 	}
 
 	@Override

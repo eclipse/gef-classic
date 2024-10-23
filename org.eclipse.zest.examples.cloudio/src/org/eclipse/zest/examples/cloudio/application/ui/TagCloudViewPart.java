@@ -43,6 +43,7 @@ import org.eclipse.zest.cloudio.TagCloud;
 import org.eclipse.zest.cloudio.TagCloudViewer;
 import org.eclipse.zest.cloudio.layout.DefaultLayouter;
 import org.eclipse.zest.cloudio.layout.ILayouter;
+import org.eclipse.zest.examples.cloudio.application.Messages;
 import org.eclipse.zest.examples.cloudio.application.data.Type;
 
 /**
@@ -115,13 +116,13 @@ public class TagCloudViewPart extends ViewPart {
 			}
 		});
 		ArrayList<Type> types = new ArrayList<>();
-		types.add(new Type("Cloudio", 220));
-		types.add(new Type("Cloudio", 150));
-		types.add(new Type("Cloudio", 100));
-		types.add(new Type("No data available", 150));
+		types.add(new Type(Messages.TagCloudViewPart_Cloudio, 220));
+		types.add(new Type(Messages.TagCloudViewPart_Cloudio, 150));
+		types.add(new Type(Messages.TagCloudViewPart_Cloudio, 100));
+		types.add(new Type(Messages.TagCloudViewPart_NoDataAvailable, 150));
 		int size = 55;
 		for (int i = 0; i < 50; i++) {
-			types.add(new Type("Tag Cloud", size));
+			types.add(new Type(Messages.TagCloudViewPart_TagCloud, size));
 			size--;
 		}
 		viewer.getCloud().setMaxFontSize(100);
@@ -144,14 +145,14 @@ public class TagCloudViewPart extends ViewPart {
 				buttons.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 				Label l = new Label(buttons, SWT.NONE);
 				l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-				l.setText("Mask");
+				l.setText(Messages.TagCloudViewPart_Mask);
 				Button file = new Button(buttons, SWT.FLAT);
 				file.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-				file.setText("Open...");
+				file.setText(Messages.TagCloudViewPart_Open);
 				file.addListener(SWT.Selection, event -> {
 					FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
 
-					fd.setText("Select a square b&w png image as mask...");
+					fd.setText(Messages.TagCloudViewPart_OpenDialog_Text);
 					String sourceFile = fd.open();
 					if (sourceFile == null) {
 						return;
@@ -180,10 +181,10 @@ public class TagCloudViewPart extends ViewPart {
 				Group buttons = super.addLayoutButtons(parent);
 
 				Label l = new Label(buttons, SWT.NONE);
-				l.setText("Scale");
+				l.setText(Messages.TagCloudViewPart_Scale);
 				final Combo scale = new Combo(buttons, SWT.DROP_DOWN | SWT.READ_ONLY);
 				scale.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-				scale.setItems("linear", "logarithmic");
+				scale.setItems(Messages.TagCloudViewPart_Linear, Messages.TagCloudViewPart_Logarithmic);
 				scale.addSelectionListener(new SelectionListener() {
 
 					@Override
@@ -206,10 +207,13 @@ public class TagCloudViewPart extends ViewPart {
 				});
 				scale.select(1);
 				l = new Label(buttons, SWT.NONE);
-				l.setText("X Axis Variation");
+				l.setText(Messages.TagCloudViewPart_XAxisVariation);
 				final Combo xAxis = new Combo(buttons, SWT.DROP_DOWN | SWT.READ_ONLY);
 				xAxis.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-				xAxis.setItems("0", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100");
+				xAxis.setItems(Messages.TagCloudViewPart_0, Messages.TagCloudViewPart_10, Messages.TagCloudViewPart_20,
+						Messages.TagCloudViewPart_30, Messages.TagCloudViewPart_40, Messages.TagCloudViewPart_50,
+						Messages.TagCloudViewPart_60, Messages.TagCloudViewPart_70, Messages.TagCloudViewPart_80,
+						Messages.TagCloudViewPart_90, Messages.TagCloudViewPart_100);
 				xAxis.select(2);
 				xAxis.addSelectionListener(new SelectionListener() {
 
@@ -226,10 +230,13 @@ public class TagCloudViewPart extends ViewPart {
 				});
 
 				l = new Label(buttons, SWT.NONE);
-				l.setText("Y Axis Variation");
+				l.setText(Messages.TagCloudViewPart_YAxisVariation);
 				final Combo yAxis = new Combo(buttons, SWT.DROP_DOWN | SWT.READ_ONLY);
 				yAxis.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-				yAxis.setItems("0", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100");
+				yAxis.setItems(Messages.TagCloudViewPart_0, Messages.TagCloudViewPart_10, Messages.TagCloudViewPart_20,
+						Messages.TagCloudViewPart_30, Messages.TagCloudViewPart_40, Messages.TagCloudViewPart_50,
+						Messages.TagCloudViewPart_60, Messages.TagCloudViewPart_70, Messages.TagCloudViewPart_80,
+						Messages.TagCloudViewPart_90, Messages.TagCloudViewPart_100);
 				yAxis.select(1);
 				yAxis.addSelectionListener(new SelectionListener() {
 
@@ -246,7 +253,7 @@ public class TagCloudViewPart extends ViewPart {
 
 				Button run = new Button(buttons, SWT.NONE);
 				run.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-				run.setText("Re-Position");
+				run.setText(Messages.TagCloudViewPart_RePosition);
 				run.addSelectionListener(new SelectionListener() {
 
 					@Override
@@ -254,7 +261,7 @@ public class TagCloudViewPart extends ViewPart {
 						final ProgressMonitorDialog dialog = new ProgressMonitorDialog(viewer.getControl().getShell());
 						dialog.setBlockOnOpen(false);
 						dialog.open();
-						dialog.getProgressMonitor().beginTask("Layouting tag cloud...", 100);
+						dialog.getProgressMonitor().beginTask(Messages.TagCloudViewPart_BeginTask, 100);
 						viewer.reset(dialog.getProgressMonitor(), false);
 						dialog.close();
 					}
@@ -265,7 +272,7 @@ public class TagCloudViewPart extends ViewPart {
 				});
 				Button layout = new Button(buttons, SWT.NONE);
 				layout.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-				layout.setText("Re-Layout");
+				layout.setText(Messages.TagCloudViewPart_ReLayout);
 				layout.addSelectionListener(new SelectionListener() {
 
 					@Override
@@ -273,7 +280,7 @@ public class TagCloudViewPart extends ViewPart {
 						ProgressMonitorDialog dialog = new ProgressMonitorDialog(viewer.getControl().getShell());
 						dialog.setBlockOnOpen(false);
 						dialog.open();
-						dialog.getProgressMonitor().beginTask("Layouting tag cloud...", 200);
+						dialog.getProgressMonitor().beginTask(Messages.TagCloudViewPart_BeginTask, 200);
 						viewer.setInput(viewer.getInput(), dialog.getProgressMonitor());
 						// viewer.reset(dialog.getProgressMonitor(),false);
 						dialog.close();

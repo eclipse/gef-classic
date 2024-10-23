@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.zest.cloudio.ICloudLabelProvider;
 import org.eclipse.zest.cloudio.TagCloud;
 import org.eclipse.zest.cloudio.TagCloudViewer;
+import org.eclipse.zest.examples.cloudio.application.Messages;
 
 /**
  * This snippet demonstrates how to create a {@link TagCloudViewer}, how to use
@@ -113,14 +114,14 @@ public class TagCloudViewerSnippet {
 		// Demo of an selection listener
 		viewer.addSelectionChangedListener(event -> {
 			IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
-			System.out.println("Selection: " + selection);
+			System.out.println(Messages.TagCloudViewerSnippet_Selection + selection);
 		});
 
 		// Demo data
 		List<String> data = new ArrayList<>();
-		data.add("Hello");
-		data.add("World");
-		data.add("Hello Cloudio");
+		data.add(Messages.TagCloudViewerSnippet_Hello);
+		data.add(Messages.TagCloudViewerSnippet_World);
+		data.add(Messages.TagCloudViewerSnippet_HelloCloudio);
 
 		shell.setBounds(50, 50, 300, 300);
 		cloud.setBounds(0, 0, shell.getBounds().width, shell.getBounds().height);
@@ -129,7 +130,7 @@ public class TagCloudViewerSnippet {
 		viewer.setInput(data);
 
 		// Set initial selection:
-		viewer.setSelection(new StructuredSelection(Arrays.asList("Hello Cloudio")));
+		viewer.setSelection(new StructuredSelection(Arrays.asList(Messages.TagCloudViewerSnippet_HelloCloudio)));
 
 		shell.open();
 		while (!shell.isDisposed()) {
