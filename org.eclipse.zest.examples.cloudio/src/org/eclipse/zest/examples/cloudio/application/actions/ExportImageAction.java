@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.FileDialog;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.zest.examples.cloudio.application.Messages;
 
 /**
  *
@@ -31,16 +32,16 @@ public class ExportImageAction extends AbstractTagCloudAction {
 	@Override
 	public void run(IAction action) {
 		FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-		dialog.setFileName("Cloud.png");
-		dialog.setText("Export PNG image to...");
+		dialog.setFileName(Messages.ExportImageAction_FileName);
+		dialog.setText(Messages.ExportImageAction_Text);
 		String destFile = dialog.open();
 		if (destFile == null) {
 			return;
 		}
 		File f = new File(destFile);
 		if (f.exists()) {
-			boolean confirmed = MessageDialog.openConfirm(getShell(), "File already exists",
-					"The file '" + f.getName() + "' does already exist. Do you want to override it?");
+			boolean confirmed = MessageDialog.openConfirm(getShell(), Messages.ExportImageAction_Dialog_Title,
+					Messages.bind(Messages.ExportImageAction_Dialog_Text, f.getName()));
 			if (!confirmed) {
 				return;
 			}

@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.zest.cloudio.TagCloud;
 import org.eclipse.zest.cloudio.Word;
+import org.eclipse.zest.examples.cloudio.application.Messages;
 
 /**
  * This snippet demonstrates how to create a simple tag cloud, which will
@@ -38,12 +39,12 @@ public class TagCloudSnippet {
 		// Generate some dummy words - color, weight and fontdata must
 		// always be defined.
 		List<Word> words = new ArrayList<>();
-		Word w = new Word("Hello");
+		Word w = new Word(Messages.TagCloudSnippet_Hello);
 		w.setColor(display.getSystemColor(SWT.COLOR_DARK_CYAN));
 		w.weight = 1;
 		w.setFontData(cloud.getFont().getFontData().clone());
 		words.add(w);
-		w = new Word("Cloudio");
+		w = new Word(Messages.TagCloudSnippet_Cloudio);
 		w.setColor(display.getSystemColor(SWT.COLOR_DARK_GREEN));
 		w.setFontData(cloud.getFont().getFontData().clone());
 		w.weight = 0.5;

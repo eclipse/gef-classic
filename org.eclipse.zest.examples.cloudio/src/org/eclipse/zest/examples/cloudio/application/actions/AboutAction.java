@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
+import org.eclipse.zest.examples.cloudio.application.Messages;
 import org.eclipse.zest.examples.cloudio.application.about.AboutDialog;
 
 /**
@@ -25,8 +26,8 @@ import org.eclipse.zest.examples.cloudio.application.about.AboutDialog;
 public class AboutAction extends Action implements IWorkbenchAction {
 
 	public AboutAction() {
-		super.setId("about");
-		setText("About");
+		super.setId("about"); //$NON-NLS-1$
+		setText(Messages.AboutAction_Text);
 	}
 
 	@Override
