@@ -28,6 +28,7 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphContainer;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.examples.Messages;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -108,7 +109,7 @@ public class GraphSnippet13 {
 	public static void main(String[] args) {
 		Shell shell = new Shell();
 		final Display d = shell.getDisplay();
-		shell.setText("GraphSnippet11");
+		shell.setText(Messages.GraphSnippet13_Title);
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
@@ -145,7 +146,7 @@ public class GraphSnippet13 {
 			}
 		});
 
-		Image zx = new Image(d, GraphSnippet13.class.getResourceAsStream("/zxsnow.png"));
+		Image zx = new Image(d, GraphSnippet13.class.getResourceAsStream("/zxsnow.png")); //$NON-NLS-1$
 		IFigure tooltip = new Figure();
 		tooltip.setBorder(new MarginBorder(5, 5, 5, 5));
 		FlowLayout layout = new FlowLayout(false);
@@ -153,18 +154,18 @@ public class GraphSnippet13 {
 		layout.setMinorAlignment(3);
 		tooltip.setLayoutManager(new FlowLayout(false));
 		tooltip.add(new ImageFigure(zx));
-		tooltip.add(new Label("Name: " + "Chris Aniszczyk"));
-		tooltip.add(new Label("Location: " + "Austin, Texas"));
+		tooltip.add(new Label(Messages.GraphSnippet13_Tooltip_Name));
+		tooltip.add(new Label(Messages.GraphSnippet13_Tooltip_Location));
 
-		Image ibull = new Image(d, GraphSnippet13.class.getResourceAsStream("/ibull.jpg"));
+		Image ibull = new Image(d, GraphSnippet13.class.getResourceAsStream("/ibull.jpg")); //$NON-NLS-1$
 		GraphContainer c1 = new GraphContainer(g, SWT.NONE);
-		c1.setText("Canada");
+		c1.setText(Messages.GraphSnippet13_Canada);
 		GraphContainer c2 = new GraphContainer(g, SWT.NONE);
-		c2.setText("USA");
+		c2.setText(Messages.GraphSnippet13_USA);
 
-		GraphNode n1 = new GraphNode(c1, SWT.NONE, "Ian B.");
+		GraphNode n1 = new GraphNode(c1, SWT.NONE, Messages.GraphSnippet13_Node1);
 		n1.setSize(200, 100);
-		GraphNode n2 = new GraphNode(c2, SWT.NONE, "Chris A.");
+		GraphNode n2 = new GraphNode(c2, SWT.NONE, Messages.GraphSnippet13_Node2);
 		n2.setTooltip(tooltip);
 
 		GraphConnection connection = new GraphConnection(g, ZestStyles.CONNECTIONS_DIRECTED, n1, n2);

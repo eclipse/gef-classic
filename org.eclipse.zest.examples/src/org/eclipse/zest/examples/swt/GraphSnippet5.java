@@ -36,6 +36,7 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.examples.Messages;
 
 import org.eclipse.draw2d.ColorConstants;
 
@@ -65,7 +66,7 @@ public class GraphSnippet5 {
 
 		final Font font = new Font(d, fontData);
 
-		shell.setText("Graph Snippet 5");
+		shell.setText(Messages.GraphSnippet5_Title);
 		Image image1 = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
 		Image image2 = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 		Image image3 = Display.getDefault().getSystemImage(SWT.ICON_ERROR);
@@ -74,9 +75,9 @@ public class GraphSnippet5 {
 
 		g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
-		GraphNode n1 = new GraphNode(g, SWT.NONE, "org.eclipse.Information", image1);
-		GraphNode n2 = new GraphNode(g, SWT.NONE, "org.eclipse.Warning", image2);
-		GraphNode n3 = new GraphNode(g, SWT.NONE, "org.eclipse.Error", image3);
+		GraphNode n1 = new GraphNode(g, SWT.NONE, Messages.GraphSnippet5_Information, image1);
+		GraphNode n2 = new GraphNode(g, SWT.NONE, Messages.GraphSnippet5_Warning, image2);
+		GraphNode n3 = new GraphNode(g, SWT.NONE, Messages.GraphSnippet5_Error, image3);
 		figureListing.put(n1.getText().toLowerCase(), n1);
 		figureListing.put(n2.getText().toLowerCase(), n2);
 		figureListing.put(n3.getText().toLowerCase(), n3);

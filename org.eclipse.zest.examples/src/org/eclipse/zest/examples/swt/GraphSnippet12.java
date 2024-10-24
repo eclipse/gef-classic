@@ -26,6 +26,7 @@ import org.eclipse.zest.core.widgets.CGraphNode;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.examples.Messages;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -103,7 +104,7 @@ public class GraphSnippet12 {
 	public static void main(String[] args) {
 		Shell shell = new Shell();
 		final Display d = shell.getDisplay();
-		shell.setText("GraphSnippet11");
+		shell.setText(Messages.GraphSnippet12_Title);
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
@@ -140,13 +141,13 @@ public class GraphSnippet12 {
 			}
 		});
 
-		Image zx = new Image(d, GraphSnippet12.class.getResourceAsStream("/zx.png"));
-		Image ibull = new Image(d, GraphSnippet12.class.getResourceAsStream("/ibull.jpg"));
+		Image zx = new Image(d, GraphSnippet12.class.getResourceAsStream("/zx.png")); //$NON-NLS-1$
+		Image ibull = new Image(d, GraphSnippet12.class.getResourceAsStream("/ibull.jpg")); //$NON-NLS-1$
 		CGraphNode n = new CGraphNode(g, SWT.NONE, createPersonFigure(zx));
 		CGraphNode n2 = new CGraphNode(g, SWT.NONE, createPersonFigure(ibull));
-		GraphNode n3 = new GraphNode(g, SWT.NONE, "PDE");
-		GraphNode n4 = new GraphNode(g, SWT.NONE, "Zest");
-		GraphNode n5 = new GraphNode(g, SWT.NONE, "PDE Viz tool");
+		GraphNode n3 = new GraphNode(g, SWT.NONE, Messages.GraphSnippet12_PDE);
+		GraphNode n4 = new GraphNode(g, SWT.NONE, Messages.GraphSnippet12_Zest);
+		GraphNode n5 = new GraphNode(g, SWT.NONE, Messages.GraphSnippet12_PDEVizTool);
 
 		new GraphConnection(g, SWT.NONE, n, n2);
 		new GraphConnection(g, SWT.NONE, n, n3);

@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.examples.Messages;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 /**
@@ -40,16 +41,16 @@ public class LayoutExample {
 		// Create the shell
 		Shell shell = new Shell();
 		Display d = shell.getDisplay();
-		shell.setText("GraphSnippet1");
+		shell.setText(Messages.LayoutExample_Title);
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
 		g = new Graph(shell, SWT.NONE);
-		GraphNode root = new GraphNode(g, SWT.NONE, "Root");
+		GraphNode root = new GraphNode(g, SWT.NONE, Messages.Root);
 		for (int i = 0; i < 3; i++) {
-			GraphNode n = new GraphNode(g, SWT.NONE, "1 - " + i);
+			GraphNode n = new GraphNode(g, SWT.NONE, Messages.bind(Messages.LayoutExample_Node1, i));
 			for (int j = 0; j < 3; j++) {
-				GraphNode n2 = new GraphNode(g, SWT.NONE, "2 - " + j);
+				GraphNode n2 = new GraphNode(g, SWT.NONE, Messages.bind(Messages.LayoutExample_Node2, j));
 				new GraphConnection(g, SWT.NONE, n, n2);
 			}
 			new GraphConnection(g, SWT.NONE, root, n);
@@ -58,7 +59,7 @@ public class LayoutExample {
 		SpringLayoutAlgorithm springLayoutAlgorithm = new SpringLayoutAlgorithm();
 
 		for (GraphConnection connection : g.getConnections()) {
-			if (connection.getSource().getText().equals("Root")) {
+			if (connection.getSource().getText().equals(Messages.Root)) {
 				connection.setWeight(1.0);
 			} else {
 				connection.setWeight(-1.0);

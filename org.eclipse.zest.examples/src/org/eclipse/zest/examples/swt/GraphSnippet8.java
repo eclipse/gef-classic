@@ -22,6 +22,7 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.LayoutFilter;
 import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.examples.Messages;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -42,20 +43,20 @@ public class GraphSnippet8 {
 	public static void main(String[] args) {
 		Shell shell = new Shell();
 		Display display = shell.getDisplay();
-		shell.setText("GraphSnippet8"); //$NON-NLS-1$
+		shell.setText(Messages.GraphSnippet8_Title);
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
 		graph = new Graph(shell, SWT.NONE);
 
-		GraphNode a = new GraphNode(graph, SWT.NONE, "Root"); //$NON-NLS-1$
-		GraphNode b = new GraphNode(graph, SWT.NONE, "B"); //$NON-NLS-1$
-		GraphNode c = new GraphNode(graph, SWT.NONE, "C"); //$NON-NLS-1$
-		GraphNode d = new GraphNode(graph, SWT.NONE, "D"); //$NON-NLS-1$
-		GraphNode e = new GraphNode(graph, SWT.NONE, "E"); //$NON-NLS-1$
-		GraphNode f = new GraphNode(graph, SWT.NONE, "F"); //$NON-NLS-1$
-		GraphNode g = new GraphNode(graph, SWT.NONE, "G"); //$NON-NLS-1$
-		GraphNode h = new GraphNode(graph, SWT.NONE, "H"); //$NON-NLS-1$
+		GraphNode a = new GraphNode(graph, SWT.NONE, Messages.Root);
+		GraphNode b = new GraphNode(graph, SWT.NONE, Messages.GraphSnippet8_Node1);
+		GraphNode c = new GraphNode(graph, SWT.NONE, Messages.GraphSnippet8_Node2);
+		GraphNode d = new GraphNode(graph, SWT.NONE, Messages.GraphSnippet8_Node3);
+		GraphNode e = new GraphNode(graph, SWT.NONE, Messages.GraphSnippet8_Node4);
+		GraphNode f = new GraphNode(graph, SWT.NONE, Messages.GraphSnippet8_Node5);
+		GraphNode g = new GraphNode(graph, SWT.NONE, Messages.GraphSnippet8_Node6);
+		GraphNode h = new GraphNode(graph, SWT.NONE, Messages.GraphSnippet8_Node7);
 		GraphConnection connection = new GraphConnection(graph, SWT.NONE, a, b);
 		connection.setData(Boolean.FALSE);
 		connection = new GraphConnection(graph, SWT.NONE, a, c);
