@@ -21,6 +21,7 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.examples.Messages;
 
 /**
  * This snippet demonstrates a self loop with a label.
@@ -37,15 +38,15 @@ public class GraphSnippet9 {
 	public static void main(String[] args) {
 		Shell shell = new Shell();
 		Display display = shell.getDisplay();
-		shell.setText("GraphSnippet9");
+		shell.setText(Messages.GraphSnippet9_Title);
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
 		graph = new Graph(shell, SWT.NONE);
 
-		GraphNode a = new GraphNode(graph, ZestStyles.CONNECTIONS_DIRECTED, "Root");
+		GraphNode a = new GraphNode(graph, ZestStyles.CONNECTIONS_DIRECTED, Messages.Root);
 		GraphConnection connection = new GraphConnection(graph, SWT.NONE, a, a);
-		connection.setText("A to A");
+		connection.setText(Messages.GraphSnippet9_Connection);
 		a.setLocation(100, 100);
 
 		shell.open();

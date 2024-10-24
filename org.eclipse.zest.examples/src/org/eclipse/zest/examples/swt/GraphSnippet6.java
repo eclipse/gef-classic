@@ -23,6 +23,7 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.examples.Messages;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 
 /**
@@ -41,7 +42,7 @@ public class GraphSnippet6 {
 	public static void main(String[] args) {
 		Shell shell = new Shell();
 		Display d = shell.getDisplay();
-		shell.setText("GraphSnippet6");
+		shell.setText(Messages.GraphSnippet6_Title);
 		Image image1 = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
 		Image image2 = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 		Image image3 = Display.getDefault().getSystemImage(SWT.ICON_ERROR);
@@ -51,10 +52,12 @@ public class GraphSnippet6 {
 		g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		for (int i = 0; i < 80; i++) {
-			GraphNode n1 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, "Information",
+			GraphNode n1 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, Messages.Information,
 					image1);
-			GraphNode n2 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, "Warning", image2);
-			GraphNode n3 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, "Error", image3);
+			GraphNode n2 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, Messages.Warning,
+					image2);
+			GraphNode n3 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, Messages.Error,
+					image3);
 			new GraphConnection(g, SWT.NONE, n1, n2);
 			new GraphConnection(g, SWT.NONE, n2, n3);
 			new GraphConnection(g, SWT.NONE, n3, n3);

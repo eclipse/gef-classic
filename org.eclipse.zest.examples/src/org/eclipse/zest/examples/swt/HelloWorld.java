@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.examples.Messages;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 /**
@@ -37,13 +38,13 @@ public class HelloWorld {
 	public static void main(String[] args) {
 		Shell shell = new Shell();
 		Display d = shell.getDisplay();
-		shell.setText("Hello, World");
+		shell.setText(Messages.HelloWorld_Title);
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
 		g = new Graph(shell, SWT.NONE);
-		GraphNode hello = new GraphNode(g, SWT.NONE, "Hello");
-		GraphNode world = new GraphNode(g, SWT.NONE, "World");
+		GraphNode hello = new GraphNode(g, SWT.NONE, Messages.HelloWorld_Node1);
+		GraphNode world = new GraphNode(g, SWT.NONE, Messages.HelloWorld_Node2);
 		new GraphConnection(g, SWT.NONE, hello, world);
 		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(), true);
 

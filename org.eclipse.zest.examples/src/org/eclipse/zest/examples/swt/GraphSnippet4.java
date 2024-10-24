@@ -24,6 +24,7 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.examples.Messages;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
@@ -64,7 +65,7 @@ public class GraphSnippet4 {
 	public static void main(String[] args) {
 		Shell shell = new Shell();
 		Display d = shell.getDisplay();
-		shell.setText("Graph Snippet 4");
+		shell.setText(Messages.GraphSnippet4_Title);
 		Image image1 = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
 		Image image2 = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 		Image image3 = Display.getDefault().getSystemImage(SWT.ICON_ERROR);
@@ -73,17 +74,17 @@ public class GraphSnippet4 {
 
 		g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
-		GraphNode n1 = new GraphNode(g, SWT.NONE, "Information", image1);
-		GraphNode n2 = new GraphNode(g, SWT.NONE, "Warning", image2);
-		GraphNode n3 = new GraphNode(g, SWT.NONE, "Error", image3);
+		GraphNode n1 = new GraphNode(g, SWT.NONE, Messages.Information, image1);
+		GraphNode n2 = new GraphNode(g, SWT.NONE, Messages.Warning, image2);
+		GraphNode n3 = new GraphNode(g, SWT.NONE, Messages.Error, image3);
 
 		GraphConnection connection1 = new GraphConnection(g, SWT.NONE, n1, n2);
 		GraphConnection connection2 = new GraphConnection(g, SWT.NONE, n2, n3);
 
 		Image information2warningImage = mergeImages(image1, image2);
 		Image warning2error = mergeImages(image2, image3);
-		IFigure tooltip1 = new Label("Information to Warning", information2warningImage);
-		IFigure tooltip2 = new Label("Warning to Error", warning2error);
+		IFigure tooltip1 = new Label(Messages.GraphSnippet4_Tooltip1, information2warningImage);
+		IFigure tooltip2 = new Label(Messages.GraphSnippet4_Tooltip2, warning2error);
 		connection1.setTooltip(tooltip1);
 		connection2.setTooltip(tooltip2);
 

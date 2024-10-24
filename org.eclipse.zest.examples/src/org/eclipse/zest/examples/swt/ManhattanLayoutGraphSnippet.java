@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.examples.Messages;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 import org.eclipse.draw2d.ConnectionRouter;
@@ -47,18 +48,18 @@ public class ManhattanLayoutGraphSnippet {
 		// Create the shell
 		final Display d = new Display();
 		final Shell shell = new Shell(d);
-		shell.setText("GraphSnippet1");
+		shell.setText(Messages.ManhattanLayoutGraphSnippet_Title);
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
 		Button b = new Button(shell, SWT.PUSH);
-		b.setText("Change Router");
+		b.setText(Messages.ManhattanLayoutGraphSnippet_ChangeRouter);
 
 		final Graph g = new Graph(shell, SWT.NONE);
 
-		GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
-		GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");
-		GraphNode n3 = new GraphNode(g, SWT.NONE, "Scissors");
+		GraphNode n = new GraphNode(g, SWT.NONE, Messages.Paper);
+		GraphNode n2 = new GraphNode(g, SWT.NONE, Messages.Rock);
+		GraphNode n3 = new GraphNode(g, SWT.NONE, Messages.Scissors);
 		new GraphConnection(g, SWT.NONE, n, n2);
 		new GraphConnection(g, SWT.NONE, n2, n3);
 		new GraphConnection(g, SWT.NONE, n3, n);

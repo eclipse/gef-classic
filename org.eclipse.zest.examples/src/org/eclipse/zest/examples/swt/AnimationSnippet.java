@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.examples.Messages;
 
 import org.eclipse.draw2d.Animation;
 
@@ -29,17 +30,17 @@ public class AnimationSnippet {
 
 		final Shell shell = new Shell();
 		Display d = shell.getDisplay();
-		shell.setText("Animation Example");
+		shell.setText(Messages.AnimationSnippet_Title);
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		shell.setSize(400, 400);
 
 		Button b = new Button(shell, SWT.PUSH);
-		b.setText("Animate");
+		b.setText(Messages.AnimationSnippet_Animate);
 
 		g = new Graph(shell, SWT.NONE);
 
-		final GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
-		final GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");
+		final GraphNode n = new GraphNode(g, SWT.NONE, Messages.Paper);
+		final GraphNode n2 = new GraphNode(g, SWT.NONE, Messages.Rock);
 
 		b.addSelectionListener(new SelectionListener() {
 			@Override
