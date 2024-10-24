@@ -352,6 +352,9 @@ public class TagCloud extends Canvas {
 		if (width == 0 || height == 0) {
 			return;
 		}
+		if (zoomLayerImage != null) {
+			zoomLayerImage.dispose();
+		}
 		zoomLayerImage = new Image(getDisplay(), width, height);
 		Transform tf = new Transform(getDisplay());
 		tf.scale((float) s, (float) s);
@@ -531,6 +534,7 @@ public class TagCloud extends Canvas {
 		SmallRect root = new SmallRect(0, 0, tmp, tmp);
 		word.tree = new RectTree(root, accuracy);
 		final ImageData id = img.getImageData();
+		t.dispose();
 		g.dispose();
 		img.dispose();
 		return id;
